@@ -1,0 +1,199 @@
+﻿<controls:MetroWindow x:Class="MySnooper.Login"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        Title="Welcome to great snooper" TitlebarHeight="40" Background="Black" Height="420" Width="340"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Closing="WindowClosing">
+    <controls:MetroWindow.IconTemplate>
+        <DataTemplate>
+            <Image Source="Resources/Icon.png" Margin="5" />
+        </DataTemplate>
+    </controls:MetroWindow.IconTemplate>
+    <controls:MetroWindow.Resources>
+        <Style TargetType="Hyperlink">
+            <Setter Property="Foreground" Value="#5DB0FF" />
+            <Setter Property="IsEnabled" Value="{Binding IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type FrameworkElement}}}" /><!-- Hyperlinks won't be enabled after it's parent were disabled without this line -->
+            <Setter Property="Focusable" Value="False" />
+        </Style>
+    </controls:MetroWindow.Resources>
+    
+    <Grid Name="Container" IsEnabled="False">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" Margin="20,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="180"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="15"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="15"></RowDefinition>
+                <RowDefinition Height="*"></RowDefinition>
+                <RowDefinition Height="15"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            
+            <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
+                <Label Content="Server: " VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
+                <TextBlock VerticalAlignment="Center">
+                    <Hyperlink Click="ServerHelp" ToolTipService.IsEnabled="False">
+                        <Hyperlink.ToolTip>
+                            <ToolTip>
+                                <TextBlock>
+                                    The official server is: wormnet1.team17.com, so you can find there all the players.
+                                    <LineBreak />
+                                    But sometimes it is not accessable because of maintenance.
+                                    <LineBreak />
+                                    Then you can use an alternative server to play for that short time.
+                                </TextBlock>
+                            </ToolTip>
+                        </Hyperlink.ToolTip>
+                        <Run>?</Run>
+                    </Hyperlink>
+                </TextBlock>
+            </StackPanel>
+            <ComboBox Name="Server" Grid.Column="1" Grid.Row="1" IsEditable="True" VerticalContentAlignment="Center"></ComboBox>
+
+            <Label Grid.Column="0" Grid.Row="3" Content="Remember me:" VerticalAlignment="Center"></Label>
+            <CheckBox Name="AutoLogIn" Grid.Column="1" Grid.Row="3"></CheckBox>
+
+            <TabControl Name="LoginTypeChooser" Grid.Row="5" Grid.ColumnSpan="2">
+                <TabControl.Resources>
+                    <Style TargetType="{x:Type TabControl}">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TabControl}">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="*"></RowDefinition>
+                                            <RowDefinition Height="Auto"></RowDefinition>
+                                        </Grid.RowDefinitions>
+                                        <Border Grid.Row="0" Background="Transparent" BorderBrush="#444444" BorderThickness="1">
+                                            <ContentPresenter ContentSource="SelectedContent" />
+                                        </Border>
+                                        <TabPanel Grid.Row="1" IsItemsHost="True" Background="Transparent"></TabPanel>
+                                    </Grid>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
+                    <Style TargetType="TabItem">
+                        <Setter Property="Foreground" Value="White"></Setter>
+                        <Setter Property="Width" Value="150"></Setter>
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type TabItem}">
+                                    <Grid Background="Transparent" Name="Container">
+                                        <Border Name="Border" BorderBrush="Transparent" BorderThickness="1,0,1,1" Padding="8,6,8,6" Background="Transparent">
+                                            <ContentPresenter x:Name="ContentSite" ContentSource="Header"/>
+                                        </Border>
+                                    </Grid>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected" Value="False">
+                                            <Setter TargetName="Border" Property="Background" Value="#000000"></Setter>
+                                            <Setter TargetName="Border" Property="BorderBrush" Value="#444444"></Setter>
+                                        </Trigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
+                
+                <!-- Simple login -->
+                <TabItem Header="Simple login">
+                    <Grid Width="290" HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="180"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="15"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="15"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="15"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="15"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Column="0" Grid.Row="1" Content="Nickname:" VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
+                        <Label Grid.Column="0" Grid.Row="3" Content="Country:" VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
+                        <Label Grid.Column="0" Grid.Row="5" Content="Rank:" VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
+                        <Label Grid.Column="0" Grid.Row="7" Content="Clan:" VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
+
+                        <TextBox Name="Nick" Grid.Column="1" Grid.Row="1" MaxLength="15"></TextBox>
+                        <ComboBox Name="Country" Grid.Column="1" Grid.Row="3" IsTextSearchEnabled="True" TextSearch.TextPath="Name" VerticalContentAlignment="Center">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <Image DockPanel.Dock="Left" Height="18" Width="22" Source="{Binding Path=Flag}"></Image>
+                                        <Label Content="{Binding Path=Name, Mode=OneWay}" Margin="0 -4 0 0"></Label>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <ComboBox Name="Rank" Grid.Column="1" Grid.Row="5" VerticalContentAlignment="Center">
+                            <ComboBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <VirtualizingStackPanel />
+                                </ItemsPanelTemplate>
+                            </ComboBox.ItemsPanel>
+                            <ComboBox.ItemTemplate>
+                                <DataTemplate>
+                                    <DockPanel>
+                                        <Image DockPanel.Dock="Left" Height="18" Width="22" Source="{Binding Path=Picture}"></Image>
+                                        <Label Content="{Binding Path=Name, Mode=OneWay}" Margin="0 -4 0 0"></Label>
+                                    </DockPanel>
+                                </DataTemplate>
+                            </ComboBox.ItemTemplate>
+                        </ComboBox>
+                        <TextBox Name="Clan" Grid.Column="1" Grid.Row="7" MaxLength="15"></TextBox>
+                    </Grid>
+                </TabItem>
+
+                <!-- Tus login -->
+                <TabItem Header="TUS login">
+                    <Grid Width="290" HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"></ColumnDefinition>
+                            <ColumnDefinition Width="180"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="15"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="15"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                            <RowDefinition Height="15"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <Label Grid.Column="0" Grid.Row="1" Content="TUS nickname:" VerticalAlignment="Center"></Label>
+                        <Label Grid.Column="0" Grid.Row="3" Content="TUS password:" VerticalAlignment="Center"></Label>
+                        <TextBlock Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center"><Hyperlink Click="TusLoginHelp">What is TUS login?</Hyperlink></TextBlock>
+
+                        <TextBox Name="TUSNick" Grid.Column="1" Grid.Row="1"></TextBox>
+                        <PasswordBox Name="TUSPass" Grid.Column="1" Grid.Row="3"></PasswordBox>
+                    </Grid>
+                </TabItem>
+            </TabControl>
+        </Grid>
+
+        <Button Grid.Row="1" Content="Log in" Click="LogIn" Height="40" BorderThickness="0,1,0,0" Focusable="False"></Button>
+        <controls:ProgressRing Name="LoadingRing" Foreground="White" IsActive="True" />
+    </Grid>
+</controls:MetroWindow>

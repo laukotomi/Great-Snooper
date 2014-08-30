@@ -1,0 +1,54 @@
+D:\VS\MySnooper\MySnooper\obj\Debug\MainWindow.baml
+D:\VS\MySnooper\MySnooper\obj\Debug\MainWindow.g.cs
+D:\VS\MySnooper\MySnooper\obj\Debug\App.g.cs
+D:\VS\MySnooper\MySnooper\obj\Debug\MySnooper.Properties.Resources.resources
+D:\VS\MySnooper\MySnooper\obj\Debug\MySnooper.csproj.GenerateResource.Cache
+D:\VS\MySnooper\MySnooper\obj\Debug\Login.baml
+D:\VS\MySnooper\MySnooper\obj\Debug\Login.g.cs
+D:\VS\MySnooper\MySnooper\obj\Debug\MySnooper.csprojResolveAssemblyReference.cache
+D:\VS\MySnooper\MySnooper\obj\Debug\ListEditor.baml
+D:\VS\MySnooper\MySnooper\obj\Debug\ListEditor.g.cs
+D:\VS\MySnooper\MySnooper\bin\Debug\Xceed.Wpf.Toolkit.dll
+D:\VS\MySnooper\MySnooper\obj\Debug\UserSettings.baml
+D:\VS\MySnooper\MySnooper\obj\Debug\UserSettings.g.cs
+D:\VS\MySnooper\MySnooper\obj\Debug\Hosting.baml
+D:\VS\MySnooper\MySnooper\obj\Debug\Hosting.g.cs
+D:\VS\MySnooper\MySnooper\obj\Debug\FontChooser.baml
+D:\VS\MySnooper\MySnooper\obj\Debug\FontChooser.g.cs
+d:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\bin\Debug\MySnooper.exe.config
+d:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\MySnooper.exe
+d:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\MySnooper.pdb
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\MySnooper.csproj.App.config
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\MySnooper.csprojResolveAssemblyReference.cache
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\FontChooser.baml
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\Hosting.baml
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\ListEditor.baml
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\Login.baml
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\UserSettings.baml
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\FontChooser.g.cs
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\Hosting.g.cs
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\ListEditor.g.cs
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\Login.g.cs
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\MainWindow.g.cs
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\UserSettings.g.cs
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\App.g.cs
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\MySnooper_MarkupCompile.cache
+D:\Dropbox\snooper\Ujdesign\MySnooper\MySnooper\obj\Debug\MySnooper_MarkupCompile.lref
+d:\VS\MySnooper\MySnooper\bin\Debug\Great Snooper.exe.config
+d:\VS\MySnooper\MySnooper\bin\Debug\Great Snooper.exe.manifest
+d:\VS\MySnooper\MySnooper\bin\Debug\Great Snooper.application
+d:\VS\MySnooper\MySnooper\bin\Debug\Great Snooper.exe
+d:\VS\MySnooper\MySnooper\bin\Debug\Great Snooper.pdb
+d:\VS\MySnooper\MySnooper\obj\Debug\App.baml
+d:\VS\MySnooper\MySnooper\obj\Debug\Great Snooper_MarkupCompile.cache
+d:\VS\MySnooper\MySnooper\obj\Debug\Great Snooper_MarkupCompile.lref
+d:\VS\MySnooper\MySnooper\obj\Debug\Great Snooper.g.resources
+d:\VS\MySnooper\MySnooper\obj\Debug\Great Snooper.exe.manifest
+d:\VS\MySnooper\MySnooper\obj\Debug\Great Snooper.application
+d:\VS\MySnooper\MySnooper\obj\Debug\Great Snooper.exe
+d:\VS\MySnooper\MySnooper\obj\Debug\Great Snooper.pdb
+D:\VS\MySnooper\MySnooper\obj\Debug\AwayManager.g.cs
+D:\VS\MySnooper\MySnooper\obj\Debug\LeagueSearcher.g.cs
+D:\VS\MySnooper\MySnooper\obj\Debug\GeneratedInternalTypeHelper.g.cs
+D:\VS\MySnooper\MySnooper\obj\Debug\AwayManager.baml
+D:\VS\MySnooper\MySnooper\obj\Debug\LeagueSearcher.baml

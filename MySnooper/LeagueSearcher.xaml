@@ -1,0 +1,42 @@
+﻿<controls:MetroWindow x:Class="MySnooper.LeagueSearcher"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        Title="League Game Searcher" TitlebarHeight="40" Background="Black" Height="360" Width="360"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
+    <Grid HorizontalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="25"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+
+        <ListBox Grid.Row="0" Grid.ColumnSpan="2" Name="TheList" HorizontalAlignment="Center" Background="Transparent" LostFocus="TheListLostFocus" VerticalAlignment="Center" BorderThickness="0">
+            <ListBox.Resources>
+                <Style TargetType="ListBox">
+                    <Style.Resources>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="Transparent"/>
+                        <SolidColorBrush x:Key="{x:Static SystemColors.WindowBrushKey}" Color="Transparent"/>
+                    </Style.Resources>
+                </Style>
+            </ListBox.Resources>
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox Content="{Binding Path=Value, Mode=OneWay}" Loaded="CheckLoaded" Foreground="AliceBlue" Margin="5,2" Click="CheckChanged" />
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <CheckBox Grid.Row="2" Grid.ColumnSpan="2" Name="Spam" Content="Spam the channel?" HorizontalAlignment="Center"></CheckBox>
+
+        <Button Name="StartButton" Grid.Row="4" Grid.Column="0" Content="Start searching" Width="120" Click="StartSearching" Margin="0,0,10,0"></Button>
+        <Button Grid.Row="4" Grid.Column="1" Content="Close" Click="CloseWindow" Width="120" Margin="10,0,0,0"></Button>
+    </Grid>
+</controls:MetroWindow>

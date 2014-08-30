@@ -1,0 +1,57 @@
+﻿<controls:MetroWindow x:Class="MySnooper.Hosting"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        Title="Host a game" Height="340" Width="420" TitlebarHeight="40" Background="Black"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
+    <controls:MetroWindow.Resources>
+        <Style TargetType="Hyperlink">
+            <Setter Property="Foreground" Value="#5DB0FF" />
+            <Setter Property="IsEnabled" Value="{Binding IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type FrameworkElement}}}" />
+            <!-- Hyperlinks won't be enabled after it's parent were disabled without this line -->
+            <Setter Property="Focusable" Value="False" />
+        </Style>
+    </controls:MetroWindow.Resources>
+    <Grid Name="Container" Width="380" HorizontalAlignment="Center" VerticalAlignment="Center">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+            <ColumnDefinition Width="*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="10"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+            <RowDefinition Height="15"></RowDefinition>
+            <RowDefinition Height="Auto"></RowDefinition>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Row="0" Grid.Column="0" Content="Game name:"></Label>
+        <TextBox Grid.Row="0" Grid.Column="1" Name="GameName" MaxLength="29" KeyDown="CreateGameWithEnter"></TextBox>
+        <Label Grid.Row="2" Grid.Column="0" Content="Password (optional):"></Label>
+        <TextBox Grid.Row="2" Grid.Column="1" Name="GamePassword" MaxLength="16" KeyDown="CreateGameWithEnter"></TextBox>
+        <Label Grid.Row="4" Grid.Column="0" Content="Using WormNat2?"></Label>
+        <Grid Grid.Row="4" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20"></ColumnDefinition>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <CheckBox Grid.Column="0" VerticalAlignment="Center" Name="WormNat2"></CheckBox>
+            <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="4,0,0,0"><Hyperlink Click="WormNatHostingHelp">About WormNat2</Hyperlink></TextBlock>
+        </Grid>
+        <Label Grid.Row="6" Grid.Column="0" Content="Send info to channel?"></Label>
+        <CheckBox Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" Name="InfoToChannel"></CheckBox>
+        <Label Grid.Row="8" Grid.Column="0" Content="Exit snooper after hosting?"></Label>
+        <CheckBox Grid.Row="8" Grid.Column="1" VerticalAlignment="Center" Name="ExitSnooper"></CheckBox>
+
+        <Button Grid.Row="10" Grid.Column="0" Content="Create game" Click="CreateGame" Width="140"></Button>
+        <Button Grid.Row="10" Grid.Column="1" Content="Close" Click="CloseWindow" Width="140"></Button>
+
+        <controls:ProgressRing Name="LoadingRing" Foreground="White" IsActive="False" Grid.ColumnSpan="2" Grid.RowSpan="9" />
+    </Grid>
+</controls:MetroWindow>

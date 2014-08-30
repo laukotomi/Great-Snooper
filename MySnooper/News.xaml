@@ -1,0 +1,25 @@
+﻿<controls:MetroWindow x:Class="MySnooper.News"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:loc="clr-namespace:MySnooper"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        Title="Great Snooper News" TitlebarHeight="40" Background="Black" Height="300" Width="380"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False" Closing="MetroWindow_Closing">
+    <!-- Shortcut keys -->
+    <controls:MetroWindow.CommandBindings>
+        <CommandBinding Command="{x:Static loc:News.NextNewsCommand}" Executed="NextNews" CanExecute="CanExecuteCustomCommand" />
+        <CommandBinding Command="{x:Static loc:News.PrevNewsCommand}" Executed="PrevNews" CanExecute="CanExecuteCustomCommand" />
+    </controls:MetroWindow.CommandBindings>
+    <controls:MetroWindow.InputBindings>
+        <KeyBinding Command="{x:Static loc:News.NextNewsCommand}" Key="Right" />
+        <KeyBinding Command="{x:Static loc:News.PrevNewsCommand}" Key="Left" />
+    </controls:MetroWindow.InputBindings>
+    <controls:MetroWindow.Resources>
+        <Style TargetType="Paragraph">
+            <Setter Property="Margin" Value="10,3" />
+        </Style>
+    </controls:MetroWindow.Resources>
+    <Grid>
+        <controls:FlipView Height="225" Width="350" Name="NewsFlipView" HorizontalAlignment="Center" VerticalAlignment="Center" IsBannerEnabled="False" SelectionChanged="NewsFlipView_SelectionChanged" />
+    </Grid>
+</controls:MetroWindow>

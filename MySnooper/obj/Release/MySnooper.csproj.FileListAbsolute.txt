@@ -1,0 +1,111 @@
+D:\VS\MySnooper\MySnooper\obj\Release\Login.baml
+D:\VS\MySnooper\MySnooper\obj\Release\Login.g.cs
+D:\VS\MySnooper\MySnooper\obj\Release\MainWindow.g.cs
+D:\VS\MySnooper\MySnooper\obj\Release\App.g.cs
+D:\VS\MySnooper\MySnooper\obj\Release\MainWindow.baml
+D:\VS\MySnooper\MySnooper\obj\Release\MySnooper.Properties.Resources.resources
+D:\VS\MySnooper\MySnooper\obj\Release\MySnooper.csproj.GenerateResource.Cache
+D:\VS\MySnooper\MySnooper\obj\Release\ListEditor.baml
+D:\VS\MySnooper\MySnooper\obj\Release\ListEditor.g.cs
+D:\VS\MySnooper\MySnooper\obj\Release\FontChooser.baml
+D:\VS\MySnooper\MySnooper\obj\Release\Hosting.baml
+D:\VS\MySnooper\MySnooper\obj\Release\UserSettings.baml
+D:\VS\MySnooper\MySnooper\obj\Release\FontChooser.g.cs
+D:\VS\MySnooper\MySnooper\obj\Release\Hosting.g.cs
+D:\VS\MySnooper\MySnooper\obj\Release\UserSettings.g.cs
+d:\VS\MySnooper\MySnooper\bin\Release\Great Snooper.exe.config
+d:\VS\MySnooper\MySnooper\bin\Release\Great Snooper.exe.manifest
+d:\VS\MySnooper\MySnooper\bin\Release\Great Snooper.application
+d:\VS\MySnooper\MySnooper\bin\Release\Great Snooper.exe
+d:\VS\MySnooper\MySnooper\bin\Release\Great Snooper.pdb
+d:\VS\MySnooper\MySnooper\obj\Release\Great Snooper_MarkupCompile.cache
+d:\VS\MySnooper\MySnooper\obj\Release\Great Snooper_MarkupCompile.lref
+d:\VS\MySnooper\MySnooper\obj\Release\Great Snooper.g.resources
+d:\VS\MySnooper\MySnooper\obj\Release\Great Snooper.exe.manifest
+d:\VS\MySnooper\MySnooper\obj\Release\Great Snooper.application
+d:\VS\MySnooper\MySnooper\obj\Release\Great Snooper.exe
+d:\VS\MySnooper\MySnooper\obj\Release\Great Snooper.pdb
+d:\VS\MySnooper\MySnooper\obj\Release\MySnooper.csprojResolveAssemblyReference.cache
+D:\VS\MySnooper\MySnooper\bin\Release\Xceed.Wpf.Toolkit.dll
+D:\VS\MySnooper\MySnooper\obj\Release\App.baml
+d:\VS\MySnooper\MySnooper\obj\Release\LeagueSearcher.baml
+d:\VS\MySnooper\MySnooper\obj\Release\LeagueSearcher.g.cs
+D:\VS\MySnooper\MySnooper\obj\Release\GeneratedInternalTypeHelper.g.cs
+D:\VS\MySnooper\MySnooper\obj\Release\AwayManager.baml
+D:\VS\MySnooper\MySnooper\obj\Release\AwayManager.g.cs
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\bin\Release\Great Snooper.exe.config
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\Great Snooper.exe
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\Great Snooper.pdb
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\bin\Release\Great Snooper.exe.manifest
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\bin\Release\Great Snooper.application
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\bin\Release\Great Snooper.exe
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\bin\Release\Great Snooper.pdb
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\bin\Release\Xceed.Wpf.Toolkit.dll
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\AwayManager.g.cs
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\FontChooser.g.cs
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\Hosting.g.cs
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\LeagueSearcher.g.cs
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\ListEditor.g.cs
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\Login.g.cs
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\MainWindow.g.cs
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\UserSettings.g.cs
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\App.g.cs
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\Great Snooper_MarkupCompile.cache
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\Great Snooper_MarkupCompile.lref
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\App.baml
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\AwayManager.baml
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\FontChooser.baml
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\Hosting.baml
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\LeagueSearcher.baml
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\ListEditor.baml
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\Login.baml
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\MainWindow.baml
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\UserSettings.baml
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\Great Snooper.g.resources
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\MySnooper.Properties.Resources.resources
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\MySnooper.csproj.GenerateResource.Cache
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\Great Snooper.exe.manifest
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\Great Snooper.application
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\bin\Release\MahApps.Metro.dll
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\bin\Release\System.Windows.Interactivity.dll
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\bin\Release\MahApps.Metro.xml
+c:\Dropbox\VS\MySnooper\MySnooper\bin\Release\Great Snooper.exe.config
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\Great Snooper.exe
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\Great Snooper.pdb
+c:\Dropbox\VS\MySnooper\MySnooper\bin\Release\Great Snooper.exe.manifest
+c:\Dropbox\VS\MySnooper\MySnooper\bin\Release\Great Snooper.application
+c:\Dropbox\VS\MySnooper\MySnooper\bin\Release\Great Snooper.exe
+c:\Dropbox\VS\MySnooper\MySnooper\bin\Release\Great Snooper.pdb
+c:\Dropbox\VS\MySnooper\MySnooper\bin\Release\MahApps.Metro.dll
+c:\Dropbox\VS\MySnooper\MySnooper\bin\Release\System.Windows.Interactivity.dll
+c:\Dropbox\VS\MySnooper\MySnooper\bin\Release\Xceed.Wpf.Toolkit.dll
+c:\Dropbox\VS\MySnooper\MySnooper\bin\Release\MahApps.Metro.xml
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\MySnooper.csprojResolveAssemblyReference.cache
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\Login.baml
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\AwayManager.g.cs
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\FontChooser.g.cs
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\Hosting.g.cs
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\LeagueSearcher.g.cs
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\ListEditor.g.cs
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\Login.g.cs
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\MainWindow.g.cs
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\UserSettings.g.cs
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\App.g.cs
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\Great Snooper_MarkupCompile.cache
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\Great Snooper_MarkupCompile.lref
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\App.baml
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\AwayManager.baml
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\FontChooser.baml
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\Hosting.baml
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\LeagueSearcher.baml
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\ListEditor.baml
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\MainWindow.baml
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\UserSettings.baml
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\Great Snooper.g.resources
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\MySnooper.Properties.Resources.resources
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\MySnooper.csproj.GenerateResource.Cache
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\Great Snooper.exe.manifest
+c:\Dropbox\VS\MySnooper\MySnooper\obj\Release\Great Snooper.application
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\MySnooper.csprojResolveAssemblyReference.cache
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\News.baml
+C:\Users\Tomi\Dropbox\VS\MySnooper\MySnooper\obj\Release\News.g.cs

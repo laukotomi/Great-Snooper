@@ -1,0 +1,83 @@
+﻿<controls:MetroWindow x:Class="MySnooper.FontChooser"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        Title="Font Chooser" TitlebarHeight="40" Background="Black" Height="420" Width="500"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">    
+    <DockPanel Grid.Row="1">
+        <Border DockPanel.Dock="Top" Height="50" Background="#33373f">
+            <TextBlock Name="Example" Text="Example text" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+        </Border>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"></ColumnDefinition>
+                <ColumnDefinition Width="180"></ColumnDefinition>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*"></RowDefinition>
+                <RowDefinition Height="50"></RowDefinition>
+            </Grid.RowDefinitions>
+
+            <ListView VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" Grid.Column="0" Grid.Row="0" Name="TheFontfamily" Background="Transparent" SelectionChanged="FontFamilyChanged" IsTextSearchEnabled="True" TextSearch.TextPath="Key">
+                <ListView.Resources>
+                    <Style TargetType="ListViewItem">
+                        <Style.Resources>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#169900"/>
+                            <SolidColorBrush x:Key="{x:Static SystemColors.ControlBrushKey}" Color="#169900"/>
+                        </Style.Resources>
+                    </Style>
+                </ListView.Resources>
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <VirtualizingStackPanel />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Key, Mode=OneWay}" FontFamily="{Binding Value, Mode=OneWay}" Foreground="AliceBlue" FontSize="12" Margin="0,2" />
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <Grid Grid.Column="1" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Label Grid.Row="0" Grid.Column="0" Content="Size:"></Label>
+                <ComboBox Grid.Row="0" Grid.Column="1" Name="TheSize" SelectionChanged="FontSizeChanged"></ComboBox>
+
+                <Label Grid.Row="1" Grid.Column="0" Content="Color:"></Label>
+                <xctk:ColorPicker Grid.Row="1" Grid.Column="1" Name="TheColor" UsingAlphaChannel="False" ShowDropDownButton="False" ShowStandardColors="False" SelectedColorChanged="ColorChanged"></xctk:ColorPicker>
+
+                <Label Grid.Row="2" Grid.Column="0" Content="Bold:"></Label>
+                <CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Name="TheBold" HorizontalAlignment="Center" Click="BoldChanged"></CheckBox>
+
+                <Label Grid.Row="3" Grid.Column="0" Content="Italic:"></Label>
+                <CheckBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Name="TheItalic" HorizontalAlignment="Center" Click="ItalicChanged"></CheckBox>
+
+                <Label Grid.Row="4" Grid.Column="0" Content="Strikethrough:"></Label>
+                <CheckBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Name="TheStrikethrough" HorizontalAlignment="Center" Click="StrikethroughChanged"></CheckBox>
+
+                <Label Grid.Row="5" Grid.Column="0" Content="Underline:"></Label>
+                <CheckBox Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Name="TheUnderline" HorizontalAlignment="Center" Click="UnderlineChanged"></CheckBox>
+            </Grid>
+
+            <StackPanel Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button Content="Save" Click="SaveClick" Width="100" Margin="10"></Button>
+                <Button Content="Close" Click="CloseWindow" Width="100" Margin="10"></Button>
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</controls:MetroWindow>

@@ -1,0 +1,159 @@
+﻿<?xml version='1.0' encoding='utf-8'?>
+<SettingsFile xmlns="http://schemas.microsoft.com/VisualStudio/2004/01/settings" CurrentProfile="(Default)" GeneratedClassNamespace="MySnooper.Properties" GeneratedClassName="Settings">
+  <Profiles />
+  <Settings>
+    <Setting Name="UserName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UserClan" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ServerAddress" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="UserCountry" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">-1</Value>
+    </Setting>
+    <Setting Name="ChannelMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">F0FFFF|13|0|0|0|0|Tahoma</Value>
+    </Setting>
+    <Setting Name="JoinMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">808000|12|0|0|0|0|Tahoma</Value>
+    </Setting>
+    <Setting Name="PartMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">808000|12|0|0|0|0|Tahoma</Value>
+    </Setting>
+    <Setting Name="QuitMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">808000|12|0|0|0|0|Tahoma</Value>
+    </Setting>
+    <Setting Name="OfflineMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">FF0000|13|0|0|0|0|Tahoma</Value>
+    </Setting>
+    <Setting Name="ActionMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">FFFF00|13|0|0|0|0|Tahoma</Value>
+    </Setting>
+    <Setting Name="UserMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">E9967A|13|0|0|0|0|Tahoma</Value>
+    </Setting>
+    <Setting Name="NoticeMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">FF0000|13|0|0|0|0|Tahoma</Value>
+    </Setting>
+    <Setting Name="BuddyJoinedMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ADFF2F|13|0|0|0|0|Tahoma</Value>
+    </Setting>
+    <Setting Name="BuddyList" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="BanList" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="PMBeep" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Sounds\pmbeep.wav</Value>
+    </Setting>
+    <Setting Name="HBeep" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Sounds\pmbeep.wav</Value>
+    </Setting>
+    <Setting Name="BJBeep" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Sounds\buddyjoined.wav</Value>
+    </Setting>
+    <Setting Name="PMBeepEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="HBeepEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="BJBeepEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="MessageJoinedGame" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="HostGameName" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="HostUseWormnat" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="HostInfoToChannel" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="WaExe" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AwayText" Type="System.String" Scope="User">
+      <Value Profile="(Default)">I am playing!</Value>
+    </Setting>
+    <Setting Name="MarkAway" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="BackText" Type="System.String" Scope="User">
+      <Value Profile="(Default)">I am back!</Value>
+    </Setting>
+    <Setting Name="SendBack" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="MessageTime" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="MessageTimeStyle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">D3D3D3|12|0|0|0|0|Tahoma</Value>
+    </Setting>
+    <Setting Name="HyperLinkStyle" Type="System.String" Scope="User">
+      <Value Profile="(Default)">00FFFF|13|0|0|0|1|Tahoma</Value>
+    </Setting>
+    <Setting Name="WAExeAsked" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="LoginType" Type="System.String" Scope="User">
+      <Value Profile="(Default)">simple</Value>
+    </Setting>
+    <Setting Name="TusNick" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="TusPass" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AutoLogIn" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ShowLoginScreen" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LeagueFoundMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)">ADFF2F|13|0|0|0|0|Tahoma</Value>
+    </Setting>
+    <Setting Name="LeagueFoundBeep" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Sounds\LeagueFound.wav</Value>
+    </Setting>
+    <Setting Name="LeagueFoundBeepEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="LeagueFailBeep" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Sounds\LeagueFail.wav</Value>
+    </Setting>
+    <Setting Name="LeagueFailBeepEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AutoJoinAnythingGoes" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AwayMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="SettingsUpgraded" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="UserRank" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">13</Value>
+    </Setting>
+    <Setting Name="SearchForThese" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="NewsSeen" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="TimeLogsDeleted" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+  </Settings>
+</SettingsFile>
