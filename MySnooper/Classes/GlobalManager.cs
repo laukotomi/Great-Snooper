@@ -38,5 +38,7 @@ namespace MySnooper
         }
 
         public static Client SystemClient = new Client("System", null, "", 0, false);
+
+        public static bool DebugMode = false;
     }
 }

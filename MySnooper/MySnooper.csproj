@@ -115,7 +115,6 @@
     <Compile Include="Classes\RanksClass.cs" />
     <Compile Include="Classes\WormNetCharTable.cs" />
     <Compile Include="Classes\ErrorLog.cs" />
-    <Compile Include="CustomUIThings\BoolToUnderlineConverter.cs" />
     <Compile Include="FontChooser.xaml.cs">
       <DependentUpon>FontChooser.xaml</DependentUpon>
     </Compile>

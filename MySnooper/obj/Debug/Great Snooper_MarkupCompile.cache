@@ -4,17 +4,17 @@
 winexe
 C#
 .cs
-D:\VS\MySnooper\MySnooper\obj\Debug\
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\
 MySnooper
 none
 false
 DEBUG;TRACE
-D:\VS\MySnooper\MySnooper\App.xaml
-82109803272
+d:\VS\Great Snooper\Great-Snooper\MySnooper\App.xaml
+91977782653
 
-39-797943953
-16505686302
-AwayManager.xaml;FontChooser.xaml;Hosting.xaml;LeagueSearcher.xaml;ListEditor.xaml;Login.xaml;MainWindow.xaml;UserSettings.xaml;
+41-345757718
+18882434325
+AwayManager.xaml;FontChooser.xaml;Hosting.xaml;LeagueSearcher.xaml;ListEditor.xaml;Login.xaml;MainWindow.xaml;News.xaml;UserSettings.xaml;
 
 False
 

@@ -52,3 +52,42 @@ D:\VS\MySnooper\MySnooper\obj\Debug\LeagueSearcher.g.cs
 D:\VS\MySnooper\MySnooper\obj\Debug\GeneratedInternalTypeHelper.g.cs
 D:\VS\MySnooper\MySnooper\obj\Debug\AwayManager.baml
 D:\VS\MySnooper\MySnooper\obj\Debug\LeagueSearcher.baml
+d:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Debug\Great Snooper.exe.config
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\Great Snooper.exe
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\Great Snooper.pdb
+d:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Debug\Great Snooper.exe.manifest
+d:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Debug\Great Snooper.application
+d:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Debug\Great Snooper.exe
+d:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Debug\Great Snooper.pdb
+d:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Debug\MahApps.Metro.dll
+d:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Debug\System.Windows.Interactivity.dll
+d:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Debug\Xceed.Wpf.Toolkit.dll
+d:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Debug\MahApps.Metro.xml
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\MySnooper.csprojResolveAssemblyReference.cache
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\AwayManager.baml
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\FontChooser.baml
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\Hosting.baml
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\LeagueSearcher.baml
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\ListEditor.baml
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\Login.baml
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\UserSettings.baml
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\App.baml
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\AwayManager.g.cs
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\FontChooser.g.cs
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\Hosting.g.cs
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\LeagueSearcher.g.cs
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\ListEditor.g.cs
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\Login.g.cs
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\MainWindow.g.cs
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\News.g.cs
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\UserSettings.g.cs
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\App.g.cs
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\Great Snooper_MarkupCompile.cache
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\Great Snooper_MarkupCompile.lref
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\MainWindow.baml
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\News.baml
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\Great Snooper.g.resources
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\MySnooper.Properties.Resources.resources
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\MySnooper.csproj.GenerateResource.Cache
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\Great Snooper.exe.manifest
+d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\Great Snooper.application

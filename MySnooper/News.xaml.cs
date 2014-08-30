@@ -34,8 +34,9 @@ namespace MySnooper
             {
                 try
                 {
-                    if (item["show"] != "1")
+                    if (item["show"] != "1" && !GlobalManager.DebugMode)
                         continue;
+
                     Grid g = new Grid();
                     g.Tag = item;
                     RichTextBox rtb = new RichTextBox();

@@ -138,7 +138,13 @@ namespace MySnooper
                     System.Diagnostics.Process.Start(settingsPath);
                 }
                 else if (command == "news")
+                {
                     OpenNewsWindow();
+                }
+                else if (command == "debug")
+                {
+                    GlobalManager.DebugMode = !GlobalManager.DebugMode;
+                }
             }
             // Action message
             else if (textToSend[0] == '>')
