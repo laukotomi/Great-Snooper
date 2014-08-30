@@ -235,26 +235,29 @@ namespace MySnooper
                 e.Cancel = true;
 
             // Delete old logs
-            string date = DateRegex.Replace(DateTime.Now.ToString("d"), "-");
-            if (date != Properties.Settings.Default.TimeLogsDeleted)
+            if (Directory.Exists(settingsPath + @"\Logs"))
             {
-                Properties.Settings.Default.TimeLogsDeleted = date;
-                Properties.Settings.Default.Save();
-
-                string[] dirs = Directory.GetDirectories(settingsPath + @"\Logs");
-                DateTime old = DateTime.Now - new TimeSpan(30, 0, 0, 0);
-                for (int i = 0; i < dirs.Length; i++)
+                string date = DateRegex.Replace(DateTime.Now.ToString("d"), "-");
+                if (date != Properties.Settings.Default.TimeLogsDeleted)
                 {
-                    string[] files = Directory.GetFiles(dirs[i]);
-                    for (int j = 0; j < files.Length; j++)
-                    {
-                        FileInfo info = new FileInfo(files[j]);
-                        if (info.LastWriteTime < old)
-                            File.Delete(files[j]);
-                    }
+                    Properties.Settings.Default.TimeLogsDeleted = date;
+                    Properties.Settings.Default.Save();
 
-                    if (Directory.GetFiles(dirs[i]).Length == 0)
-                        Directory.Delete(dirs[i]);
+                    string[] dirs = Directory.GetDirectories(settingsPath + @"\Logs");
+                    DateTime old = DateTime.Now - new TimeSpan(30, 0, 0, 0);
+                    for (int i = 0; i < dirs.Length; i++)
+                    {
+                        string[] files = Directory.GetFiles(dirs[i]);
+                        for (int j = 0; j < files.Length; j++)
+                        {
+                            FileInfo info = new FileInfo(files[j]);
+                            if (info.LastWriteTime < old)
+                                File.Delete(files[j]);
+                        }
+
+                        if (Directory.GetFiles(dirs[i]).Length == 0)
+                            Directory.Delete(dirs[i]);
+                    }
                 }
             }
         }

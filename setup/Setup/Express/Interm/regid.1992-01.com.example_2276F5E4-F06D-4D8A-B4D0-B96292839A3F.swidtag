@@ -4,11 +4,11 @@
 	<swid:entitlement_required_indicator id="entitlement_required_indicator">false</swid:entitlement_required_indicator>
 	<swid:product_title id="product_title">Great Snooper</swid:product_title>
 	<swid:product_version>
-		<swid:name id="version_name">1.20.5000</swid:name>
+		<swid:name id="version_name">1.30.0000</swid:name>
 		<swid:numeric>
 			<swid:major id="version_major">1</swid:major>
-			<swid:minor id="version_minor">20</swid:minor>
-			<swid:build id="version_build">5000</swid:build>
+			<swid:minor id="version_minor">30</swid:minor>
+			<swid:build id="version_build">0</swid:build>
 			<swid:review id="version_review">0</swid:review>
 		</swid:numeric>
 	</swid:product_version>
@@ -33,7 +33,7 @@
 		<fs:original_arp_guid id="original_arp_guid">{DAA2FD85-F727-4142-9847-9ABBF38C1C66}</fs:original_arp_guid>
 		<fs:original_arp_publisher id="original_arp_publisher">ToOMiToO</fs:original_arp_publisher>
 		<fs:original_arp_display_name id="original_arp_display_name">Great Snooper</fs:original_arp_display_name>
-		<fs:original_arp_display_version id="original_arp_display_version">1.20.5000</fs:original_arp_display_version>
+		<fs:original_arp_display_version id="original_arp_display_version">1.30.0000</fs:original_arp_display_version>
 		<fs:current_arp_guid/>
 		<fs:current_arp_publisher/>
 		<fs:current_arp_display_name/>

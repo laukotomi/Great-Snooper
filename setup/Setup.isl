@@ -340,21 +340,23 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
-		<row><td>Great_Snooper.exe</td><td>{D3B85752-C8DF-4CA0-84C9-D5534B56C2DE}</td><td>INSTALLDIR</td><td>2</td><td/><td>great_snooper.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Hoster.exe</td><td>{4324C3C8-F4A9-4327-9866-B8B1F19A0243}</td><td>INSTALLDIR</td><td>2</td><td/><td>hoster.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Great_Snooper.exe</td><td>{B3604F54-8EF4-4201-813B-8CED67EC3054}</td><td>INSTALLDIR</td><td>2</td><td/><td>great_snooper.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Hoster.exe</td><td>{5066AC6A-03C8-4F78-BC6A-DBB3F7A233D1}</td><td>INSTALLDIR</td><td>2</td><td/><td>hoster.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISO19770_LocalTag</td><td>{2FD30C26-0810-4179-97E2-9F1F51F73A90}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISO19770_SystemTag</td><td>{7765CFA1-5ED7-4F6E-973D-E01C9C21A127}</td><td>CommonAppDataFolder</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{D50E8C90-925B-4ED2-8854-66E8E3139DD1}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{A6A4A0F3-240A-4D4D-9270-58ACCB23C2B3}</td><td>FLAGS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{61622098-5ECC-451E-9D2A-9B618F91DE24}</td><td>SOUNDS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT5</td><td>{B0FE92AA-2543-4E30-9A68-CB129A04BE8E}</td><td>GREAT_SNOOPER2</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MahApps.Metro.dll</td><td>{B9A54112-A92B-45F3-81AB-6B6162CAE0DB}</td><td>INSTALLDIR</td><td>2</td><td/><td>mahapps.metro.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>NewComponent1</td><td>{E75BCEDF-CE3C-48FD-B739-A1BF82A3F93B}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>NewComponent2</td><td>{E79E1465-8D14-4EE8-82DE-223E6355787C}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>NewComponent3</td><td>{73AC0AE3-5D44-4AD2-9778-C75734A35A21}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>NewComponent4</td><td>{3D576B5D-7964-4C2C-A736-AAB3206B8A61}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Updater.exe</td><td>{549465F6-4539-4554-AA2F-609137A4FE0C}</td><td>INSTALLDIR</td><td>2</td><td/><td>updater.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Updater2.exe</td><td>{BA1F9188-253E-4ED4-8D75-13CFF1930374}</td><td>INSTALLDIR</td><td>2</td><td/><td>updater2.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Xceed.Wpf.Toolkit.dll</td><td>{AA35C2C1-F08C-4762-9B75-CB3814E9FD54}</td><td>INSTALLDIR</td><td>2</td><td/><td>xceed.wpf.toolkit.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>System.Windows.Interactivity.dll</td><td>{42073440-A41C-4A91-A6D4-F5C0E2834015}</td><td>INSTALLDIR</td><td>2</td><td/><td>system.windows.interactivity</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Updater.exe</td><td>{0D835C53-B3DB-4055-B956-5710CAC3D71A}</td><td>INSTALLDIR</td><td>2</td><td/><td>updater.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Updater2.exe</td><td>{02F3308F-0AAF-418B-820E-6C9EADB69A02}</td><td>INSTALLDIR</td><td>2</td><td/><td>updater2.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Xceed.Wpf.Toolkit.dll</td><td>{D3DC4D5B-0BE3-4524-B3E0-2B54F55865F2}</td><td>INSTALLDIR</td><td>2</td><td/><td>xceed.wpf.toolkit.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1904,10 +1906,12 @@
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT2</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT5</td></row>
+		<row><td>AlwaysInstall</td><td>MahApps.Metro.dll</td></row>
 		<row><td>AlwaysInstall</td><td>NewComponent1</td></row>
 		<row><td>AlwaysInstall</td><td>NewComponent2</td></row>
 		<row><td>AlwaysInstall</td><td>NewComponent3</td></row>
 		<row><td>AlwaysInstall</td><td>NewComponent4</td></row>
+		<row><td>AlwaysInstall</td><td>System.Windows.Interactivity.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Updater.exe</td></row>
 		<row><td>AlwaysInstall</td><td>Updater2.exe</td></row>
 		<row><td>AlwaysInstall</td><td>Xceed.Wpf.Toolkit.dll</td></row>
@@ -1925,99 +1929,101 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
-		<row><td>buddyjoined.wav</td><td>ISX_DEFAULTCOMPONENT2</td><td>BUDDYJ~1.WAV|buddyjoined.wav</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Release\Sounds\buddyjoined.wav</td><td>1</td><td/></row>
-		<row><td>flag000.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag000.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag000.PNG</td><td>1</td><td/></row>
-		<row><td>flag001.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag001.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag001.PNG</td><td>1</td><td/></row>
-		<row><td>flag002.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag002.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag002.PNG</td><td>1</td><td/></row>
-		<row><td>flag003.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag003.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag003.PNG</td><td>1</td><td/></row>
-		<row><td>flag004.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag004.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag004.PNG</td><td>1</td><td/></row>
-		<row><td>flag005.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag005.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag005.PNG</td><td>1</td><td/></row>
-		<row><td>flag006.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag006.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag006.PNG</td><td>1</td><td/></row>
-		<row><td>flag007.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag007.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag007.PNG</td><td>1</td><td/></row>
-		<row><td>flag008.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag008.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag008.PNG</td><td>1</td><td/></row>
-		<row><td>flag009.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag009.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag009.PNG</td><td>1</td><td/></row>
-		<row><td>flag010.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag010.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag010.PNG</td><td>1</td><td/></row>
-		<row><td>flag011.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag011.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag011.PNG</td><td>1</td><td/></row>
-		<row><td>flag012.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag012.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag012.PNG</td><td>1</td><td/></row>
-		<row><td>flag013.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag013.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag013.PNG</td><td>1</td><td/></row>
-		<row><td>flag014.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag014.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag014.PNG</td><td>1</td><td/></row>
-		<row><td>flag015.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag015.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag015.PNG</td><td>1</td><td/></row>
-		<row><td>flag016.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag016.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag016.PNG</td><td>1</td><td/></row>
-		<row><td>flag017.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag017.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag017.PNG</td><td>1</td><td/></row>
-		<row><td>flag018.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag018.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag018.PNG</td><td>1</td><td/></row>
-		<row><td>flag019.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag019.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag019.PNG</td><td>1</td><td/></row>
-		<row><td>flag020.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag020.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag020.PNG</td><td>1</td><td/></row>
-		<row><td>flag021.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag021.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag021.PNG</td><td>1</td><td/></row>
-		<row><td>flag022.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag022.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag022.PNG</td><td>1</td><td/></row>
-		<row><td>flag023.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag023.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag023.PNG</td><td>1</td><td/></row>
-		<row><td>flag024.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag024.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag024.PNG</td><td>1</td><td/></row>
-		<row><td>flag025.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag025.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag025.PNG</td><td>1</td><td/></row>
-		<row><td>flag026.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag026.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag026.PNG</td><td>1</td><td/></row>
-		<row><td>flag027.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag027.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag027.PNG</td><td>1</td><td/></row>
-		<row><td>flag028.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag028.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag028.PNG</td><td>1</td><td/></row>
-		<row><td>flag029.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag029.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag029.PNG</td><td>1</td><td/></row>
-		<row><td>flag030.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag030.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag030.PNG</td><td>1</td><td/></row>
-		<row><td>flag031.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag031.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag031.PNG</td><td>1</td><td/></row>
-		<row><td>flag032.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag032.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag032.PNG</td><td>1</td><td/></row>
-		<row><td>flag033.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag033.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag033.PNG</td><td>1</td><td/></row>
-		<row><td>flag034.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag034.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag034.PNG</td><td>1</td><td/></row>
-		<row><td>flag035.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag035.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag035.PNG</td><td>1</td><td/></row>
-		<row><td>flag036.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag036.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag036.PNG</td><td>1</td><td/></row>
-		<row><td>flag037.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag037.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag037.PNG</td><td>1</td><td/></row>
-		<row><td>flag038.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag038.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag038.PNG</td><td>1</td><td/></row>
-		<row><td>flag039.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag039.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag039.PNG</td><td>1</td><td/></row>
-		<row><td>flag040.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag040.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag040.PNG</td><td>1</td><td/></row>
-		<row><td>flag041.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag041.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag041.PNG</td><td>1</td><td/></row>
-		<row><td>flag042.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag042.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag042.PNG</td><td>1</td><td/></row>
-		<row><td>flag043.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag043.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag043.PNG</td><td>1</td><td/></row>
-		<row><td>flag044.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag044.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag044.PNG</td><td>1</td><td/></row>
-		<row><td>flag045.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag045.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag045.PNG</td><td>1</td><td/></row>
-		<row><td>flag046.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag046.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag046.PNG</td><td>1</td><td/></row>
-		<row><td>flag047.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag047.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag047.PNG</td><td>1</td><td/></row>
-		<row><td>flag048.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag048.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag048.PNG</td><td>1</td><td/></row>
-		<row><td>flag049.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag049.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag049.PNG</td><td>1</td><td/></row>
-		<row><td>flag050.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag050.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag050.PNG</td><td>1</td><td/></row>
-		<row><td>flag051.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag051.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag051.PNG</td><td>1</td><td/></row>
-		<row><td>flag052.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag052.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag052.PNG</td><td>1</td><td/></row>
-		<row><td>flag053.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag053.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag053.PNG</td><td>1</td><td/></row>
-		<row><td>flag054.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag054.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag054.PNG</td><td>1</td><td/></row>
-		<row><td>flag055.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag055.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag055.PNG</td><td>1</td><td/></row>
-		<row><td>flag056.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag056.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag056.PNG</td><td>1</td><td/></row>
-		<row><td>flag057.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag057.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag057.PNG</td><td>1</td><td/></row>
-		<row><td>flag058.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag058.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag058.PNG</td><td>1</td><td/></row>
-		<row><td>flag059.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag059.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag059.PNG</td><td>1</td><td/></row>
-		<row><td>flag060.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag060.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag060.PNG</td><td>1</td><td/></row>
-		<row><td>flag061.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag061.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag061.PNG</td><td>1</td><td/></row>
-		<row><td>flag062.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag062.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag062.PNG</td><td>1</td><td/></row>
-		<row><td>flag063.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag063.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag063.PNG</td><td>1</td><td/></row>
-		<row><td>flag064.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag064.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag064.PNG</td><td>1</td><td/></row>
-		<row><td>flag065.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag065.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag065.PNG</td><td>1</td><td/></row>
-		<row><td>flag066.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag066.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag066.PNG</td><td>1</td><td/></row>
-		<row><td>flag067.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag067.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag067.PNG</td><td>1</td><td/></row>
-		<row><td>flag068.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag068.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag068.PNG</td><td>1</td><td/></row>
-		<row><td>flag069.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag069.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag069.PNG</td><td>1</td><td/></row>
-		<row><td>flag070.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag070.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag070.PNG</td><td>1</td><td/></row>
-		<row><td>flag071.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag071.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag071.PNG</td><td>1</td><td/></row>
-		<row><td>flag072.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag072.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag072.PNG</td><td>1</td><td/></row>
-		<row><td>flag073.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag073.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag073.PNG</td><td>1</td><td/></row>
-		<row><td>flag074.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag074.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag074.PNG</td><td>1</td><td/></row>
-		<row><td>flag075.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag075.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag075.PNG</td><td>1</td><td/></row>
-		<row><td>flag076.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag076.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag076.PNG</td><td>1</td><td/></row>
-		<row><td>flag077.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag077.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag077.PNG</td><td>1</td><td/></row>
-		<row><td>flag078.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag078.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag078.PNG</td><td>1</td><td/></row>
-		<row><td>flag079.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag079.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag079.PNG</td><td>1</td><td/></row>
-		<row><td>flag080.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag080.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag080.PNG</td><td>1</td><td/></row>
-		<row><td>flag081.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag081.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag081.PNG</td><td>1</td><td/></row>
-		<row><td>flag082.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag082.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag082.PNG</td><td>1</td><td/></row>
-		<row><td>flag083.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag083.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Debug\Flags\flag083.PNG</td><td>1</td><td/></row>
-		<row><td>great_snooper.exe</td><td>Great_Snooper.exe</td><td>GREATS~1.EXE|Great Snooper.exe</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Release\Great Snooper.exe</td><td>1</td><td/></row>
-		<row><td>hoster.exe</td><td>Hoster.exe</td><td>Hoster.exe</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Release\Hoster.exe</td><td>1</td><td/></row>
-		<row><td>leaguefail.wav</td><td>ISX_DEFAULTCOMPONENT2</td><td>LEAGUE~1.WAV|LeagueFail.wav</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Release\Sounds\LeagueFail.wav</td><td>1</td><td/></row>
-		<row><td>leaguefound.wav</td><td>ISX_DEFAULTCOMPONENT2</td><td>LEAGUE~1.WAV|LeagueFound.wav</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Release\Sounds\LeagueFound.wav</td><td>1</td><td/></row>
-		<row><td>pmbeep.wav</td><td>ISX_DEFAULTCOMPONENT2</td><td>pmbeep.wav</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Release\Sounds\pmbeep.wav</td><td>1</td><td/></row>
-		<row><td>updater.exe</td><td>Updater.exe</td><td>Updater.exe</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Release\Updater.exe</td><td>1</td><td/></row>
-		<row><td>updater2.exe</td><td>Updater2.exe</td><td>Updater2.exe</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Release\Updater2.exe</td><td>1</td><td/></row>
-		<row><td>xceed.wpf.toolkit.dll</td><td>Xceed.Wpf.Toolkit.dll</td><td>XCEEDW~1.DLL|Xceed.Wpf.Toolkit.dll</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\MySnooper\MySnooper\bin\Release\Xceed.Wpf.Toolkit.dll</td><td>1</td><td/></row>
+		<row><td>buddyjoined.wav</td><td>ISX_DEFAULTCOMPONENT2</td><td>BUDDYJ~1.WAV|buddyjoined.wav</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Sounds\buddyjoined.wav</td><td>1</td><td/></row>
+		<row><td>flag000.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag000.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag000.PNG</td><td>1</td><td/></row>
+		<row><td>flag001.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag001.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag001.PNG</td><td>1</td><td/></row>
+		<row><td>flag002.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag002.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag002.PNG</td><td>1</td><td/></row>
+		<row><td>flag003.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag003.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag003.PNG</td><td>1</td><td/></row>
+		<row><td>flag004.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag004.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag004.PNG</td><td>1</td><td/></row>
+		<row><td>flag005.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag005.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag005.PNG</td><td>1</td><td/></row>
+		<row><td>flag006.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag006.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag006.PNG</td><td>1</td><td/></row>
+		<row><td>flag007.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag007.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag007.PNG</td><td>1</td><td/></row>
+		<row><td>flag008.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag008.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag008.PNG</td><td>1</td><td/></row>
+		<row><td>flag009.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag009.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag009.PNG</td><td>1</td><td/></row>
+		<row><td>flag010.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag010.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag010.PNG</td><td>1</td><td/></row>
+		<row><td>flag011.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag011.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag011.PNG</td><td>1</td><td/></row>
+		<row><td>flag012.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag012.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag012.PNG</td><td>1</td><td/></row>
+		<row><td>flag013.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag013.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag013.PNG</td><td>1</td><td/></row>
+		<row><td>flag014.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag014.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag014.PNG</td><td>1</td><td/></row>
+		<row><td>flag015.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag015.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag015.PNG</td><td>1</td><td/></row>
+		<row><td>flag016.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag016.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag016.PNG</td><td>1</td><td/></row>
+		<row><td>flag017.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag017.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag017.PNG</td><td>1</td><td/></row>
+		<row><td>flag018.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag018.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag018.PNG</td><td>1</td><td/></row>
+		<row><td>flag019.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag019.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag019.PNG</td><td>1</td><td/></row>
+		<row><td>flag020.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag020.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag020.PNG</td><td>1</td><td/></row>
+		<row><td>flag021.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag021.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag021.PNG</td><td>1</td><td/></row>
+		<row><td>flag022.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag022.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag022.PNG</td><td>1</td><td/></row>
+		<row><td>flag023.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag023.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag023.PNG</td><td>1</td><td/></row>
+		<row><td>flag024.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag024.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag024.PNG</td><td>1</td><td/></row>
+		<row><td>flag025.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag025.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag025.PNG</td><td>1</td><td/></row>
+		<row><td>flag026.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag026.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag026.PNG</td><td>1</td><td/></row>
+		<row><td>flag027.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag027.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag027.PNG</td><td>1</td><td/></row>
+		<row><td>flag028.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag028.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag028.PNG</td><td>1</td><td/></row>
+		<row><td>flag029.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag029.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag029.PNG</td><td>1</td><td/></row>
+		<row><td>flag030.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag030.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag030.PNG</td><td>1</td><td/></row>
+		<row><td>flag031.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag031.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag031.PNG</td><td>1</td><td/></row>
+		<row><td>flag032.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag032.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag032.PNG</td><td>1</td><td/></row>
+		<row><td>flag033.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag033.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag033.PNG</td><td>1</td><td/></row>
+		<row><td>flag034.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag034.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag034.PNG</td><td>1</td><td/></row>
+		<row><td>flag035.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag035.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag035.PNG</td><td>1</td><td/></row>
+		<row><td>flag036.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag036.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag036.PNG</td><td>1</td><td/></row>
+		<row><td>flag037.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag037.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag037.PNG</td><td>1</td><td/></row>
+		<row><td>flag038.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag038.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag038.PNG</td><td>1</td><td/></row>
+		<row><td>flag039.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag039.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag039.PNG</td><td>1</td><td/></row>
+		<row><td>flag040.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag040.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag040.PNG</td><td>1</td><td/></row>
+		<row><td>flag041.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag041.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag041.PNG</td><td>1</td><td/></row>
+		<row><td>flag042.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag042.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag042.PNG</td><td>1</td><td/></row>
+		<row><td>flag043.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag043.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag043.PNG</td><td>1</td><td/></row>
+		<row><td>flag044.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag044.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag044.PNG</td><td>1</td><td/></row>
+		<row><td>flag045.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag045.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag045.PNG</td><td>1</td><td/></row>
+		<row><td>flag046.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag046.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag046.PNG</td><td>1</td><td/></row>
+		<row><td>flag047.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag047.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag047.PNG</td><td>1</td><td/></row>
+		<row><td>flag048.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag048.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag048.PNG</td><td>1</td><td/></row>
+		<row><td>flag049.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag049.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag049.PNG</td><td>1</td><td/></row>
+		<row><td>flag050.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag050.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag050.PNG</td><td>1</td><td/></row>
+		<row><td>flag051.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag051.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag051.PNG</td><td>1</td><td/></row>
+		<row><td>flag052.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag052.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag052.PNG</td><td>1</td><td/></row>
+		<row><td>flag053.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag053.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag053.PNG</td><td>1</td><td/></row>
+		<row><td>flag054.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag054.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag054.PNG</td><td>1</td><td/></row>
+		<row><td>flag055.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag055.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag055.PNG</td><td>1</td><td/></row>
+		<row><td>flag056.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag056.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag056.PNG</td><td>1</td><td/></row>
+		<row><td>flag057.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag057.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag057.PNG</td><td>1</td><td/></row>
+		<row><td>flag058.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag058.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag058.PNG</td><td>1</td><td/></row>
+		<row><td>flag059.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag059.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag059.PNG</td><td>1</td><td/></row>
+		<row><td>flag060.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag060.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag060.PNG</td><td>1</td><td/></row>
+		<row><td>flag061.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag061.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag061.PNG</td><td>1</td><td/></row>
+		<row><td>flag062.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag062.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag062.PNG</td><td>1</td><td/></row>
+		<row><td>flag063.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag063.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag063.PNG</td><td>1</td><td/></row>
+		<row><td>flag064.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag064.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag064.PNG</td><td>1</td><td/></row>
+		<row><td>flag065.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag065.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag065.PNG</td><td>1</td><td/></row>
+		<row><td>flag066.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag066.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag066.PNG</td><td>1</td><td/></row>
+		<row><td>flag067.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag067.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag067.PNG</td><td>1</td><td/></row>
+		<row><td>flag068.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag068.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag068.PNG</td><td>1</td><td/></row>
+		<row><td>flag069.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag069.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag069.PNG</td><td>1</td><td/></row>
+		<row><td>flag070.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag070.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag070.PNG</td><td>1</td><td/></row>
+		<row><td>flag071.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag071.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag071.PNG</td><td>1</td><td/></row>
+		<row><td>flag072.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag072.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag072.PNG</td><td>1</td><td/></row>
+		<row><td>flag073.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag073.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag073.PNG</td><td>1</td><td/></row>
+		<row><td>flag074.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag074.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag074.PNG</td><td>1</td><td/></row>
+		<row><td>flag075.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag075.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag075.PNG</td><td>1</td><td/></row>
+		<row><td>flag076.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag076.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag076.PNG</td><td>1</td><td/></row>
+		<row><td>flag077.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag077.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag077.PNG</td><td>1</td><td/></row>
+		<row><td>flag078.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag078.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag078.PNG</td><td>1</td><td/></row>
+		<row><td>flag079.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag079.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag079.PNG</td><td>1</td><td/></row>
+		<row><td>flag080.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag080.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag080.PNG</td><td>1</td><td/></row>
+		<row><td>flag081.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag081.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag081.PNG</td><td>1</td><td/></row>
+		<row><td>flag082.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag082.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag082.PNG</td><td>1</td><td/></row>
+		<row><td>flag083.png</td><td>ISX_DEFAULTCOMPONENT1</td><td>flag083.PNG</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Flags\flag083.PNG</td><td>1</td><td/></row>
+		<row><td>great_snooper.exe</td><td>Great_Snooper.exe</td><td>GREATS~1.EXE|Great Snooper.exe</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Great Snooper.exe</td><td>1</td><td/></row>
+		<row><td>hoster.exe</td><td>Hoster.exe</td><td>Hoster.exe</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Hoster.exe</td><td>1</td><td/></row>
+		<row><td>leaguefail.wav</td><td>ISX_DEFAULTCOMPONENT2</td><td>LEAGUE~1.WAV|LeagueFail.wav</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Sounds\LeagueFail.wav</td><td>1</td><td/></row>
+		<row><td>leaguefound.wav</td><td>ISX_DEFAULTCOMPONENT2</td><td>LEAGUE~1.WAV|LeagueFound.wav</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Sounds\LeagueFound.wav</td><td>1</td><td/></row>
+		<row><td>mahapps.metro.dll</td><td>MahApps.Metro.dll</td><td>MAHAPP~1.DLL|MahApps.Metro.dll</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\MahApps.Metro.dll</td><td>1</td><td/></row>
+		<row><td>pmbeep.wav</td><td>ISX_DEFAULTCOMPONENT2</td><td>pmbeep.wav</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Sounds\pmbeep.wav</td><td>1</td><td/></row>
+		<row><td>system.windows.interactivity</td><td>System.Windows.Interactivity.dll</td><td>SYSTEM~1.DLL|System.Windows.Interactivity.dll</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\System.Windows.Interactivity.dll</td><td>1</td><td/></row>
+		<row><td>updater.exe</td><td>Updater.exe</td><td>Updater.exe</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Updater.exe</td><td>1</td><td/></row>
+		<row><td>updater2.exe</td><td>Updater2.exe</td><td>Updater2.exe</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Updater2.exe</td><td>1</td><td/></row>
+		<row><td>xceed.wpf.toolkit.dll</td><td>Xceed.Wpf.Toolkit.dll</td><td>XCEEDW~1.DLL|Xceed.Wpf.Toolkit.dll</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Xceed.Wpf.Toolkit.dll</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -2162,21 +2168,23 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
-		<row><td>Great_Snooper.exe</td><td/><td/><td>_64029CBC_0FF8_4924_9574_B458181C25A2_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Hoster.exe</td><td/><td/><td>_D5F638AA_8FAE_469A_848B_B25B6C4AC768_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Great_Snooper.exe</td><td/><td/><td>_9CCCE98C_B7C2_430F_A1E6_8B98D2C93D3A_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Hoster.exe</td><td/><td/><td>_39EDB4F9_97D3_49F1_A504_89B33DCD1FB5_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISO19770_LocalTag</td><td/><td/><td>_22E99C9A_0E01_4B69_A4B7_1677743A6371_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISO19770_SystemTag</td><td/><td/><td>_66977FDB_E32B_48AF_B9AD_FFC830F6BEB0_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_ACCF21FC_F293_4B5B_BC98_9C293CE2B60A_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_027873C4_42E5_4519_942C_12F559E32FD8_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_C898423D_6ABE_41DE_A9F3_9C5F81EF2176_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT5</td><td/><td/><td>_661A0263_866E_40C6_B764_652C533F43F7_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MahApps.Metro.dll</td><td/><td/><td>_EF67381B_039D_423B_B229_3F76FB4CE37A_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>NewComponent1</td><td/><td/><td>_35B87392_44BE_4AA7_BD14_CCFE8AB6E224_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>NewComponent2</td><td/><td/><td>_C50F740A_D147_4994_A1AF_C37EBDEB46E2_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>NewComponent3</td><td/><td/><td>_AEF6566F_5F9D_4FEA_9AA5_846AE471E676_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>NewComponent4</td><td/><td/><td>_1D51816D_6D10_4222_AC20_AC5CDB6C0F0C_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Updater.exe</td><td/><td/><td>_D7F006A9_E8AE_4ED7_874D_F351EAD165DB_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Updater2.exe</td><td/><td/><td>_34C167BD_C686_474D_9257_404D06B070AC_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Xceed.Wpf.Toolkit.dll</td><td/><td/><td>_2A5D8C77_F3CA_4FA1_8487_4E72974BF695_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>System.Windows.Interactivity.dll</td><td/><td/><td>_116759D8_5BF1_44DD_9C1A_3C4088394226_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Updater.exe</td><td/><td/><td>_04021342_1D71_475E_8BD8_19A0BC6505E3_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Updater2.exe</td><td/><td/><td>_A67C721B_A41D_420A_A747_423E8F10D28D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Xceed.Wpf.Toolkit.dll</td><td/><td/><td>_C53EFFE8_30B6_44EE_8ECC_FDC4093944A2_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -2794,7 +2802,7 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>1033</td><td>ToOMiToO</td><td>0</td><td/><td>-1323120848</td></row>
+		<row><td>COMPANY_NAME</td><td>1033</td><td>ToOMiToO</td><td>0</td><td/><td>-199055345</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>-2128448370</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-2128448370</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_DOTNETVERSION40CLIENT</td><td>1033</td><td>Microsoft .NET Framework 4.0 Client Package or greater needs to be installed for this installation to continue.</td><td>0</td><td/><td>-2128417457</td></row>
@@ -3610,6 +3618,10 @@
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME1</td><td>1033</td><td>Great Snooper.exe</td><td>0</td><td/><td>-2128476594</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME10</td><td>1033</td><td>LAUNCH~1.EXE|Launch Updater2.exe</td><td>0</td><td/><td>-769511860</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME11</td><td>1033</td><td>LAUNCH~1.EXE|Launch Updater.exe</td><td>0</td><td/><td>992090550</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME12</td><td>1033</td><td>Great Snooper</td><td>0</td><td/><td>-199073585</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME13</td><td>1033</td><td>LAUNCH~1.EXE|Launch Updater2.exe</td><td>0</td><td/><td>-199079889</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME14</td><td>1033</td><td>LAUNCH~1.EXE|Launch Updater.exe</td><td>0</td><td/><td>-199079889</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME15</td><td>1033</td><td>LAUNCH~1.EXE|Launch Hoster.exe</td><td>0</td><td/><td>-199079889</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME2</td><td>1033</td><td>LAUNCH~1.EXE|Launch Hoster.exe</td><td>0</td><td/><td>-2128429906</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME3</td><td>1033</td><td>Great Snooper</td><td>0</td><td/><td>-2128429777</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME4</td><td>1033</td><td>LAUNCH~1.EXE|Launch Hoster.exe</td><td>0</td><td/><td>-2128446193</td></row>
@@ -3906,14 +3918,15 @@
 		<row><td>IDS__TargetReq_DESC_PROCESSOR</td><td>1033</td><td>The processor is not adequate for running [ProductName].</td><td>0</td><td/><td>-2128448370</td></row>
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>-2128448370</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>-2128448370</td></row>
-		<row><td>ID_STRING1</td><td>1033</td><td>http://www.tus-wa.com</td><td>0</td><td/><td>438453516</td></row>
-		<row><td>ID_STRING2</td><td>1033</td><td>ToOMiToO</td><td>0</td><td/><td>-1323120848</td></row>
+		<row><td>ID_STRING1</td><td>1033</td><td>http://www.ToOMiToO.com</td><td>0</td><td/><td>-199055345</td></row>
+		<row><td>ID_STRING2</td><td>1033</td><td>ToOMiToO</td><td>0</td><td/><td>-199055345</td></row>
 		<row><td>ID_STRING3</td><td>1033</td><td>GreatSnooper.exe</td><td>0</td><td/><td>-2128423634</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>Great Snooper</td><td>0</td><td/><td>-2128427729</td></row>
 		<row><td>ID_STRING5</td><td>1033</td><td>Great Snooper.exe</td><td>0</td><td/><td>-1323138993</td></row>
 		<row><td>ID_STRING6</td><td>1033</td><td>Great Snooper</td><td>0</td><td/><td>-1323129008</td></row>
 		<row><td>ID_STRING7</td><td>1033</td><td>Great Snooper</td><td>0</td><td/><td>438486316</td></row>
 		<row><td>ID_STRING8</td><td>1033</td><td>Great Snooper</td><td>0</td><td/><td>438490412</td></row>
+		<row><td>ID_STRING9</td><td>1033</td><td>LAUNCH~1.EXE|Launch Great Snooper.exe</td><td>0</td><td/><td>-199065457</td></row>
 		<row><td>IIDS_UITEXT_FeatureUninstalled</td><td>1033</td><td>This feature will remain uninstalled.</td><td>0</td><td/><td>-2128448370</td></row>
 	</table>
 
@@ -4030,6 +4043,8 @@
 		<row><td>Great_Snooper.exe1_084DF908CB194D9C9A00AE1DD7DA123C.exe</td><td/><td>&lt;VSSolutionFolder&gt;\Images\icon.ico</td><td>0</td></row>
 		<row><td>Great_Snooper.exe1_1B62FCB2B0E04707BA981BEB86061C96.exe</td><td/><td>&lt;VSSolutionFolder&gt;\Images\icon.ico</td><td>0</td></row>
 		<row><td>Great_Snooper.exe1_563EB07025744E14A9542D34C2D25798.exe</td><td/><td>D:\VS\MySnooper\MySnooper\bin\Release\Great Snooper.exe</td><td>0</td></row>
+		<row><td>Great_Snooper.exe1_85CFBBF6C5D84ADDB6389405A2354CBF.exe</td><td/><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Great Snooper.exe</td><td>0</td></row>
+		<row><td>Great_Snooper.exe_7E878618C2104FB29FD7517004041A1B.exe</td><td/><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Great Snooper.exe</td><td>0</td></row>
 		<row><td>Great_Snooper.exe_9F026F79BDC244229F04C024F322F6AE.exe</td><td/><td>D:\VS\MySnooper\MySnooper\bin\Release\Great Snooper.exe</td><td>0</td></row>
 		<row><td>Updater.exe_96B745E83778495B921FBDDB323D3FAB.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\GenericExe.ico</td><td>0</td></row>
 		<row><td>Updater2.exe_D00D320A28604F18A9662A264F7E9657.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\GenericExe.ico</td><td>0</td></row>
@@ -4543,7 +4558,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{DAA2FD85-F727-4142-9847-9ABBF38C1C66}</td><td/></row>
 		<row><td>ProductName</td><td>Great Snooper</td><td/></row>
-		<row><td>ProductVersion</td><td>1.20.5000</td><td/></row>
+		<row><td>ProductVersion</td><td>1.30.0000</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4620,11 +4635,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="L255">FileName</col>
 		<col def="s72">DirProperty</col>
 		<col def="i2">InstallMode</col>
-		<row><td>FileKey1</td><td>Great_Snooper.exe</td><td/><td>toomitoo</td><td>2</td></row>
-		<row><td>FileKey2</td><td>Great_Snooper.exe</td><td/><td>greats_1_great_snooper1</td><td>2</td></row>
-		<row><td>Great_Snooper.exe11</td><td>Great_Snooper.exe</td><td/><td>greats_1_great_snooper1</td><td>2</td></row>
-		<row><td>Updater.exe</td><td>Updater.exe</td><td/><td>greats_1_great_snooper1</td><td>2</td></row>
-		<row><td>Updater2.exe</td><td>Updater2.exe</td><td/><td>greats_1_great_snooper1</td><td>2</td></row>
+		<row><td>Great_Snooper.exe</td><td>Great_Snooper.exe</td><td/><td>greats_1_great_snooper1</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4710,10 +4721,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>Great_Snooper.exe1</td><td>DesktopFolder</td><td>##IDS_SHORTCUT_DISPLAY_NAME9##</td><td>Great_Snooper.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Great_Snooper.exe1_084DF908CB194D9C9A00AE1DD7DA123C.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>Great_Snooper.exe11</td><td>greats_1_great_snooper1</td><td>##IDS_SHORTCUT_DISPLAY_NAME9##</td><td>Great_Snooper.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Great_Snooper.exe1_1B62FCB2B0E04707BA981BEB86061C96.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>Updater.exe</td><td>greats_1_great_snooper1</td><td>##IDS_SHORTCUT_DISPLAY_NAME11##</td><td>Updater.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Updater.exe_96B745E83778495B921FBDDB323D3FAB.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>Updater2.exe</td><td>greats_1_great_snooper1</td><td>##IDS_SHORTCUT_DISPLAY_NAME10##</td><td>Updater2.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Updater2.exe_D00D320A28604F18A9662A264F7E9657.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>Great_Snooper.exe</td><td>greats_1_great_snooper1</td><td>##IDS_SHORTCUT_DISPLAY_NAME12##</td><td>Great_Snooper.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Great_Snooper.exe_7E878618C2104FB29FD7517004041A1B.exe</td><td>1</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>Great_Snooper.exe1</td><td>DesktopFolder</td><td>##IDS_SHORTCUT_DISPLAY_NAME12##</td><td>Great_Snooper.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Great_Snooper.exe1_85CFBBF6C5D84ADDB6389405A2354CBF.exe</td><td>1</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">
