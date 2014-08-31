@@ -75,7 +75,7 @@ namespace MySnooper
 
                     for (int i = 0; i < words.Length; i++)
                     {
-                        if (words[i] == GlobalManager.User.Name)
+                        if (messageType == MessageTypes.Channel && words[i] == GlobalManager.User.Name)
                         {
                             Highlight(ch);
                         }

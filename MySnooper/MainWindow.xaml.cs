@@ -197,16 +197,19 @@ namespace MySnooper
                 NewsSeen.Add(temp[i], false);
 
             bool open = false;
-            string id;
             foreach (Dictionary<string, string> item in NewsList)
             {
-                if (item.TryGetValue("id", out id))
+                try
                 {
-                    if (!NewsSeen.ContainsKey(id))
-                        open = true;
-                    else
-                        NewsSeen[id] = true;
+                    if (item["show"] == "1")
+                    {
+                        if (!NewsSeen.ContainsKey(item["id"]))
+                            open = true;
+                        else
+                            NewsSeen[item["id"]] = true;
+                    }
                 }
+                catch (Exception) { }
             }
 
             List<string> toRemove = new List<string>();
@@ -875,6 +878,7 @@ namespace MySnooper
                 Channel ch = (Channel)((TabItem)Channels.SelectedItem).Tag;
                 ch.BeepSoundPlay = true;
                 ch.NewMessages = false;
+                ch.TheTextBox.Focus();
             }
             this.StopFlashingWindow();
         }

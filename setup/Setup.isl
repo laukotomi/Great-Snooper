@@ -355,7 +355,6 @@
 		<row><td>NewComponent4</td><td>{3D576B5D-7964-4C2C-A736-AAB3206B8A61}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>System.Windows.Interactivity.dll</td><td>{42073440-A41C-4A91-A6D4-F5C0E2834015}</td><td>INSTALLDIR</td><td>2</td><td/><td>system.windows.interactivity</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Updater.exe</td><td>{0D835C53-B3DB-4055-B956-5710CAC3D71A}</td><td>INSTALLDIR</td><td>2</td><td/><td>updater.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Updater2.exe</td><td>{02F3308F-0AAF-418B-820E-6C9EADB69A02}</td><td>INSTALLDIR</td><td>2</td><td/><td>updater2.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Xceed.Wpf.Toolkit.dll</td><td>{D3DC4D5B-0BE3-4524-B3E0-2B54F55865F2}</td><td>INSTALLDIR</td><td>2</td><td/><td>xceed.wpf.toolkit.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
@@ -1913,7 +1912,6 @@
 		<row><td>AlwaysInstall</td><td>NewComponent4</td></row>
 		<row><td>AlwaysInstall</td><td>System.Windows.Interactivity.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Updater.exe</td></row>
-		<row><td>AlwaysInstall</td><td>Updater2.exe</td></row>
 		<row><td>AlwaysInstall</td><td>Xceed.Wpf.Toolkit.dll</td></row>
 	</table>
 
@@ -2022,7 +2020,6 @@
 		<row><td>pmbeep.wav</td><td>ISX_DEFAULTCOMPONENT2</td><td>pmbeep.wav</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Sounds\pmbeep.wav</td><td>1</td><td/></row>
 		<row><td>system.windows.interactivity</td><td>System.Windows.Interactivity.dll</td><td>SYSTEM~1.DLL|System.Windows.Interactivity.dll</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\System.Windows.Interactivity.dll</td><td>1</td><td/></row>
 		<row><td>updater.exe</td><td>Updater.exe</td><td>Updater.exe</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Updater.exe</td><td>1</td><td/></row>
-		<row><td>updater2.exe</td><td>Updater2.exe</td><td>Updater2.exe</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Updater2.exe</td><td>1</td><td/></row>
 		<row><td>xceed.wpf.toolkit.dll</td><td>Xceed.Wpf.Toolkit.dll</td><td>XCEEDW~1.DLL|Xceed.Wpf.Toolkit.dll</td><td>0</td><td/><td/><td/><td>1</td><td>D:\VS\Great Snooper\Great-Snooper\MySnooper\bin\Release\Xceed.Wpf.Toolkit.dll</td><td>1</td><td/></row>
 	</table>
 
@@ -2183,7 +2180,6 @@
 		<row><td>NewComponent4</td><td/><td/><td>_1D51816D_6D10_4222_AC20_AC5CDB6C0F0C_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>System.Windows.Interactivity.dll</td><td/><td/><td>_116759D8_5BF1_44DD_9C1A_3C4088394226_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Updater.exe</td><td/><td/><td>_04021342_1D71_475E_8BD8_19A0BC6505E3_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Updater2.exe</td><td/><td/><td>_A67C721B_A41D_420A_A747_423E8F10D28D_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Xceed.Wpf.Toolkit.dll</td><td/><td/><td>_C53EFFE8_30B6_44EE_8ECC_FDC4093944A2_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 

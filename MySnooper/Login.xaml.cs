@@ -126,7 +126,14 @@ namespace MySnooper
             TUSNick.Text = Properties.Settings.Default.TusNick;
             TUSPass.Password = Properties.Settings.Default.TusPass;
 
+            loadSettings = new BackgroundWorker();
+            loadSettings.WorkerSupportsCancellation = true;
+            loadSettings.DoWork += LoadSettings;
+            loadSettings.RunWorkerCompleted += SettingsLoaded;
+        }
 
+        private void MetroWindow_ContentRendered_1(object sender, EventArgs e)
+        {
             if (Properties.Settings.Default.WaExe.Length == 0)
             {
                 try
@@ -138,9 +145,9 @@ namespace MySnooper
                         Properties.Settings.Default.Save();
                     }
                 }
-                catch (Exception e)
+                catch (Exception ex)
                 {
-                    ErrorLog.log(e);
+                    ErrorLog.log(ex);
                 }
 
                 if (Properties.Settings.Default.WaExe.Length == 0 && !Properties.Settings.Default.WAExeAsked)
@@ -165,12 +172,9 @@ namespace MySnooper
                 }
             }
 
-            loadSettings = new BackgroundWorker();
-            loadSettings.WorkerSupportsCancellation = true;
-            loadSettings.DoWork += LoadSettings;
-            loadSettings.RunWorkerCompleted += SettingsLoaded;
             loadSettings.RunWorkerAsync();
         }
+
 
         private void LoadSettings(object sender, DoWorkEventArgs e)
         {
@@ -687,6 +691,15 @@ namespace MySnooper
             else if (LoggedIn)
             {
                 WormNetC.ConnectionState -= ConnectionState;
+            }
+        }
+
+        private void LogInWithEnter(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            if (e.Key == System.Windows.Input.Key.Enter)
+            {
+                LogIn(null, null);
+                e.Handled = true;
             }
         }
     }

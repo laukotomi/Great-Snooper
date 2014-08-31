@@ -44,7 +44,9 @@ namespace MySnooper
                 {
                     using (StreamWriter w = new StreamWriter(filename, true))
                     {
+                        w.WriteLine(DateTime.Now.ToString("U"));
                         w.WriteLine(errorstr);
+                        w.WriteLine(Environment.NewLine + Environment.NewLine + Environment.NewLine);
                     }
                 }
             }
@@ -60,7 +62,7 @@ namespace MySnooper
     {
         public static bool LogInProgress = false;
         public static object Locker = new object();
-        private static string filename;
+        private static string filename = string.Empty;
 
         public static void log(Exception ex)
         {

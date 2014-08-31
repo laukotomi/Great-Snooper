@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Title="Welcome to great snooper" TitlebarHeight="40" Background="Black" Height="420" Width="340"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Closing="WindowClosing">
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" Closing="WindowClosing" ContentRendered="MetroWindow_ContentRendered_1">
     <controls:MetroWindow.IconTemplate>
         <DataTemplate>
             <Image Source="Resources/Icon.png" Margin="5" />
@@ -131,7 +131,7 @@
                         <Label Grid.Column="0" Grid.Row="5" Content="Rank:" VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
                         <Label Grid.Column="0" Grid.Row="7" Content="Clan:" VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
 
-                        <TextBox Name="Nick" Grid.Column="1" Grid.Row="1" MaxLength="15"></TextBox>
+                        <TextBox Name="Nick" Grid.Column="1" Grid.Row="1" MaxLength="15" KeyDown="LogInWithEnter"></TextBox>
                         <ComboBox Name="Country" Grid.Column="1" Grid.Row="3" IsTextSearchEnabled="True" TextSearch.TextPath="Name" VerticalContentAlignment="Center">
                             <ComboBox.ItemsPanel>
                                 <ItemsPanelTemplate>
@@ -162,7 +162,7 @@
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
                         </ComboBox>
-                        <TextBox Name="Clan" Grid.Column="1" Grid.Row="7" MaxLength="15"></TextBox>
+                        <TextBox Name="Clan" Grid.Column="1" Grid.Row="7" MaxLength="15" KeyDown="LogInWithEnter"></TextBox>
                     </Grid>
                 </TabItem>
 
@@ -186,8 +186,8 @@
                         <Label Grid.Column="0" Grid.Row="3" Content="TUS password:" VerticalAlignment="Center"></Label>
                         <TextBlock Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center"><Hyperlink Click="TusLoginHelp">What is TUS login?</Hyperlink></TextBlock>
 
-                        <TextBox Name="TUSNick" Grid.Column="1" Grid.Row="1"></TextBox>
-                        <PasswordBox Name="TUSPass" Grid.Column="1" Grid.Row="3"></PasswordBox>
+                        <TextBox Name="TUSNick" Grid.Column="1" Grid.Row="1" KeyDown="LogInWithEnter"></TextBox>
+                        <PasswordBox Name="TUSPass" Grid.Column="1" Grid.Row="3" KeyDown="LogInWithEnter"></PasswordBox>
                     </Grid>
                 </TabItem>
             </TabControl>

@@ -44,6 +44,7 @@ namespace MySnooper
                     rtb.Focusable = false;
                     rtb.IsDocumentEnabled = true;
                     rtb.BorderThickness = new Thickness(0);
+                    rtb.FontFamily = new FontFamily("Segoe UI, Arial");
                     string bg;
                     if (item.TryGetValue("background", out bg))
                         rtb.Background = new SolidColorBrush((Color)ColorConverter.ConvertFromString(bg));
@@ -52,7 +53,7 @@ namespace MySnooper
                         rtb.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(tc));
                     string fs;
                     if (item.TryGetValue("fontsize", out fs))
-                        rtb.FontSize = double.Parse(fs);
+                        rtb.FontSize = 13;//double.Parse(fs);
                     rtb.Document = BBParser.Parse(item["bbcode"]);
                     g.Children.Add(rtb);
                     NewsFlipView.Items.Add(g);
