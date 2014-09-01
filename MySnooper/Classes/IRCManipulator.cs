@@ -79,8 +79,11 @@ namespace MySnooper
             c.OnlineStatus = 1;
             c.IsBanned = IsBanned(lowerName);
             c.IsBuddy = IsBuddy(lowerName);
-            c.Country = country;
-            c.Rank = RanksClass.GetRankByInt(rank);
+            if (!c.TusActive)
+            {
+                c.Country = country;
+                c.Rank = RanksClass.GetRankByInt(rank);
+            }
             c.ClientGreatSnooper = ClientGreatSnooper;
             if (!c.Channels.Contains(ch))
                 c.Channels.Add(ch);
@@ -198,9 +201,9 @@ namespace MySnooper
                                     break;
                                 }
                             }
-                            return c;
                         }
                         ch.AddMessage(c, "left the channel", MessageTypes.Part);
+                        return c;
                     }
                 }
             }

@@ -254,22 +254,7 @@ namespace MySnooper
             if (Channels.SelectedItem != null)
             {
                 Channel ch = (Channel)((TabItem)Channels.SelectedItem).Tag;
-                if (ch.IsPrivMsgChannel)
-                {
-                    int index = Channels.SelectedIndex;
-                    VisitedChannels.Remove(index);
-                    for (int i = 0; i < VisitedChannels.Count; i++)
-                    {
-                        if (VisitedChannels[i] > index)
-                            VisitedChannels[i]--;
-                    }
-                    int lastindex = VisitedChannels[VisitedChannels.Count - 1];
-
-                    ch.Log(ch.Messages.Count, true);
-                    WormNetM.ChannelList.Remove(ch.LowerName);
-                    Channels.Items.RemoveAt(index);
-                    Channels.SelectedIndex = lastindex;
-                }
+                CloseChannelTab(ch);
             }
             e.Handled = true;
         }
@@ -692,6 +677,9 @@ namespace MySnooper
 
         private void OpenPrivateChat(Client client)
         {
+            if (client.IsBanned)
+                return;
+
             // Test if we already have an opened chat with the user
             for (int i = 0; i < Channels.Items.Count; i++)
             {
@@ -708,8 +696,8 @@ namespace MySnooper
             ch.AwaySent = true;
             ch.NewMessageAdded += AddNewMessage;
 
-            MakeConnectedLayout(ch);
             WormNetM.ChannelList.Add(ch.LowerName, ch);
+            MakeConnectedLayout(ch);
             AddToChannels(ch);
 
             // Select it
@@ -730,47 +718,7 @@ namespace MySnooper
             if (e.ChangedButton == MouseButton.Middle && e.ButtonState == MouseButtonState.Pressed)
             {
                 e.Handled = true;
-                Channel ch = (Channel)((Border)sender).DataContext;
-                if (ch.IsPrivMsgChannel)
-                {
-                    if (Channels.SelectedItem != null && (Channel)((TabItem)Channels.SelectedItem).Tag == ch) // Channel is selected
-                    {
-                        int index = Channels.SelectedIndex;
-                        VisitedChannels.Remove(index);
-                        for (int i = 0; i < VisitedChannels.Count; i++)
-                        {
-                            if (VisitedChannels[i] > index)
-                                VisitedChannels[i]--;
-                        }
-                        int lastindex = VisitedChannels[VisitedChannels.Count - 1];
-
-                        ch.Log(ch.Messages.Count, true);
-                        WormNetM.ChannelList.Remove(ch.LowerName);
-                        Channels.Items.RemoveAt(index);
-                        Channels.SelectedIndex = lastindex;
-                    }
-                    else
-                    {
-                        int index = -1;
-                        for (int i = 0; i < Channels.Items.Count; i++)
-                        {
-                            if ((Channel)((TabItem)Channels.Items[i]).Tag == ch)
-                            {
-                                index = i;
-                                break;
-                            }
-                        }
-                        VisitedChannels.Remove(index);
-                        for (int i = 0; i < VisitedChannels.Count; i++)
-                        {
-                            if (VisitedChannels[i] > index)
-                                VisitedChannels[i]--;
-                        }
-                        ch.Log(ch.Messages.Count, true);
-                        WormNetM.ChannelList.Remove(ch.LowerName);
-                        Channels.Items.RemoveAt(index);
-                    }
-                }
+                CloseChannelTab((Channel)((Border)sender).DataContext);
             }
         }
 
@@ -778,34 +726,52 @@ namespace MySnooper
         private void PrivateChatClose(object sender, RoutedEventArgs e)
         {
             var obj = (MenuItem)sender;
-            var ch = (Channel)(obj.DataContext);
+            CloseChannelTab((Channel)(obj.DataContext));
+            e.Handled = true;
+        }
+
+        private void CloseChannelTab(Channel ch)
+        {
             if (ch.IsPrivMsgChannel)
             {
-                int index = 0, i = 0;
-                foreach (var item in WormNetM.ChannelList)
+                if (Channels.SelectedItem != null && (Channel)((TabItem)Channels.SelectedItem).Tag == ch) // Channel is selected
                 {
-                    if (ch == item.Value)
+                    int index = Channels.SelectedIndex;
+                    VisitedChannels.Remove(index);
+                    for (int i = 0; i < VisitedChannels.Count; i++)
                     {
-                        index = i;
-                        break;
+                        if (VisitedChannels[i] > index)
+                            VisitedChannels[i]--;
                     }
-                    i++;
-                }
+                    int lastindex = VisitedChannels[VisitedChannels.Count - 1];
 
-                VisitedChannels.Remove(index);
-                for (i = 0; i < VisitedChannels.Count; i++)
+                    ch.Log(ch.Messages.Count, true);
+                    WormNetM.ChannelList.Remove(ch.LowerName);
+                    Channels.Items.RemoveAt(index);
+                    Channels.SelectedIndex = lastindex;
+                }
+                else
                 {
-                    if (VisitedChannels[i] > index)
-                        VisitedChannels[i]--;
+                    int index = -1;
+                    for (int i = 0; i < Channels.Items.Count; i++)
+                    {
+                        if ((Channel)((TabItem)Channels.Items[i]).Tag == ch)
+                        {
+                            index = i;
+                            break;
+                        }
+                    }
+                    VisitedChannels.Remove(index);
+                    for (int i = 0; i < VisitedChannels.Count; i++)
+                    {
+                        if (VisitedChannels[i] > index)
+                            VisitedChannels[i]--;
+                    }
+                    ch.Log(ch.Messages.Count, true);
+                    WormNetM.ChannelList.Remove(ch.LowerName);
+                    Channels.Items.RemoveAt(index);
                 }
-                int lastindex = VisitedChannels[VisitedChannels.Count - 1];
-
-                ch.Log(ch.Messages.Count, true);
-                WormNetM.ChannelList.Remove(ch.LowerName);
-                Channels.Items.RemoveAt(index);
-                Channels.SelectedIndex = lastindex;
             }
-            e.Handled = true;
         }
         #endregion
 

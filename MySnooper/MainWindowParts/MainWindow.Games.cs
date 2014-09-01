@@ -316,7 +316,7 @@ namespace MySnooper
                     return;
                 }
 
-                if (!Properties.Settings.Default.MarkAway)
+                if (Properties.Settings.Default.MarkAway)
                 {
                     AwayText = (Properties.Settings.Default.AwayText.Length == 0) ? "No reason specified." : Properties.Settings.Default.AwayText;
                     SendMessageToChannel("/away " + AwayText, null);

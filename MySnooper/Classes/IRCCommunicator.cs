@@ -472,22 +472,22 @@ namespace MySnooper
                             string clientName = m.Groups[4].Value;
                             string[] realName = m.Groups[5].Value.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries); // 68 7 LT The Wheat Snooper
 
-                            CountryClass country;
-                            int rank;
+                            CountryClass country = CountriesClass.GetCountryByID(49);
+                            int rank = 0;
                             bool ClientGreatSnooper = false;
 
                             if (realName.Length >= 3)
                             {
-                                if (realName[1].Length <= 2 && int.TryParse(realName[1], out rank))
+                                if (int.TryParse(realName[1], out rank))
                                 {
                                     if (rank > 13)
                                         rank = 13;
+                                    if (rank < 0)
+                                        rank = 0;
                                 }
-                                else
-                                    rank = 0;
 
                                 int countrycode;
-                                if (realName[0].Length <= 2 && int.TryParse(realName[0], out countrycode) && countrycode >= 0 && countrycode <= 52)
+                                if (int.TryParse(realName[0], out countrycode) && countrycode >= 0 && countrycode <= 52)
                                 {
                                     if (countrycode == 49 && realName[2].Length == 2) // use cc as countricode
                                     {
@@ -508,15 +508,8 @@ namespace MySnooper
                                         realName[2] = "GR";
                                     country = CountriesClass.GetCountryByCC(realName[2]);
                                 }
-                                else
-                                    country = CountriesClass.GetCountryByID(49); // ?? country
 
                                 ClientGreatSnooper = realName.Length >= 5 && realName[3] == "Great" && realName[4] == "Snooper";
-                            }
-                            else
-                            {
-                                country = CountriesClass.GetCountryByID(49); // ?? country
-                                rank = 0;
                             }
 
                             Client(channelName, clientName, country, clan, rank, ClientGreatSnooper);

@@ -29,6 +29,7 @@
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
                         <RowDefinition Height="Auto"></RowDefinition>
+                        <RowDefinition Height="Auto"></RowDefinition>
                     </Grid.RowDefinitions>
 
                     <Label Grid.Column="0" Grid.Row="1" Content="Show login screen at startup:"></Label>
@@ -47,6 +48,8 @@
                     <CheckBox Name="MessageTime" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" Click="MessageTimeChanged"></CheckBox>
                     <Label Grid.Column="0" Grid.Row="8" Content="Autojoin #AnythingGoes:"></Label>
                     <CheckBox Name="AutoJoinAnythingGoes" Grid.Column="1" Grid.Row="8" HorizontalAlignment="Left" Click="AutoJoinAnythingGoesChanged"></CheckBox>
+                    <Label Grid.Column="0" Grid.Row="9" Content="Delete old channel logs at startup:"></Label>
+                    <CheckBox Name="DeleteOldLogs" Grid.Column="1" Grid.Row="9" HorizontalAlignment="Left" Click="DeleteOldLogsChanged"></CheckBox>
                 </Grid>
                 <Grid HorizontalAlignment="Center">
                     <Grid.RowDefinitions>

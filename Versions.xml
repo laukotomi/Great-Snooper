@@ -1,0 +1,104 @@
+<versions>
+	<version>
+		<ver number="1.3"></ver>
+		<changes>
+			<change command="update" type="file" arg="Great Snooper.exe" url="https://www.dropbox.com/s/k86sb2tzxrfssmm/Great%20Snooper.exe?dl=1"></change>
+			<change command="create" type="file" arg="MahApps.Metro.dll" url="https://www.dropbox.com/s/3auza9bccl6e44e/MahApps.Metro.dll?dl=1"></change>
+			<change command="create" type="file" arg="System.Windows.Interactivity.dll" url="https://www.dropbox.com/s/mwzx36w7ezwc5v5/System.Windows.Interactivity.dll?dl=1"></change>
+		</changes>
+		<descriptions>
+			<description value="The new version of Great Snooper!"></description>
+			<description value="You can see the list of changes in the Great Snooper topic at tus-wa.com."></description>
+		</descriptions>
+	</version>
+	<version>
+		<ver number="1.2.8"></ver>
+		<changes>
+			<change command="update" type="file" arg="Great Snooper.exe" url="https://www.dropbox.com/s/fcshagvhoiws11l/Great%20Snooper.exe?dl=1"></change>
+		</changes>
+		<descriptions>
+			<description value="Disabled login button is fixed when tus is offline."></description>
+		</descriptions>
+	</version>
+	<version>
+		<ver number="1.2.7"></ver>
+		<changes>
+			<change command="update" type="file" arg="Great Snooper.exe" url="https://www.dropbox.com/s/166ik96yged1qsa/Great%20Snooper.exe?dl=1"></change>
+			<change command="update" type="file" arg="Updater.exe" url="https://www.dropbox.com/s/xcxzfgqnj1xc6ud/Updater.exe?dl=1"></change>
+		</changes>
+		<descriptions>
+			<description value="The disconnect bug had been fixed."></description>
+			<description value="Updater.exe will be used again for updating the application."></description>
+		</descriptions>
+	</version>
+	<version>
+		<ver number="1.2.6"></ver>
+		<changes>
+			<change command="update" type="file" arg="Great Snooper.exe" url="https://www.dropbox.com/s/sh0e3990ie8vckd/Great%20Snooper.exe?dl=1"></change>
+		</changes>
+		<descriptions>
+			<description value="The user input gets focused when changing tab."></description>
+			<description value="Bad tus clan names for WormNet fixed."></description>
+		</descriptions>
+	</version>
+	<version>
+		<ver number="1.2.5"></ver>
+		<changes>
+			<change command="update" type="file" arg="Great Snooper.exe" url="https://www.dropbox.com/s/14ckhysz11b5s9t/Great%20Snooper.exe?dl=1"></change>
+		</changes>
+		<descriptions>
+			<description value="TUS nick and password length bug fixed."></description>
+		</descriptions>
+	</version>
+	<version>
+		<ver number="1.2.4"></ver>
+		<changes>
+			<change command="update" type="file" arg="Great Snooper.exe" url="https://www.dropbox.com/s/qcke7emt2stqsxi/Great%20Snooper.exe?dl=1"></change>
+			<change command="create" type="file" arg="Updater2.exe" url="https://www.dropbox.com/s/ytlyrfu64n9hm09/Updater2.exe?dl=1"></change>
+		</changes>
+		<descriptions>
+			<description value="Crash when the gamelist response is wrong bug fixed."></description>
+			<description value="New updater. It won't start the snooper automatically and causing UAC bug."></description>
+		</descriptions>
+	</version>
+	<version>
+		<ver number="1.2.3"></ver>
+		<changes>
+			<change command="update" type="file" arg="Great Snooper.exe" url="https://www.dropbox.com/s/g1uhxgofzy1m5pw/Great%20Snooper.exe?dl=1"></change>
+		</changes>
+		<descriptions>
+			<description value="Support for auto-hided taskbar."></description>
+		</descriptions>
+	</version>
+	<version>
+		<ver number="1.2.2"></ver>
+		<changes>
+			<change command="update" type="file" arg="Great Snooper.exe" url="https://www.dropbox.com/s/19thn6jgkb68wer/Great%20Snooper.exe?dl=1"></change>
+		</changes>
+		<descriptions>
+			<description value="New IRC communicator part."></description>
+			<description value="Away text is saved to the user settings from the Away Manager."></description>
+			<description value="Code reorganization, some little bug fixes."></description>
+		</descriptions>
+	</version>
+	<version>
+		<ver number="1.2.1"></ver>
+		<changes>
+			<change command="update" type="file" arg="Great Snooper.exe" url="https://www.dropbox.com/s/omje1dw3v0vp0ge/Great%20Snooper.exe?dl=1"></change>
+		</changes>
+		<descriptions>
+			<description value="You can host from private chat if the gamelist is loaded."></description>
+			<description value="Disabled background color is transparent for the elements in the league game finder, so it's not that ugly anymore."></description>
+			<description value="This is the first version that will be released for anyone."></description>
+		</descriptions>
+	</version>
+	<version>
+		<ver number="1.2"></ver>
+		<changes>
+			<change command="update" type="file" arg="Great Snooper.exe" url="https://www.dropbox.com/s/1xdun4fu1r1kg90/Great%20Snooper.exe?dl=1"></change>
+		</changes>
+		<descriptions>
+			<description value="The first version of the next episode."></description>
+		</descriptions>
+	</version>
+</versions>

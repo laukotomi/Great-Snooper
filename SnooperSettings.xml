@@ -12,7 +12,7 @@
 	</leagues>
 	<news>
 		<bbnews id="2" show="1" background="LimeGreen" textcolor="Black" fontsize="14" bbcode="[space=10][c][size=18][b]Over 300$ price on Classic League![/b][/size][/c][space=10][c]Why is everybody looking for TUS nowadays?[/c][c]Because you can win some money with that![/c][space=15][c][size=16][b]It's time to fight again![/b][/size][/c][space=15][c][size=16][url=http://www.tus-wa.com/forums/announcements/over-$300-prize-on-classic-league-24957/][color=White]Click for more info[/color][/url][/size][/c]"></bbnews>
-		<bbnews id="1" show="1" background="DeepSkyBlue" textcolor="Black" fontsize="14" bbcode="[space=10][c][size=18][b]Welcome to the new Great Snooper![/b][/size][/c][space=5][c]This is the news window. This window will open automatically when there is something important![/c][space=10][c]If you have problems or suggestions[br]don't be afraid to share at the[/c][space=10][c][size=16][url=http://google.com][color=White]Great Snooper Topic[/color][/url][/size][/c][space=20][r]ToOMiToO[/r]"></bbnews>
+		<bbnews id="1" show="1" background="DeepSkyBlue" textcolor="Black" fontsize="14" bbcode="[space=10][c][size=18][b]Welcome to the new Great Snooper![/b][/size][/c][space=5][c]This is the news window. This window will open automatically when there is something important![/c][space=10][c]If you have problems or suggestions[br]don't be afraid to share at the[/c][space=10][c][size=16][url=http://www.tus-wa.com/forums/files/great-snooper-3rd-chapter-25137/][color=White]Great Snooper Topic[/color][/url][/size][/c][space=20][r]ToOMiToO[/r]"></bbnews>
 	</news>
-	<version latest="1.2.8"></version>
+	<version latest="1.3"></version>
 </settings>

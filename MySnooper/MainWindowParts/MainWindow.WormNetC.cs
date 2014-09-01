@@ -33,15 +33,7 @@ namespace MySnooper
             {
                 string fromLow = clientName.ToLower();
 
-                Client c;
-                if (!WormNetM.Clients.TryGetValue(fromLow, out c))
-                {
-                    c = new Client(clientName, null, "", 0, false);
-                    c.IsBanned = WormNetM.IsBanned(fromLow);
-                    c.IsBuddy = WormNetM.IsBuddy(fromLow);
-                    c.OnlineStatus = 2;
-                }
-
+                Client c = null;
                 Channel ch = null;
                 string toLow = to.ToLower();
                 foreach (var item in WormNetM.ChannelList)
@@ -49,13 +41,22 @@ namespace MySnooper
                     if (item.Value.LowerName == toLow || item.Value.LowerName == fromLow) // message to a channel || private message (we have a private chat tab)
                     {
                         ch = item.Value;
+                        c = item.Value.TheClient;
                         break;
                     }
                 }
 
+                if (c == null && !WormNetM.Clients.TryGetValue(fromLow, out c))
+                {
+                    c = new Client(clientName, null, "", 0, false);
+                    c.IsBanned = WormNetM.IsBanned(fromLow);
+                    c.IsBuddy = WormNetM.IsBuddy(fromLow);
+                    c.OnlineStatus = 2;
+                }
+
                 if (ch == null) // new private message channel
                 {
-                    ch = new Channel(clientName, "Chat with " + clientName, c);
+                    ch = new Channel(c.Name, "Chat with " + c.Name, c);
                     ch.NewMessageAdded += AddNewMessage;
                     WormNetM.ChannelList.Add(ch.LowerName, ch);
 

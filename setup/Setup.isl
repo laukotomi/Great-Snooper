@@ -4554,7 +4554,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{DAA2FD85-F727-4142-9847-9ABBF38C1C66}</td><td/></row>
 		<row><td>ProductName</td><td>Great Snooper</td><td/></row>
-		<row><td>ProductVersion</td><td>1.30.0000</td><td/></row>
+		<row><td>ProductVersion</td><td>1.03.1000</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>

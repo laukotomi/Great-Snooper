@@ -37,6 +37,7 @@ namespace MySnooper
             MessageTime.IsChecked = Properties.Settings.Default.MessageTime;
             WAExeText.Text = Properties.Settings.Default.WaExe;
             AutoJoinAnythingGoes.IsChecked = Properties.Settings.Default.AutoJoinAnythingGoes;
+            DeleteOldLogs.IsChecked = Properties.Settings.Default.DeleteLogs;
 
             // Sounds
             PMBeep.Text = Properties.Settings.Default.PMBeep;
@@ -235,6 +236,13 @@ namespace MySnooper
         {
             var obj = sender as CheckBox;
             Properties.Settings.Default.AutoJoinAnythingGoes = obj.IsChecked.Value;
+            Properties.Settings.Default.Save();
+        }
+
+        private void DeleteOldLogsChanged(object sender, RoutedEventArgs e)
+        {
+            var obj = sender as CheckBox;
+            Properties.Settings.Default.DeleteLogs = obj.IsChecked.Value;
             Properties.Settings.Default.Save();
         }
     }

@@ -239,7 +239,7 @@ namespace MySnooper
                 e.Cancel = true;
 
             // Delete old logs
-            if (Directory.Exists(settingsPath + @"\Logs"))
+            if (Properties.Settings.Default.DeleteLogs && Directory.Exists(settingsPath + @"\Logs"))
             {
                 string date = DateRegex.Replace(DateTime.Now.ToString("d"), "-");
                 if (date != Properties.Settings.Default.TimeLogsDeleted)
@@ -515,35 +515,37 @@ namespace MySnooper
                             e.Cancel = true;
                             return;
                         }
-                        Thread.Sleep(2500); // Tus doesn't like more than one request in 2 seconds
-                        if (TUSLoginWorker.CancellationPending)
-                        {
-                            e.Cancel = true;
-                            return;
-                        }
 
-                        string userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic");
-                        string[] rows = userlist.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                        for (int i = 0; i < rows.Length; i++)
+                        tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?update=" + System.Web.HttpUtility.UrlEncode(NickName) + "&league=classic");
+                        for (int j = 0; j < 5; j++)
                         {
-                            if (rows[i].Substring(0, NickName.Length) == NickName)
+                            string userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic");
+                            string[] rows = userlist.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                            for (int i = 0; i < rows.Length; i++)
                             {
-                                TUSState = TUSStates.OK;
-                                string[] data = rows[i].Split(new char[] { ' ' });
+                                if (rows[i].Substring(0, NickName.Length) == NickName)
+                                {
+                                    TUSState = TUSStates.OK;
+                                    string[] data = rows[i].Split(new char[] { ' ' });
 
-                                TUSNickStr = data[1];
-                                NickClan = ClanRegexTUS.Replace(data[5], ""); // Remove bad characters
-                                if (NickClan.Length == 0)
-                                    NickClan = "Username";
+                                    TUSNickStr = data[1];
+                                    NickClan = ClanRegexTUS.Replace(data[5], ""); // Remove bad characters
+                                    if (NickClan.Length == 0)
+                                        NickClan = "Username";
 
-                                if (int.TryParse(data[2].Substring(1), out NickRank))
-                                    NickRank--;
-                                else
-                                    NickRank = 13;
+                                    if (int.TryParse(data[2].Substring(1), out NickRank))
+                                        NickRank--;
+                                    else
+                                        NickRank = 13;
 
-                                NickCountry = CountriesClass.GetCountryByCC(data[3].ToUpper());
-                                break;
+                                    NickCountry = CountriesClass.GetCountryByCC(data[3].ToUpper());
+                                    break;
+                                }
                             }
+
+                            if (TUSState == TUSStates.OK)
+                                break;
+                            Thread.Sleep(1000);
                         }
                     }
                     else

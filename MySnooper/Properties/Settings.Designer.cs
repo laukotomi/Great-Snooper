@@ -634,5 +634,17 @@ namespace MySnooper.Properties {
                 this["TimeLogsDeleted"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool DeleteLogs {
+            get {
+                return ((bool)(this["DeleteLogs"]));
+            }
+            set {
+                this["DeleteLogs"] = value;
+            }
+        }
     }
 }

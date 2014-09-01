@@ -85,6 +85,7 @@ namespace MySnooper
                         int rank;
                         if (int.TryParse(data[2].Substring(1), out rank))
                             c.Rank = RanksClass.GetRankByInt(rank - 1);
+                        c.Country = CountriesClass.GetCountryByCC(data[3].ToUpper());
                         c.TusLink = data[4];
                         TusUsers.Add(lowerName, c);
                     }
