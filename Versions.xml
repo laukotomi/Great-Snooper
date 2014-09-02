@@ -1,5 +1,17 @@
 <versions>
 	<version>
+		<ver number="1.3.1"></ver>
+		<changes>
+			<change command="update" type="file" arg="Great Snooper.exe" url="https://www.dropbox.com/s/91okcla9kwrmchn/Great%20Snooper.exe?dl=1"></change>
+		</changes>
+		<descriptions>
+			<description value="Disabled deleting old logs feature. You can enable it in the Settings."></description>
+			<description value="Fixed closing tabs with right click + close."></description>
+			<description value="PART messages are now displayed."></description>
+			<description value="Some other little fixes."></description>
+		</descriptions>
+	</version>
+	<version>
 		<ver number="1.3"></ver>
 		<changes>
 			<change command="update" type="file" arg="Great Snooper.exe" url="https://www.dropbox.com/s/k86sb2tzxrfssmm/Great%20Snooper.exe?dl=1"></change>

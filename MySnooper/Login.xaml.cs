@@ -506,6 +506,7 @@ namespace MySnooper
                     string testlogin = tusRequest.DownloadString("http://www.tus-wa.com/testlogin.php?u=" + System.Web.HttpUtility.UrlEncode(NickName) + "&p=" + System.Web.HttpUtility.UrlEncode(TUSPassword));
                     if (testlogin[0] == '1') // 1 sToOMiToO
                     {
+                        string tempNick = NickName;
                         NickName = testlogin.Substring(2);
                         NickName = NickRegexTUS.Replace(NickName, ""); // Remove bad characters
                         NickName = NickRegex2TUS.Replace(NickName, ""); // Remove bad characters
@@ -516,10 +517,9 @@ namespace MySnooper
                             return;
                         }
 
-                        tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?update=" + System.Web.HttpUtility.UrlEncode(NickName) + "&league=classic");
                         for (int j = 0; j < 5; j++)
                         {
-                            string userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic");
+                            string userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?update=" + System.Web.HttpUtility.UrlEncode(tempNick) + "&league=classic");
                             string[] rows = userlist.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                             for (int i = 0; i < rows.Length; i++)
                             {
@@ -545,7 +545,7 @@ namespace MySnooper
 
                             if (TUSState == TUSStates.OK)
                                 break;
-                            Thread.Sleep(1000);
+                            Thread.Sleep(2500);
                         }
                     }
                     else
