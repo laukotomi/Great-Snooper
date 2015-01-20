@@ -102,7 +102,7 @@ namespace MySnooper
             bool ToReturn = false; // We will return true if we joined the channel
 
             string lowerName = clientName.ToLower();
-            MessageTypes messageType = MessageTypes.Join;
+            MessageSetting style = MessageSettings.JoinMessage;
             if (lowerName != GlobalManager.User.LowerName)
             {
                 if (ch.Joined)
@@ -120,7 +120,7 @@ namespace MySnooper
 
                         if (c.IsBuddy)
                         {
-                            messageType = MessageTypes.BuddyJoined;
+                            style = MessageSettings.BuddyJoinedMessage;
                             buddyjoined = true;
                         }
 
@@ -137,7 +137,7 @@ namespace MySnooper
                             WormNetC.GetInfoAboutClient(clientName);
                     }
 
-                    ch.AddMessage(c, "joined the channel", messageType);
+                    ch.AddMessage(c, "joined the channel", style);
 
                     // If we have a private chat with the user
                     foreach (var item in ChannelList)
@@ -160,7 +160,7 @@ namespace MySnooper
                 WormNetC.GetChannelClients(ch.Name); // get the users in the channel
 
                 ToReturn = true;
-                ch.AddMessage(GlobalManager.User, "joined the channel", messageType);
+                ch.AddMessage(GlobalManager.User, "joined the channel", style);
             }
 
             return ToReturn;
@@ -202,7 +202,7 @@ namespace MySnooper
                                 }
                             }
                         }
-                        ch.AddMessage(c, "left the channel", MessageTypes.Part);
+                        ch.AddMessage(c, "left the channel", MessageSettings.PartMessage);
                         return c;
                     }
                 }
@@ -223,7 +223,7 @@ namespace MySnooper
                 {
                     if (c.Channels[i].Joined)
                     {
-                        c.Channels[i].AddMessage(c, "quitted (" + message + ")", MessageTypes.Quit);
+                        c.Channels[i].AddMessage(c, "quitted (" + message + ")", MessageSettings.QuitMessage);
                         c.Channels[i].Clients.Remove(c);
                     }
                 }
@@ -252,7 +252,7 @@ namespace MySnooper
                 if (item.Value.IsPrivMsgChannel && item.Value.LowerName == lowerName)
                 {
                     item.Value.TheClient.OnlineStatus = 0;
-                    item.Value.AddMessage(GlobalManager.SystemClient, "The user is currently offline!", MessageTypes.Offline);
+                    item.Value.AddMessage(GlobalManager.SystemClient, "The user is currently offline!", MessageSettings.OfflineMessage);
                     break;
                 }
             }

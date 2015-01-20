@@ -2,6 +2,8 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Threading;
+using System.Threading.Tasks;
 
 
 namespace MySnooper
@@ -9,69 +11,57 @@ namespace MySnooper
     public partial class MainWindow : MetroWindow
     {
         // Joining a game
-        private BackgroundWorker TUSCommunicator;
-        private SortedDictionary<string, Client> TusUsers;
+        private SortedDictionary<string, Client> TusUsers = new SortedDictionary<string,Client>();
+        private CancellationTokenSource TusCTS = new CancellationTokenSource();
 
 
-        // "Constructor"
-        public void TUS()
+        public Task<string[]> StartTusCommunication()
         {
-            TUSCommunicator = new BackgroundWorker();
-            TUSCommunicator.WorkerSupportsCancellation = true;
-            TUSCommunicator.DoWork += TUSCommunication;
-            TUSCommunicator.RunWorkerCompleted += TUSLoaded;
-
-            TusUsers = new SortedDictionary<string, Client>();
-        }
-
-        private void TUSCommunication(object sender, System.ComponentModel.DoWorkEventArgs e)
-        {
-            try
+            return Task.Factory.StartNew<string[]>(() =>
             {
-                using (var tusRequest = new System.Net.WebClient() { Proxy = null })
+                try
                 {
-                    string userlist;
-                    if (GlobalManager.User.TusNick != string.Empty)
-                        userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic&update=" + System.Web.HttpUtility.UrlEncode(GlobalManager.User.TusNick));
-                    else
-                        userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic");
+                    using (var tusRequest = new System.Net.WebClient() { Proxy = null })
+                    {
+                        string userlist;
+                        if (GlobalManager.User.TusNick != string.Empty)
+                            userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic&update=" + System.Web.HttpUtility.UrlEncode(GlobalManager.User.TusNick));
+                        else
+                            userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic");
 
-                    e.Result = userlist.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (TusCTS.IsCancellationRequested)
+                        {
+                            return null;
+                        }
+                        return userlist.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    }
                 }
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.log(ex);
-            }
+                catch (Exception ex)
+                {
+                    ErrorLog.log(ex);
+                }
 
-            if (TUSCommunicator.CancellationPending)
-                e.Cancel = true;
+                return null;
+            }, TusCTS.Token);
         }
 
-        private void TUSLoaded(object sender, System.ComponentModel.RunWorkerCompletedEventArgs e)
+        private void TUSLoaded(string[] result)
         {
-            if (e.Cancelled)
+            if (TusCTS.IsCancellationRequested)
             {
                 this.Close();
                 return;
             }
 
-            if (e.Error != null)
-            {
-                ErrorLog.log(e.Error);
-                return;
-            }
-
-            if (e.Result == null) // case of net cut this may happen!
+            if (result == null)
                 return;
 
             foreach (var item in TusUsers)
                 item.Value.TusActiveCheck = false;
 
-            string[] TusRows = (string[])e.Result;
-            for (int i = 0; i < TusRows.Length; i++)
+            for (int i = 0; i < result.Length; i++)
             {
-                string[] data = TusRows[i].Split(new char[] { ' ' });
+                string[] data = result[i].Split(new char[] { ' ' });
 
                 string lowerName = data[0].ToLower();
                 Client c;

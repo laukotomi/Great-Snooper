@@ -2,15 +2,23 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        Title="List Editor" Height="400" Width="330" TitlebarHeight="40" Background="Black"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
+        Title="List Editor" Height="380" Width="290" TitlebarHeight="40" Background="Black" WindowTransitionsEnabled="False"
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False" ContentRendered="MetroWindow_ContentRendered">
+    <controls:MetroWindow.RightWindowCommands>
+        <controls:WindowCommands>
+            <Button Grid.Column="0" Focusable="False" Click="InformationClicked" ToolTip="Help" ToolTipService.Placement="Bottom">
+                <Image Source="Resources/help.png" Width="16"></Image>
+            </Button>
+        </controls:WindowCommands>
+    </controls:MetroWindow.RightWindowCommands>
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="Auto"></RowDefinition>
         </Grid.RowDefinitions>
 
-        <ListView Name="MyListView" Grid.Row="0" Background="Transparent" BorderThickness="0">
+        <ListView Name="MyListView" Grid.Row="0" Background="Transparent" BorderThickness="0" LostFocus="MyListView_LostFocus" Margin="5">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <TextBlock Text="{Binding}" Margin="6,3,0,3"></TextBlock>
@@ -18,11 +26,11 @@
             </ListView.ItemTemplate>
             <ListView.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Remove from the list" Click="RemoveFromList"></MenuItem>
+                    <MenuItem Header="Remove" Click="RemoveFromList"></MenuItem>
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>
 
-        <TextBox Grid.Row="1" Name="AddNewUser" Text="Add a new user to the list.." KeyDown="NewUserAdd" GotKeyboardFocus="NewUserEnter" LostKeyboardFocus="NewUserLeave"></TextBox>
+        <TextBox Grid.Row="1" Name="AddToListTB" Text="Add a new user to the list.." Padding="3,2" KeyDown="AddToList" GotKeyboardFocus="AddToListEnter" LostKeyboardFocus="AddToListLeave" Margin="5"></TextBox>
     </Grid>
 </controls:MetroWindow>

@@ -26,7 +26,6 @@ namespace MySnooper
         private System.Text.StringBuilder RecvHTMLUI;
 
         // Update game list
-        public BackgroundWorker LoadHostedGames;
         public bool Stop { get; set; } // With this variable it is guaranteed that BGWorker won't start again
 
 
@@ -41,11 +40,6 @@ namespace MySnooper
 
             RecvBufferUI = new byte[100];
             RecvHTMLUI = new System.Text.StringBuilder(RecvBufferUI.Length);
-
-            LoadHostedGames = new BackgroundWorker();
-            LoadHostedGames.WorkerSupportsCancellation = true;
-            LoadHostedGames.DoWork += LoadGamesDoWork;
-            LoadHostedGames.RunWorkerCompleted += LoadGamesCompleted;
         }
 
 

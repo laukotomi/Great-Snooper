@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Documents;
 using System.Windows.Media;
 
 
@@ -7,31 +8,36 @@ namespace MySnooper
 {
     public static class MessageSettings
     {
-        public static Dictionary<MessageTypes, MessageSetting> Settings = new Dictionary<MessageTypes, MessageSetting>()
-        {
-            { MessageTypes.Channel, SettingToObj(Properties.Settings.Default.ChannelMessage) },
-            { MessageTypes.Join, SettingToObj(Properties.Settings.Default.JoinMessage) },
-            { MessageTypes.Quit, SettingToObj(Properties.Settings.Default.QuitMessage) },
-            { MessageTypes.Part, SettingToObj(Properties.Settings.Default.PartMessage) },
-            { MessageTypes.Offline, SettingToObj(Properties.Settings.Default.OfflineMessage) },
-            { MessageTypes.Action, SettingToObj(Properties.Settings.Default.ActionMessage) },
-            { MessageTypes.User, SettingToObj(Properties.Settings.Default.UserMessage) },
-            { MessageTypes.Notice, SettingToObj(Properties.Settings.Default.NoticeMessage) },
-            { MessageTypes.BuddyJoined, SettingToObj(Properties.Settings.Default.BuddyJoinedMessage) }
-        };
-
-        public static MessageSetting MessageTime;
-        public static MessageSetting Hyperlink;
-        public static MessageSetting LeagueFound;
+        public static MessageSetting ChannelMessage { get; private set; }
+        public static MessageSetting JoinMessage { get; private set; }
+        public static MessageSetting QuitMessage { get; private set; }
+        public static MessageSetting PartMessage { get; private set; }
+        public static MessageSetting OfflineMessage { get; private set; }
+        public static MessageSetting ActionMessage { get; private set; }
+        public static MessageSetting UserMessage { get; private set; }
+        public static MessageSetting NoticeMessage { get; private set; }
+        public static MessageSetting BuddyJoinedMessage { get; private set; }
+        public static MessageSetting MessageTimeStyle { get; private set; }
+        public static MessageSetting HyperLinkStyle { get; private set; }
+        public static MessageSetting LeagueFoundMessage { get; private set; }
 
         static MessageSettings()
         {
-            MessageTime = SettingToObj(Properties.Settings.Default.MessageTimeStyle);
-            Hyperlink = SettingToObj(Properties.Settings.Default.HyperLinkStyle);
-            LeagueFound = SettingToObj(Properties.Settings.Default.LeagueFoundMessage);
+            ChannelMessage = SettingToObj(Properties.Settings.Default.ChannelMessage, MessageTypes.Channel);
+            JoinMessage = SettingToObj(Properties.Settings.Default.JoinMessage, MessageTypes.Join);
+            QuitMessage = SettingToObj(Properties.Settings.Default.QuitMessage, MessageTypes.Quit);
+            PartMessage = SettingToObj(Properties.Settings.Default.PartMessage, MessageTypes.Part);
+            OfflineMessage = SettingToObj(Properties.Settings.Default.OfflineMessage, MessageTypes.Offline);
+            ActionMessage = SettingToObj(Properties.Settings.Default.ActionMessage, MessageTypes.Action);
+            UserMessage = SettingToObj(Properties.Settings.Default.UserMessage, MessageTypes.User);
+            NoticeMessage = SettingToObj(Properties.Settings.Default.NoticeMessage, MessageTypes.Notice);
+            BuddyJoinedMessage = SettingToObj(Properties.Settings.Default.BuddyJoinedMessage, MessageTypes.BuddyJoined);
+            MessageTimeStyle = SettingToObj(Properties.Settings.Default.MessageTimeStyle, MessageTypes.Time);
+            HyperLinkStyle = SettingToObj(Properties.Settings.Default.HyperLinkStyle, MessageTypes.Hyperlink);
+            LeagueFoundMessage = SettingToObj(Properties.Settings.Default.LeagueFoundMessage, MessageTypes.League);
         }
  
-        public static MessageSetting SettingToObj(string setting)
+        public static MessageSetting SettingToObj(string setting, MessageTypes type)
         {
             var things = setting.Split('|');
 
@@ -41,7 +47,7 @@ namespace MySnooper
                 byte.Parse(things[0].Substring(4, 2), System.Globalization.NumberStyles.HexNumber)
             );
 
-            return new MessageSetting(color, double.Parse(things[1]), things[2], things[3], things[4], things[5], things[6]);
+            return new MessageSetting(color, double.Parse(things[1]), things[2], things[3], things[4], things[5], things[6], type);
         }
 
 
@@ -49,37 +55,47 @@ namespace MySnooper
         {
             var sb = new System.Text.StringBuilder();
             // Color
-            sb.Append(string.Format("{0:X2}{1:X2}{2:X2}", obj.color.Color.R, obj.color.Color.G, obj.color.Color.B));
+            sb.Append(string.Format("{0:X2}{1:X2}{2:X2}", obj.Color.Color.R, obj.Color.Color.G, obj.Color.Color.B));
             sb.Append('|');
             // Size
-            sb.Append(obj.size);
+            sb.Append(obj.Size);
             sb.Append('|');
             // Bold
-            sb.Append(obj.bold == FontWeights.Bold ? 1 : 0);
+            sb.Append(obj.Bold == FontWeights.Bold ? 1 : 0);
             sb.Append('|');
             // Italic
-            sb.Append(obj.italic == FontStyles.Italic ? 1 : 0);
+            sb.Append(obj.Italic == FontStyles.Italic ? 1 : 0);
             sb.Append('|');
             // Strikethrough
-            sb.Append(obj.strikethrough ? 1 : 0);
+            sb.Append(obj.Strikethrough ? 1 : 0);
             sb.Append('|');
             // Underline
-            sb.Append(obj.underline ? 1 : 0);
+            sb.Append(obj.Underline ? 1 : 0);
             sb.Append('|');
             // Font family
-            sb.Append(obj.fontfamily.ToString());
+            sb.Append(obj.Fontfamily.ToString());
 
             return sb.ToString();
         }
 
         public static void LoadSettingsFor(System.Windows.Documents.TextElement element, MessageSetting setting)
         {
-            element.FontFamily = setting.fontfamily;
-            element.FontWeight = setting.bold;
-            element.Foreground = setting.color;
-            element.FontStyle = setting.italic;
-            element.FontSize = setting.size;
-            element.FontWeight = setting.bold;
+            element.FontFamily = setting.Fontfamily;
+            element.FontWeight = setting.Bold;
+            element.Foreground = setting.Color;
+            element.FontStyle = setting.Italic;
+            element.FontSize = setting.Size;
+            element.FontWeight = setting.Bold;
+            if (element is Inline)
+            {
+                Inline inline = (Inline)element;
+                inline.TextDecorations = setting.Textdecorations;
+            }
+            else if (element is Paragraph)
+            {
+                Paragraph p = (Paragraph)element;
+                p.TextDecorations = setting.Textdecorations;
+            }
         }
     }
 }

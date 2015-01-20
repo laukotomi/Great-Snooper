@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:loc="clr-namespace:MySnooper"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        Title="Great Snooper News" TitlebarHeight="40" Background="Black" Height="300" Width="380"
+        Title="Great Snooper News" TitlebarHeight="40" Background="Black" Height="300" Width="380" WindowTransitionsEnabled="False"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False" Closing="MetroWindow_Closing">
     <!-- Shortcut keys -->
     <controls:MetroWindow.CommandBindings>

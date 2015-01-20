@@ -175,8 +175,8 @@ namespace MySnooper
 
             ListEditor window = new ListEditor(List2, "Your buddy list");
             window.Closing += BuddyListWindowClosed;
-            window.RemoveUser += RemoveUserFromBuddyList;
-            window.AddUser += AddUserToBuddyList;
+            window.ItemRemoved += RemoveUserFromBuddyList;
+            window.ItemAdded += AddUserToBuddyList;
             window.Owner = this;
             window.ShowDialog();
             e.Handled = true;
@@ -188,8 +188,8 @@ namespace MySnooper
             {
                 var obj = sender as ListEditor;
                 obj.Closing -= BuddyListWindowClosed;
-                obj.RemoveUser -= RemoveUserFromBuddyList;
-                obj.AddUser -= AddUserToBuddyList;
+                obj.ItemRemoved -= RemoveUserFromBuddyList;
+                obj.ItemAdded -= AddUserToBuddyList;
             }
             ));
         }
@@ -220,8 +220,8 @@ namespace MySnooper
 
             ListEditor window = new ListEditor(List2, "Your ignore list");
             window.Closing += BanListWindowClosed;
-            window.RemoveUser += RemoveUserFromBanList;
-            window.AddUser += AddUserToBanList;
+            window.ItemRemoved += RemoveUserFromBanList;
+            window.ItemAdded += AddUserToBanList;
             window.Owner = this;
             window.ShowDialog();
             e.Handled = true;
@@ -233,8 +233,8 @@ namespace MySnooper
             {
                 var obj = sender as ListEditor;
                 obj.Closing -= BanListWindowClosed;
-                obj.RemoveUser -= RemoveUserFromBanList;
-                obj.AddUser -= AddUserToBanList;
+                obj.ItemRemoved -= RemoveUserFromBanList;
+                obj.ItemAdded -= AddUserToBanList;
             }
             ));
         }

@@ -36,7 +36,7 @@ namespace MySnooper
 
 
         // Constructor
-        public static void GenerateThings()
+        static WormNetCharTable()
         {
             for (int i = 0; i < Decode.Length; i++)
             {

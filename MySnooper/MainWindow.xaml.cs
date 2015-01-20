@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Media;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -12,11 +13,11 @@ using System.Windows.Threading;
 
 namespace MySnooper
 {
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow : MetroWindow, IDisposable
     {
         // User datas
         private string ServerAddress;
-        private Dictionary<string, string> Leagues;
+        private Dictionary<string, string> Leagues = new Dictionary<string,string>();
 
         // Away
         private string _AwayText;
@@ -61,8 +62,9 @@ namespace MySnooper
         private Channel GameListChannel;
         private bool IsWindowFocused = true;
         private List<int> VisitedChannels;
-        private List<Dictionary<string, string>> NewsList;
+        private List<Dictionary<string, string>> NewsList = new List<Dictionary<string,string>>();
         private Dictionary<string, bool> NewsSeen;
+        private DispatcherTimer timer;
 
         // Sounds
         private SoundPlayer PrivateMessageBeep;
@@ -112,11 +114,22 @@ namespace MySnooper
         public static RoutedCommand CloseChannelCommand = new RoutedCommand();
         public static RoutedCommand FilterCommand = new RoutedCommand();
 
+
+        private Task TUSTask;
+
+        private string UserName {
+            get
+            {
+                return GlobalManager.User.Name;
+            }
+        }
+
         // Constructor        
         public MainWindow() { } // Never used, but visual stdio throws an error if not exists
-        public MainWindow(IRCCommunicator WormNetC, System.Threading.Thread IrcThread, string serverAddress, Dictionary<string, string> Leagues, List<Dictionary<string, string>> NewsList)
+        public MainWindow(IRCCommunicator WormNetC, System.Threading.Thread IrcThread, string serverAddress)
         {
             InitializeComponent();
+            this.DataContext = this;
 
             RecvBuffer = new byte[10240]; // 10kB
             RecvHTML = new System.Text.StringBuilder(10240); // 10kB
@@ -125,21 +138,21 @@ namespace MySnooper
 
 
             this.ServerAddress = serverAddress;
-            this.Leagues = Leagues;
-            this.NewsList = NewsList;
+            //this.Leagues = Leagues;
+            //this.NewsList = NewsList;
 
 
             this.IrcThread = IrcThread;
             this.WormNetC = WormNetC;
             WormNetC.ConnectionState += ConnectionState;
             //WormNetC.Channel += IrcChannel;
-            WormNetC.ListEnd += ListEnd;
-            WormNetC.Client += Client;
-            WormNetC.Joined += Joined;
-            WormNetC.Parted += Parted;
-            WormNetC.Quitted += Quitter;
-            WormNetC.Message += MessageToChannel;
-            WormNetC.OfflineUser += OfflineUser;
+            //WormNetC.ListEnd += ListEnd;
+            //WormNetC.Client += Client;
+            //WormNetC.Joined += Joined;
+            //WormNetC.Parted += Parted;
+            //WormNetC.Quitted += Quitter;
+            //WormNetC.Message += MessageToChannel;
+            //WormNetC.OfflineUser += OfflineUser;
 
 
             // Wormageddonweb Communicator
@@ -180,12 +193,14 @@ namespace MySnooper
             // Initialize backgroundworkers for games
             Games();
 
-            // Initialize backgroundworkers for TUS
-            TUS();
-
             // Get channels
             Channels.Items.Clear();
             WormNetC.GetChannelList();
+
+            timer = new DispatcherTimer();
+            timer.Interval = new TimeSpan(0, 0, 0, 0, 200);
+            timer.Tick += timer_Tick;
+            timer.Start();
         }
 
         private void MainWindow_Loaded(object sender, EventArgs e)
@@ -336,9 +351,9 @@ namespace MySnooper
             if (GameListChannel != null && GameListChannel.Joined && GameListChannel.Clients.Count > 0)
             {
                 TUSRequestCounter++;
-                if (!SnooperClosing && TUSRequestCounter >= 15 && !TUSCommunicator.IsBusy)
+                if (!SnooperClosing && TUSRequestCounter >= 15 && (TUSTask == null || TUSTask.IsCompleted))
                 {
-                    TUSCommunicator.RunWorkerAsync();
+                    TUSTask = StartTusCommunication().ContinueWith((t) => TUSLoaded(t.Result), TaskScheduler.FromCurrentSynchronizationContext()); ;
                     TUSRequestCounter = 0;
                 }
             }
@@ -367,7 +382,7 @@ namespace MySnooper
                         SpamCounter++;
                         if (SpamCounter >= 10)
                         {
-                            SearchHere.AddMessage(GlobalManager.SystemClient, "Great snooper stopped spamming and searching for league game(s)!", MessageTypes.Offline);
+                            SearchHere.AddMessage(GlobalManager.SystemClient, "Great snooper stopped spamming and searching for league game(s)!", MessageSettings.OfflineMessage);
                             // Same goes in MainWindow.Windows.cs!
                             SearchCounter = 100;
                             SpamCounter = 0;
@@ -897,12 +912,14 @@ namespace MySnooper
                 e.Cancel = true;
                 return;
             }
+            /*
             if (TUSCommunicator.IsBusy)
             {
                 TUSCommunicator.CancelAsync();
                 e.Cancel = true;
                 return;
             }
+            */
             if (WormWebC.LoadHostedGames.IsBusy)
             {
                 WormWebC.Stop = true;
@@ -938,6 +955,15 @@ namespace MySnooper
 
             // Stop the clock
             Clock.Stop();
+
+            StartGame.Dispose();
+            StartGame = null;
+            HostGame.Dispose();
+            HostGame = null;
+            //TUSCommunicator.Dispose();
+            //TUSCommunicator = null;
+            WormWebC.LoadHostedGames.Dispose();
+            WormWebC.LoadHostedGames = null;
         }
 
         // IRCThread will notify us when it is done. Then we close the window
@@ -1010,6 +1036,11 @@ namespace MySnooper
                 ErrorLog.log(ex);
             }
             e.Handled = true;
+        }
+
+        public void Dispose()
+        {
+            //throw new NotImplementedException();
         }
     }
 }

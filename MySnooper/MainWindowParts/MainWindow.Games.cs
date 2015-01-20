@@ -22,7 +22,7 @@ namespace MySnooper
         private bool ExitSnooper;
         private bool CloseSnooper;
 
-        [DllImport("user32.dll", SetLastError = true)]
+        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         internal static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
 
 

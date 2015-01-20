@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using System;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,34 +8,46 @@ using System.Windows.Input;
 
 namespace MySnooper
 {
-    public delegate void RemoveUserDelegate(string name);
-    public delegate void AddUserDelegate(string name);
+    public delegate void ItemRemovedDelegate(string item);
+    public delegate void ItemAddedDelegate(string item);
 
     public partial class ListEditor : MetroWindow
     {
-        private SortedObservableCollection<string> MyList;
-        private string AddTextStr;
-        private Regex NickRegex;
-        private Regex NickRegex2;
-        public event RemoveUserDelegate RemoveUser;
-        public event AddUserDelegate AddUser;
+        public enum ListModes { Users, Normal }
+
+        private SortedObservableCollection<string> list;
+        private string addTextStr;
+        private Regex nickRegex;
+        private Regex nickRegex2;
+        private ListModes mode;
+        public event ItemRemovedDelegate ItemRemoved;
+        public event ItemAddedDelegate ItemAdded;
 
         public ListEditor() { } // Never used, but visual stdio throws an error if not exists
-        public ListEditor(SortedObservableCollection<string> MyList, string Title)
+        public ListEditor(SortedObservableCollection<string> list, string title, ListModes mode = ListModes.Users)
         {
             InitializeComponent();
 
-            this.Title = Title;
-            this.MyList = MyList;
+            this.Title = title;
+            this.list = list;
+            this.mode = mode;
 
-            AddTextStr = "Add a new user to the list..";
-            AddNewUser.Text = AddTextStr;
+            if (mode == ListModes.Users)
+            {
+                addTextStr = "Add a new user to the list..";
+                AddToListTB.Text = addTextStr;
 
-            NickRegex = new Regex(@"^[a-z`]", RegexOptions.IgnoreCase);
-            NickRegex2 = new Regex(@"^[a-z`][a-z0-9`\-]*$", RegexOptions.IgnoreCase);
+                nickRegex = new Regex(@"^[a-z`]", RegexOptions.IgnoreCase);
+                nickRegex2 = new Regex(@"^[a-z`][a-z0-9`\-]*$", RegexOptions.IgnoreCase);
+            }
+            else
+            {
+                addTextStr = "Enter text here..";
+                AddToListTB.Text = addTextStr;
+            }
 
             Binding b = new Binding();
-            b.Source = this.MyList;
+            b.Source = this.list;
             b.Mode = BindingMode.OneWay;
             MyListView.SetBinding(ListView.ItemsSourceProperty, b);
         }
@@ -43,67 +56,89 @@ namespace MySnooper
         {
             if (MyListView.SelectedIndex != -1)
             {
-                string selected = MyListView.SelectedItem as string;
-                RemoveUser(selected);
-                MyList.Remove(selected);
+                string selected = (string)MyListView.SelectedItem;
+                list.Remove(selected);
+                if (ItemRemoved != null)
+                    ItemRemoved(selected);
             }
         }
 
-        private void NewUserAdd(object sender, KeyEventArgs e)
+        private void AddToList(object sender, KeyEventArgs e)
         {
             var obj = sender as TextBox;
             if (e.Key == Key.Enter && obj.Text.Length > 0)
             {
-                string name = obj.Text.Trim();
-                if (name.Length > 0)
+                string str = obj.Text.Trim();
+                if (str.Length > 0)
                 {
-                    if (!NickRegex.IsMatch(name))
+                    if (mode == ListModes.Users)
                     {
-                        MessageBox.Show("The nickname should begin with a character of the English aplhabet or with ` character!");
-                    }
-                    else if (!NickRegex2.IsMatch(name))
-                    {
-                        MessageBox.Show("The nickname contains one or more forbidden characters! Use characters from the English alphabet, numbers or - or `!");
-                    }
-                    else
-                    {
-                        bool contains = false;
-                        string lname = name.ToLower();
-                        for (int i = 0; i < MyList.Count; i++)
+                        if (!nickRegex.IsMatch(str))
                         {
-                            if (MyList[i].ToLower() == lname)
-                            {
-                                contains = true;
-                                break;
-                            }
+                            MessageBox.Show("The nickname should begin with a character of the English aplhabet or with ` character!");
+                            return;
                         }
-                        if (!contains)
+                        else if (!nickRegex2.IsMatch(str))
                         {
-                            AddUser(name);
-                            MyList.Add(name);
+                            MessageBox.Show("The nickname contains one or more forbidden characters! Use characters from the English alphabet, numbers or - or `!");
+                            return;
                         }
-                        obj.Clear();
                     }
+
+                    bool contains = false;
+                    string lname = str.ToLower();
+                    for (int i = 0; i < list.Count; i++)
+                    {
+                        if (list[i].ToLower() == lname)
+                        {
+                            contains = true;
+                            break;
+                        }
+                    }
+
+                    if (!contains)
+                    {
+                        list.Add(str);
+                        if (ItemAdded != null)
+                            ItemAdded(str);
+                    }
+                    obj.Clear();
                 }
             }
         }
 
-        private void NewUserEnter(object sender, KeyboardFocusChangedEventArgs e)
+        private void AddToListEnter(object sender, KeyboardFocusChangedEventArgs e)
         {
             var obj = sender as TextBox;
-            if (obj.Text == AddTextStr)
+            if (obj.Text == addTextStr)
             {
                 obj.Clear();
             }
         }
 
-        private void NewUserLeave(object sender, KeyboardFocusChangedEventArgs e)
+        private void AddToListLeave(object sender, KeyboardFocusChangedEventArgs e)
         {
             var obj = sender as TextBox;
             if (obj.Text.Trim() == string.Empty)
             {
-                obj.Text = AddTextStr;
+                obj.Text = addTextStr;
             }
+        }
+
+        private void MetroWindow_ContentRendered(object sender, System.EventArgs e)
+        {
+            AddToListTB.Focus();
+        }
+
+        private void InformationClicked(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show(this, "To add item to the list enter text into the textbox and press enter." + Environment.NewLine + "To remove item from the list right click on an item and choose remove.", "Help", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void MyListView_LostFocus(object sender, RoutedEventArgs e)
+        {
+            var obj = (ListView)sender;
+            obj.SelectedIndex = -1;
         }
     }
 }

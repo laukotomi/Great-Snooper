@@ -9,7 +9,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="ServerAddress" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
+      <Value Profile="(Default)">wormnet1.team17.com</Value>
     </Setting>
     <Setting Name="UserCountry" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">-1</Value>
@@ -116,9 +116,6 @@
     <Setting Name="AutoLogIn" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="ShowLoginScreen" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
     <Setting Name="LeagueFoundMessage" Type="System.String" Scope="User">
       <Value Profile="(Default)">ADFF2F|13|0|0|0|0|Tahoma</Value>
     </Setting>
@@ -157,6 +154,9 @@
     </Setting>
     <Setting Name="DeleteLogs" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ServerAddresses" Type="System.String" Scope="User">
+      <Value Profile="(Default)">wormnet1.team17.com</Value>
     </Setting>
   </Settings>
 </SettingsFile>

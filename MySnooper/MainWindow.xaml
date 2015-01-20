@@ -5,8 +5,8 @@
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Title="Great Snooper" Height="600" Width="1024" WindowStartupLocation="CenterScreen"
         Closing="My_WormNet_Closing" Activated="WindowActivated" Deactivated="WindowDeactivated"
-        WindowState="Maximized" TitlebarHeight="40" ContentRendered="MainWindow_Loaded"
-        BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" Background="#111111">
+        WindowState="Maximized" TitlebarHeight="40" ContentRendered="MainWindow_Loaded" WindowTransitionsEnabled="False"
+        BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" ShowIconOnTitleBar="False" Background="#111111">
     <!-- Shortcut keys -->
     <controls:MetroWindow.CommandBindings>
         <CommandBinding Command="{x:Static loc:MainWindow.NextChannelCommand}" Executed="NextChannel" CanExecute="CanExecuteCustomCommand" />
@@ -36,6 +36,23 @@
     <!-- Left buttons in the header -->
     <controls:MetroWindow.LeftWindowCommands>
         <controls:WindowCommands>
+            <Menu>
+                <MenuItem Name="GSMenu">
+                    <MenuItem.Icon>
+                        <Image Source="Resources/Icon.png" Margin="5" />
+                    </MenuItem.Icon>
+                    <MenuItem.Header>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Welcome"></TextBlock>
+                            <TextBlock Text="{Binding Path=UserName}"></TextBlock>
+                            <TextBlock Text="!"></TextBlock>
+                        </StackPanel>
+                    </MenuItem.Header>
+                </MenuItem>
+                <MenuItem Header="Hali"></MenuItem>
+                <MenuItem Header="Hali"></MenuItem>
+                <MenuItem Header="Hali"></MenuItem>
+            </Menu>
             <!-- Settings icon -->
             <Button Click="SettingsClicked" ToolTip="Settings" ToolTipService.Placement="Bottom" Focusable="False">
                 <Image Source="Resources/settings.png" Width="24" Height="24"></Image>

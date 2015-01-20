@@ -14,84 +14,40 @@ namespace MySnooper
 
     public partial class FontChooser : MetroWindow
     {
-        private string TheName;
-        private MessageSetting ActSetting;
-        public event SaveSettingsDelegate SaveSettings;
-        private SortedDictionary<string, FontFamily> FontFamilies = new SortedDictionary<string,FontFamily>();
+        private string styleName;
+        private MessageSetting actSetting;
 
+        public event SaveSettingsDelegate SaveSetting;
 
         public FontChooser() { } // Never used, but visual stdio throws an error if not exists
-        public FontChooser(string TheName, string title)
+        public FontChooser(string styleName, string title, MessageSetting setting)
         {
             InitializeComponent();
 
             Title = title;
 
+            SortedDictionary<string, FontFamily> fontFamilies = new SortedDictionary<string, FontFamily>();
             IEnumerator<FontFamily> iterator = Fonts.SystemFontFamilies.GetEnumerator();
             while (iterator.MoveNext())
-                FontFamilies.Add(iterator.Current.ToString(), iterator.Current);
+                fontFamilies.Add(iterator.Current.ToString(), iterator.Current);
 
-            // Bind ChannelList to the UI
-            Binding b = new Binding();
-            b.Source = FontFamilies;
-            b.Mode = BindingMode.OneWay;
-            //b.IsAsync = true;
-            TheFontfamily.SetBinding(ListView.ItemsSourceProperty, b);
+            TheFontfamily.ItemsSource = fontFamilies;
 
-            this.TheName = TheName;
+            this.styleName = styleName;
 
             for (double i = 1; i <= 20; i++)
                 TheSize.Items.Add(i);
 
-            switch (TheName)
-            {
-                case "UserMessage":
-                    ActSetting = MessageSettings.SettingToObj(Properties.Settings.Default.UserMessage);
-                    break;
-                case "ChannelMessage":
-                    ActSetting = MessageSettings.SettingToObj(Properties.Settings.Default.ChannelMessage);
-                    break;
-                case "JoinMessage":
-                    ActSetting = MessageSettings.SettingToObj(Properties.Settings.Default.JoinMessage);
-                    break;
-                case "PartMessage":
-                    ActSetting = MessageSettings.SettingToObj(Properties.Settings.Default.PartMessage);
-                    break;
-                case "QuitMessage":
-                    ActSetting = MessageSettings.SettingToObj(Properties.Settings.Default.QuitMessage);
-                    break;
-                case "ActionMessage":
-                    ActSetting = MessageSettings.SettingToObj(Properties.Settings.Default.ActionMessage);
-                    break;
-                case "NoticeMessage":
-                    ActSetting = MessageSettings.SettingToObj(Properties.Settings.Default.NoticeMessage);
-                    break;
-                case "OfflineMessage":
-                    ActSetting = MessageSettings.SettingToObj(Properties.Settings.Default.OfflineMessage);
-                    break;
-                case "BuddyJoinMessage":
-                    ActSetting = MessageSettings.SettingToObj(Properties.Settings.Default.BuddyJoinedMessage);
-                    break;
-                case "MessageTimeChange":
-                    ActSetting = MessageSettings.SettingToObj(Properties.Settings.Default.MessageTimeStyle);
-                    break;
-                case "HyperlinkStyleChange":
-                    ActSetting = MessageSettings.SettingToObj(Properties.Settings.Default.HyperLinkStyle);
-                    break;
-                case "LeagueFound":
-                    ActSetting = MessageSettings.SettingToObj(Properties.Settings.Default.LeagueFoundMessage);
-                    break;
+            actSetting = setting;
 
-            }
-
-            TheFontfamily.SelectedItem = new KeyValuePair<string, FontFamily>(ActSetting.fontfamily.ToString(), ActSetting.fontfamily);
+            TheFontfamily.SelectedItem = new KeyValuePair<string, FontFamily>(setting.Fontfamily.ToString(), setting.Fontfamily);
             TheFontfamily.ScrollIntoView(TheFontfamily.SelectedItem);
-            TheSize.SelectedItem = ActSetting.size;
-            TheColor.SelectedColor = ActSetting.color.Color;
-            TheBold.IsChecked = ActSetting.bold == FontWeights.Bold;
-            TheItalic.IsChecked = ActSetting.italic == FontStyles.Italic;
-            TheStrikethrough.IsChecked = ActSetting.strikethrough;
-            TheUnderline.IsChecked = ActSetting.underline;
+            TheSize.SelectedItem = setting.Size;
+            TheColor.SelectedColor = setting.Color.Color;
+            TheBold.IsChecked = setting.Bold == FontWeights.Bold;
+            TheItalic.IsChecked = setting.Italic == FontStyles.Italic;
+            TheStrikethrough.IsChecked = setting.Strikethrough;
+            TheUnderline.IsChecked = setting.Underline;
         }
 
         private void FontFamilyChanged(object sender, SelectionChangedEventArgs e)
@@ -149,62 +105,21 @@ namespace MySnooper
 
         private void SaveClick(object sender, RoutedEventArgs e)
         {
-            var setting = new MessageSetting(TheColor.SelectedColor, Example.FontSize, TheBold.IsChecked.Value, TheItalic.IsChecked.Value, TheStrikethrough.IsChecked.Value, TheUnderline.IsChecked.Value, Example.FontFamily.ToString());
-
-            switch (TheName)
-            {
-                case "UserMessage":
-                    Properties.Settings.Default.UserMessage = MessageSettings.ObjToSetting(setting);
-                    MessageSettings.Settings[MessageTypes.User] = setting;
-                    break;
-                case "ChannelMessage":
-                    Properties.Settings.Default.ChannelMessage = MessageSettings.ObjToSetting(setting);
-                    MessageSettings.Settings[MessageTypes.Channel] = setting;
-                    break;
-                case "JoinMessage":
-                    Properties.Settings.Default.JoinMessage = MessageSettings.ObjToSetting(setting);
-                    MessageSettings.Settings[MessageTypes.Join] = setting;
-                    break;
-                case "PartMessage":
-                    Properties.Settings.Default.PartMessage = MessageSettings.ObjToSetting(setting);
-                    MessageSettings.Settings[MessageTypes.Part] = setting;
-                    break;
-                case "QuitMessage":
-                    Properties.Settings.Default.QuitMessage = MessageSettings.ObjToSetting(setting);
-                    MessageSettings.Settings[MessageTypes.Quit] = setting;
-                    break;
-                case "ActionMessage":
-                    Properties.Settings.Default.ActionMessage = MessageSettings.ObjToSetting(setting);
-                    MessageSettings.Settings[MessageTypes.Action] = setting;
-                    break;
-                case "NoticeMessage":
-                    Properties.Settings.Default.NoticeMessage = MessageSettings.ObjToSetting(setting);
-                    MessageSettings.Settings[MessageTypes.Notice] = setting;
-                    break;
-                case "OfflineMessage":
-                    Properties.Settings.Default.OfflineMessage = MessageSettings.ObjToSetting(setting);
-                    MessageSettings.Settings[MessageTypes.Offline] = setting;
-                    break;
-                case "BuddyJoinMessage":
-                    Properties.Settings.Default.BuddyJoinedMessage = MessageSettings.ObjToSetting(setting);
-                    MessageSettings.Settings[MessageTypes.BuddyJoined] = setting;
-                    break;
-                case "MessageTimeChange":
-                    Properties.Settings.Default.MessageTimeStyle = MessageSettings.ObjToSetting(setting);
-                    MessageSettings.MessageTime = setting;
-                    break;
-                case "HyperlinkStyleChange":
-                    Properties.Settings.Default.HyperLinkStyle = MessageSettings.ObjToSetting(setting);
-                    MessageSettings.Hyperlink = setting;
-                    break;
-                case "LeagueFound":
-                    Properties.Settings.Default.LeagueFoundMessage = MessageSettings.ObjToSetting(setting);
-                    MessageSettings.LeagueFound = setting;
-                    break;
-            }
-
+            actSetting.Fontfamily = new FontFamily(Example.FontFamily.ToString()); 
+            actSetting.Color = new SolidColorBrush(TheColor.SelectedColor);
+            actSetting.Size = Example.FontSize;
+            actSetting.Bold = TheBold.IsChecked.Value ? FontWeights.Bold : FontWeights.Normal;
+            actSetting.Italic = TheItalic.IsChecked.Value ? FontStyles.Italic : FontStyles.Normal;
+            actSetting.Strikethrough = TheStrikethrough.IsChecked.Value;
+            actSetting.Underline = TheUnderline.IsChecked.Value;
+            
+            Properties.Settings.Default.GetType().GetProperty(styleName).SetValue(Properties.Settings.Default, MessageSettings.ObjToSetting(actSetting));
             Properties.Settings.Default.Save();
-            SaveSettings();
+
+            if (SaveSetting != null)
+                SaveSetting();
+
+            this.Close();
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)

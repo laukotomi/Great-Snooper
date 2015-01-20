@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        Title="Font Chooser" TitlebarHeight="40" Background="Black" Height="420" Width="500"
+        Title="Font Chooser" TitlebarHeight="40" Background="Black" Height="420" Width="500" WindowTransitionsEnabled="False"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">    
     <DockPanel Grid.Row="1">
         <Border DockPanel.Dock="Top" Height="50" Background="#33373f">
@@ -20,7 +20,7 @@
                 <RowDefinition Height="50"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <ListView VirtualizingStackPanel.IsVirtualizing="True" VirtualizingStackPanel.VirtualizationMode="Recycling" Grid.Column="0" Grid.Row="0" Name="TheFontfamily" Background="Transparent" SelectionChanged="FontFamilyChanged" IsTextSearchEnabled="True" TextSearch.TextPath="Key">
+            <ListView VirtualizingStackPanel.VirtualizationMode="Recycling" Grid.Column="0" Grid.Row="0" Name="TheFontfamily" Background="Transparent" SelectionChanged="FontFamilyChanged" IsTextSearchEnabled="True" TextSearch.TextPath="Key">
                 <ListView.Resources>
                     <Style TargetType="ListViewItem">
                         <Style.Resources>
@@ -29,11 +29,6 @@
                         </Style.Resources>
                     </Style>
                 </ListView.Resources>
-                <ListView.ItemsPanel>
-                    <ItemsPanelTemplate>
-                        <VirtualizingStackPanel />
-                    </ItemsPanelTemplate>
-                </ListView.ItemsPanel>
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <TextBlock Text="{Binding Key, Mode=OneWay}" FontFamily="{Binding Value, Mode=OneWay}" Foreground="AliceBlue" FontSize="12" Margin="0,2" />

@@ -2,8 +2,7 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
-        Title="Settings" TitlebarHeight="40" Background="Black" Height="525" Width="800"
+        Title="Settings" TitlebarHeight="40" Background="Black" Height="525" Width="800" WindowTransitionsEnabled="False"
         WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
     <controls:MetroWindow.Resources>
         <Style BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
@@ -12,127 +11,44 @@
     </controls:MetroWindow.Resources>
     <TabControl Grid.Row="1" Background="Transparent">
         <TabItem Header="General settings">
-            <StackPanel Orientation="Vertical">
-                <Grid HorizontalAlignment="Center">
+            <ScrollViewer>
+                <StackPanel Orientation="Vertical">
+                    <Grid Name="GeneralSettingsGrid" HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="350"></ColumnDefinition>
+                            <ColumnDefinition Width="200"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10"></RowDefinition>
+                        </Grid.RowDefinitions>
+                    </Grid>
+                    <Grid HorizontalAlignment="Center">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="10"></RowDefinition>
+                            <RowDefinition Height="Auto"></RowDefinition>
+                        </Grid.RowDefinitions>
+
+                        <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
+                            <TextBox Name="WAExeText" Width="300" IsReadOnly="True"></TextBox>
+                            <Button Content="Browse" Width="70" Click="WAExeChange"></Button>
+                        </StackPanel>
+                    </Grid>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Message styles">
+            <ScrollViewer>
+                <Grid HorizontalAlignment="Center" Name="MessageStylesGrid">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="350"></ColumnDefinition>
-                        <ColumnDefinition Width="150"></ColumnDefinition>
+                        <ColumnDefinition Width="300"></ColumnDefinition>
+                        <ColumnDefinition Width="80"></ColumnDefinition>
+                        <ColumnDefinition Width="80"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                     <Grid.RowDefinitions>
                         <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
                     </Grid.RowDefinitions>
-
-                    <Label Grid.Column="0" Grid.Row="1" Content="Show login screen at startup:"></Label>
-                    <CheckBox Name="ShowLoginScreen" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" IsEnabled="False" Click="ShowLoginScreenChanged"></CheckBox>
-                    <Label Grid.Column="0" Grid.Row="2" Content="Send message to the channel if I join a game:"></Label>
-                    <CheckBox Name="MessageEnabled" Grid.Column="1" Grid.Row="2" HorizontalAlignment="Left" Click="MessageEnabledChanged"></CheckBox>
-                    <Label Grid.Column="0" Grid.Row="3" Content="Mark me away when I host or join a game:"></Label>
-                    <CheckBox Name="MarkAway" Grid.Column="1" Grid.Row="3" HorizontalAlignment="Left" Click="MarkAwayClick"></CheckBox>
-                    <Label Grid.Column="0" Grid.Row="4" Content="Away message:"></Label>
-                    <TextBox Name="AwayText" Grid.Column="1" Grid.Row="4" LostKeyboardFocus="AwayTextChanged"></TextBox>
-                    <Label Grid.Column="0" Grid.Row="5" Content="Send back message in private chats if I am back:"></Label>
-                    <CheckBox Name="SendBack" Grid.Column="1" Grid.Row="5" HorizontalAlignment="Left" Click="SendBackClick"></CheckBox>
-                    <Label Grid.Column="0" Grid.Row="6" Content="Back message:"></Label>
-                    <TextBox Name="BackText" Grid.Column="1" Grid.Row="6" LostKeyboardFocus="BackTextChanged"></TextBox>
-                    <Label Grid.Column="0" Grid.Row="7" Content="Show the time when the message arrived:"></Label>
-                    <CheckBox Name="MessageTime" Grid.Column="1" Grid.Row="7" HorizontalAlignment="Left" Click="MessageTimeChanged"></CheckBox>
-                    <Label Grid.Column="0" Grid.Row="8" Content="Autojoin #AnythingGoes:"></Label>
-                    <CheckBox Name="AutoJoinAnythingGoes" Grid.Column="1" Grid.Row="8" HorizontalAlignment="Left" Click="AutoJoinAnythingGoesChanged"></CheckBox>
-                    <Label Grid.Column="0" Grid.Row="9" Content="Delete old channel logs at startup:"></Label>
-                    <CheckBox Name="DeleteOldLogs" Grid.Column="1" Grid.Row="9" HorizontalAlignment="Left" Click="DeleteOldLogsChanged"></CheckBox>
                 </Grid>
-                <Grid HorizontalAlignment="Center">
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="10"></RowDefinition>
-                        <RowDefinition Height="Auto"></RowDefinition>
-                    </Grid.RowDefinitions>
-
-                    <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBox Name="WAExeText" Width="300" IsReadOnly="True"></TextBox>
-                        <Button Content="Browse" Width="70" Click="WAExeChange"></Button>
-                    </StackPanel>
-                </Grid>
-            </StackPanel>
-        </TabItem>
-        <TabItem Header="Message styles">
-            <Grid HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="300"></ColumnDefinition>
-                    <ColumnDefinition Width="80"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                </Grid.RowDefinitions>
-
-                <Label Grid.Column="0" Grid.Row="1" Content="Style of your message"></Label>
-                <Button Grid.Row="1" Grid.Column="1" Content="Change" Click="FontChange" Name="UserMessage"></Button>
-
-                <Label Grid.Column="0" Grid.Row="3" Content="Style of other users' message"></Label>
-                <Button Grid.Row="3" Grid.Column="1" Content="Change" Click="FontChange" Name="ChannelMessage"></Button>
-
-                <Label Grid.Column="0" Grid.Row="5" Content="Join message style"></Label>
-                <Button Grid.Row="5" Grid.Column="1" Content="Change" Click="FontChange" Name="JoinMessage"></Button>
-
-                <Label Grid.Column="0" Grid.Row="7" Content="Part message style"></Label>
-                <Button Grid.Row="7" Grid.Column="1" Content="Change" Click="FontChange" Name="PartMessage"></Button>
-
-                <Label Grid.Column="0" Grid.Row="9" Content="Quit message style"></Label>
-                <Button Grid.Row="9" Grid.Column="1" Content="Change" Click="FontChange" Name="QuitMessage"></Button>
-
-                <Label Grid.Column="0" Grid.Row="11" Content="Action message style"></Label>
-                <Button Grid.Row="11" Grid.Column="1" Content="Change" Click="FontChange" Name="ActionMessage"></Button>
-
-                <Label Grid.Column="0" Grid.Row="13" Content="Notice message style"></Label>
-                <Button Grid.Row="13" Grid.Column="1" Content="Change" Click="FontChange" Name="NoticeMessage"></Button>
-
-                <Label Grid.Column="0" Grid.Row="15" Content="Offline user message style"></Label>
-                <Button Grid.Row="15" Grid.Column="1" Content="Change" Click="FontChange" Name="OfflineMessage"></Button>
-
-                <Label Grid.Column="0" Grid.Row="17" Content="Buddy joined message style"></Label>
-                <Button Grid.Row="17" Grid.Column="1" Content="Change" Click="FontChange" Name="BuddyJoinMessage"></Button>
-
-                <Label Grid.Column="0" Grid.Row="19" Content="Style of message arrived time:"></Label>
-                <Button Grid.Row="19" Grid.Column="1" Content="Change" Click="FontChange" Name="MessageTimeChange"></Button>
-
-                <Label Grid.Column="0" Grid.Row="21" Content="Style of hyperlinks:"></Label>
-                <Button Grid.Row="21" Grid.Column="1" Content="Change" Click="FontChange" Name="HyperlinkStyleChange"></Button>
-
-                <Label Grid.Column="0" Grid.Row="23" Content="Found league text style:"></Label>
-                <Button Grid.Row="23" Grid.Column="1" Content="Change" Click="FontChange" Name="LeagueFound"></Button>
-            </Grid>
+            </ScrollViewer>
         </TabItem>
 
 
@@ -203,7 +119,7 @@
                 </StackPanel.Resources>
                 <TextBlock FontWeight="Bold" FontSize="20">Great Snooper</TextBlock>
                 <TextBlock Name="Version">Version: x.xx</TextBlock>
-                <TextBlock>This program was written by Tomi (ToOMiToO)</TextBlock>
+                <TextBlock>This program was written by Tomi</TextBlock>
                 <TextBlock>You can contact me at http://www.tus-wa.com/profile/Tomi/ using private message</TextBlock>
                 <TextBlock>License: GPLv2</TextBlock>
                 <TextBlock></TextBlock>

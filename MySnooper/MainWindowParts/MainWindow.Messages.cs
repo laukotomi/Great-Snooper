@@ -160,7 +160,7 @@ namespace MySnooper
                 if (text.Length > 0)
                 {
                     WormNetC.Send("PRIVMSG " + channel.Name + " :" + text);
-                    channel.AddMessage(GlobalManager.User, text, MessageTypes.User);
+                    channel.AddMessage(GlobalManager.User, text, MessageSettings.UserMessage);
                 }
             }
         }
@@ -170,7 +170,7 @@ namespace MySnooper
             if (channel == null || !channel.Joined || text.Length == 0) return;
 
             WormNetC.Send("PRIVMSG " + channel.Name + " :" + "\x01" + "ACTION " + text + "\x01");
-            channel.AddMessage(GlobalManager.User, text, MessageTypes.Action);
+            channel.AddMessage(GlobalManager.User, text, MessageSettings.ActionMessage);
         }
 
         bool StopLoading = false;
@@ -272,8 +272,7 @@ namespace MySnooper
             {
                 Paragraph p = new Paragraph();
                 p.Margin = new Thickness(0, 2, 0, 2);
-                MessageSettings.LoadSettingsFor(p, MessageSettings.Settings[message.MessageType]);
-                p.TextDecorations = MessageSettings.Settings[message.MessageType].textdecorations;
+                MessageSettings.LoadSettingsFor(p, message.Style);
                 p.Tag = message;
                 p.MouseRightButtonDown += InstantColorMenu;
 
@@ -285,8 +284,7 @@ namespace MySnooper
                 if (Properties.Settings.Default.MessageTime)
                 {
                     Run word = new Run(message.Time.ToString("T") + " ");
-                    MessageSettings.LoadSettingsFor(word, MessageSettings.MessageTime);
-                    word.TextDecorations = MessageSettings.MessageTime.textdecorations;
+                    MessageSettings.LoadSettingsFor(word, MessageSettings.MessageTimeStyle);
                     p.Inlines.Add(word);
                 }
 
@@ -339,8 +337,7 @@ namespace MySnooper
                         }
 
                         Hyperlink word = new Hyperlink(new Run(words[i]));
-                        MessageSettings.LoadSettingsFor(word, MessageSettings.Hyperlink);
-                        word.TextDecorations = MessageSettings.Hyperlink.textdecorations;
+                        MessageSettings.LoadSettingsFor(word, MessageSettings.HyperLinkStyle);
                         word.NavigateUri = new Uri(words[i]);
                         word.RequestNavigate += OpenURLInBrowser;
                         word.Unloaded += HyperlinkUnloaded;
@@ -358,8 +355,7 @@ namespace MySnooper
                             }
 
                             Run word = new Run(words[i]);
-                            MessageSettings.LoadSettingsFor(word, MessageSettings.LeagueFound);
-                            word.TextDecorations = MessageSettings.LeagueFound.textdecorations;
+                            MessageSettings.LoadSettingsFor(word, MessageSettings.LeagueFoundMessage);
                             p.Inlines.Add(word);
                         }
                         else
@@ -402,7 +398,7 @@ namespace MySnooper
             {
                 ColorChooser = new ContextMenu();
 
-                var def = new MenuItem() { Header = "Default", Foreground = MessageSettings.Settings[MessageTypes.Channel].color, FontWeight = FontWeights.Bold, FontSize = 12 };
+                var def = new MenuItem() { Header = "Default", Foreground = MessageSettings.ChannelMessage.Color, FontWeight = FontWeights.Bold, FontSize = 12 };
                 def.Click += RemoveInstantColor;
                 ColorChooser.Items.Add(def);
 
@@ -453,7 +449,7 @@ namespace MySnooper
                     {
                         MessageClass msg = (MessageClass)p.Tag;
                         if (msg.Sender == c)
-                            p.Foreground = MessageSettings.Settings[msg.MessageType].color;
+                            p.Foreground = msg.Style.Color;
                         p = (Paragraph)p.NextBlock;
                     }
                 }

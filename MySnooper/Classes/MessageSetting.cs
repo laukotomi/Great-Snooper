@@ -6,19 +6,20 @@ namespace MySnooper
 {
     public class MessageSetting
     {
-        public FontFamily fontfamily { get; private set; }
-        public SolidColorBrush color { get; private set; }
-        public double size { get; private set; }
-        public FontWeight bold { get; private set; }
-        public FontStyle italic { get; private set; }
-        public TextDecorationCollection textdecorations
+        public FontFamily Fontfamily { get; set; }
+        public SolidColorBrush Color { get; set; }
+        public double Size { get; set; }
+        public FontWeight Bold { get; set; }
+        public FontStyle Italic { get; set; }
+        public MessageTypes Type { get; set; }
+        public TextDecorationCollection Textdecorations
         {
             get
             {
                 TextDecorationCollection coll = new TextDecorationCollection();
-                if (underline)
+                if (Underline)
                     coll.Add(TextDecorations.Underline);
-                if (strikethrough)
+                if (Strikethrough)
                     coll.Add(TextDecorations.Strikethrough);
                 return coll;
             }
@@ -27,30 +28,31 @@ namespace MySnooper
 
             }
         }
-        public bool underline { get; private set; }
-        public bool strikethrough { get; private set; }
+        public bool Underline { get; set; }
+        public bool Strikethrough { get; set; }
 
 
-        public MessageSetting(Color color, double size, string bold, string italic, string strikethrough, string underline, string fontfamily)
+        public MessageSetting(Color color, double size, string bold, string italic, string strikethrough, string underline, string fontfamily, MessageTypes type)
         {
-            this.fontfamily = new FontFamily(fontfamily);
-            this.color = new SolidColorBrush(color);
-            this.size = size;
-            this.bold = bold == "1" ? FontWeights.Bold : FontWeights.Normal;
-            this.italic = italic == "1" ? FontStyles.Italic : FontStyles.Normal;
-            this.strikethrough = strikethrough == "1";
-            this.underline = underline == "1";
+            this.Fontfamily = new FontFamily(fontfamily);
+            this.Color = new SolidColorBrush(color);
+            this.Size = size;
+            this.Bold = bold == "1" ? FontWeights.Bold : FontWeights.Normal;
+            this.Italic = italic == "1" ? FontStyles.Italic : FontStyles.Normal;
+            this.Strikethrough = strikethrough == "1";
+            this.Underline = underline == "1";
+            this.Type = type;
         }
 
-        public MessageSetting(Color color, double size, bool bold, bool italic, bool strikethrough, bool underline, string fontfamily)
+        public MessageSetting(Color color, double size, bool bold, bool italic, bool strikethrough, bool underline, string fontfamily, MessageTypes type)
         {
-            this.fontfamily = new FontFamily(fontfamily);
-            this.color = new SolidColorBrush(color);
-            this.size = size;
-            this.bold = bold ? FontWeights.Bold : FontWeights.Normal;
-            this.italic = italic ? FontStyles.Italic : FontStyles.Normal;
-            this.strikethrough = strikethrough;
-            this.underline = underline;
+            this.Fontfamily = new FontFamily(fontfamily);
+            this.Color = new SolidColorBrush(color);
+            this.Size = size;
+            this.Bold = bold ? FontWeights.Bold : FontWeights.Normal;
+            this.Italic = italic ? FontStyles.Italic : FontStyles.Normal;
+            this.Strikethrough = strikethrough;
+            this.Underline = underline;
         }
     }
 }

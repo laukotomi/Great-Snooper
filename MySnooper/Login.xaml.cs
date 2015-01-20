@@ -1,8 +1,8 @@
 ﻿using MahApps.Metro.Controls;
 using Microsoft.Win32;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
+using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -11,47 +11,49 @@ using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Threading;
-using System.Xml;
+using System.Windows.Media.Animation;
 
 namespace MySnooper
 {
-    public partial class Login : MetroWindow
+    public partial class Login : MetroWindow, IDisposable
     {
         private enum TUSStates { OK, TUSError, ConnectionError, UserError }
 
-        // Program datas
-        private List<string> ServerList;
-        private Dictionary<string, string> Leagues;
-        private List<Dictionary<string, string>> News;
-        private string LatestVersion;
-        private bool FailFlag;
-        private Regex NickRegex, NickRegexTUS;
-        private Regex NickRegex2, NickRegex2TUS;
-        private Regex ClanRegex, ClanRegexTUS;
-        private Regex DateRegex;
-        private BackgroundWorker loadSettings;
+        // Program data
+        public SortedObservableCollection<string> ServerList { get; set; }
+
+        //private Dictionary<string, string> leagues;
+        //private List<Dictionary<string, string>> news;
+        //private string latestVersion;
+        //private bool failFlag;
+        private Regex nickRegex, nickRegexTUS;
+        private Regex nickRegex2, nickRegex2TUS;
+        private Regex clanRegex, clanRegexTUS;
+        //private BackgroundWorker loadSettings;
 
 
-        // User datas
-        private string ServerAddress;
-        private int ServerPort;
-        private CountryClass NickCountry;
-        private string NickName;
-        private string NickClan;
-        private int NickRank;
+        // User data
+        private string serverAddress;
+        private int serverPort;
+        private CountryClass nickCountry;
+        private string nickName;
+        private string nickClan;
+        private int nickRank;
 
         // IRC Thread
-        private IRCCommunicator WormNetC;
-        private Thread IrcThread;
-        private bool LoggedIn = false;
+        private IRCCommunicator wormNetC;
+        private Thread ircThread;
+        private bool loggedIn = false;
 
         // TUS communicator
-        private TUSStates TUSState;
-        BackgroundWorker TUSLoginWorker;
-        private string TUSPassword;
-        private string TUSNickStr;
+        private TUSStates tusState;
+        BackgroundWorker tusLoginWorker;
+        private string tusPassword;
+        private string tusNickStr;
+
+        public static RoutedCommand DoubleClickCommand = new RoutedCommand();
 
         public Login()
         {
@@ -67,25 +69,26 @@ namespace MySnooper
                 Properties.Settings.Default.Save();
             }
 
+            // Reducing Timeline frame rate
+            Timeline.DesiredFrameRateProperty.OverrideMetadata(
+                            typeof(Timeline),
+                            new FrameworkPropertyMetadata { DefaultValue = 25 }
+            );
+
             InitializeComponent();
+            DataContext = this;
 
-            NickRegex = new Regex(@"^[a-z`]", RegexOptions.IgnoreCase);
-            NickRegex2 = new Regex(@"^[a-z`][a-z0-9`\-]*$", RegexOptions.IgnoreCase);
-            ClanRegex = new Regex(@"^[a-z0-9]*$", RegexOptions.IgnoreCase);
-            NickRegexTUS = new Regex(@"^[^a-z`]+", RegexOptions.IgnoreCase);
-            NickRegex2TUS = new Regex(@"[^a-z0-9`\-]", RegexOptions.IgnoreCase);
-            ClanRegexTUS = new Regex(@"[^a-z0-9]", RegexOptions.IgnoreCase);
-            DateRegex = new Regex(@"[^0-9]");
+            nickRegex = new Regex(@"^[a-z`]", RegexOptions.IgnoreCase);
+            nickRegex2 = new Regex(@"^[a-z`][a-z0-9`\-]*$", RegexOptions.IgnoreCase);
 
-            ServerList = new List<string>();
-            Leagues = new Dictionary<string, string>();
-            News = new List<Dictionary<string, string>>();
-            FailFlag = false;
+            ServerList = new SortedObservableCollection<string>();
+            ServerList.DeSerialize(Properties.Settings.Default.ServerAddresses);
 
-            TUSLoginWorker = new BackgroundWorker();
-            TUSLoginWorker.WorkerSupportsCancellation = true;
-            TUSLoginWorker.DoWork += TUSLoginWorker_DoWork;
-            TUSLoginWorker.RunWorkerCompleted += TUSLoginWorker_RunWorkerCompleted;
+            Server.SelectedItem = Properties.Settings.Default.ServerAddress;
+
+            //leagues = new Dictionary<string, string>();
+            //news = new List<Dictionary<string, string>>();
+            //failFlag = false;
 
             switch (Properties.Settings.Default.LoginType)
             {
@@ -126,23 +129,29 @@ namespace MySnooper
             TUSNick.Text = Properties.Settings.Default.TusNick;
             TUSPass.Password = Properties.Settings.Default.TusPass;
 
+            /*
             loadSettings = new BackgroundWorker();
             loadSettings.WorkerSupportsCancellation = true;
             loadSettings.DoWork += LoadSettings;
             loadSettings.RunWorkerCompleted += SettingsLoaded;
+            loadSettings.RunWorkerAsync();
+            */
         }
 
-        private void MetroWindow_ContentRendered_1(object sender, EventArgs e)
-        {
+        private void LoginWindow_ContentRendered(object sender, EventArgs e)
+        {            
             if (Properties.Settings.Default.WaExe.Length == 0)
             {
                 try
                 {
-                    string WALoc = (string)(Registry.GetValue(@"HKEY_CURRENT_USER\Software\Team17SoftwareLTD\WormsArmageddon", "PATH", null));
-                    if (WALoc != null && File.Exists(WALoc + @"\WA.exe"))
+                    object WALoc = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Team17SoftwareLTD\WormsArmageddon", "PATH", null);
+                    if (WALoc != null)
                     {
-                        Properties.Settings.Default.WaExe = WALoc + @"\WA.exe";
-                        Properties.Settings.Default.Save();
+                        string WAPath = WALoc.ToString() + @"\WA.exe";
+                        if (File.Exists(WAPath)) {
+                            Properties.Settings.Default.WaExe = WAPath;
+                            Properties.Settings.Default.Save();
+                        }
                     }
                 }
                 catch (Exception ex)
@@ -155,40 +164,50 @@ namespace MySnooper
                     Properties.Settings.Default.WAExeAsked = true;
                     Properties.Settings.Default.Save();
 
-                    MessageBox.Show(this, "Ooops, seems like the program can't find your WA.exe! Please set the location of your WA.exe!", "WA.exe needs to be located", MessageBoxButton.OK, MessageBoxImage.Information);
-                    OpenFileDialog dlg = new OpenFileDialog();
-                    dlg.Filter = "Worms Armageddon Exe|*.exe";
-
-                    // Display OpenFileDialog by calling ShowDialog method 
-                    Nullable<bool> result = dlg.ShowDialog();
-
-                    // Get the selected file name
-                    if (result == true)
+                    MessageBoxResult res = MessageBox.Show(this, "Ooops, it seems like Great Snooper can not find your WA.exe! You can not host or join a game without that file. Would you like to locate your WA.exe now? You can do it later in the settings too.", "WA.exe needs to be located", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                    if (res == MessageBoxResult.Yes)
                     {
-                        // Set the WA.exe
-                        Properties.Settings.Default.WaExe = dlg.FileName;
-                        Properties.Settings.Default.Save();
+                        OpenFileDialog dlg = new OpenFileDialog();
+                        dlg.Filter = "Worms Armageddon Exe|*.exe";
+
+                        // Display OpenFileDialog by calling ShowDialog method 
+                        Nullable<bool> result = dlg.ShowDialog();
+
+                        // Get the selected file name
+                        if (result.HasValue && result.Value)
+                        {
+                            // Set the WA.exe
+                            Properties.Settings.Default.WaExe = dlg.FileName;
+                            Properties.Settings.Default.Save();
+                        }
                     }
                 }
             }
 
-            loadSettings.RunWorkerAsync();
+            myNotifyIcon.ShowBalloonTip(null, "Welcome to Great Snooper!", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
         }
 
-
+        /*
         private void LoadSettings(object sender, DoWorkEventArgs e)
         {
             WormNetCharTable.GenerateThings();
 
-            string settingsPath = Directory.GetParent(Directory.GetParent(System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath).FullName).FullName;
+            string SettingsXML = GlobalManager.SettingsPath + @"\Settings.xml";
 
             using (WebClient webClient = new WebClient() { Proxy = null })
             {
-                webClient.DownloadFile("http://mediacreator.hu/SnooperSettings.xml", settingsPath + @"\Settings.xml");
+                webClient.DownloadFile("http://mediacreator.hu/SnooperSettings.xml", SettingsXML);
             }
 
-            if (File.Exists(settingsPath + @"\Settings.xml")) {                
-                using (XmlReader xml = XmlReader.Create(settingsPath + @"\Settings.xml"))
+            if (loadSettings.CancellationPending)
+            {
+                e.Cancel = true;
+                return;
+            }
+
+            if (File.Exists(SettingsXML))
+            {
+                using (XmlReader xml = XmlReader.Create(SettingsXML))
                 {
                     xml.ReadToFollowing("servers");
                     using (XmlReader inner = xml.ReadSubtree())
@@ -196,7 +215,7 @@ namespace MySnooper
                         while (inner.ReadToFollowing("server"))
                         {
                             inner.MoveToFirstAttribute();
-                            ServerList.Add(inner.Value);
+                            serverList.Add(inner.Value);
                         }
                     }
 
@@ -208,7 +227,7 @@ namespace MySnooper
                             inner.MoveToFirstAttribute();
                             string name = inner.Value;
                             inner.MoveToNextAttribute();
-                            Leagues.Add(inner.Value, name);
+                            leagues.Add(inner.Value, name);
                         }
                     }
 
@@ -223,31 +242,36 @@ namespace MySnooper
                             while (inner.MoveToNextAttribute())
                                 newsthings.Add(inner.Name, inner.Value);
 
-                            News.Add(newsthings);
+                            news.Add(newsthings);
                         }
                     }
 
                     xml.ReadToFollowing("version");
                     xml.MoveToFirstAttribute();
-                    LatestVersion = xml.Value;
+                    latestVersion = xml.Value;
                 }
             }
             else
-                ServerList.Add("wormnet1.team17.com");
+                serverList.Add("wormnet1.team17.com");
 
             if (loadSettings.CancellationPending)
+            {
                 e.Cancel = true;
+                return;
+            }
 
             // Delete old logs
-            if (Properties.Settings.Default.DeleteLogs && Directory.Exists(settingsPath + @"\Logs"))
+            string logsDirectory = GlobalManager.SettingsPath + @"\Logs";
+            if (Properties.Settings.Default.DeleteLogs && Directory.Exists(logsDirectory))
             {
+                Regex DateRegex = new Regex(@"[^0-9]");
                 string date = DateRegex.Replace(DateTime.Now.ToString("d"), "-");
                 if (date != Properties.Settings.Default.TimeLogsDeleted)
                 {
                     Properties.Settings.Default.TimeLogsDeleted = date;
                     Properties.Settings.Default.Save();
 
-                    string[] dirs = Directory.GetDirectories(settingsPath + @"\Logs");
+                    string[] dirs = Directory.GetDirectories(logsDirectory);
                     DateTime old = DateTime.Now - new TimeSpan(30, 0, 0, 0);
                     for (int i = 0; i < dirs.Length; i++)
                     {
@@ -264,9 +288,16 @@ namespace MySnooper
                     }
                 }
             }
+
+            if (loadSettings.CancellationPending)
+            {
+                e.Cancel = true;
+                return;
+            }
         }
+        */
 
-
+        /*
         private void SettingsLoaded(object sender, RunWorkerCompletedEventArgs e)
         {
             if (e.Cancelled)
@@ -277,13 +308,13 @@ namespace MySnooper
 
             if (e.Error != null)
             {
+                failFlag = true;
                 ErrorLog.log(e.Error);
                 MessageBox.Show(this, "Failed to load the common settings!" + Environment.NewLine + "Probably you don't have internet connection or the program needs to be updated.", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if (Math.Sign(App.getVersion().CompareTo(LatestVersion)) == -1) // we need update only if it is newer than this version
+            else if (Math.Sign(App.getVersion().CompareTo(latestVersion)) == -1) // we need update only if it is newer than this version
             {
-
-                MessageBoxResult result = MessageBox.Show(this, "There is a new update available for the Great Snooper!" + Environment.NewLine + "Would you like to download it now?", "Update", MessageBoxButton.YesNo, MessageBoxImage.Information);
+                MessageBoxResult result = MessageBox.Show(this, "There is a new update available for Great Snooper!" + Environment.NewLine + "Would you like to download it now?", "Update", MessageBoxButton.YesNo, MessageBoxImage.Information);
                 if (result == MessageBoxResult.Yes)
                 {
                     try
@@ -302,17 +333,14 @@ namespace MySnooper
                     catch (Exception ex)
                     {
                         ErrorLog.log(ex);
-                        MessageBox.Show(this, "Failed to start auto updater! Please restart Great Snooper with administrator rights! (Right click on the icon and Run as Administrator)", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
+                        MessageBox.Show(this, "Failed to start the updater! Please restart Great Snooper with administrator rights! (Right click on the icon and Run as Administrator)", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                 }
-                //this.Close();
-                //return;
             }
 
-
-            for (int i = 0; i < ServerList.Count; i++)
+            for (int i = 0; i < serverList.Count; i++)
             {
-                Server.Items.Add(ServerList[i]);
+                Server.Items.Add(serverList[i]);
             }
 
             if (Properties.Settings.Default.ServerAddress.Length > 0)
@@ -324,7 +352,7 @@ namespace MySnooper
             else if (Server.Items.Count > 0) Server.SelectedIndex = 0;
 
 
-            if (!FailFlag && Properties.Settings.Default.AutoLogIn && !Properties.Settings.Default.ShowLoginScreen)
+            if (!failFlag && Properties.Settings.Default.AutoLogIn)
             {
                 LogIn(null, null);
             }
@@ -334,105 +362,107 @@ namespace MySnooper
                 LoadingRing.IsActive = false;
             }
         }
-
-
-        private void LogIn(object sender, RoutedEventArgs e)
+        */
+        private void LogInClicked(object sender, RoutedEventArgs e)
         {
-            if (e != null)
-                e.Handled = true;
+            e.Handled = true;
+            LogIn();
+        }
 
-            ServerAddress = Server.Text.Trim().ToLower();
-            if (ServerAddress.Length == 0)
+        private void LogIn()
+        {
+            serverAddress = Server.Text.Trim().ToLower();
+            if (serverAddress.Length == 0)
             {
                 MakeErrorTooltip(Server, "Please choose a server!");
                 return;
             }
 
             int colon;
-            if ((colon = ServerAddress.IndexOf(':')) != -1)
+            if ((colon = serverAddress.IndexOf(':')) != -1)
             {
-                string portstr = ServerAddress.Substring(colon + 1);
-                if (!int.TryParse(portstr, out ServerPort))
-                    ServerPort = 6667;
+                string portstr = serverAddress.Substring(colon + 1);
+                if (!int.TryParse(portstr, out serverPort))
+                    serverPort = 6667;
+                else
+                    serverAddress = serverAddress.Substring(0, colon);
             }
-            else ServerPort = 6667;
+            else serverPort = 6667;
 
 
             switch (LoginTypeChooser.SelectedIndex)
             {
                 // Simple login
                 case 0:
-                    NickName = Nick.Text.Trim();
-                    NickClan = Clan.Text.Trim();
+                    if (clanRegex == null)
+                        clanRegex = new Regex(@"^[a-z0-9]*$", RegexOptions.IgnoreCase);
 
-                    if (NickName.Length == 0)
+                    nickName = Nick.Text.Trim();
+                    nickClan = Clan.Text.Trim();
+
+                    if (nickName.Length == 0)
                     {
                         MakeErrorTooltip(Nick, "Please enter your nickname!");
                     }
-                    else if (!NickRegex.IsMatch(NickName))
+                    else if (!nickRegex.IsMatch(nickName))
                     {
-                        MakeErrorTooltip(Nick, "Your nickname should begin with a character\nof the English aplhabet or with ` character!");
+                        MakeErrorTooltip(Nick, "Your nickname should begin with a character" + Environment.NewLine + "of the English aplhabet or with ` character!");
                     }
-                    else if (!NickRegex2.IsMatch(NickName))
+                    else if (!nickRegex2.IsMatch(nickName))
                     {
-                        MakeErrorTooltip(Nick, "Your nickname contains one or more\nforbidden characters! Use characters from\nthe English alphabet, numbers, - or `!");
+                        MakeErrorTooltip(Nick, "Your nickname contains one or more" + Environment.NewLine + "forbidden characters! Use characters from" + Environment.NewLine + "the English alphabet, numbers, - or `!");
                     }
-                    else if (!ClanRegex.IsMatch(NickClan))
+                    else if (!clanRegex.IsMatch(nickClan))
                     {
-                        MakeErrorTooltip(Clan, "Your clan can contain only characters\nfrom the English alphabet or numbers");
+                        MakeErrorTooltip(Clan, "Your clan can contain only characters" + Environment.NewLine + "from the English alphabet or numbers");
                     }
                     else
                     {
                         Container.IsEnabled = false;
                         LoadingRing.IsActive = true;
 
-                        NickCountry = Country.SelectedValue as CountryClass;
+                        nickCountry = Country.SelectedValue as CountryClass;
+                        nickRank = Rank.SelectedIndex;
 
                         Properties.Settings.Default.LoginType = "simple";
-                        Properties.Settings.Default.ServerAddress = ServerAddress;
+                        Properties.Settings.Default.ServerAddress = Server.Text.Trim().ToLower();
                         Properties.Settings.Default.AutoLogIn = AutoLogIn.IsChecked.Value;
-                        if (AutoLogIn.IsChecked.Value)
-                            Properties.Settings.Default.ShowLoginScreen = false;
-                        Properties.Settings.Default.UserName = NickName;
-                        Properties.Settings.Default.UserClan = NickClan;
-                        Properties.Settings.Default.UserCountry = NickCountry.ID;
-                        Properties.Settings.Default.UserRank = Rank.SelectedIndex;
+                        Properties.Settings.Default.UserName = nickName;
+                        Properties.Settings.Default.UserClan = nickClan;
+                        Properties.Settings.Default.UserCountry = nickCountry.ID;
+                        Properties.Settings.Default.UserRank = nickRank;
                         Properties.Settings.Default.Save();
 
-                        if (NickClan.Length == 0)
-                            NickClan = "Username";
+                        GlobalManager.User = new Client(nickName, nickCountry, nickClan, nickRank, true);
 
-                        NickRank = Rank.SelectedIndex;
-
-
-                        GlobalManager.User = new Client(NickName, NickCountry, NickClan, NickRank, true);
                         // Initialize the WormNet Communicator
-                        WormNetC = new IRCCommunicator(ServerAddress, ServerPort);
-                        WormNetC.ConnectionState += ConnectionState;
+                        wormNetC = new IRCCommunicator(serverAddress, serverPort);
+                        wormNetC.ConnectionState += ConnectionState;
+
                         // Start WormNet communicator thread
-                        IrcThread = new Thread(new ThreadStart(WormNetC.run));
-                        IrcThread.Start();
+                        ircThread = new Thread(new ThreadStart(wormNetC.run));
+                        ircThread.Start();
                     }
                     break;
 
                 // TUS login
                 case 1:
-                    NickName = TUSNick.Text.Trim();
-                    TUSPassword = TUSPass.Password.Trim();
+                    nickName = TUSNick.Text.Trim();
+                    tusPassword = TUSPass.Password.Trim();
 
-                    if (NickName.Length == 0)
+                    if (nickName.Length == 0)
                     {
                         MakeErrorTooltip(TUSNick, "Please enter your nickname!");
                     }
-                    else if (!NickRegex.IsMatch(NickName))
+                    else if (!nickRegex.IsMatch(nickName))
                     {
-                        MakeErrorTooltip(TUSNick, "Your nickname should begin with a character\nof the English aplhabet or with ` character!");
+                        MakeErrorTooltip(TUSNick, "Your nickname should begin with a character" + Environment.NewLine + "of the English aplhabet or with ` character!");
                     }
-                    else if (!NickRegex2.IsMatch(NickName))
+                    else if (!nickRegex2.IsMatch(nickName))
                     {
-                        MakeErrorTooltip(TUSNick, "Your nickname contains one or more\nforbidden characters! Use characters from\nthe English alphabet, numbers, - or `!");
+                        MakeErrorTooltip(TUSNick, "Your nickname contains one or more" + Environment.NewLine + "forbidden characters! Use characters from" + Environment.NewLine + "the English alphabet, numbers, - or `!");
                     }
-                    else if (TUSPassword.Length == 0)
+                    else if (tusPassword.Length == 0)
                     {
                         MakeErrorTooltip(TUSPass, "Please enter your password!");
                     }
@@ -442,20 +472,121 @@ namespace MySnooper
                         LoadingRing.IsActive = true;
 
                         Properties.Settings.Default.LoginType = "tus";
-                        Properties.Settings.Default.ServerAddress = ServerAddress;
+                        Properties.Settings.Default.ServerAddress = serverAddress;
                         Properties.Settings.Default.AutoLogIn = AutoLogIn.IsChecked.Value;
-                        if (AutoLogIn.IsChecked.Value)
-                            Properties.Settings.Default.ShowLoginScreen = false;
-                        Properties.Settings.Default.TusNick = NickName;
-                        Properties.Settings.Default.TusPass = TUSPassword;
+                        Properties.Settings.Default.TusNick = nickName;
+                        Properties.Settings.Default.TusPass = tusPassword;
                         Properties.Settings.Default.Save();
 
-                        TUSState = TUSStates.TUSError;
-                        TUSLoginWorker.RunWorkerAsync();
+                        tusState = TUSStates.TUSError;
+
+                        if (tusLoginWorker == null)
+                        {
+                            tusLoginWorker = new BackgroundWorker();
+                            tusLoginWorker.WorkerSupportsCancellation = true;
+                            tusLoginWorker.DoWork += TUSLoginWorker_DoWork;
+                            tusLoginWorker.RunWorkerCompleted += TUSLoginWorker_RunWorkerCompleted;
+                        }
+                        tusLoginWorker.RunWorkerAsync();
                     }
                     break;
             }
         }
+
+        private void TUSLoginWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            try
+            {
+                using (WebClient tusRequest = new WebClient() { Proxy = null })
+                {
+                    string testlogin = tusRequest.DownloadString("http://www.tus-wa.com/testlogin.php?u=" + System.Web.HttpUtility.UrlEncode(nickName) + "&p=" + System.Web.HttpUtility.UrlEncode(tusPassword));
+                    if (testlogin[0] == '1') // 1 sToOMiToO
+                    {
+                        if (tusLoginWorker.CancellationPending)
+                        {
+                            e.Cancel = true;
+                            return;
+                        }
+
+                        string tempNick = nickName;
+                        nickName = testlogin.Substring(2);
+
+                        if (nickRegexTUS == null)
+                            nickRegexTUS = new Regex(@"^[^a-z`]+", RegexOptions.IgnoreCase);
+                        if (nickRegex2TUS == null)
+                            nickRegex2TUS = new Regex(@"[^a-z0-9`\-]", RegexOptions.IgnoreCase);
+
+                        nickName = nickRegexTUS.Replace(nickName, ""); // Remove bad characters
+                        nickName = nickRegex2TUS.Replace(nickName, ""); // Remove bad characters
+
+                        for (int j = 0; j < 10; j++)
+                        {
+                            string userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?update=" + System.Web.HttpUtility.UrlEncode(tempNick) + "&league=classic");
+
+                            if (tusLoginWorker.CancellationPending)
+                            {
+                                e.Cancel = true;
+                                return;
+                            }
+
+                            string[] rows = userlist.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                            for (int i = 0; i < rows.Length; i++)
+                            {
+                                if (rows[i].Substring(0, nickName.Length) == nickName)
+                                {
+                                    tusState = TUSStates.OK;
+                                    string[] data = rows[i].Split(new char[] { ' ' });
+
+                                    tusNickStr = data[1];
+
+                                    if (clanRegexTUS == null)
+                                        clanRegexTUS = new Regex(@"[^a-z0-9]", RegexOptions.IgnoreCase);
+
+                                    nickClan = clanRegexTUS.Replace(data[5], ""); // Remove bad characters
+                                    if (nickClan.Length == 0)
+                                        nickClan = "Username";
+
+                                    if (int.TryParse(data[2].Substring(1), out nickRank))
+                                        nickRank--;
+                                    else
+                                        nickRank = 13;
+
+                                    nickCountry = CountriesClass.GetCountryByCC(data[3].ToUpper());
+                                    break;
+                                }
+                            }
+
+                            if (tusState == TUSStates.OK)
+                                break;
+
+                            Thread.Sleep(2500);
+
+                            if (tusLoginWorker.CancellationPending)
+                            {
+                                e.Cancel = true;
+                                return;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        tusState = TUSStates.UserError;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                tusState = TUSStates.ConnectionError;
+                ErrorLog.log(ex);
+            }
+
+            if (tusLoginWorker.CancellationPending)
+            {
+                e.Cancel = true;
+                return;
+            }
+        }
+
 
         private void TUSLoginWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
@@ -465,21 +596,23 @@ namespace MySnooper
                 return;
             }
 
-            switch (TUSState)
+            switch (tusState)
             {
                 case TUSStates.TUSError:
                     MessageBox.Show(this, "An error occoured! Please try again!", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
                     break;
 
                 case TUSStates.OK:
+                    GlobalManager.User = new Client(nickName, nickCountry, nickClan, nickRank, true) { TusNick = tusNickStr };
+
                     // Initialize the WormNet Communicator
-                    GlobalManager.User = new Client(NickName, NickCountry, NickClan, NickRank, true) { TusNick = TUSNickStr };
-                    WormNetC = new IRCCommunicator(ServerAddress, ServerPort);
-                    WormNetC.ConnectionState += ConnectionState;
+                    wormNetC = new IRCCommunicator(serverAddress, serverPort);
+                    wormNetC.ConnectionState += ConnectionState;
+
                     // Start WormNet communicator thread
-                    IrcThread = new Thread(new ThreadStart(WormNetC.run));
-                    IrcThread.Start();
-                    break;
+                    ircThread = new Thread(new ThreadStart(wormNetC.run));
+                    ircThread.Start();
+                    return;
 
                 case TUSStates.UserError:
                     MessageBox.Show(this, "The given username or password was incorrent!", "Wrong username or password", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -490,117 +623,8 @@ namespace MySnooper
                     break;
             }
 
-            if (TUSState != TUSStates.OK)
-            {
-                Container.IsEnabled = true;
-                LoadingRing.IsActive = false;
-            }
-        }
-
-        private void TUSLoginWorker_DoWork(object sender, DoWorkEventArgs e)
-        {
-            try
-            {
-                using (WebClient tusRequest = new WebClient() { Proxy = null })
-                {
-                    string testlogin = tusRequest.DownloadString("http://www.tus-wa.com/testlogin.php?u=" + System.Web.HttpUtility.UrlEncode(NickName) + "&p=" + System.Web.HttpUtility.UrlEncode(TUSPassword));
-                    if (testlogin[0] == '1') // 1 sToOMiToO
-                    {
-                        string tempNick = NickName;
-                        NickName = testlogin.Substring(2);
-                        NickName = NickRegexTUS.Replace(NickName, ""); // Remove bad characters
-                        NickName = NickRegex2TUS.Replace(NickName, ""); // Remove bad characters
-
-                        if (TUSLoginWorker.CancellationPending)
-                        {
-                            e.Cancel = true;
-                            return;
-                        }
-
-                        for (int j = 0; j < 5; j++)
-                        {
-                            string userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?update=" + System.Web.HttpUtility.UrlEncode(tempNick) + "&league=classic");
-                            string[] rows = userlist.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-                            for (int i = 0; i < rows.Length; i++)
-                            {
-                                if (rows[i].Substring(0, NickName.Length) == NickName)
-                                {
-                                    TUSState = TUSStates.OK;
-                                    string[] data = rows[i].Split(new char[] { ' ' });
-
-                                    TUSNickStr = data[1];
-                                    NickClan = ClanRegexTUS.Replace(data[5], ""); // Remove bad characters
-                                    if (NickClan.Length == 0)
-                                        NickClan = "Username";
-
-                                    if (int.TryParse(data[2].Substring(1), out NickRank))
-                                        NickRank--;
-                                    else
-                                        NickRank = 13;
-
-                                    NickCountry = CountriesClass.GetCountryByCC(data[3].ToUpper());
-                                    break;
-                                }
-                            }
-
-                            if (TUSState == TUSStates.OK)
-                                break;
-                            Thread.Sleep(2500);
-                        }
-                    }
-                    else
-                    {
-                        TUSState = TUSStates.UserError;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                TUSState = TUSStates.ConnectionError;
-                ErrorLog.log(ex);
-            }
-
-            if (TUSLoginWorker.CancellationPending)
-            {
-                e.Cancel = true;
-                return;
-            }
-        }
-
-
-        private void MakeErrorTooltip(Control item, string text)
-        {
-            ToolTip tt;
-            if (item.ToolTip != null)
-                tt = (ToolTip)item.ToolTip;
-            else
-            {
-                tt = new ToolTip();
-                tt.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
-                tt.PlacementTarget = item;
-            }
-
-            TextBlock tb;
-            if (tt.Content != null)
-                tb = (TextBlock)tt.Content;
-            else
-            {
-                tb = new TextBlock();
-                tb.Foreground = new SolidColorBrush(Colors.Red);
-                tt.Content = tb;
-            }
-
-            tb.Inlines.Clear();
-            string[] lines = text.Split(new char[] { '\n' });
-            for (int i = 0; i < lines.Length; i++)
-            {
-                tb.Inlines.Add(new Run(lines[i]));
-                if (i + 1 < lines.Length)
-                    tb.Inlines.Add(new LineBreak());
-            }
-
-            tt.IsOpen = true;
-            tt.StaysOpen = false;
+            Container.IsEnabled = true;
+            LoadingRing.IsActive = false;
         }
 
 
@@ -611,9 +635,9 @@ namespace MySnooper
                 switch (state)
                 {
                     case IRCConnectionStates.OK:
-                        MainWindow MW = new MainWindow(WormNetC, IrcThread, ServerAddress, Leagues, News);
+                        MainWindow MW = new MainWindow(wormNetC, ircThread, serverAddress);
                         MW.Show();
-                        LoggedIn = true;
+                        loggedIn = true;
                         this.Close();
                         return;
 
@@ -641,6 +665,40 @@ namespace MySnooper
                 LoadingRing.IsActive = false;
             }
             ));
+        }
+        private void MakeErrorTooltip(Control item, string text)
+        {
+            ToolTip tt;
+            if (item.ToolTip != null)
+                tt = (ToolTip)item.ToolTip;
+            else
+            {
+                tt = new ToolTip();
+                tt.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+                tt.PlacementTarget = item;
+            }
+
+            TextBlock tb;
+            if (tt.Content != null)
+                tb = (TextBlock)tt.Content;
+            else
+            {
+                tb = new TextBlock();
+                tb.Foreground = new SolidColorBrush(Colors.Red);
+                tt.Content = tb;
+            }
+
+            tb.Inlines.Clear();
+            string[] lines = text.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < lines.Length; i++)
+            {
+                tb.Inlines.Add(new Run(lines[i]));
+                if (i + 1 < lines.Length)
+                    tb.Inlines.Add(new LineBreak());
+            }
+
+            tt.IsOpen = true;
+            tt.StaysOpen = false;
         }
 
         private void ServerHelp(object sender, RoutedEventArgs e)
@@ -675,24 +733,43 @@ namespace MySnooper
 
         private void WindowClosing(object sender, CancelEventArgs e)
         {
+            /*
             if (loadSettings.IsBusy)
             {
                 loadSettings.CancelAsync();
                 e.Cancel = true;
+                return;
             }
-            else if (TUSLoginWorker.IsBusy)
+            */
+            
+            if (tusLoginWorker != null && tusLoginWorker.IsBusy)
             {
-                TUSLoginWorker.CancelAsync();
+                tusLoginWorker.CancelAsync();
                 e.Cancel = true;
+                return;
             }
-            else if (!LoggedIn && IrcThread != null && IrcThread.IsAlive)
+            
+            if (!loggedIn && ircThread != null && ircThread.IsAlive)
             {
-                WormNetC.CancelAsync();
+                wormNetC.CancelAsync();
                 e.Cancel = true;
+                return;
             }
-            else if (LoggedIn)
+
+            if (loggedIn)
             {
-                WormNetC.ConnectionState -= ConnectionState;
+                wormNetC.ConnectionState -= ConnectionState;
+            }
+
+            Properties.Settings.Default.ServerAddresses = ServerList.Serialize();
+            Properties.Settings.Default.Save();
+            myNotifyIcon.Dispose();
+            myNotifyIcon = null;
+
+            if (tusLoginWorker != null)
+            {
+                tusLoginWorker.Dispose();
+                tusLoginWorker = null;
             }
         }
 
@@ -700,8 +777,92 @@ namespace MySnooper
         {
             if (e.Key == System.Windows.Input.Key.Enter)
             {
-                LogIn(null, null);
-                e.Handled = true;
+                e.Handled = true; 
+                LogIn();
+            }
+        }
+
+        private void ServerListEditClicked(object sender, RoutedEventArgs e)
+        {
+            SortedObservableCollection<string> serverList = new SortedObservableCollection<string>();
+            foreach (var server in this.ServerList)
+                serverList.Add(server);
+
+            ListEditor window = new ListEditor(serverList, "Server list", ListEditor.ListModes.Normal);
+            window.Closing += ServerListWindowClosed;
+            window.ItemRemoved += RemoveServer;
+            window.ItemAdded += AddServer;
+            window.Owner = this;
+            window.ShowDialog();
+            e.Handled = true;
+        }
+
+        private void AddServer(string item)
+        {
+            this.Dispatcher.Invoke(new Action(delegate()
+            {
+                this.ServerList.Add(item);
+            }
+            ));
+        }
+
+        private void RemoveServer(string item)
+        {
+            this.Dispatcher.Invoke(new Action(delegate()
+            {
+                this.ServerList.Remove(item);
+            }
+            ));
+        }
+
+        private void ServerListWindowClosed(object sender, CancelEventArgs e)
+        {
+            this.Dispatcher.Invoke(new Action(delegate()
+            {
+                var obj = sender as ListEditor;
+                obj.Closing -= ServerListWindowClosed;
+                obj.ItemRemoved -= RemoveServer;
+                obj.ItemAdded -= AddServer;
+            }
+            ));
+        }
+
+        private void ExitClicked(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            this.Close();
+        }
+
+        private void SettingsClicked(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            UserSettings window = new UserSettings();
+            window.Owner = this;
+            window.ShowDialog();
+        }
+
+        private void CanExecuteCustomCommand(object sender, CanExecuteRoutedEventArgs e)
+        {
+            e.CanExecute = true;
+        }
+
+        private void NotifyIconDoubleClick(object sender, ExecutedRoutedEventArgs e)
+        {
+            this.Activate();
+        }
+
+        public void Dispose()
+        {
+            if (tusLoginWorker != null)
+            {
+                tusLoginWorker.Dispose();
+                tusLoginWorker = null;
+            }
+
+            if (myNotifyIcon != null)
+            {
+                myNotifyIcon.Dispose();
+                myNotifyIcon = null;
             }
         }
     }

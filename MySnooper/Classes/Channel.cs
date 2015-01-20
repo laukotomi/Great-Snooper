@@ -130,7 +130,7 @@ namespace MySnooper
 
 
         // Add a message
-        public void AddMessage(Client Sender, string Message, MessageTypes messageType, bool LeagueFound = false)
+        public void AddMessage(Client Sender, string Message, MessageSetting style, bool LeagueFound = false)
         {
             if (Messages.Count + 1 > GlobalManager.MaxMessagesInMemory)
             {
@@ -141,7 +141,7 @@ namespace MySnooper
             //if (sv.VerticalOffset == sv.ScrollableHeight && Messages.Count > GlobalManager.MaxMessagesDisplayed && MessagesLoadedFrom + 1 + GlobalManager.MaxMessagesDisplayed < GlobalManager.MaxMessagesInMemory)
             //    MessagesLoadedFrom++;
 
-            MessageClass message = new MessageClass(Sender, Message, messageType);
+            MessageClass message = new MessageClass(Sender, Message, style);
             Messages.Add(message);
 
             if (NewMessageAdded != null)

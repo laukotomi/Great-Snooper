@@ -1,6 +1,6 @@
 ﻿using System;
 using System.Collections.ObjectModel;
-using System.Collections.Specialized;
+using System.Text;
 
 namespace MySnooper
 {
@@ -22,7 +22,7 @@ namespace MySnooper
                 {
                     case 0:
                     case 1:
-                        base.Insert(i, item);
+                        Insert(i, item);
                         return i;
                     case -1:
                         break;
@@ -36,6 +36,24 @@ namespace MySnooper
         {
             for (int i = 0; i < list.Count; i++)
                 Add(list[i]);
+        }
+
+        public string Serialize()
+        {
+            var sb = new StringBuilder();
+            for (int i = 0; i < Count; i++)
+            {
+                sb.Append(this[i]);
+                sb.Append(','); 
+            }
+            return sb.ToString();
+        }
+
+        public void DeSerialize(string str)
+        {
+            string[] servers = str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            foreach (var server in servers)
+                Add((T)(object)server);
         }
     }
 }

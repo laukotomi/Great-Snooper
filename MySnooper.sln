@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 2012
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySnooper", "MySnooper\MySnooper.csproj", "{37CB7098-24B9-4A11-8558-74D341984831}"
-EndProject
-Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "Setup", "Setup\Setup.isproj", "{6AA764F5-53ED-48FE-97F4-2917F602844C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,18 +24,11 @@ Global
 		{37CB7098-24B9-4A11-8558-74D341984831}.Release|Any CPU.Build.0 = Release|Any CPU
 		{37CB7098-24B9-4A11-8558-74D341984831}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{37CB7098-24B9-4A11-8558-74D341984831}.SingleImage|Any CPU.Build.0 = Release|Any CPU
-		{6AA764F5-53ED-48FE-97F4-2917F602844C}.CD_ROM|Any CPU.ActiveCfg = CD_ROM
-		{6AA764F5-53ED-48FE-97F4-2917F602844C}.CD_ROM|Any CPU.Build.0 = CD_ROM
-		{6AA764F5-53ED-48FE-97F4-2917F602844C}.Debug|Any CPU.ActiveCfg = DVD-5
-		{6AA764F5-53ED-48FE-97F4-2917F602844C}.Debug|Any CPU.Build.0 = DVD-5
-		{6AA764F5-53ED-48FE-97F4-2917F602844C}.DVD-5|Any CPU.ActiveCfg = DVD-5
-		{6AA764F5-53ED-48FE-97F4-2917F602844C}.DVD-5|Any CPU.Build.0 = DVD-5
-		{6AA764F5-53ED-48FE-97F4-2917F602844C}.Release|Any CPU.ActiveCfg = SingleImage
-		{6AA764F5-53ED-48FE-97F4-2917F602844C}.Release|Any CPU.Build.0 = SingleImage
-		{6AA764F5-53ED-48FE-97F4-2917F602844C}.SingleImage|Any CPU.ActiveCfg = SingleImage
-		{6AA764F5-53ED-48FE-97F4-2917F602844C}.SingleImage|Any CPU.Build.0 = SingleImage
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal

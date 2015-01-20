@@ -187,3 +187,60 @@ d:\VS\Great-Snooper\MySnooper\obj\Release\MySnooper.Properties.Resources.resourc
 d:\VS\Great-Snooper\MySnooper\obj\Release\MySnooper.csproj.GenerateResource.Cache
 d:\VS\Great-Snooper\MySnooper\obj\Release\Great Snooper.exe.manifest
 d:\VS\Great-Snooper\MySnooper\obj\Release\Great Snooper.application
+C:\VS\Great-Snooper\MySnooper\bin\Release\Great Snooper.exe.config
+C:\VS\Great-Snooper\MySnooper\bin\Release\Great Snooper.exe.manifest
+C:\VS\Great-Snooper\MySnooper\bin\Release\Great Snooper.application
+C:\VS\Great-Snooper\MySnooper\bin\Release\Great Snooper.exe
+C:\VS\Great-Snooper\MySnooper\bin\Release\Great Snooper.pdb
+C:\VS\Great-Snooper\MySnooper\bin\Release\MahApps.Metro.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\System.Windows.Interactivity.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\Xceed.Wpf.AvalonDock.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\Xceed.Wpf.AvalonDock.Themes.Aero.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\Xceed.Wpf.AvalonDock.Themes.Metro.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\Xceed.Wpf.AvalonDock.Themes.VS2010.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\Xceed.Wpf.DataGrid.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\Xceed.Wpf.Toolkit.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\MahApps.Metro.xml
+C:\VS\Great-Snooper\MySnooper\bin\Release\de\Xceed.Wpf.AvalonDock.resources.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\es\Xceed.Wpf.AvalonDock.resources.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\fr\Xceed.Wpf.AvalonDock.resources.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\hu\Xceed.Wpf.AvalonDock.resources.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\it\Xceed.Wpf.AvalonDock.resources.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\pt-BR\Xceed.Wpf.AvalonDock.resources.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\ro\Xceed.Wpf.AvalonDock.resources.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\ru\Xceed.Wpf.AvalonDock.resources.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\sv\Xceed.Wpf.AvalonDock.resources.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
+C:\VS\Great-Snooper\MySnooper\obj\Release\AwayManager.baml
+C:\VS\Great-Snooper\MySnooper\obj\Release\FontChooser.baml
+C:\VS\Great-Snooper\MySnooper\obj\Release\Hosting.baml
+C:\VS\Great-Snooper\MySnooper\obj\Release\LeagueSearcher.baml
+C:\VS\Great-Snooper\MySnooper\obj\Release\ListEditor.baml
+C:\VS\Great-Snooper\MySnooper\obj\Release\Login.baml
+C:\VS\Great-Snooper\MySnooper\obj\Release\UserSettings.baml
+C:\VS\Great-Snooper\MySnooper\obj\Release\App.baml
+C:\VS\Great-Snooper\MySnooper\obj\Release\AwayManager.g.cs
+C:\VS\Great-Snooper\MySnooper\obj\Release\FontChooser.g.cs
+C:\VS\Great-Snooper\MySnooper\obj\Release\Hosting.g.cs
+C:\VS\Great-Snooper\MySnooper\obj\Release\LeagueSearcher.g.cs
+C:\VS\Great-Snooper\MySnooper\obj\Release\ListEditor.g.cs
+C:\VS\Great-Snooper\MySnooper\obj\Release\Login.g.cs
+C:\VS\Great-Snooper\MySnooper\obj\Release\MainWindow.g.cs
+C:\VS\Great-Snooper\MySnooper\obj\Release\News.g.cs
+C:\VS\Great-Snooper\MySnooper\obj\Release\UserSettings.g.cs
+C:\VS\Great-Snooper\MySnooper\obj\Release\App.g.cs
+C:\VS\Great-Snooper\MySnooper\obj\Release\Great Snooper_MarkupCompile.cache
+C:\VS\Great-Snooper\MySnooper\obj\Release\Great Snooper_MarkupCompile.lref
+C:\VS\Great-Snooper\MySnooper\obj\Release\MainWindow.baml
+C:\VS\Great-Snooper\MySnooper\obj\Release\News.baml
+C:\VS\Great-Snooper\MySnooper\obj\Release\Great Snooper.g.resources
+C:\VS\Great-Snooper\MySnooper\obj\Release\MySnooper.Properties.Resources.resources
+C:\VS\Great-Snooper\MySnooper\obj\Release\MySnooper.csproj.GenerateResource.Cache
+C:\VS\Great-Snooper\MySnooper\obj\Release\Great Snooper.exe.manifest
+C:\VS\Great-Snooper\MySnooper\obj\Release\Great Snooper.application
+C:\VS\Great-Snooper\MySnooper\obj\Release\Great Snooper.exe
+C:\VS\Great-Snooper\MySnooper\obj\Release\Great Snooper.pdb
+C:\VS\Great-Snooper\MySnooper\obj\Release\MySnooper.csprojResolveAssemblyReference.cache
+C:\VS\Great-Snooper\MySnooper\bin\Release\Hardcodet.Wpf.TaskbarNotification.dll
+C:\VS\Great-Snooper\MySnooper\bin\Release\Hardcodet.Wpf.TaskbarNotification.pdb
+C:\VS\Great-Snooper\MySnooper\bin\Release\Hardcodet.Wpf.TaskbarNotification.xml

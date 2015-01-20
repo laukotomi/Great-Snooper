@@ -12,195 +12,227 @@ namespace MySnooper
 {
     public partial class MainWindow : MetroWindow
     {
-        private IRCCommunicator WormNetC;
-        private System.Threading.Thread IrcThread;
-
-
-        // Offline user notification arrived
-        private void OfflineUser(string name)
+        void timer_Tick(object sender, EventArgs e)
         {
-            this.Dispatcher.Invoke(new Action(delegate()
+            if (GlobalManager.UITasks.Count > 0)
             {
-                WormNetM.OfflineUserPrivChat(name);
-            }
-            ));
-        }
-
-        // Message arrived
-        private void MessageToChannel(string clientName, string to, string message, MessageTypes messageType)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                string fromLow = clientName.ToLower();
-
-                Client c = null;
-                Channel ch = null;
-                string toLow = to.ToLower();
-                foreach (var item in WormNetM.ChannelList)
+                UITask task;
+                while (GlobalManager.UITasks.TryDequeue(out task))
                 {
-                    if (item.Value.LowerName == toLow || item.Value.LowerName == fromLow) // message to a channel || private message (we have a private chat tab)
+                    Type taskType = task.GetType();
+
+                    // Offline user notification
+                    if (taskType == typeof(OfflineUITask))
                     {
-                        ch = item.Value;
-                        c = item.Value.TheClient;
-                        break;
+                        OfflineUITask offline = (OfflineUITask)task;
+                        WormNetM.OfflineUserPrivChat(offline.ClientName);
                     }
-                }
-
-                if (c == null && !WormNetM.Clients.TryGetValue(fromLow, out c))
-                {
-                    c = new Client(clientName, null, "", 0, false);
-                    c.IsBanned = WormNetM.IsBanned(fromLow);
-                    c.IsBuddy = WormNetM.IsBuddy(fromLow);
-                    c.OnlineStatus = 2;
-                }
-
-                if (ch == null) // new private message channel
-                {
-                    ch = new Channel(c.Name, "Chat with " + c.Name, c);
-                    ch.NewMessageAdded += AddNewMessage;
-                    WormNetM.ChannelList.Add(ch.LowerName, ch);
-
-                    MakeConnectedLayout(ch);
-                    if (!c.IsBanned)
-                        AddToChannels(ch);
-                }
-                else if (!ch.Joined)
-                    return;
-
-                bool leagueFound = false;
-
-                if (!ch.IsPrivMsgChannel)
-                {
-                    bool LookForLeague = SearchHere != null && SearchHere == ch;
-                    string[] words = message.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-                    for (int i = 0; i < words.Length; i++)
+                    // Message
+                    else if (taskType == typeof(MessageUITask))
                     {
-                        if (messageType == MessageTypes.Channel && words[i] == GlobalManager.User.Name)
+                        MessageUITask message = (MessageUITask)task;
+                        string fromLow = message.ClientName.ToLower();
+
+                        Client c = null;
+                        Channel ch = null;
+                        string toLow = message.ChannelName.ToLower();
+                        foreach (var item in WormNetM.ChannelList)
                         {
-                            Highlight(ch);
-                        }
-                        else if (LookForLeague)
-                        {
-                            string lower = words[i].ToLower();
-                            if (FoundUsers.ContainsKey(lower) && !FoundUsers[lower].Contains(c.LowerName))
+                            if (item.Value.LowerName == toLow || item.Value.LowerName == fromLow) // message to a channel || private message (we have a private chat tab)
                             {
-                                FoundUsers[lower].Add(c.LowerName);
-                                leagueFound = true;
+                                ch = item.Value;
+                                c = item.Value.TheClient;
+                                break;
+                            }
+                        }
+
+                        if (c == null && !WormNetM.Clients.TryGetValue(fromLow, out c))
+                        {
+                            c = new Client(message.ClientName, null, "", 0, false);
+                            c.IsBanned = WormNetM.IsBanned(fromLow);
+                            c.IsBuddy = WormNetM.IsBuddy(fromLow);
+                            c.OnlineStatus = 2;
+                        }
+
+                        if (ch == null) // new private message channel
+                        {
+                            ch = new Channel(c.Name, "Chat with " + c.Name, c);
+                            ch.NewMessageAdded += AddNewMessage;
+                            WormNetM.ChannelList.Add(ch.LowerName, ch);
+
+                            MakeConnectedLayout(ch);
+                            if (!c.IsBanned)
+                                AddToChannels(ch);
+                        }
+                        else if (!ch.Joined)
+                            return;
+
+                        bool leagueFound = false;
+
+                        if (!ch.IsPrivMsgChannel)
+                        {
+                            bool LookForLeague = SearchHere != null && SearchHere == ch;
+                            string[] words = message.Message.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                            for (int i = 0; i < words.Length; i++)
+                            {
+                                if (message.Setting.Type == MessageTypes.Channel && words[i] == GlobalManager.User.Name)
+                                {
+                                    Highlight(ch);
+                                }
+                                else if (LookForLeague)
+                                {
+                                    string lower = words[i].ToLower();
+                                    if (FoundUsers.ContainsKey(lower) && !FoundUsers[lower].Contains(c.LowerName))
+                                    {
+                                        FoundUsers[lower].Add(c.LowerName);
+                                        leagueFound = true;
+                                        this.FlashWindow();
+
+                                        if (Properties.Settings.Default.LeagueFoundBeepEnabled && SoundEnabled && LeagueGameFoundBeep != null)
+                                        {
+                                            try
+                                            {
+                                                LeagueGameFoundBeep.Play();
+                                            }
+                                            catch (Exception ex)
+                                            {
+                                                ErrorLog.log(ex);
+                                            }
+                                        }
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                        else if (Channels.SelectedItem != null && !c.IsBanned)
+                        {
+                            // Private message arrived notification
+                            Channel selectedCH = (Channel)((TabItem)Channels.SelectedItem).Tag;
+                            if (ch.BeepSoundPlay && (ch != selectedCH || !IsWindowFocused))
+                            {
+                                ch.NewMessages = true;
+                                ch.BeepSoundPlay = false;
                                 this.FlashWindow();
 
-                                if (Properties.Settings.Default.LeagueFoundBeepEnabled && SoundEnabled && LeagueGameFoundBeep != null)
+                                if (Properties.Settings.Default.PMBeepEnabled && SoundEnabled && PrivateMessageBeep != null)
                                 {
                                     try
                                     {
-                                        LeagueGameFoundBeep.Play();
+                                        PrivateMessageBeep.Play();
                                     }
                                     catch (Exception ex)
                                     {
                                         ErrorLog.log(ex);
                                     }
                                 }
-                                break;
+                            }
+
+                            // Send back away message if needed
+                            if (AwayText != string.Empty && !ch.AwaySent && (selectedCH != ch || !IsWindowFocused))
+                            {
+                                SendMessageToChannel(AwayText, ch);
+                                ch.AwaySent = true;
                             }
                         }
-                    }
-                }
-                else if (Channels.SelectedItem != null && !c.IsBanned)
-                {
-                    // Private message arrived notification
-                    Channel selectedCH = (Channel)((TabItem)Channels.SelectedItem).Tag;
-                    if (ch.BeepSoundPlay && (ch != selectedCH || !IsWindowFocused))
-                    {
-                        ch.NewMessages = true;
-                        ch.BeepSoundPlay = false;
-                        this.FlashWindow();
 
-                        if (Properties.Settings.Default.PMBeepEnabled && SoundEnabled && PrivateMessageBeep != null)
+                        ch.AddMessage(c, message.Message, message.Setting, leagueFound);
+                    }
+
+                    // A client left the server
+                    else if (taskType == typeof(QuitUITask))
+                    {
+                        QuitUITask quit = (QuitUITask)task;
+                        WormNetM.QuittedChannel(quit.ClientName, quit.Message);
+                        TusUsers.Remove(quit.ClientName.ToLower());
+                        UpdateDescription();
+                    }
+
+                    // A client parts a channel
+                    else if (taskType == typeof(PartedUITask))
+                    {
+                        PartedUITask parted = (PartedUITask)task;
+                        Client c = WormNetM.PartedChannel(parted.ChannelName, parted.ClientName); // returns the client if it was removed completely
+                        if (c != null)
+                            TusUsers.Remove(c.LowerName);
+                        UpdateDescription();
+                    }
+
+                    // A client joins a channel
+                    else if (taskType == typeof(JoinedUITask))
+                    {
+                        JoinedUITask joined = (JoinedUITask)task;
+                        bool buddyJoined = false;
+                        bool userjoined = WormNetM.JoinedChannel(joined.ChannelName, joined.ClientName, joined.Clan, ref buddyJoined);
+                        if (userjoined)
+                        {
+                            GameListForce = true;
+                        }
+
+                        if (buddyJoined && Properties.Settings.Default.BJBeepEnabled && SoundEnabled && BuddyOnlineBeep != null)
                         {
                             try
                             {
-                                PrivateMessageBeep.Play();
+                                BuddyOnlineBeep.Play();
                             }
                             catch (Exception ex)
                             {
                                 ErrorLog.log(ex);
                             }
                         }
+                        UpdateDescription();
+
+                        if (userjoined && Channels.SelectedItem != null)
+                        {
+                            Channel selectedCH = (Channel)((TabItem)Channels.SelectedItem).Tag;
+                            Channel ch = WormNetM.ChannelList[joined.ChannelName];
+                            ch.TheTabItem.UpdateLayout();
+                            ch.TheTextBox.Focus();
+                        }
                     }
 
-                    // Send back away message if needed
-                    if (AwayText != string.Empty && !ch.AwaySent && (selectedCH != ch || !IsWindowFocused))
+                    else if (taskType == typeof(ChannelListUITask))
                     {
-                        SendMessageToChannel(AwayText, ch);
-                        ch.AwaySent = true;
+                        ChannelListUITask cList = (ChannelListUITask)task;
+                        this.Dispatcher.Invoke(new Action(delegate()
+                        {
+                            foreach (var item in cList.ChannelList)
+                            {
+                                Channel ch = new Channel(item.Key, item.Value);
+                                ch.NewMessageAdded += AddNewMessage;
+                                ch.ChannelLeaving += ChannelLeaving;
+
+                                MakeDisConnectedLayout(ch);
+                                MakeConnectedLayout(ch);
+                                MakeGameListTabItem(ch);
+                                MakeUserListTemplate(ch);
+                                WormNetM.ChannelList.Add(ch.LowerName, ch);
+                                AddToChannels(ch);
+                            }
+
+                            if (Channels.SelectedIndex != 0 && Channels.Items.Count > 0)
+                                Channels.SelectedIndex = 0;
+                        }
+                        ));
+
+                        if (Properties.Settings.Default.AutoJoinAnythingGoes)
+                            WormNetC.Send("JOIN #AnythingGoes");
                     }
-                }
 
-                ch.AddMessage(c, message, messageType, leagueFound);
-            }
-            ));
-        }
-
-        // When a client left the server
-        private void Quitter(string clientName, string message)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                WormNetM.QuittedChannel(clientName, message);
-                TusUsers.Remove(clientName.ToLower());
-                UpdateDescription();
-            }
-            ));
-        }
-
-        // When a client parts a channel
-        private void Parted(string channelName, string clientName)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                Client c = WormNetM.PartedChannel(channelName, clientName); // returns the client if it was removed completely
-                if (c != null)
-                    TusUsers.Remove(c.LowerName);
-                UpdateDescription();
-            }
-            ));
-        }
-
-        // When a client joins a channel
-        private void Joined(string channelName, string clientName, string clan)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                bool buddyJoined = false;
-                bool userjoined = WormNetM.JoinedChannel(channelName, clientName, clan, ref buddyJoined);
-                if (userjoined)
-                {
-                    GameListForce = true;
-                }
-
-                if (buddyJoined && Properties.Settings.Default.BJBeepEnabled && SoundEnabled && BuddyOnlineBeep != null)
-                {
-                    try
+                    // Information about a client
+                    else if (taskType == typeof(ClientUITask))
                     {
-                        BuddyOnlineBeep.Play();
+                        ClientUITask client = (ClientUITask)task;
+                        WormNetM.AddClient(client.ChannelName, client.ClientName, client.Country, client.Clan, client.Rank, client.ClientGreatSnooper);
+                        UpdateDescription();
                     }
-                    catch (Exception e)
-                    {
-                        ErrorLog.log(e);
-                    }
-                }
-                UpdateDescription();
-
-                if (userjoined && Channels.SelectedItem != null)
-                {
-                    Channel selectedCH = (Channel)((TabItem)Channels.SelectedItem).Tag;
-                    Channel ch = WormNetM.ChannelList[channelName];
-                    ch.TheTabItem.UpdateLayout();
-                    ch.TheTextBox.Focus();
                 }
             }
-            ));
         }
+
+        private IRCCommunicator WormNetC;
+        private System.Threading.Thread IrcThread;
+
 
         private void MakeDisConnectedLayout(Channel ch)
         {
@@ -409,46 +441,6 @@ namespace MySnooper
             }
             Channels.Items.Add(ti);
             ch.TheTabItem = ti;
-        }
-
-
-        private void ListEnd(SortedDictionary<string, string> channelList)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                foreach (var item in channelList)
-                {
-                    Channel ch = new Channel(item.Key, item.Value);
-                    ch.NewMessageAdded += AddNewMessage;
-                    ch.ChannelLeaving += ChannelLeaving;
-
-                    MakeDisConnectedLayout(ch);
-                    MakeConnectedLayout(ch);
-                    MakeGameListTabItem(ch);
-                    MakeUserListTemplate(ch);
-                    WormNetM.ChannelList.Add(ch.LowerName, ch);
-                    AddToChannels(ch);
-                }
-
-                if (Channels.SelectedIndex != 0 && Channels.Items.Count > 0)
-                    Channels.SelectedIndex = 0;
-            }
-            ));
-
-            if (Properties.Settings.Default.AutoJoinAnythingGoes)
-                WormNetC.Send("JOIN #AnythingGoes");
-        }
-
-
-        // Information about a client
-        private void Client(string channelName, string clientName, CountryClass country, string clan, int rank, bool ClientGreatSnooper)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                WormNetM.AddClient(channelName, clientName, country, clan, rank, ClientGreatSnooper);
-                UpdateDescription();
-            }
-            ));
         }
     }
 }
