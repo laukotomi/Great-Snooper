@@ -39,7 +39,7 @@ namespace MySnooper
             AddBoolSetting(GeneralSettingsGrid, "CloseToTray", "Exit button minimizes the snooper to tray:");
             AddBoolSetting(GeneralSettingsGrid, "SaveInstantColors", "Save instant colors for users:");
             AddBoolSetting(GeneralSettingsGrid, "ShowBannedUsers", "Show banned users in user list:");
-            AddTextSetting(GeneralSettingsGrid, "QuitMessage", "Quit message:", new GSVersionValidator());
+            AddTextSetting(GeneralSettingsGrid, "QuitMessagee", "Quit message:", new GSVersionValidator());
             AddTextSetting(GeneralSettingsGrid, "InfoMessage", "Information message (real name irc field):", new GSVersionValidator());
             AddBoolSetting(GeneralSettingsGrid, "AskNotificatorOff", "Ask if I would like to turn off notificator:");
             AddBoolSetting(GeneralSettingsGrid, "AskLeagueSearcherOff", "Ask if I would like to turn off league searcher:");
