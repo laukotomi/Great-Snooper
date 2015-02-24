@@ -5,6 +5,8 @@ VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MySnooper", "MySnooper\MySnooper.csproj", "{37CB7098-24B9-4A11-8558-74D341984831}"
 EndProject
+Project("{6141683F-8A12-4E36-9623-2EB02B2C2303}") = "Setup", "Setup\Setup.isproj", "{5AE1F65E-10D0-44AE-8025-605A14E1AE99}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		CD_ROM|Any CPU = CD_ROM|Any CPU
@@ -24,6 +26,16 @@ Global
 		{37CB7098-24B9-4A11-8558-74D341984831}.Release|Any CPU.Build.0 = Release|Any CPU
 		{37CB7098-24B9-4A11-8558-74D341984831}.SingleImage|Any CPU.ActiveCfg = Release|Any CPU
 		{37CB7098-24B9-4A11-8558-74D341984831}.SingleImage|Any CPU.Build.0 = Release|Any CPU
+		{5AE1F65E-10D0-44AE-8025-605A14E1AE99}.CD_ROM|Any CPU.ActiveCfg = CD_ROM
+		{5AE1F65E-10D0-44AE-8025-605A14E1AE99}.CD_ROM|Any CPU.Build.0 = CD_ROM
+		{5AE1F65E-10D0-44AE-8025-605A14E1AE99}.Debug|Any CPU.ActiveCfg = DVD-5
+		{5AE1F65E-10D0-44AE-8025-605A14E1AE99}.Debug|Any CPU.Build.0 = DVD-5
+		{5AE1F65E-10D0-44AE-8025-605A14E1AE99}.DVD-5|Any CPU.ActiveCfg = DVD-5
+		{5AE1F65E-10D0-44AE-8025-605A14E1AE99}.DVD-5|Any CPU.Build.0 = DVD-5
+		{5AE1F65E-10D0-44AE-8025-605A14E1AE99}.Release|Any CPU.ActiveCfg = SingleImage
+		{5AE1F65E-10D0-44AE-8025-605A14E1AE99}.Release|Any CPU.Build.0 = SingleImage
+		{5AE1F65E-10D0-44AE-8025-605A14E1AE99}.SingleImage|Any CPU.ActiveCfg = SingleImage
+		{5AE1F65E-10D0-44AE-8025-605A14E1AE99}.SingleImage|Any CPU.Build.0 = SingleImage
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
