@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Title="Host a game" Height="340" Width="420" TitlebarHeight="40" Background="Black" WindowTransitionsEnabled="False"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False" ContentRendered="MetroWindow_ContentRendered">
     <controls:MetroWindow.Resources>
         <Style TargetType="Hyperlink">
             <Setter Property="Foreground" Value="#5DB0FF" />
@@ -51,7 +51,5 @@
 
         <Button Grid.Row="10" Grid.Column="0" Content="Create game" Click="CreateGame" Width="140"></Button>
         <Button Grid.Row="10" Grid.Column="1" Content="Close" Click="CloseWindow" Width="140"></Button>
-
-        <controls:ProgressRing Name="LoadingRing" Foreground="White" IsActive="False" Grid.ColumnSpan="2" Grid.RowSpan="9" />
     </Grid>
 </controls:MetroWindow>

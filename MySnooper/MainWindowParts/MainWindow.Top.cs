@@ -1,8 +1,10 @@
 ﻿using MahApps.Metro.Controls;
 using System;
 using System.IO;
+using System.Media;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
@@ -43,6 +45,13 @@ namespace MySnooper
         private ImageSource LeagueSearcherOff;
         private BitmapImage LeagueSearcherOn;
 
+        /*
+         * League Searcher sources
+         */
+        private Image NotificatorImage;
+        private ImageSource NotificatorOff;
+        private BitmapImage NotificatorOn;
+
 
 
         /*
@@ -50,11 +59,9 @@ namespace MySnooper
          */
         private void OpenLogs(object sender, RoutedEventArgs e)
         {
-            string settingsPath = Directory.GetParent(Directory.GetParent(System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath).FullName).FullName;
-            if (!Directory.Exists(settingsPath + @"\Logs"))
-                Directory.CreateDirectory(settingsPath + @"\Logs");
-
-            string logpath = settingsPath + @"\Logs";
+            string logpath = GlobalManager.SettingsPath + @"\Logs";
+            if (!Directory.Exists(logpath))
+                Directory.CreateDirectory(logpath);
 
             System.Diagnostics.Process.Start(logpath);
         }
@@ -74,6 +81,7 @@ namespace MySnooper
             SoundDisabledImage.BeginInit();
             SoundDisabledImage.UriSource = new Uri("pack://application:,,,/Resources/soundoff.png");
             SoundDisabledImage.EndInit();
+            SoundDisabledImage.Freeze();
 
             e.Handled = true;
         }
@@ -113,6 +121,7 @@ namespace MySnooper
             ChatModeOnImage.BeginInit();
             ChatModeOnImage.UriSource = new Uri("pack://application:,,,/Resources/chatmodeon.png");
             ChatModeOnImage.EndInit();
+            ChatModeOnImage.Freeze();
 
             e.Handled = true;
         }
@@ -133,12 +142,14 @@ namespace MySnooper
                 ChatModeImage.Source = ChatModeOnImage;
             }
 
-            foreach (var item in WormNetM.ChannelList)
+            for (int i = 0; i < servers.Count; i++)
             {
-                if (!item.Value.IsPrivMsgChannel)
-                    LoadMessages(item.Value, GlobalManager.MaxMessagesDisplayed, true);
+                foreach (var item in servers[i].ChannelList)
+                {
+                    if (!item.Value.IsPrivMsgChannel && item.Value.Joined)
+                        LoadMessages(item.Value, GlobalManager.MaxMessagesDisplayed, true);
+                }
             }
-
             e.Handled = true;
         }
 
@@ -158,6 +169,7 @@ namespace MySnooper
             LeagueSearcherOn.BeginInit();
             LeagueSearcherOn.UriSource = new Uri("pack://application:,,,/Resources/searching.png");
             LeagueSearcherOn.EndInit();
+            LeagueSearcherOn.Freeze();
 
             e.Handled = true;
         }
@@ -180,8 +192,72 @@ namespace MySnooper
             AwayOnImage.BeginInit();
             AwayOnImage.UriSource = new Uri("pack://application:,,,/Resources/away.png");
             AwayOnImage.EndInit();
+            AwayOnImage.Freeze();
 
             e.Handled = true;
+        }
+
+        private void NotificatorOnOffLoaded(object sender, RoutedEventArgs e)
+        {
+            NotificatorImage = (Image)((Button)sender).Content;
+            NotificatorOff = NotificatorImage.Source;
+
+            NotificatorOn = new BitmapImage();
+            NotificatorOn.DecodePixelHeight = Convert.ToInt32(NotificatorImage.Height);
+            NotificatorOn.DecodePixelWidth = Convert.ToInt32(NotificatorImage.Width);
+            NotificatorOn.CacheOption = BitmapCacheOption.OnLoad;
+            NotificatorOn.BeginInit();
+            NotificatorOn.UriSource = new Uri("pack://application:,,,/Resources/notificatoron.png");
+            NotificatorOn.EndInit();
+            NotificatorOn.Freeze();
+
+            e.Handled = true;
+        }
+
+        private bool SliderThumb = false; 
+        private void VolumeChanged(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            Slider slider = (Slider)sender;
+            ChangeVolume(slider.Value);
+        }
+
+        private void ChangeVolume(double value)
+        {
+            // Calculate the volume that's being set. BTW: this is a trackbar!
+            uint NewVolume = (uint)((ushort.MaxValue / 100) * value);
+            // Set the same volume for both the left and the right channels
+            uint NewVolumeAllChannels = ((NewVolume & 0x0000ffff) | ((uint)NewVolume << 16));
+            // Set the volume
+            waveOutSetVolume(IntPtr.Zero, NewVolumeAllChannels);
+
+            SliderThumb = false;
+
+            SoundPlayer sp;
+            if (soundPlayers.TryGetValue("PMBeep", out sp))
+            {
+                try
+                {
+                    sp.Play();
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex);
+                }
+            }
+        }
+
+        private void SliderChangeWithThumb(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
+        {
+            SliderThumb = true;
+        }
+
+        private void SliderValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (!SliderThumb)
+            {
+                Slider slider = (Slider)sender;
+                ChangeVolume(slider.Value);
+            }
         }
     }
 }

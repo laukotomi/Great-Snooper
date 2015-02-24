@@ -4,7 +4,7 @@
   <description asmv2:iconFile="icon.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Great Snooper" version="1.3.0.0" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="Great Snooper" version="1.4.0.0" language="neutral" processorArchitecture="msil" />
     <commandLine file="Great Snooper.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -43,26 +43,38 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Great Snooper.exe" size="1421824">
-      <assemblyIdentity name="Great Snooper" version="1.3.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Great Snooper.exe" size="477696">
+      <assemblyIdentity name="Great Snooper" version="1.4.0.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>31i8lPQ8Pdib4J2AMDGgXIVEZqE=</dsig:DigestValue>
+        <dsig:DigestValue>FiYmo66BoyzaEdGPcvgrxEtstAI=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MahApps.Metro.dll" size="780288">
-      <assemblyIdentity name="MahApps.Metro" version="0.13.1.0" publicKeyToken="F4FB5A3C4D1E5B4F" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Hardcodet.Wpf.TaskbarNotification.dll" size="44032">
+      <assemblyIdentity name="Hardcodet.Wpf.TaskbarNotification" version="1.0.5.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>3PzIGUaBk8Mq6nDaTFSfdchn6g8=</dsig:DigestValue>
+        <dsig:DigestValue>HcqAcgVKyGvWcU0pkqigeNISD70=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="MahApps.Metro.dll" size="828928">
+      <assemblyIdentity name="MahApps.Metro" version="1.0.0.0" publicKeyToken="F4FB5A3C4D1E5B4F" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>iEF+3ysVTDK1BXyKDOt8j4f89YA=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -79,24 +91,36 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Xceed.Wpf.Toolkit.dll" size="900608">
-      <assemblyIdentity name="Xceed.Wpf.Toolkit" version="2.0.0.0" publicKeyToken="3E4669D2F30244F4" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Xceed.Wpf.DataGrid.dll" size="2000384">
+      <assemblyIdentity name="Xceed.Wpf.DataGrid" version="2.3.0.0" publicKeyToken="3E4669D2F30244F4" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>Fq8PQ9tH/uDJBn47ep8LdlQpbJ0=</dsig:DigestValue>
+        <dsig:DigestValue>URG4dIwMy2Qcks8FEM1K/ZRrZPg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Great Snooper.exe.config" size="6581">
+  <dependency>
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Xceed.Wpf.Toolkit.dll" size="1003008">
+      <assemblyIdentity name="Xceed.Wpf.Toolkit" version="2.3.0.0" publicKeyToken="3E4669D2F30244F4" language="neutral" processorArchitecture="msil" />
+      <hash>
+        <dsig:Transforms>
+          <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
+        </dsig:Transforms>
+        <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
+        <dsig:DigestValue>pHANeuti3Jg230jtwkMlYCPNcik=</dsig:DigestValue>
+      </hash>
+    </dependentAssembly>
+  </dependency>
+  <file name="Great Snooper.exe.config" size="8437">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>LrIjCfH0hYq2zrVt3pjhaVirE1w=</dsig:DigestValue>
+      <dsig:DigestValue>DYU54k1Otdj8pIb64cdaM4A+MCg=</dsig:DigestValue>
     </hash>
   </file>
   <file name="icon.ico" size="9662">

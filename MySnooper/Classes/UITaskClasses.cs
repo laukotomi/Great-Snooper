@@ -8,16 +8,17 @@ namespace MySnooper
 {
     public abstract class UITask
     {
-
+        public IRCCommunicator Sender { get; protected set; }
     }
     public class QuitUITask : UITask
     {
-        public string ClientName { get; private set; }
+        public string ClientNameL { get; private set; }
         public string Message { get; private set; }
 
-        public QuitUITask(string clientName, string message)
+        public QuitUITask(IRCCommunicator sender, string clientNameL, string message)
         {
-            this.ClientName = clientName;
+            this.Sender = sender;
+            this.ClientNameL = clientNameL;
             this.Message = message;
         }
     }
@@ -25,14 +26,15 @@ namespace MySnooper
     public class MessageUITask : UITask
     {
         public string ClientName { get; private set; }
-        public string ChannelName { get; private set; }
+        public string ChannelHash { get; private set; }
         public string Message { get; private set; }
         public MessageSetting Setting { get; private set; }
 
-        public MessageUITask(string clientName, string channelName, string message, MessageSetting setting)
+        public MessageUITask(IRCCommunicator sender, string clientName, string channelHash, string message, MessageSetting setting)
         {
+            this.Sender = sender;
             this.ClientName = clientName;
-            this.ChannelName = channelName;
+            this.ChannelHash = channelHash;
             this.Message = message;
             this.Setting = setting;
         }
@@ -41,25 +43,27 @@ namespace MySnooper
 
     public class PartedUITask : UITask
     {
-        public string ChannelName { get; private set; }
-        public string ClientName { get; private set; }
+        public string ChannelHash { get; private set; }
+        public string ClientNameL { get; private set; }
 
-        public PartedUITask(string channelName, string clientName)
+        public PartedUITask(IRCCommunicator sender, string channelHash, string clientNameL)
         {
-            this.ChannelName = channelName;
-            this.ClientName = clientName;
+            this.Sender = sender;
+            this.ChannelHash = channelHash;
+            this.ClientNameL = clientNameL;
         }
     }
 
     public class JoinedUITask : UITask
     {
-        public string ChannelName { get; private set; }
+        public string ChannelHash { get; private set; }
         public string ClientName { get; private set; }
         public string Clan { get; private set; }
 
-        public JoinedUITask(string channelName, string clientName, string clan)
+        public JoinedUITask(IRCCommunicator sender, string channelHash, string clientName, string clan)
         {
-            this.ChannelName = channelName;
+            this.Sender = sender;
+            this.ChannelHash = channelHash;
             this.ClientName = clientName;
             this.Clan = clan;
         }
@@ -69,29 +73,33 @@ namespace MySnooper
     {
         public SortedDictionary<string, string> ChannelList { get; private set; }
 
-        public ChannelListUITask(SortedDictionary<string, string> channelList)
+        public ChannelListUITask(IRCCommunicator sender, SortedDictionary<string, string> channelList)
         {
+            this.Sender = sender;
             this.ChannelList = channelList;
         }
     }
 
     public class ClientUITask : UITask
     {
-        public string ChannelName { get; private set; }
+        public string ChannelHash { get; private set; }
         public string ClientName { get; private set; }
         public string Clan { get; private set; }
         public CountryClass Country { get; private set; }
         public int Rank { get; private set; }
         public bool ClientGreatSnooper { get; private set; }
+        public string ClientApp { get; private set; }
 
-        public ClientUITask(string channelName, string clientName, CountryClass country, string clan, int rank, bool clientGreatSnooper)
+        public ClientUITask(IRCCommunicator sender, string channelHash, string clientName, CountryClass country, string clan, int rank, bool clientGreatSnooper, string clientApp)
         {
-            this.ChannelName = channelName;
+            this.Sender = sender;
+            this.ChannelHash = channelHash;
             this.ClientName = clientName;
             this.Country = country;
             this.Clan = clan;
             this.Rank = rank;
             this.ClientGreatSnooper = clientGreatSnooper;
+            this.ClientApp = clientApp;
         }
     }
 
@@ -99,8 +107,61 @@ namespace MySnooper
     {
         public string ClientName { get; private set; }
 
-        public OfflineUITask(string clientName)
+        public OfflineUITask(IRCCommunicator sender, string clientName)
         {
+            this.Sender = sender;
+            this.ClientName = clientName;
+        }
+    }
+
+    public class NickNameInUseTask : UITask
+    {
+        public NickNameInUseTask(IRCCommunicator sender)
+        {
+            this.Sender = sender;
+        }
+    }
+
+    public class NickUITask : UITask
+    {
+        public string OldClientName { get; private set; }
+        public string NewClientName { get; private set; }
+
+        public NickUITask(IRCCommunicator sender, string oldClientName, string newClientName)
+        {
+            this.Sender = sender;
+            this.OldClientName = oldClientName;
+            this.NewClientName = newClientName;
+        }
+    }
+
+    public class ClientAddOrRemoveTask : UITask
+    {
+        public enum TaskType { Add, Remove };
+        public string ChannelHash { get; private set; }
+        public string SenderName { get; private set; }
+        public string ClientName { get; private set; }
+        public TaskType Type { get; private set; }
+
+        public ClientAddOrRemoveTask(IRCCommunicator sender, string channelHash, string senderName, string clientName, TaskType type)
+        {
+            this.Sender = sender;
+            this.ChannelHash = channelHash;
+            this.SenderName = senderName;
+            this.ClientName = clientName;
+            this.Type = type;
+        }
+    }
+
+    public class ClientLeaveConvTask : UITask
+    {
+        public string ChannelHash { get; private set; }
+        public string ClientName { get; private set; }
+
+        public ClientLeaveConvTask(IRCCommunicator sender, string channelHash, string clientName)
+        {
+            this.Sender = sender;
+            this.ChannelHash = channelHash;
             this.ClientName = clientName;
         }
     }

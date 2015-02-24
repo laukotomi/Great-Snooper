@@ -13,13 +13,14 @@ namespace MySnooper
 
     public partial class ListEditor : MetroWindow
     {
-        public enum ListModes { Users, Normal }
+        public enum ListModes { Users, Normal, Setting }
 
         private SortedObservableCollection<string> list;
         private string addTextStr;
         private Regex nickRegex;
         private Regex nickRegex2;
         private ListModes mode;
+        private string settingName;
         public event ItemRemovedDelegate ItemRemoved;
         public event ItemAddedDelegate ItemAdded;
 
@@ -46,11 +47,28 @@ namespace MySnooper
                 AddToListTB.Text = addTextStr;
             }
 
-            Binding b = new Binding();
-            b.Source = this.list;
-            b.Mode = BindingMode.OneWay;
-            MyListView.SetBinding(ListView.ItemsSourceProperty, b);
+            MyListView.ItemsSource = this.list;
         }
+
+        public ListEditor(string settingName, string title)
+        {
+            InitializeComponent();
+
+
+            this.Title = title;
+            this.mode = ListModes.Setting;
+            this.settingName = settingName;
+
+            string value = (string)(Properties.Settings.Default.GetType().GetProperty(settingName).GetValue(Properties.Settings.Default, null));
+            this.list = new SortedObservableCollection<string>();
+            this.list.DeSerialize(value);
+
+            addTextStr = "Enter text here..";
+            AddToListTB.Text = addTextStr;
+
+            MyListView.ItemsSource = this.list;
+        }
+
 
         private void RemoveFromList(object sender, RoutedEventArgs e)
         {
@@ -58,6 +76,13 @@ namespace MySnooper
             {
                 string selected = (string)MyListView.SelectedItem;
                 list.Remove(selected);
+
+                if (mode == ListModes.Setting)
+                {
+                    Properties.Settings.Default.GetType().GetProperty(this.settingName).SetValue(Properties.Settings.Default, this.list.Serialize(), null);
+                    Properties.Settings.Default.Save();
+                }
+
                 if (ItemRemoved != null)
                     ItemRemoved(selected);
             }
@@ -99,6 +124,13 @@ namespace MySnooper
                     if (!contains)
                     {
                         list.Add(str);
+
+                        if (mode == ListModes.Setting)
+                        {
+                            Properties.Settings.Default.GetType().GetProperty(this.settingName).SetValue(Properties.Settings.Default, this.list.Serialize(), null);
+                            Properties.Settings.Default.Save();
+                        }
+
                         if (ItemAdded != null)
                             ItemAdded(str);
                     }

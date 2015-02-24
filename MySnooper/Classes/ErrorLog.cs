@@ -53,18 +53,18 @@ namespace MySnooper
             catch (Exception) { }
             lock (ErrorLog.Locker)
             {
-                ErrorLog.LogInProgress = false;
+                ErrorLog.Logging = false;
             }
         }
     }
 
     public static class ErrorLog
     {
-        public static bool LogInProgress = false;
+        public static bool Logging = false;
         public static object Locker = new object();
         private static string filename = string.Empty;
 
-        public static void log(Exception ex)
+        public static void Log(Exception ex)
         {
             if (filename == string.Empty)
             {
@@ -76,9 +76,9 @@ namespace MySnooper
             {
                 lock (Locker)
                 {
-                    if (!LogInProgress)
+                    if (!Logging)
                     {
-                        LogInProgress = true;
+                        Logging = true;
                         ExceptionLogger el = new ExceptionLogger(ex, filename);
                         Thread t = new Thread(el.DoLog);
                         t.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
@@ -88,20 +88,6 @@ namespace MySnooper
                 }
                 Thread.Sleep(10);
             }
-        }
-
-        public static void log(string str)
-        {
-            if (filename == string.Empty)
-            {
-                string settingsPath = Directory.GetParent(Directory.GetParent(System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath).FullName).FullName;
-                filename = settingsPath + @"\errorlog.txt";
-            }
-
-            ExceptionLogger el = new ExceptionLogger(str, filename);
-            Thread t = new Thread(el.DoLog);
-            t.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
-            t.Start();
         }
     }
 }

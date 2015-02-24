@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace MySnooper
@@ -36,18 +37,18 @@ namespace MySnooper
 
             try
             {
-                string flagfile = System.IO.Path.GetFullPath(@"Flags\Flag" + ID.ToString("D3") + ".PNG");
                 Flag = new BitmapImage();
                 Flag.DecodePixelWidth = 22;
                 Flag.DecodePixelHeight = 18;
                 Flag.CacheOption = BitmapCacheOption.OnLoad;
                 Flag.BeginInit();
-                Flag.UriSource = new Uri(flagfile);
+                Flag.UriSource = new Uri("pack://application:,,,/Resources/flags/flag" + ID.ToString("D3") + ".PNG");
                 Flag.EndInit();
+                Flag.Freeze();
             }
             catch (Exception e)
             {
-                ErrorLog.log(e);
+                ErrorLog.Log(e);
             }
         }
 
@@ -65,7 +66,7 @@ namespace MySnooper
             {
                 return false;
             }
-
+            
             // If parameter cannot be cast to Point return false.
             CountryClass cc = obj as CountryClass;
             if ((System.Object)cc == null)

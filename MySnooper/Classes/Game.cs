@@ -6,7 +6,7 @@ namespace MySnooper
     public class Game : IComparable
     {
         // Variables
-        public bool isAlive = true;
+        public bool IsAlive = true;
 
         // Properties
         public uint ID { get; private set; }
@@ -38,7 +38,7 @@ namespace MySnooper
             }
             catch (Exception e)
             {
-                ErrorLog.log(e);
+                ErrorLog.Log(e);
             }
 
             this.Name = Name;

@@ -27,6 +27,11 @@
                     <MenuItem.Header>
                         <Image Source="Resources/down.png" Width="25" />
                     </MenuItem.Header>
+                    <MenuItem Header="Message logs" Click="OpenLogs">
+                        <MenuItem.Icon>
+                            <Image Source="Resources/log.png" Width="30" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem Header="Settings" Click="SettingsClicked">
                         <MenuItem.Icon>
                             <Image Source="Resources/settings.png" Width="30" />
@@ -47,7 +52,24 @@
             <RowDefinition Height="*"></RowDefinition>
             <RowDefinition Height="40"></RowDefinition>
         </Grid.RowDefinitions>
-        
+
+        <tb:TaskbarIcon x:Name="myNotifyIcon" ToolTipText="Great Snooper" IconSource="Resources/icon.ico" DoubleClickCommand="{x:Static loc:Login.DoubleClickCommand}">
+            <tb:TaskbarIcon.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Settings" Click="SettingsClicked">
+                        <MenuItem.Icon>
+                            <Image Source="Resources/settings.png" Width="30" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                    <MenuItem Header="Exit" Click="ExitClicked">
+                        <MenuItem.Icon>
+                            <Image Source="Resources/close.png" Width="30" />
+                        </MenuItem.Icon>
+                    </MenuItem>
+                </ContextMenu>
+            </tb:TaskbarIcon.ContextMenu>
+        </tb:TaskbarIcon>
+
         <Grid Grid.Row="0" Margin="20,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*"></ColumnDefinition>
@@ -64,25 +86,8 @@
                 <RowDefinition Height="15"></RowDefinition>
             </Grid.RowDefinitions>
 
-            <tb:TaskbarIcon x:Name="myNotifyIcon" ToolTipText="Great Snooper" IconSource="Resources/icon.ico" DoubleClickCommand="{x:Static loc:Login.DoubleClickCommand}">
-                <tb:TaskbarIcon.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="Settings" Click="SettingsClicked">
-                            <MenuItem.Icon>
-                                <Image Source="Resources/settings.png" Width="30" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                        <MenuItem Header="Exit" Click="ExitClicked">
-                            <MenuItem.Icon>
-                                <Image Source="Resources/close.png" Width="30" />
-                            </MenuItem.Icon>
-                        </MenuItem>
-                    </ContextMenu>
-                </tb:TaskbarIcon.ContextMenu>
-            </tb:TaskbarIcon>
-
             <StackPanel Grid.Column="0" Grid.Row="1" Orientation="Horizontal">
-                <Label Content="Server: " VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
+                <TextBlock Text="Server: " VerticalAlignment="Center" HorizontalAlignment="Left" />
                 <TextBlock VerticalAlignment="Center">
                     <Hyperlink Click="ServerHelp" ToolTipService.IsEnabled="False">
                         <Hyperlink.ToolTip>
@@ -112,7 +117,7 @@
                 </Button>
             </Grid>
 
-            <Label Grid.Column="0" Grid.Row="3" Content="Auto login:" VerticalAlignment="Center"></Label>
+            <TextBlock Grid.Column="0" Grid.Row="3" Text="Auto login:" VerticalAlignment="Center" />
             <CheckBox Name="AutoLogIn" Grid.Column="1" Grid.Row="3"></CheckBox>
 
             <TabControl Name="LoginTypeChooser" Grid.Row="5" Grid.ColumnSpan="2">
@@ -134,6 +139,10 @@
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
+                    </Style>
+
+                    <Style TargetType="TextBlock">
+                        <Setter Property="Margin" Value="5,0,0,0" />
                     </Style>
 
                     <Style TargetType="TabItem">
@@ -177,11 +186,11 @@
                             <RowDefinition Height="Auto"></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <Label Grid.Column="0" Grid.Row="1" Content="Nickname:" VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
-                        <Label Grid.Column="0" Grid.Row="3" Content="Country:" VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
-                        <Label Grid.Column="0" Grid.Row="5" Content="Rank:" VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
+                        <TextBlock Grid.Column="0" Grid.Row="1" Text="Nickname:" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        <TextBlock Grid.Column="0" Grid.Row="3" Text="Country:" VerticalAlignment="Center" HorizontalAlignment="Left" />
+                        <TextBlock Grid.Column="0" Grid.Row="5" Text="Rank:" VerticalAlignment="Center" HorizontalAlignment="Left" />
                         <StackPanel Grid.Column="0" Grid.Row="7" Orientation="Horizontal">
-                            <Label Content="Clan: " VerticalAlignment="Center" HorizontalAlignment="Left"></Label>
+                            <TextBlock Text="Clan: " VerticalAlignment="Center" HorizontalAlignment="Left" />
                             <TextBlock VerticalAlignment="Center">
                                 <Hyperlink Click="ServerHelp" ToolTipService.IsEnabled="False">
                                     <Hyperlink.ToolTip>
@@ -201,8 +210,8 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel>
-                                        <Image DockPanel.Dock="Left" Height="18" Width="22" Source="{Binding Path=Flag}"></Image>
-                                        <Label Content="{Binding Path=Name, Mode=OneWay}" Margin="0 -4 0 0"></Label>
+                                        <Image DockPanel.Dock="Left" Height="18" Width="22" Source="{Binding Path=Flag, Mode=OneWay}"></Image>
+                                        <TextBlock Text="{Binding Path=Name, Mode=OneWay}" VerticalAlignment="Center" Margin="5,0,0,0" />
                                     </DockPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -211,8 +220,8 @@
                             <ComboBox.ItemTemplate>
                                 <DataTemplate>
                                     <DockPanel>
-                                        <Image DockPanel.Dock="Left" Height="18" Width="22" Source="{Binding Path=Picture}"></Image>
-                                        <Label Content="{Binding Path=Name, Mode=OneWay}" Margin="0 -4 0 0"></Label>
+                                        <Image DockPanel.Dock="Left" Height="18" Width="22" Source="{Binding Path=Picture, Mode=OneWay}"></Image>
+                                        <TextBlock Text="{Binding Path=Name, Mode=OneWay}" VerticalAlignment="Center" Margin="5,0,0,0" />
                                     </DockPanel>
                                 </DataTemplate>
                             </ComboBox.ItemTemplate>
@@ -237,8 +246,8 @@
                             <RowDefinition Height="Auto"></RowDefinition>
                         </Grid.RowDefinitions>
 
-                        <Label Grid.Column="0" Grid.Row="1" Content="TUS nickname:" VerticalAlignment="Center"></Label>
-                        <Label Grid.Column="0" Grid.Row="3" Content="TUS password:" VerticalAlignment="Center"></Label>
+                        <TextBlock Grid.Column="0" Grid.Row="1" Text="TUS nickname:" VerticalAlignment="Center" />
+                        <TextBlock Grid.Column="0" Grid.Row="3" Text="TUS password:" VerticalAlignment="Center" />
                         <TextBlock Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center"><Hyperlink Click="TusLoginHelp">What is TUS login?</Hyperlink></TextBlock>
 
                         <TextBox Name="TUSNick" Grid.Column="1" Grid.Row="1" KeyDown="LogInWithEnter"></TextBox>

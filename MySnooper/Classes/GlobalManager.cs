@@ -7,15 +7,16 @@ namespace MySnooper
     public class GlobalManager
     {
         private static ParserContext _XamlContext;
-        
-        static GlobalManager()
+
+        // This method ensures that the initialization will be made from the appropriate thread
+        public static void Initialize()
         {
             MaxMessagesInMemory = 1000;
             MaxMessagesDisplayed = 100;
             NumOfOldMessagesToBeLoaded = 50;
             SettingsPath = Directory.GetParent(Directory.GetParent(System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath).FullName).FullName;
             DebugMode = false;
-            SystemClient = new Client("System", null, "", 0, false);
+            SystemClient = new Client("System");
             UITasks = new ConcurrentQueue<UITask>();
         }
 

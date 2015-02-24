@@ -33,9 +33,6 @@ namespace MySnooper
 
         public static void FlashWindow(this System.Windows.Window win, UInt32 count = UInt32.MaxValue)
         {
-            //Don't flash if the window is active
-            if (win.IsActive) return;
-
             WindowInteropHelper h = new WindowInteropHelper(win);
 
             FLASHWINFO info = new FLASHWINFO

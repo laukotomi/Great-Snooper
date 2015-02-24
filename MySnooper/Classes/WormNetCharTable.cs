@@ -35,8 +35,8 @@ namespace MySnooper
         public static SortedDictionary<char, byte> EncodeGame = new SortedDictionary<char, byte>();
 
 
-        // Constructor
-        static WormNetCharTable()
+        // This method ensures that the initialization will be made from the appropriate thread
+        public static void Initialize()
         {
             for (int i = 0; i < Decode.Length; i++)
             {

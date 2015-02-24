@@ -1,15 +1,12 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Text;
 
 namespace MySnooper
 {
-    /// <summary>  
-    /// A Sorted ObservableCollection.  
-    /// - Sorts on Insert.  
-    /// - Requires that T implements IComparable.  
-    /// </summary>  
-    /// <typeparam name="T">The type held within collection</typeparam>  
     public class SortedObservableCollection<T> : ObservableCollection<T>
         where T : IComparable
     {
@@ -22,7 +19,7 @@ namespace MySnooper
                 {
                     case 0:
                     case 1:
-                        Insert(i, item);
+                        base.Insert(i, item);
                         return i;
                     case -1:
                         break;
@@ -32,10 +29,11 @@ namespace MySnooper
             return i;
         }
 
-        public void AddList(System.Collections.Generic.IList<T> list)
+        public new void Remove(T item)
         {
-            for (int i = 0; i < list.Count; i++)
-                Add(list[i]);
+            int idx = this.BinarySearch(item);
+            if (idx != -1)
+                base.RemoveAt(idx);
         }
 
         public string Serialize()
@@ -43,7 +41,7 @@ namespace MySnooper
             var sb = new StringBuilder();
             for (int i = 0; i < Count; i++)
             {
-                sb.Append(this[i]);
+                sb.Append(this[i].ToString());
                 sb.Append(','); 
             }
             return sb.ToString();
@@ -51,9 +49,41 @@ namespace MySnooper
 
         public void DeSerialize(string str)
         {
-            string[] servers = str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            foreach (var server in servers)
-                Add((T)(object)server);
+            string[] list = str.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < list.Length; i++)
+                Add((T)(object)list[i]);
+        }
+
+        private int BinarySearch(T item)
+        {
+            int imax = this.Count - 1;
+            int imin = 0;
+
+            // continue searching while [imin,imax] is not empty
+            while (imax >= imin)
+            {
+                // calculate the midpoint for roughly equal partition
+                int imid = imin + (imax - imin) / 2;
+                switch (Math.Sign(this[imid].CompareTo(item)))
+                {
+                    case 0:
+                        // key found at index imid
+                        return imid;
+                    case -1:
+                        imin = imid + 1;
+                        break;
+                    case 1:
+                        imax = imid - 1;
+                        break;
+                }
+            }
+            // key was not found
+            return -1;
+        }
+
+        public new bool Contains(T item)
+        {
+            return this.BinarySearch(item) != -1;
         }
     }
 }

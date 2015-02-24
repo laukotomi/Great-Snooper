@@ -1,7 +1,9 @@
 ﻿using MahApps.Metro.Controls;
 using System;
 using System.ComponentModel;
+using System.Media;
 using System.Runtime.InteropServices;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,39 +12,21 @@ namespace MySnooper
 {
     public partial class MainWindow : MetroWindow
     {
+        private enum StartedGameTypes { Join, Host };
+        private System.Diagnostics.Process gameProcess;
+        private StartedGameTypes startedGameType = StartedGameTypes.Join;
+
         // Joining a game
-        private BackgroundWorker StartGame;
-        private Game StartedGame;
-        private Channel StartedChannel;
+        //private Game StartedGame;
+        //private Channel StartedGameChannel;
         private bool SilentJoined;
+        private bool ExitSnooper;
 
         // Hosting a game
-        private BackgroundWorker HostGame;
         private Hosting HostingWindow;
-        private bool ExitSnooper;
-        private bool CloseSnooper;
 
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         internal static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-
-        // "Constructor"
-        private void Games()
-        {
-            StartGame = new BackgroundWorker();
-            StartGame.WorkerReportsProgress = true;
-            StartGame.WorkerSupportsCancellation = true;
-            StartGame.DoWork += RunGame;
-            StartGame.ProgressChanged += GameStarted;
-            StartGame.RunWorkerCompleted += GameClosed;
-
-            HostGame = new BackgroundWorker();
-            HostGame.WorkerReportsProgress = true;
-            HostGame.WorkerSupportsCancellation = true;
-            HostGame.DoWork += HostGameDoWork;
-            HostGame.ProgressChanged += HostStarted;
-            HostGame.RunWorkerCompleted += HostClosed;
-        }
 
         // Check if WA.exe is set correctly
         private bool CheckWAExe()
@@ -63,9 +47,9 @@ namespace MySnooper
         }
 
         // The method that will start the thread which will open the game
-        private void JoinGame(Game game, bool silent = false, bool close = false)
+        private void JoinGame(Game game, bool silent = false, bool exit = false)
         {
-            if (StartGame.IsBusy || HostGame.IsBusy)
+            if (gameProcess != null)
             {
                 MessageBox.Show(this, "You are already in a game!", "Fail", MessageBoxButton.OK, MessageBoxImage.Information);
                 return;
@@ -74,14 +58,67 @@ namespace MySnooper
             if (!CheckWAExe())
                 return;
 
-            if (GameListChannel != null && !SnooperClosing)
+            if (searchHere != null && Properties.Settings.Default.AskLeagueSearcherOff)
             {
-                StartedGame = game;
-                StartedChannel = GameListChannel;
-                SilentJoined = silent;
-                CloseSnooper = close;
+                MessageBoxResult res = MessageBox.Show("Would you like to turn off league searcher?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (res == MessageBoxResult.Yes)
+                    ClearSpamming();
+            }
 
-                StartGame.RunWorkerAsync(game);
+            if (Notifications.Count != 0 && Properties.Settings.Default.AskNotificatorOff)
+            {
+                MessageBoxResult res = MessageBox.Show("Would you like to turn off notificator?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (res == MessageBoxResult.Yes)
+                {
+                    Notifications.Clear();
+                    NotificatorImage.Source = NotificatorOff;
+                }
+            }
+
+            if (gameListChannel != null && !snooperClosing)
+            {
+                SilentJoined = silent;
+                ExitSnooper = exit;
+
+                startedGameType = StartedGameTypes.Join;
+                gameProcess = new System.Diagnostics.Process();
+                gameProcess.StartInfo.UseShellExecute = false;
+                gameProcess.StartInfo.FileName = Properties.Settings.Default.WaExe;
+                gameProcess.StartInfo.Arguments = "wa://" + game.Address + "?gameid=" + game.ID + "&scheme=" + gameListChannel.Scheme;
+                if (gameProcess.Start())
+                {
+                    if (Properties.Settings.Default.MessageJoinedGame && !SilentJoined)
+                    {
+                        SendMessageToChannel(">is joining a game: " + game.Name, gameListChannel);
+                    }
+                    if (Properties.Settings.Default.MarkAway)
+                        SendMessageToChannel("/away", null);
+                }
+                else
+                {
+                    gameProcess.Dispose();
+                    gameProcess = null;
+                }
+            }
+        }
+
+        private void GameProcess()
+        {
+            if (gameProcess.HasExited)
+            {
+                SendMessageToChannel("/back", null);
+                gameProcess.Dispose();
+                gameProcess = null;
+            }
+            else if (startedGameType == StartedGameTypes.Join && ExitSnooper)
+            {
+                IntPtr hwnd = FindWindow("Worms2D", null);
+                if (hwnd != IntPtr.Zero)
+                {
+                    snooperClosing = true;
+                    this.Close();
+                    return;
+                }
             }
         }
 
@@ -120,7 +157,7 @@ namespace MySnooper
             e.Handled = true;
         }
 
-        // Silent join (context menu 2nd option)
+        // Silent join
         private void SilentJoin(object sender, RoutedEventArgs e)
         {
             ListBox lb = (ListBox)((MenuItem)sender).Tag;
@@ -132,7 +169,7 @@ namespace MySnooper
             e.Handled = true;
         }
 
-        // Silent join (context menu 2nd option)
+        // Silent join and close
         private void SilentJoinAndClose(object sender, RoutedEventArgs e)
         {
             ListBox lb = (ListBox)((MenuItem)sender).Tag;
@@ -144,208 +181,32 @@ namespace MySnooper
             e.Handled = true;
         }
 
-
-        // StartGame.DoWork
-        private void RunGame(object sender, DoWorkEventArgs e)
-        {
-            // Start W:A with the proper GameID and Scheme
-            try
-            {
-                var p = new System.Diagnostics.Process();
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.FileName = Properties.Settings.Default.WaExe;
-                p.StartInfo.Arguments = "wa://" + StartedGame.Address + "?gameid=" + StartedGame.ID + "&scheme=" + StartedChannel.Scheme;
-                if (p.Start())
-                {
-                    if (StartGame.CancellationPending)
-                    {
-                        e.Cancel = true;
-                        return;
-                    }
-
-                    StartGame.ReportProgress(50);
-
-                    while (!p.HasExited)
-                    {
-                        if (StartGame.CancellationPending)
-                        {
-                            e.Cancel = true;
-                            return;
-                        }
-
-                        if (CloseSnooper)
-                        {
-                            IntPtr hwnd = FindWindow("Worms2D", null);
-                            if (hwnd != IntPtr.Zero)
-                            {
-                                e.Cancel = true;
-                                return;
-                            }
-                        }
-
-                        System.Threading.Thread.Sleep(250);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.log(ex);
-            }
-
-            if (StartGame.CancellationPending)
-            {
-                e.Cancel = true;
-            }
-        }
-
-        // StartGame.ProgressChanged
-        private void GameStarted(object sender, ProgressChangedEventArgs e)
-        {
-            if (Properties.Settings.Default.MessageJoinedGame && !SilentJoined)
-            {
-                SendMessageToChannel(">is joining a game: " + StartedGame.Name, StartedChannel);
-            }
-            if (Properties.Settings.Default.MarkAway)
-            {
-                AwayText = (Properties.Settings.Default.AwayText.Length == 0) ? "No reason specified." : Properties.Settings.Default.AwayText;
-                SendMessageToChannel("/away " + AwayText, null);
-            }
-        }
-
-        // StartGame.RunWorkerCompleted
-        private void GameClosed(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (e.Cancelled)
-            {
-                this.Close();
-                return;
-            }
-
-            StartedGame = null;
-            StartedChannel = null;
-            if (Properties.Settings.Default.MarkAway)
-            {
-                SendMessageToChannel("/back", null);
-            }
-        }
-
-
-        // HostGame.DoWork
-        // This method is called from the MainWindow.Windows.cs, because the Hoster window will call it.
-        private void HostGameDoWork(object sender, DoWorkEventArgs e)
-        {
-            // Start Hoster.exe
-            try
-            {
-                var p = new System.Diagnostics.Process();
-                p.StartInfo.UseShellExecute = false;
-                p.StartInfo.CreateNoWindow = true;
-                p.StartInfo.RedirectStandardOutput = true;
-                p.StartInfo.FileName = System.IO.Path.GetFullPath("Hoster.exe");
-                p.StartInfo.Arguments = e.Argument as string;
-                if (p.Start())
-                {
-                    string success = p.StandardOutput.ReadLine();
-
-                    if (success == "1")
-                    {
-                        if (HostGame.CancellationPending)
-                        {
-                            e.Cancel = true;
-                            return;
-                        }
-                        HostGame.ReportProgress(1);
-
-                        if (ExitSnooper)
-                        {
-                            e.Cancel = true;
-                            return;
-                        }
-
-                        while (!p.HasExited)
-                        {
-                            if (HostGame.CancellationPending)
-                            {
-                                e.Cancel = true;
-                                return;
-                            }
-                            System.Threading.Thread.Sleep(250);
-                        }
-                    }
-                    else
-                    {
-                        if (HostGame.CancellationPending)
-                        {
-                            e.Cancel = true;
-                            return;
-                        }
-
-                        HostGame.ReportProgress(0);
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.log(ex);
-            }
-
-            if (HostGame.CancellationPending)
-            {
-                e.Cancel = true;
-            }
-        }
-
-        // HostGame.ProgressChanged
-        private void HostStarted(object sender, ProgressChangedEventArgs e)
-        {
-            if (e.ProgressPercentage == 0)
-            {
-                HostingWindow.RestoreHostButton();
-
-                MessageBox.Show(this, "You have hosted too many games recently. Please wait some minutes!", "Failed to host a game", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (e.ProgressPercentage == 1)
-            {
-                HostingWindow.Close();
-
-                if (Properties.Settings.Default.HostInfoToChannel && GameListChannel != null) // GameListChannel is ok, coz it can't be changed since the Hosting window is opened
-                    SendMessageToChannel(">is hosting a game: " + Properties.Settings.Default.HostGameName, GameListChannel);
-
-                if (ExitSnooper)
-                {
-                    return;
-                }
-
-                if (Properties.Settings.Default.MarkAway)
-                {
-                    AwayText = (Properties.Settings.Default.AwayText.Length == 0) ? "No reason specified." : Properties.Settings.Default.AwayText;
-                    SendMessageToChannel("/away " + AwayText, null);
-                }
-            }
-        }
-
-        // HostGame.RunWorkerCompleted
-        private void HostClosed(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (e.Cancelled)
-            {
-                this.Close();
-                return;
-            }
-
-            if (Properties.Settings.Default.MarkAway)
-            {
-                SendMessageToChannel("/back", null);
-            }
-        }
-
-
         // When we want to refresh the game list
         // GameListForce is checked in MainWindow.xaml.cs : ClockTick()
         private void RefreshClick(object sender, RoutedEventArgs e)
         {
-            GameListForce = true;
+            gameListForce = true;
             e.Handled = true;
+        }
+
+        public void NotificatorFound(string str, Channel ch)
+        {
+            if (!isWindowFocused)
+                this.FlashWindow();
+            myNotifyIcon.ShowBalloonTip(null, str, Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
+
+            SoundPlayer sp;
+            if (Properties.Settings.Default.NotificatorSoundEnabled && SoundEnabled && soundPlayers.TryGetValue("NotificatorSound", out sp))
+            {
+                try
+                {
+                    sp.Play();
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex);
+                }
+            }
         }
     }
 }

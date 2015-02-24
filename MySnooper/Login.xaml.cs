@@ -2,7 +2,6 @@
 using Microsoft.Win32;
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -19,20 +18,15 @@ namespace MySnooper
 {
     public partial class Login : MetroWindow, IDisposable
     {
+        private static bool firstStart = true;
+
         private enum TUSStates { OK, TUSError, ConnectionError, UserError }
 
         // Program data
         public SortedObservableCollection<string> ServerList { get; set; }
-
-        //private Dictionary<string, string> leagues;
-        //private List<Dictionary<string, string>> news;
-        //private string latestVersion;
-        //private bool failFlag;
         private Regex nickRegex, nickRegexTUS;
         private Regex nickRegex2, nickRegex2TUS;
         private Regex clanRegex, clanRegexTUS;
-        //private BackgroundWorker loadSettings;
-
 
         // User data
         private string serverAddress;
@@ -44,7 +38,6 @@ namespace MySnooper
 
         // IRC Thread
         private IRCCommunicator wormNetC;
-        private Thread ircThread;
         private bool loggedIn = false;
 
         // TUS communicator
@@ -54,27 +47,37 @@ namespace MySnooper
         private string tusNickStr;
 
         public static RoutedCommand DoubleClickCommand = new RoutedCommand();
+        private bool closing = false;
 
         public Login()
         {
-            if (!Properties.Settings.Default.SettingsUpgraded)
+            if (firstStart)
             {
-                try
+                if (!Properties.Settings.Default.SettingsUpgraded)
                 {
-                    Properties.Settings.Default.Upgrade();
+                    try
+                    {
+                        Properties.Settings.Default.Upgrade();
+                    }
+                    catch (Exception) { }
+
+                    Properties.Settings.Default.QuitMessagee = "Great Snooper v" + App.GetVersion();
+                    Properties.Settings.Default.InfoMessage = "Great Snooper v" + App.GetVersion();
+                    Properties.Settings.Default.SettingsUpgraded = true;
+                    Properties.Settings.Default.Save();
                 }
-                catch (Exception) { }
 
-                Properties.Settings.Default.SettingsUpgraded = true;
-                Properties.Settings.Default.Save();
+                // Reducing Timeline frame rate
+                Timeline.DesiredFrameRateProperty.OverrideMetadata(
+                                typeof(Timeline),
+                                new FrameworkPropertyMetadata { DefaultValue = 25 }
+                );
+
+                WormNetCharTable.Initialize();
+                MessageSettings.Initialize();
+                CountriesClass.Initialize();
+                GlobalManager.Initialize();
             }
-
-            // Reducing Timeline frame rate
-            Timeline.DesiredFrameRateProperty.OverrideMetadata(
-                            typeof(Timeline),
-                            new FrameworkPropertyMetadata { DefaultValue = 25 }
-            );
-
             InitializeComponent();
             DataContext = this;
 
@@ -85,10 +88,6 @@ namespace MySnooper
             ServerList.DeSerialize(Properties.Settings.Default.ServerAddresses);
 
             Server.SelectedItem = Properties.Settings.Default.ServerAddress;
-
-            //leagues = new Dictionary<string, string>();
-            //news = new List<Dictionary<string, string>>();
-            //failFlag = false;
 
             switch (Properties.Settings.Default.LoginType)
             {
@@ -117,7 +116,7 @@ namespace MySnooper
                 if (ci != null)
                     country = CountriesClass.GetCountryByCC(ci.TwoLetterISOLanguageName.ToUpper());
                 else
-                    country = CountriesClass.GetCountryByID(49);
+                    country = CountriesClass.DefaultCountry;
 
                 Country.SelectedItem = country;
             }
@@ -128,14 +127,6 @@ namespace MySnooper
 
             TUSNick.Text = Properties.Settings.Default.TusNick;
             TUSPass.Password = Properties.Settings.Default.TusPass;
-
-            /*
-            loadSettings = new BackgroundWorker();
-            loadSettings.WorkerSupportsCancellation = true;
-            loadSettings.DoWork += LoadSettings;
-            loadSettings.RunWorkerCompleted += SettingsLoaded;
-            loadSettings.RunWorkerAsync();
-            */
         }
 
         private void LoginWindow_ContentRendered(object sender, EventArgs e)
@@ -156,7 +147,7 @@ namespace MySnooper
                 }
                 catch (Exception ex)
                 {
-                    ErrorLog.log(ex);
+                    ErrorLog.Log(ex);
                 }
 
                 if (Properties.Settings.Default.WaExe.Length == 0 && !Properties.Settings.Default.WAExeAsked)
@@ -185,80 +176,6 @@ namespace MySnooper
             }
 
             myNotifyIcon.ShowBalloonTip(null, "Welcome to Great Snooper!", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
-        }
-
-        /*
-        private void LoadSettings(object sender, DoWorkEventArgs e)
-        {
-            WormNetCharTable.GenerateThings();
-
-            string SettingsXML = GlobalManager.SettingsPath + @"\Settings.xml";
-
-            using (WebClient webClient = new WebClient() { Proxy = null })
-            {
-                webClient.DownloadFile("http://mediacreator.hu/SnooperSettings.xml", SettingsXML);
-            }
-
-            if (loadSettings.CancellationPending)
-            {
-                e.Cancel = true;
-                return;
-            }
-
-            if (File.Exists(SettingsXML))
-            {
-                using (XmlReader xml = XmlReader.Create(SettingsXML))
-                {
-                    xml.ReadToFollowing("servers");
-                    using (XmlReader inner = xml.ReadSubtree())
-                    {
-                        while (inner.ReadToFollowing("server"))
-                        {
-                            inner.MoveToFirstAttribute();
-                            serverList.Add(inner.Value);
-                        }
-                    }
-
-                    xml.ReadToFollowing("leagues");
-                    using (XmlReader inner = xml.ReadSubtree())
-                    {
-                        while (inner.ReadToFollowing("league"))
-                        {
-                            inner.MoveToFirstAttribute();
-                            string name = inner.Value;
-                            inner.MoveToNextAttribute();
-                            leagues.Add(inner.Value, name);
-                        }
-                    }
-
-                    xml.ReadToFollowing("news");
-                    using (XmlReader inner = xml.ReadSubtree())
-                    {
-                        while (inner.ReadToFollowing("bbnews"))
-                        {
-                            Dictionary<string, string> newsthings = new Dictionary<string, string>();
-                            inner.MoveToFirstAttribute();
-                            newsthings.Add(inner.Name, inner.Value);
-                            while (inner.MoveToNextAttribute())
-                                newsthings.Add(inner.Name, inner.Value);
-
-                            news.Add(newsthings);
-                        }
-                    }
-
-                    xml.ReadToFollowing("version");
-                    xml.MoveToFirstAttribute();
-                    latestVersion = xml.Value;
-                }
-            }
-            else
-                serverList.Add("wormnet1.team17.com");
-
-            if (loadSettings.CancellationPending)
-            {
-                e.Cancel = true;
-                return;
-            }
 
             // Delete old logs
             string logsDirectory = GlobalManager.SettingsPath + @"\Logs";
@@ -289,80 +206,14 @@ namespace MySnooper
                 }
             }
 
-            if (loadSettings.CancellationPending)
+            if (Properties.Settings.Default.AutoLogIn && firstStart)
             {
-                e.Cancel = true;
-                return;
+                firstStart = false;
+                this.LogIn();
             }
+            firstStart = false;
         }
-        */
 
-        /*
-        private void SettingsLoaded(object sender, RunWorkerCompletedEventArgs e)
-        {
-            if (e.Cancelled)
-            {
-                this.Close();
-                return;
-            }
-
-            if (e.Error != null)
-            {
-                failFlag = true;
-                ErrorLog.log(e.Error);
-                MessageBox.Show(this, "Failed to load the common settings!" + Environment.NewLine + "Probably you don't have internet connection or the program needs to be updated.", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else if (Math.Sign(App.getVersion().CompareTo(latestVersion)) == -1) // we need update only if it is newer than this version
-            {
-                MessageBoxResult result = MessageBox.Show(this, "There is a new update available for Great Snooper!" + Environment.NewLine + "Would you like to download it now?", "Update", MessageBoxButton.YesNo, MessageBoxImage.Information);
-                if (result == MessageBoxResult.Yes)
-                {
-                    try
-                    {
-                        System.Diagnostics.Process p = new System.Diagnostics.Process();
-                        if (Environment.OSVersion.Version.Major >= 6) // Vista or higher (to get admin rights).. on xp this causes fail!
-                        {
-                            p.StartInfo.UseShellExecute = true;
-                            p.StartInfo.Verb = "runas";
-                        }
-                        p.StartInfo.FileName = "Updater.exe";
-                        p.Start();
-                        this.Close();
-                        return;
-                    }
-                    catch (Exception ex)
-                    {
-                        ErrorLog.log(ex);
-                        MessageBox.Show(this, "Failed to start the updater! Please restart Great Snooper with administrator rights! (Right click on the icon and Run as Administrator)", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
-                    }
-                }
-            }
-
-            for (int i = 0; i < serverList.Count; i++)
-            {
-                Server.Items.Add(serverList[i]);
-            }
-
-            if (Properties.Settings.Default.ServerAddress.Length > 0)
-            {
-                if (!Server.Items.Contains(Properties.Settings.Default.ServerAddress))
-                    Server.Items.Add(Properties.Settings.Default.ServerAddress);
-                Server.SelectedItem = Properties.Settings.Default.ServerAddress;
-            }
-            else if (Server.Items.Count > 0) Server.SelectedIndex = 0;
-
-
-            if (!failFlag && Properties.Settings.Default.AutoLogIn)
-            {
-                LogIn(null, null);
-            }
-            else
-            {
-                Container.IsEnabled = true;
-                LoadingRing.IsActive = false;
-            }
-        }
-        */
         private void LogInClicked(object sender, RoutedEventArgs e)
         {
             e.Handled = true;
@@ -431,17 +282,18 @@ namespace MySnooper
                         Properties.Settings.Default.UserClan = nickClan;
                         Properties.Settings.Default.UserCountry = nickCountry.ID;
                         Properties.Settings.Default.UserRank = nickRank;
+                        if (Properties.Settings.Default.ChangeWormsNick)
+                            Properties.Settings.Default.WormsNick = nickName;
                         Properties.Settings.Default.Save();
 
-                        GlobalManager.User = new Client(nickName, nickCountry, nickClan, nickRank, true);
+                        GlobalManager.User = new Client(nickName, nickClan);
+                        GlobalManager.User.Country = nickCountry;
+                        GlobalManager.User.Rank = RanksClass.GetRankByInt(nickRank);
 
                         // Initialize the WormNet Communicator
                         wormNetC = new IRCCommunicator(serverAddress, serverPort);
                         wormNetC.ConnectionState += ConnectionState;
-
-                        // Start WormNet communicator thread
-                        ircThread = new Thread(new ThreadStart(wormNetC.run));
-                        ircThread.Start();
+                        wormNetC.Connect();
                     }
                     break;
 
@@ -577,7 +429,7 @@ namespace MySnooper
             catch (Exception ex)
             {
                 tusState = TUSStates.ConnectionError;
-                ErrorLog.log(ex);
+                ErrorLog.Log(ex);
             }
 
             if (tusLoginWorker.CancellationPending)
@@ -603,15 +455,22 @@ namespace MySnooper
                     break;
 
                 case TUSStates.OK:
-                    GlobalManager.User = new Client(nickName, nickCountry, nickClan, nickRank, true) { TusNick = tusNickStr };
+                    GlobalManager.User = new Client(nickName, nickClan);
+                    GlobalManager.User.Country = nickCountry;
+                    GlobalManager.User.Rank = RanksClass.GetRankByInt(nickRank);
+                    GlobalManager.User.ClientGreatSnooper = true;
+                    GlobalManager.User.TusNick = tusNickStr;
+
+                    if (Properties.Settings.Default.ChangeWormsNick)
+                    {
+                        Properties.Settings.Default.WormsNick = nickName;
+                        Properties.Settings.Default.Save();
+                    }
 
                     // Initialize the WormNet Communicator
                     wormNetC = new IRCCommunicator(serverAddress, serverPort);
                     wormNetC.ConnectionState += ConnectionState;
-
-                    // Start WormNet communicator thread
-                    ircThread = new Thread(new ThreadStart(wormNetC.run));
-                    ircThread.Start();
+                    wormNetC.Connect();
                     return;
 
                 case TUSStates.UserError:
@@ -628,37 +487,60 @@ namespace MySnooper
         }
 
 
-        private void ConnectionState(IRCConnectionStates state)
+        private void ConnectionState(IRCCommunicator sender, IRCCommunicator.ConnectionStates state)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
                 switch (state)
                 {
-                    case IRCConnectionStates.OK:
-                        MainWindow MW = new MainWindow(wormNetC, ircThread, serverAddress);
-                        MW.Show();
-                        loggedIn = true;
-                        this.Close();
-                        return;
-
-                    case IRCConnectionStates.UsernameInUse:
-                        MessageBox.Show(this,
-                            "This nickname is already in use! Please choose an other one!" + Environment.NewLine + Environment.NewLine +
-                            "Note: if you lost your internet connection, you may need to wait 1 or 2 minutes until the server releases your broken nickname."
-                            , "Nickname is alredy in use", MessageBoxButton.OK, MessageBoxImage.Information
-                        );
+                    case IRCCommunicator.ConnectionStates.Connected:
+                        if (!closing)
+                        {
+                            new MainWindow(wormNetC, serverAddress).Show();
+                            loggedIn = true;
+                            this.Close();
+                            return;
+                        }
                         break;
 
-                    case IRCConnectionStates.Error:
-                        MessageBox.Show(this,
-                            "Could not connect to the server! Check if the server address is ok or try again later (probably maintenance time)!"
-                            , "Connection error", MessageBoxButton.OK, MessageBoxImage.Error
-                        );
+                    case IRCCommunicator.ConnectionStates.UsernameInUse:
+                        if (!closing)
+                        {
+                            MessageBox.Show(this,
+                                "This nickname is already in use! Please choose an other one!" + Environment.NewLine + Environment.NewLine +
+                                "Note: if you lost your internet connection, you may need to wait 1 or 2 minutes until the server releases your broken nickname."
+                                , "Nickname is alredy in use", MessageBoxButton.OK, MessageBoxImage.Information
+                            );
+                        }
+                        else
+                        {
+                            this.Close();
+                            return;
+                        }
                         break;
 
-                    case IRCConnectionStates.Cancelled:
-                        this.Close();
-                        return;
+                    case IRCCommunicator.ConnectionStates.Error:
+                        if (!closing)
+                        {
+                            MessageBox.Show(this,
+                                "Could not connect to the server! Check if the server address is ok or try again later (probably maintenance time)!"
+                                , "Connection error", MessageBoxButton.OK, MessageBoxImage.Error
+                            );
+                        }
+                        else
+                        {
+                            this.Close();
+                            return;
+                        }
+                        break;
+
+                    case IRCCommunicator.ConnectionStates.Disconnected:
+                        if (closing)
+                        {
+                            this.Close();
+                            return;
+                        }
+                        break;
                 }
 
                 Container.IsEnabled = true;
@@ -733,14 +615,7 @@ namespace MySnooper
 
         private void WindowClosing(object sender, CancelEventArgs e)
         {
-            /*
-            if (loadSettings.IsBusy)
-            {
-                loadSettings.CancelAsync();
-                e.Cancel = true;
-                return;
-            }
-            */
+            closing = true;
             
             if (tusLoginWorker != null && tusLoginWorker.IsBusy)
             {
@@ -749,7 +624,7 @@ namespace MySnooper
                 return;
             }
             
-            if (!loggedIn && ircThread != null && ircThread.IsAlive)
+            if (!loggedIn && wormNetC != null && wormNetC.IsRunning)
             {
                 wormNetC.CancelAsync();
                 e.Cancel = true;
@@ -785,7 +660,7 @@ namespace MySnooper
         private void ServerListEditClicked(object sender, RoutedEventArgs e)
         {
             SortedObservableCollection<string> serverList = new SortedObservableCollection<string>();
-            foreach (var server in this.ServerList)
+            foreach (string server in this.ServerList)
                 serverList.Add(server);
 
             ListEditor window = new ListEditor(serverList, "Server list", ListEditor.ListModes.Normal);
@@ -864,6 +739,15 @@ namespace MySnooper
                 myNotifyIcon.Dispose();
                 myNotifyIcon = null;
             }
+        }
+
+        private void OpenLogs(object sender, RoutedEventArgs e)
+        {
+            string logpath = GlobalManager.SettingsPath + @"\Logs";
+            if (!Directory.Exists(logpath))
+                Directory.CreateDirectory(logpath);
+
+            System.Diagnostics.Process.Start(logpath);
         }
     }
 }

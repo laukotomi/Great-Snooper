@@ -8,7 +8,6 @@ namespace MySnooper
     {
         public Client Sender { get; private set; }
         public string Message { get; private set; }
-        public MessageTypes MessageType { get; private set; }
         public DateTime Time { get; private set; }
         public MessageSetting Style { get; private set; }
 

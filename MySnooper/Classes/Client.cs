@@ -7,34 +7,59 @@ namespace MySnooper
     public class Client : IComparable, INotifyPropertyChanged
     {
         // Private variables to make properties work well
-        private CountryClass _Country;
-        private bool _IsBanned;
-        private bool _IsBuddy;
-        private bool _TusActive;
-        private string _TusNick;
-        private int _OnlineStatus; // 0 = offline, 1 = online, 2 = not known (client is not in the channel where we are)
-        private RankClass _Rank;
+        private RankClass _rank;
+        private CountryClass _country = null;
+        private bool _isBanned = false;
+        private bool _isBuddy = false;
+        private bool _tusActive = false;
+        private string _tusNick = string.Empty;
+        private int _onlineStatus = 0; // 0 = offline, 1 = online, 2 = not known (client is not in the channel where we are)
+        private string _name;
+        private string _clientApp;
 
         // Variables
-        public bool ClientGreatSnooper;
+        public bool ClientGreatSnooper { get; set; }
 
         // Properties
-        public string Name { get; private set; }
         public string LowerName { get; private set; }
         public string Clan { get; set; }
         public string TusLowerNick { get; private set; }
         public string TusLink { get; set; }
-        public bool TusActiveCheck { get; set; } // This variable is used when we check if an user is (still) on tus, because this doesn't notify the UI when it is changed
-        public List<Channel> Channels { get; set; }
+        public List<Channel> Channels { get; private set; }
+        public List<Channel> PMChannels { get; private set; }
+
+        public string Name
+        {
+            get { return _name; }
+            set
+            {
+                _name = value;
+                LowerName = value.ToLower();
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("Name"));
+            }
+        }
+
+        public string ClientApp
+        {
+            get { return _clientApp; }
+            set
+            {
+                _clientApp = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("ClientApp"));
+            }
+        }
+
         public RankClass Rank
         {
             get
             {
-                return _Rank;
+                return _rank;
             }
             set
             {
-                _Rank = value;
+                _rank = value;
                 if (PropertyChanged != null)
                     PropertyChanged(this, new PropertyChangedEventArgs("Rank"));
             }
@@ -43,11 +68,11 @@ namespace MySnooper
         {
             get
             {
-                return _TusNick;
+                return _tusNick;
             }
             set
             {
-                _TusNick = value;
+                _tusNick = value;
                 TusLowerNick = value.ToLower();
             }
         }
@@ -55,11 +80,11 @@ namespace MySnooper
         {
             get
             {
-                return _OnlineStatus;
+                return _onlineStatus;
             }
             set
             {
-                _OnlineStatus = value;
+                _onlineStatus = value;
                 if (PropertyChanged != null)
                     PropertyChanged(this, new PropertyChangedEventArgs("OnlineStatus"));
             }
@@ -71,11 +96,11 @@ namespace MySnooper
         {
             get
             {
-                return _Country;
+                return _country;
             }
             set
             {
-                _Country = value;
+                _country = value;
                 // Notify the UI thread!
                 if (PropertyChanged != null)
                     PropertyChanged(this, new PropertyChangedEventArgs("Country"));
@@ -84,11 +109,11 @@ namespace MySnooper
         public bool IsBanned {
             get
             {
-                return _IsBanned;
+                return _isBanned;
             }
             set
             {
-                _IsBanned = value;
+                _isBanned = value;
                 // Notify the UI thread!
                 if (PropertyChanged != null)
                     PropertyChanged(this, new PropertyChangedEventArgs("IsBanned"));
@@ -97,11 +122,11 @@ namespace MySnooper
         public bool IsBuddy {
             get
             {
-                return _IsBuddy;
+                return _isBuddy;
             }
             set
             {
-                _IsBuddy = value;
+                _isBuddy = value;
                 // Notify the UI thread!
                 if (PropertyChanged != null)
                     PropertyChanged(this, new PropertyChangedEventArgs("IsBuddy"));
@@ -110,11 +135,11 @@ namespace MySnooper
         public bool TusActive {
             get
             {
-                return _TusActive;
+                return _tusActive;
             }
             set
             {
-                _TusActive = value;
+                _tusActive = value;
                 // Notify the UI thread!
                 if (PropertyChanged != null)
                     PropertyChanged(this, new PropertyChangedEventArgs("TusActive"));
@@ -124,16 +149,14 @@ namespace MySnooper
 
 
         // Constructor
-        public Client(string Name, CountryClass Country, string Clan, int Rank, bool ClientGreatSnooper)
+        public Client(string name, string clan = "")
         {
-            this.Rank = RanksClass.GetRankByInt(Rank);
-            this.Name = Name;
-            this.LowerName = Name.ToLower();
-            this.Clan = Clan;
-            this.Country = Country;
-            this.ClientGreatSnooper = ClientGreatSnooper;
-            this.TusNick = string.Empty;
+            this.Name = name;
+            this.LowerName = name.ToLower();
+            this.Clan = clan;
+            this.Rank = RanksClass.GetRankByInt(0);
             this.Channels = new List<Channel>();
+            this.PMChannels = new List<Channel>();
         }
 
         // IComparable interface
@@ -150,7 +173,7 @@ namespace MySnooper
             {
                 return false;
             }
-
+            
             // If parameter cannot be cast to Point return false.
             Client cl = obj as Client;
             if ((System.Object)cl == null)
@@ -169,7 +192,7 @@ namespace MySnooper
             {
                 return false;
             }
-
+            
             // Return true if the fields match:
             return LowerName == cl.LowerName;
         }
@@ -200,6 +223,19 @@ namespace MySnooper
         public static bool operator !=(Client a, Client b)
         {
             return !(a == b);
+        }
+
+        public bool CanConversation()
+        {
+            if (!ClientGreatSnooper)
+                return false;
+
+            // Great snooper v1.4
+            string gsVersion = ClientApp.Substring(15);
+            if (Math.Sign(gsVersion.CompareTo("1.4")) != -1)
+                return true;
+
+            return false;
         }
 
         // INotifyPropertyChanged interface

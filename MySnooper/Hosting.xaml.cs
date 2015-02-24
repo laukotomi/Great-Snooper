@@ -136,7 +136,6 @@ namespace MySnooper
 
 
             Container.IsEnabled = false;
-            LoadingRing.IsActive = true;
 
             if (e != null)
                 e.Handled = true;
@@ -149,7 +148,6 @@ namespace MySnooper
             this.Dispatcher.Invoke(new Action(delegate()
             {
                 Container.IsEnabled = true;
-                LoadingRing.IsActive = false;
             }
             ));
         }
@@ -167,6 +165,11 @@ namespace MySnooper
                 CreateGame(null, null);
                 e.Handled = true;
             }
+        }
+
+        private void MetroWindow_ContentRendered(object sender, EventArgs e)
+        {
+            GameName.Focus();
         }
     }
 }

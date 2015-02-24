@@ -21,6 +21,7 @@ namespace MySnooper
                     coll.Add(TextDecorations.Underline);
                 if (Strikethrough)
                     coll.Add(TextDecorations.Strikethrough);
+                coll.Freeze();
                 return coll;
             }
             private set
@@ -36,6 +37,7 @@ namespace MySnooper
         {
             this.Fontfamily = new FontFamily(fontfamily);
             this.Color = new SolidColorBrush(color);
+            this.Color.Freeze();
             this.Size = size;
             this.Bold = bold == "1" ? FontWeights.Bold : FontWeights.Normal;
             this.Italic = italic == "1" ? FontStyles.Italic : FontStyles.Normal;

@@ -21,20 +21,21 @@ namespace MySnooper
         public static MessageSetting HyperLinkStyle { get; private set; }
         public static MessageSetting LeagueFoundMessage { get; private set; }
 
-        static MessageSettings()
+        // This method ensures that the initialization will be made from the appropriate thread
+        public static void Initialize()
         {
-            ChannelMessage = SettingToObj(Properties.Settings.Default.ChannelMessage, MessageTypes.Channel);
-            JoinMessage = SettingToObj(Properties.Settings.Default.JoinMessage, MessageTypes.Join);
-            QuitMessage = SettingToObj(Properties.Settings.Default.QuitMessage, MessageTypes.Quit);
-            PartMessage = SettingToObj(Properties.Settings.Default.PartMessage, MessageTypes.Part);
-            OfflineMessage = SettingToObj(Properties.Settings.Default.OfflineMessage, MessageTypes.Offline);
-            ActionMessage = SettingToObj(Properties.Settings.Default.ActionMessage, MessageTypes.Action);
-            UserMessage = SettingToObj(Properties.Settings.Default.UserMessage, MessageTypes.User);
-            NoticeMessage = SettingToObj(Properties.Settings.Default.NoticeMessage, MessageTypes.Notice);
-            BuddyJoinedMessage = SettingToObj(Properties.Settings.Default.BuddyJoinedMessage, MessageTypes.BuddyJoined);
+            ChannelMessage = SettingToObj(Properties.Settings.Default.ChannelMessageStyle, MessageTypes.Channel);
+            JoinMessage = SettingToObj(Properties.Settings.Default.JoinMessageStyle, MessageTypes.Join);
+            QuitMessage = SettingToObj(Properties.Settings.Default.QuitMessageStyle, MessageTypes.Quit);
+            PartMessage = SettingToObj(Properties.Settings.Default.PartMessageStyle, MessageTypes.Part);
+            OfflineMessage = SettingToObj(Properties.Settings.Default.OfflineMessageStyle, MessageTypes.Offline);
+            ActionMessage = SettingToObj(Properties.Settings.Default.ActionMessageStyle, MessageTypes.Action);
+            UserMessage = SettingToObj(Properties.Settings.Default.UserMessageStyle, MessageTypes.User);
+            NoticeMessage = SettingToObj(Properties.Settings.Default.NoticeMessageStyle, MessageTypes.Notice);
+            BuddyJoinedMessage = SettingToObj(Properties.Settings.Default.BuddyJoinedMessageStyle, MessageTypes.BuddyJoined);
             MessageTimeStyle = SettingToObj(Properties.Settings.Default.MessageTimeStyle, MessageTypes.Time);
             HyperLinkStyle = SettingToObj(Properties.Settings.Default.HyperLinkStyle, MessageTypes.Hyperlink);
-            LeagueFoundMessage = SettingToObj(Properties.Settings.Default.LeagueFoundMessage, MessageTypes.League);
+            LeagueFoundMessage = SettingToObj(Properties.Settings.Default.LeagueFoundMessageStyle, MessageTypes.League);
         }
  
         public static MessageSetting SettingToObj(string setting, MessageTypes type)

@@ -19,60 +19,61 @@ namespace MySnooper
 
         // Instant coloring
         private ContextMenu ColorChooser;
-        private SortedDictionary<Client, Brush> ChoosedColors = new SortedDictionary<Client, Brush>();
+        private Dictionary<string, SolidColorBrush> ChoosedColors = new Dictionary<string, SolidColorBrush>();
 
         // User messages history
-        private void MessagesHistory(object sender, KeyEventArgs e)
+        public void MessagesHistory(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Up)
             {
-                var obj = sender as TextBox;
-                Channel ch = (Channel)obj.Tag;
+                TextBox tb = (TextBox)sender;
+                Channel ch = (Channel)tb.DataContext;
                 if (ch.UserMessageLoadedIdx == -1)
                 {
-                    ch.TempMessage = obj.Text;
+                    ch.TempMessage = tb.Text;
                 }
-                obj.Text = ch.LoadNextUserMessage();
-                obj.SelectAll();
+                tb.Text = ch.LoadNextUserMessage();
+                tb.SelectAll();
                 e.Handled = true;
             }
             else if (e.Key == Key.Down)
             {
-                var obj = sender as TextBox;
-                Channel ch = (Channel)obj.Tag;
+                TextBox tb = (TextBox)sender;
+                Channel ch = (Channel)tb.DataContext;
                 string text = ch.LoadPrevUserMessage();
                 if (ch.UserMessageLoadedIdx == -1)
-                    obj.Text = ch.TempMessage;
+                    tb.Text = ch.TempMessage;
                 else
-                    obj.Text = text;
-                obj.SelectAll();
+                    tb.Text = text;
+                tb.SelectAll();
                 e.Handled = true;
             }
         }
 
         // Send a message by the user (action)
-        private void MessageSend(object sender, KeyEventArgs e)
+        public void MessageSend(object sender, KeyEventArgs e)
         {
-            var obj = sender as TextBox;
-            if (e.Key == Key.Return && obj.Text.Length > 0)
+            TextBox tb = (TextBox)sender;
+            if (e.Key == Key.Return && tb.Text.Length > 0)
             {
                 // Remove non-wormnet characters
-                string message = WormNetCharTable.RemoveNonWormNetChars(obj.Text.TrimEnd());
+                Channel ch = (Channel)tb.DataContext;
+                string message = (ch.Server.IsWormNet) ? message = WormNetCharTable.RemoveNonWormNetChars(tb.Text.TrimEnd()) : tb.Text.TrimEnd();
+
                 if (message.Length > 0)
                 {
-                    Channel ch = (Channel)obj.Tag;
                     ch.UserMessagesAdd(message);
                     ch.UserMessageLoadedIdx = -1;
-                    SendMessageToChannel(message, ch);
+                    SendMessageToChannel(message, ch, true);
                 }
 
-                obj.Clear();
+                tb.Clear();
                 e.Handled = true;
             }
         }
 
         // Send a message to a channel (+ user functions)
-        private void SendMessageToChannel(string textToSend, Channel channel)
+        private void SendMessageToChannel(string textToSend, Channel channel, bool userMessage = false)
         {
             // Command message
             if (textToSend[0] == '/')
@@ -88,62 +89,64 @@ namespace MySnooper
                 else
                     command = textToSend.Substring(1).ToLower();
 
-
                 // Process the command
-                if (command == "me" && text.Length > 0)
+                switch (command)
                 {
-                    SendActionMessage(text, channel);
-                }
-                else if (command == "away")
-                {
-                    AwayText = (text.Length == 0) ? "No reason specified." : text;
-                }
-                else if (command == "back")
-                {
-                    if (AwayText == string.Empty)
-                        return;
+                    case "me":
+                        if (text.Length > 0)
+                            SendActionMessage(text, channel, userMessage);
+                        break;
 
-                    AwayText = string.Empty;
-                    string backText = (text.Length == 0) ? Properties.Settings.Default.BackText : text;
-                    foreach (var item in WormNetM.ChannelList)
-                    {
-                        if (item.Value.IsPrivMsgChannel && item.Value.AwaySent)
-                        {
-                            item.Value.AwaySent = false;
+                    case "nick":
+                        if (text.Length > 0 && channel != null && channel.Joined && !channel.Server.IsWormNet)
+                            channel.Server.Send("NICK " + text);
+                        break;
 
-                            if (Properties.Settings.Default.SendBack)
-                                SendMessageToChannel(backText, item.Value);
-                        }
-                    }
-                }
-                else if (command == "gs")
-                {
-                    var sb = new System.Text.StringBuilder();
-                    int count = 0;
-                    foreach (var item in WormNetM.Clients)
-                    {
-                        if (item.Value.ClientGreatSnooper)
+                    case "away":
+                        AwayText = (text.Length == 0) ? Properties.Settings.Default.AwayText : text;
+                        break;
+
+                    case "back":
+                        backText = (text.Length == 0) ? Properties.Settings.Default.BackText : text;
+                        AwayText = string.Empty;
+                        break;
+
+                    case "gs":
+                        var sb = new StringBuilder();
+                        var helper = new Dictionary<string, bool>();
+                        int count = 0;
+                        for (int i = 0; i < servers.Count; i++)
                         {
-                            if (sb.Length != 0)
-                                sb.Append(", ");
-                            sb.Append(item.Value.Name);
-                            count++;
+                            if (servers[i].IsRunning)
+                            {
+                                foreach (var item in servers[i].Clients)
+                                {
+                                    if (item.Value.ClientGreatSnooper && !helper.ContainsKey(item.Value.Name))
+                                    {
+                                        helper.Add(item.Value.Name, true);
+                                        if (sb.Length != 0)
+                                            sb.Append(", ");
+                                        sb.Append(item.Value.Name);
+                                        count++;
+                                    }
+                                }
+                            }
                         }
-                    }
-                    MessageBox.Show(this, " Great Snooper is used by " + count + " user(s)! " + sb.ToString(), "Great Snooper check", MessageBoxButton.OK, MessageBoxImage.Information);
-                }
-                else if (command == "log")
-                {
-                    string settingsPath = System.IO.Directory.GetParent(System.IO.Directory.GetParent(System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath).FullName).FullName;
-                    System.Diagnostics.Process.Start(settingsPath);
-                }
-                else if (command == "news")
-                {
-                    OpenNewsWindow();
-                }
-                else if (command == "debug")
-                {
-                    GlobalManager.DebugMode = !GlobalManager.DebugMode;
+                        MessageBox.Show(this, " Great Snooper is used by " + count + " user(s)! " + sb.ToString(), "Great Snooper check", MessageBoxButton.OK, MessageBoxImage.Information);
+                        break;
+
+                    case "log":
+                    case "logs":
+                        System.Diagnostics.Process.Start(GlobalManager.SettingsPath);
+                        break;
+
+                    case "news":
+                        OpenNewsWindow();
+                        break;
+
+                    case "debug":
+                        GlobalManager.DebugMode = !GlobalManager.DebugMode;
+                        break;
                 }
             }
             // Action message
@@ -151,7 +154,7 @@ namespace MySnooper
             {
                 string text = textToSend.Substring(1).Trim();
                 if (text.Length > 0)
-                    SendActionMessage(text, channel);
+                    SendActionMessage(text, channel, userMessage);
             }
             // Simple message
             else if (channel != null && channel.Joined)
@@ -159,44 +162,90 @@ namespace MySnooper
                 string text = textToSend.Trim();
                 if (text.Length > 0)
                 {
-                    WormNetC.Send("PRIVMSG " + channel.Name + " :" + text);
-                    channel.AddMessage(GlobalManager.User, text, MessageSettings.UserMessage);
+                    if (channel.IsPrivMsgChannel)
+                    {
+                        if (channel.Clients.Count > 1)
+                        {
+                            // Broadcast
+                            foreach (Client c in channel.Clients)
+                            {
+                                if (c.OnlineStatus != 0 && !c.IsBanned)
+                                    channel.Server.Send("PRIVMSG " + c.Name + " :" + "\x01" + "CMESSAGE " + channel.HashName + "|" + text + "\x01");
+                            }
+                        }
+                        else if (channel.Clients[0].OnlineStatus != 0)
+                            channel.Server.Send("PRIVMSG " + channel.Clients[0].Name + " :" + text);
+                    }
+                    else
+                        channel.Server.Send("PRIVMSG " + channel.Name + " :" + text);
+                    channel.AddMessage(channel.Server.User, text, MessageSettings.UserMessage);
+                    if (userMessage)
+                    {
+                        channel.SendAway = false;
+                        channel.SendBack = false;
+                    }
                 }
             }
         }
 
-        private void SendActionMessage(string text, Channel channel)
+        private void SendActionMessage(string text, Channel channel, bool userMessage = false)
         {
-            if (channel == null || !channel.Joined || text.Length == 0) return;
+            if (channel == null || !channel.Joined)
+                return;
 
-            WormNetC.Send("PRIVMSG " + channel.Name + " :" + "\x01" + "ACTION " + text + "\x01");
-            channel.AddMessage(GlobalManager.User, text, MessageSettings.ActionMessage);
+            if (channel.IsPrivMsgChannel)
+            {
+                if (channel.Clients.Count > 1)
+                {
+                    // Broadcast
+                    foreach (Client c in channel.Clients)
+                    {
+                        if (c.OnlineStatus != 0 && !c.IsBanned)
+                            channel.Server.Send("PRIVMSG " + c.Name + " :" + "\x01" + "CACTION " + channel.HashName + "|" + text + "\x01");
+                    }
+                }
+                else if (channel.Clients[0].OnlineStatus != 0)
+                    channel.Server.Send("PRIVMSG " + channel.Clients[0] + " :" + "\x01" + "ACTION " + text + "\x01");
+            }
+            else
+                channel.Server.Send("PRIVMSG " + channel.Name + " :" + "\x01" + "ACTION " + text + "\x01");
+            channel.AddMessage(channel.Server.User, text, MessageSettings.ActionMessage);
+            if (userMessage)
+            {
+                channel.SendAway = false;
+                channel.SendBack = false;
+            }
         }
 
         bool StopLoading = false;
         // If we scroll upper the messages, then don't scroll. If we scroll to bottom, scroll the messages
-        private void MessageScrollChanged(object sender, ScrollChangedEventArgs e)
+        public void MessageScrollChanged(object sender, ScrollChangedEventArgs e)
         {
             var obj = sender as ScrollViewer;
+            // Keep scrolling
             if (obj.VerticalOffset == obj.ScrollableHeight)
             {
-                Channel ch = (Channel)((ScrollViewer)sender).Tag;
-                while (ch.TheFlowDocument.Blocks.Count > GlobalManager.MaxMessagesDisplayed)
+                Channel ch = (Channel)((ScrollViewer)sender).DataContext;
+                if (ch.TheFlowDocument.Blocks.Count > GlobalManager.MaxMessagesDisplayed)
                 {
-                    ch.TheFlowDocument.Blocks.Remove(ch.TheFlowDocument.Blocks.FirstBlock);
-                    if (ch.MessagesLoadedFrom + 1 + GlobalManager.MaxMessagesDisplayed < GlobalManager.MaxMessagesInMemory)
-                        ch.MessagesLoadedFrom++;
+                    while (ch.TheFlowDocument.Blocks.Count > GlobalManager.MaxMessagesDisplayed)
+                        ch.TheFlowDocument.Blocks.Remove(ch.TheFlowDocument.Blocks.FirstBlock);
+
+                    ch.MessagesLoadedFrom = ch.Messages.Count - GlobalManager.MaxMessagesDisplayed;
                 }
+
                 obj.ScrollToEnd();
             }
-            else if (obj.VerticalOffset == 0) // Load older messages
+            // Load older messages
+            else if (obj.VerticalOffset == 0)
             {
                 if (!StopLoading)
                 {
-                    Channel ch = (Channel)((ScrollViewer)sender).Tag;
-                    Block first = ch.TheFlowDocument.Blocks.FirstBlock;
+                    Channel ch = (Channel)((ScrollViewer)sender).DataContext;
                     if (ch.MessagesLoadedFrom != 0)
                     {
+                        StopLoading = true;
+                        Block first = ch.TheFlowDocument.Blocks.FirstBlock;
                         int loaded = LoadMessages(ch, GlobalManager.NumOfOldMessagesToBeLoaded);
                         double plus = first.Padding.Top + first.Padding.Bottom + first.Margin.Bottom + first.Margin.Top;
                         double sum = 0;
@@ -220,7 +269,6 @@ namespace MySnooper
 
                         obj.ScrollToVerticalOffset(sum);
                     }
-                    StopLoading = true;
                 }
             }
             else
@@ -235,38 +283,39 @@ namespace MySnooper
             if (clear)
                 ch.TheFlowDocument.Blocks.Clear();
 
+            // select the index from which the messages will be loaded
             int loadFrom = (clear) ? ch.Messages.Count - 1 : ch.MessagesLoadedFrom - 1;
 
+            // load the message backwards
             int k = 0, i = loadFrom;
             for (; i >= 0 && k < count; i--)
             {
-                if (!ChatMode || ChatMode && ch.Messages[i].MessageType != MessageTypes.Part &&
-                    ch.Messages[i].MessageType != MessageTypes.Join &&
-                    ch.Messages[i].MessageType != MessageTypes.Quit)
+                if (!ch.Messages[i].Sender.IsBanned)
                 {
-                    k++;
-
-                    if (ch.TheFlowDocument.Blocks.Count == 0)
-                        AddNewMessage(ch, ch.Messages[i], false);
-                    else
-                        AddNewMessage(ch, ch.Messages[i], true);
-
-                    ch.MessagesLoadedFrom = i;
+                    bool insert = ch.TheFlowDocument.Blocks.Count != 0;
+                    if (AddNewMessage(ch, ch.Messages[i], insert))
+                    {
+                        k++;
+                        ch.MessagesLoadedFrom = i;
+                    }
                 }
             }
+
+            // If we reached last message then we set MessagesLoadedFrom to 0, so this function won't be called again
+            if (i == -1)
+                ch.MessagesLoadedFrom = 0;
 
             return k;
         }
 
-        private void AddNewMessage(Channel ch, MessageClass message, bool insert = false, bool LeagueFound = false)
+        public bool AddNewMessage(Channel ch, MessageClass message, bool insert = false, string highlightWord = "")
         {
             if (ChatMode && (
-                message.MessageType == MessageTypes.Part ||
-                message.MessageType == MessageTypes.Join ||
-                message.MessageType == MessageTypes.Quit) ||
-                message.Sender.IsBanned
+                message.Style.Type == MessageTypes.Part ||
+                message.Style.Type == MessageTypes.Join ||
+                message.Style.Type == MessageTypes.Quit)
             )
-            return;
+            return false;
                 
             try
             {
@@ -276,8 +325,8 @@ namespace MySnooper
                 p.Tag = message;
                 p.MouseRightButtonDown += InstantColorMenu;
 
-                Brush b;
-                if (ChoosedColors.TryGetValue(message.Sender, out b))
+                SolidColorBrush b;
+                if (ChoosedColors.TryGetValue(message.Sender.LowerName, out b))
                     p.Foreground = b;
 
                 // Time when the message arrived
@@ -289,16 +338,14 @@ namespace MySnooper
                 }
 
                 // Sender of the message
-                if (message.MessageType == MessageTypes.Action)
+                if (message.Style.Type == MessageTypes.Action)
                 {
-                    Run nick = new Run(message.Sender.Name + " ");
-                    nick.FontWeight = FontWeights.Bold;
+                    Bold nick = new Bold(new Run(message.Sender.Name + " "));
                     p.Inlines.Add(nick);
                 }
                 else
                 {
-                    Run nick = new Run(message.Sender.Name + ": ");
-                    nick.FontWeight = FontWeights.Bold;
+                    Bold nick = new Bold(new Run(message.Sender.Name + ": "));
                     p.Inlines.Add(nick);
                 }
 
@@ -308,7 +355,19 @@ namespace MySnooper
                 sb.Clear(); // this StringBuilder is for minimizing the number on Runs in a paragraph
                 for (int i = 0; i < words.Length; i++)
                 {
-                    if (words[i] == GlobalManager.User.Name && message.Sender != GlobalManager.User) // highlight messsage
+                    if (words[i] == ch.Server.User.Name && message.Sender != ch.Server.User) // highlight messsage
+                    {
+                        // Flush the sb content
+                        if (sb.Length > 0)
+                        {
+                            p.Inlines.Add(new Run(sb.ToString()));
+                            sb.Clear();
+                        }
+
+                        Italic word = new Italic(new Run(words[i]));
+                        p.Inlines.Add(word);
+                    }
+                    else if (highlightWord == words[i])
                     {
                         // Flush the sb content
                         if (sb.Length > 0)
@@ -318,14 +377,14 @@ namespace MySnooper
                         }
 
                         Run word = new Run(words[i]);
-                        word.FontStyle = FontStyles.Italic;
+                        MessageSettings.LoadSettingsFor(word, MessageSettings.LeagueFoundMessage);
                         p.Inlines.Add(word);
                     }
                     else if (
                         ( // Links
+                        words[i].Length > 6 && words[i].IndexOf("ftp://", 0, 6, StringComparison.OrdinalIgnoreCase) == 0 ||
                         words[i].Length > 7 && words[i].IndexOf("http://", 0, 7, StringComparison.OrdinalIgnoreCase) == 0 ||
-                        words[i].Length > 8 && words[i].IndexOf("https://", 0, 8, StringComparison.OrdinalIgnoreCase) == 0 ||
-                        words[i].Length > 6 && words[i].IndexOf("ftp://", 0, 6, StringComparison.OrdinalIgnoreCase) == 0
+                        words[i].Length > 8 && words[i].IndexOf("https://", 0, 8, StringComparison.OrdinalIgnoreCase) == 0
                         ) && Uri.TryCreate(words[i], UriKind.RelativeOrAbsolute, out uri)
                     )
                     {
@@ -345,21 +404,7 @@ namespace MySnooper
                     }
                     else
                     {
-                        if (LeagueFound && FoundUsers.ContainsKey(words[i].ToLower()))
-                        {
-                            // Flush the sb content
-                            if (sb.Length > 0)
-                            {
-                                p.Inlines.Add(new Run(sb.ToString()));
-                                sb.Clear();
-                            }
-
-                            Run word = new Run(words[i]);
-                            MessageSettings.LoadSettingsFor(word, MessageSettings.LeagueFoundMessage);
-                            p.Inlines.Add(word);
-                        }
-                        else
-                            sb.Append(words[i]);
+                        sb.Append(words[i]);
                     }
                     if (i + 1 < words.Length)
                         sb.Append(' ');
@@ -381,16 +426,19 @@ namespace MySnooper
                 {
                     ch.TheFlowDocument.Blocks.Remove(ch.TheFlowDocument.Blocks.FirstBlock);
                 }
+
+                return true;
             }
             catch (Exception e)
             {
-                ErrorLog.log(e);
+                ErrorLog.Log(e);
             }
+            return false;
         }
 
         private void InstantColorMenu(object sender, MouseButtonEventArgs e)
         {
-            Channel ch = (Channel)((TabItem)Channels.SelectedItem).Tag;
+            Channel ch = (Channel)((TabItem)Channels.SelectedItem).DataContext;
             if (!ch.TheRichTextBox.Selection.IsEmpty)
                 return;
 
@@ -413,7 +461,9 @@ namespace MySnooper
                     {
                         if (info.Name == goodcolors[i])
                         {
-                            var item = new MenuItem() { Header = info.Name, Foreground = new SolidColorBrush((Color)info.GetValue(null, null)), FontWeight = FontWeights.Bold, FontSize = 12 };
+                            var color = new SolidColorBrush((Color)info.GetValue(null, null));
+                            color.Freeze();
+                            var item = new MenuItem() { Header = info.Name, Foreground = color, FontWeight = FontWeights.Bold, FontSize = 12 };
                             item.Click += InstantColorChoosed;
                             ColorChooser.Items.Add(item);
 
@@ -437,51 +487,50 @@ namespace MySnooper
         {
             MenuItem obj = (MenuItem)sender;
             Client c = ((MessageClass)((ContextMenu)obj.Parent).Tag).Sender;
-            ChoosedColors.Remove(c);
 
-            foreach (var item in WormNetM.ChannelList)
-            {
-                Channel ch = item.Value;
-                if (ch.TheFlowDocument.Blocks.Count > 0)
-                {
-                    Paragraph p = (Paragraph)ch.TheFlowDocument.Blocks.FirstBlock;
-                    while (p != null)
-                    {
-                        MessageClass msg = (MessageClass)p.Tag;
-                        if (msg.Sender == c)
-                            p.Foreground = msg.Style.Color;
-                        p = (Paragraph)p.NextBlock;
-                    }
-                }
-            }
+            ChoosedColors.Remove(c.LowerName);
+            ChangeMessageColorForClient(c, null);
         }
 
         private void InstantColorChoosed(object sender, RoutedEventArgs e)
         {
             MenuItem obj = (MenuItem)sender;
             Client c = ((MessageClass)((ContextMenu)obj.Parent).Tag).Sender;
-            Brush b;
-            if (ChoosedColors.TryGetValue(c, out b))
-                ChoosedColors[c] = b;
-            else
-                ChoosedColors.Add(c, obj.Foreground);
+            SolidColorBrush color = (SolidColorBrush)obj.Foreground;
 
-            foreach (var item in WormNetM.ChannelList)
+            if (ChoosedColors.ContainsKey(c.LowerName))
+                ChoosedColors[c.LowerName] = color;
+            else
+                ChoosedColors.Add(c.LowerName, color);
+
+            ChangeMessageColorForClient(c, color);
+        }
+
+        private void ChangeMessageColorForClient(Client c, SolidColorBrush color)
+        {
+            for (int i = 0; i < servers.Count; i++)
             {
-                Channel ch = item.Value;
-                if (ch.TheFlowDocument.Blocks.Count > 0)
+                if (servers[i].IsRunning)
                 {
-                    Paragraph p = (Paragraph)ch.TheFlowDocument.Blocks.FirstBlock;
-                    while (p != null)
+                    foreach (var item in servers[i].ChannelList)
                     {
-                        MessageClass msg = (MessageClass)p.Tag;
-                        if (msg.Sender == c)
-                            p.Foreground = obj.Foreground;
-                        p = (Paragraph)p.NextBlock;
+                        Channel ch = item.Value;
+                        if (ch.Joined && ch.TheFlowDocument.Blocks.Count > 0)
+                        {
+                            Paragraph p = (Paragraph)ch.TheFlowDocument.Blocks.FirstBlock;
+                            while (p != null)
+                            {
+                                MessageClass msg = (MessageClass)p.Tag;
+                                if (msg.Sender == c)
+                                    p.Foreground = (color != null) ? color : msg.Style.Color;
+                                p = (Paragraph)p.NextBlock;
+                            }
+                        }
                     }
                 }
             }
         }
+
 
 
         // Unload subscribed hyperlink events
@@ -501,7 +550,7 @@ namespace MySnooper
             }
             catch (Exception ex)
             {
-                ErrorLog.log(ex);
+                ErrorLog.Log(ex);
             }
             e.Handled = true;
         }

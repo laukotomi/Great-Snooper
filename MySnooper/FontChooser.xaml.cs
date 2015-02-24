@@ -113,11 +113,11 @@ namespace MySnooper
             actSetting.Strikethrough = TheStrikethrough.IsChecked.Value;
             actSetting.Underline = TheUnderline.IsChecked.Value;
             
-            Properties.Settings.Default.GetType().GetProperty(styleName).SetValue(Properties.Settings.Default, MessageSettings.ObjToSetting(actSetting));
+            Properties.Settings.Default.GetType().GetProperty(styleName).SetValue(Properties.Settings.Default, MessageSettings.ObjToSetting(actSetting), null);
             Properties.Settings.Default.Save();
 
             if (SaveSetting != null)
-                SaveSetting();
+                SaveSetting.BeginInvoke(null, null);
 
             this.Close();
         }

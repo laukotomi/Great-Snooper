@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
 
@@ -12,249 +13,53 @@ namespace MySnooper
 {
     public partial class MainWindow : MetroWindow
     {
-        void timer_Tick(object sender, EventArgs e)
+        public Border MakeDisConnectedLayout(Channel ch)
         {
-            if (GlobalManager.UITasks.Count > 0)
-            {
-                UITask task;
-                while (GlobalManager.UITasks.TryDequeue(out task))
-                {
-                    Type taskType = task.GetType();
-
-                    // Offline user notification
-                    if (taskType == typeof(OfflineUITask))
-                    {
-                        OfflineUITask offline = (OfflineUITask)task;
-                        WormNetM.OfflineUserPrivChat(offline.ClientName);
-                    }
-                    // Message
-                    else if (taskType == typeof(MessageUITask))
-                    {
-                        MessageUITask message = (MessageUITask)task;
-                        string fromLow = message.ClientName.ToLower();
-
-                        Client c = null;
-                        Channel ch = null;
-                        string toLow = message.ChannelName.ToLower();
-                        foreach (var item in WormNetM.ChannelList)
-                        {
-                            if (item.Value.LowerName == toLow || item.Value.LowerName == fromLow) // message to a channel || private message (we have a private chat tab)
-                            {
-                                ch = item.Value;
-                                c = item.Value.TheClient;
-                                break;
-                            }
-                        }
-
-                        if (c == null && !WormNetM.Clients.TryGetValue(fromLow, out c))
-                        {
-                            c = new Client(message.ClientName, null, "", 0, false);
-                            c.IsBanned = WormNetM.IsBanned(fromLow);
-                            c.IsBuddy = WormNetM.IsBuddy(fromLow);
-                            c.OnlineStatus = 2;
-                        }
-
-                        if (ch == null) // new private message channel
-                        {
-                            ch = new Channel(c.Name, "Chat with " + c.Name, c);
-                            ch.NewMessageAdded += AddNewMessage;
-                            WormNetM.ChannelList.Add(ch.LowerName, ch);
-
-                            MakeConnectedLayout(ch);
-                            if (!c.IsBanned)
-                                AddToChannels(ch);
-                        }
-                        else if (!ch.Joined)
-                            return;
-
-                        bool leagueFound = false;
-
-                        if (!ch.IsPrivMsgChannel)
-                        {
-                            bool LookForLeague = SearchHere != null && SearchHere == ch;
-                            string[] words = message.Message.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
-
-                            for (int i = 0; i < words.Length; i++)
-                            {
-                                if (message.Setting.Type == MessageTypes.Channel && words[i] == GlobalManager.User.Name)
-                                {
-                                    Highlight(ch);
-                                }
-                                else if (LookForLeague)
-                                {
-                                    string lower = words[i].ToLower();
-                                    if (FoundUsers.ContainsKey(lower) && !FoundUsers[lower].Contains(c.LowerName))
-                                    {
-                                        FoundUsers[lower].Add(c.LowerName);
-                                        leagueFound = true;
-                                        this.FlashWindow();
-
-                                        if (Properties.Settings.Default.LeagueFoundBeepEnabled && SoundEnabled && LeagueGameFoundBeep != null)
-                                        {
-                                            try
-                                            {
-                                                LeagueGameFoundBeep.Play();
-                                            }
-                                            catch (Exception ex)
-                                            {
-                                                ErrorLog.log(ex);
-                                            }
-                                        }
-                                        break;
-                                    }
-                                }
-                            }
-                        }
-                        else if (Channels.SelectedItem != null && !c.IsBanned)
-                        {
-                            // Private message arrived notification
-                            Channel selectedCH = (Channel)((TabItem)Channels.SelectedItem).Tag;
-                            if (ch.BeepSoundPlay && (ch != selectedCH || !IsWindowFocused))
-                            {
-                                ch.NewMessages = true;
-                                ch.BeepSoundPlay = false;
-                                this.FlashWindow();
-
-                                if (Properties.Settings.Default.PMBeepEnabled && SoundEnabled && PrivateMessageBeep != null)
-                                {
-                                    try
-                                    {
-                                        PrivateMessageBeep.Play();
-                                    }
-                                    catch (Exception ex)
-                                    {
-                                        ErrorLog.log(ex);
-                                    }
-                                }
-                            }
-
-                            // Send back away message if needed
-                            if (AwayText != string.Empty && !ch.AwaySent && (selectedCH != ch || !IsWindowFocused))
-                            {
-                                SendMessageToChannel(AwayText, ch);
-                                ch.AwaySent = true;
-                            }
-                        }
-
-                        ch.AddMessage(c, message.Message, message.Setting, leagueFound);
-                    }
-
-                    // A client left the server
-                    else if (taskType == typeof(QuitUITask))
-                    {
-                        QuitUITask quit = (QuitUITask)task;
-                        WormNetM.QuittedChannel(quit.ClientName, quit.Message);
-                        TusUsers.Remove(quit.ClientName.ToLower());
-                        UpdateDescription();
-                    }
-
-                    // A client parts a channel
-                    else if (taskType == typeof(PartedUITask))
-                    {
-                        PartedUITask parted = (PartedUITask)task;
-                        Client c = WormNetM.PartedChannel(parted.ChannelName, parted.ClientName); // returns the client if it was removed completely
-                        if (c != null)
-                            TusUsers.Remove(c.LowerName);
-                        UpdateDescription();
-                    }
-
-                    // A client joins a channel
-                    else if (taskType == typeof(JoinedUITask))
-                    {
-                        JoinedUITask joined = (JoinedUITask)task;
-                        bool buddyJoined = false;
-                        bool userjoined = WormNetM.JoinedChannel(joined.ChannelName, joined.ClientName, joined.Clan, ref buddyJoined);
-                        if (userjoined)
-                        {
-                            GameListForce = true;
-                        }
-
-                        if (buddyJoined && Properties.Settings.Default.BJBeepEnabled && SoundEnabled && BuddyOnlineBeep != null)
-                        {
-                            try
-                            {
-                                BuddyOnlineBeep.Play();
-                            }
-                            catch (Exception ex)
-                            {
-                                ErrorLog.log(ex);
-                            }
-                        }
-                        UpdateDescription();
-
-                        if (userjoined && Channels.SelectedItem != null)
-                        {
-                            Channel selectedCH = (Channel)((TabItem)Channels.SelectedItem).Tag;
-                            Channel ch = WormNetM.ChannelList[joined.ChannelName];
-                            ch.TheTabItem.UpdateLayout();
-                            ch.TheTextBox.Focus();
-                        }
-                    }
-
-                    else if (taskType == typeof(ChannelListUITask))
-                    {
-                        ChannelListUITask cList = (ChannelListUITask)task;
-                        this.Dispatcher.Invoke(new Action(delegate()
-                        {
-                            foreach (var item in cList.ChannelList)
-                            {
-                                Channel ch = new Channel(item.Key, item.Value);
-                                ch.NewMessageAdded += AddNewMessage;
-                                ch.ChannelLeaving += ChannelLeaving;
-
-                                MakeDisConnectedLayout(ch);
-                                MakeConnectedLayout(ch);
-                                MakeGameListTabItem(ch);
-                                MakeUserListTemplate(ch);
-                                WormNetM.ChannelList.Add(ch.LowerName, ch);
-                                AddToChannels(ch);
-                            }
-
-                            if (Channels.SelectedIndex != 0 && Channels.Items.Count > 0)
-                                Channels.SelectedIndex = 0;
-                        }
-                        ));
-
-                        if (Properties.Settings.Default.AutoJoinAnythingGoes)
-                            WormNetC.Send("JOIN #AnythingGoes");
-                    }
-
-                    // Information about a client
-                    else if (taskType == typeof(ClientUITask))
-                    {
-                        ClientUITask client = (ClientUITask)task;
-                        WormNetM.AddClient(client.ChannelName, client.ClientName, client.Country, client.Clan, client.Rank, client.ClientGreatSnooper);
-                        UpdateDescription();
-                    }
-                }
-            }
-        }
-
-        private IRCCommunicator WormNetC;
-        private System.Threading.Thread IrcThread;
-
-
-        private void MakeDisConnectedLayout(Channel ch)
-        {
-            ch.DisconnectedLayout = (Border)XamlReader.Parse(
+            Border border = (Border)XamlReader.Parse(
                " <Border BorderThickness=\"0,1,0,0\" BorderBrush=\"Gray\">" +
                "     <StackPanel Margin=\"0, 20, 0, 0\">" +
                "         <Border>" +
-               "             <Label Content=\"{Binding Path=Description, Mode=OneWay}\" FontSize=\"14\" HorizontalAlignment=\"Center\" />" +
+               "             <Label Content=\"{Binding Path=Description, Mode=OneTime}\" FontSize=\"14\" HorizontalAlignment=\"Center\" />" +
                "         </Border>" +
                "         <Button Content=\"Enter this channel\" Width=\"180\" HorizontalAlignment=\"Center\" Focusable=\"false\" />" +
                "     </StackPanel>" +
                " </Border>"
             , GlobalManager.XamlContext);
-            ch.DisconnectedLayout.DataContext = ch;
-            Button bt = (Button)((StackPanel)ch.DisconnectedLayout.Child).Children[1];
-            bt.Click += Enter_Channel;
-            bt.Tag = ch;
+            StackPanel sp = (StackPanel)border.Child;
+            Button bt = (Button)sp.Children[1];
+            bt.Click += EnterChannel;
+
+            var progressRing = new MahApps.Metro.Controls.ProgressRing();
+            progressRing.IsActive = false;
+            progressRing.Foreground = Brushes.LightBlue;
+            progressRing.Style = (Style)FindResource("ProgressRingStyle");
+            progressRing.Tag = "Connecting";
+            sp.Children.Add(progressRing);
+
+            return border;
         }
 
-        private void MakeConnectedLayout(Channel ch)
+        private void EnterChannel(object sender, RoutedEventArgs e)
         {
-            ch.ConnectedLayout = (Border)XamlReader.Parse(
+            Channel ch = (Channel)((Button)sender).DataContext;
+            if (!ch.Joined)
+            {
+                ch.Loading(true);
+                if (ch.Server.IsWormNet)
+                    ch.Server.JoinChannel(ch.Name);
+                else
+                {
+                    gameSurgeIsConnected = true;
+                    ch.Server.Connect();
+                }
+            }
+            e.Handled = true;
+        }
+
+        public Border MakeConnectedLayout()
+        {
+            int tid = System.Threading.Thread.CurrentThread.ManagedThreadId;
+            Border border = (Border)XamlReader.Parse(
                 " <Border>" +
                 "     <Grid>" +
                 "         <Grid.RowDefinitions>" +
@@ -263,7 +68,7 @@ namespace MySnooper
                 "         </Grid.RowDefinitions>" +
                 "         <Border Grid.Row=\"0\" BorderThickness=\"0,1\" BorderBrush=\"Gray\">" +
                 "             <ScrollViewer Margin=\"0,5\">" +
-                "                 <RichTextBox IsReadOnly=\"True\" BorderThickness=\"0\" IsDocumentEnabled=\"True\" Background=\"Transparent\">" +
+                "                 <RichTextBox IsUndoEnabled=\"False\" IsReadOnly=\"True\" BorderThickness=\"0\" IsDocumentEnabled=\"True\" Background=\"Transparent\">" +
                 "                     <FlowDocument>" +
                 "                         <FlowDocument.Resources>" +
                 "                             <Style TargetType=\"{x:Type Paragraph}\">" +
@@ -274,90 +79,33 @@ namespace MySnooper
                 "                 </RichTextBox>" +
                 "             </ScrollViewer>" +
                 "         </Border>" +
-                "         <TextBox Grid.Row=\"1\" Margin=\"0,8,0,2\" TextWrapping=\"Wrap\" MaxLength=\"495\" MinLines=\"1\" MaxLines=\"1\" Background=\"Transparent\" />" +
+                "         <TextBox Grid.Row=\"1\" Margin=\"0,8,0,2\" MaxLength=\"495\" Background=\"Transparent\" />" +
                 "     </Grid>" +
                 " </Border>"
             , GlobalManager.XamlContext);
 
-            ScrollViewer sw = (ScrollViewer)((Border)((Grid)ch.ConnectedLayout.Child).Children[0]).Child;
+            ScrollViewer sw = (ScrollViewer)((Border)((Grid)border.Child).Children[0]).Child;
             sw.ScrollChanged += MessageScrollChanged;
-            sw.Tag = ch;
-            ch.TheRichTextBox = (RichTextBox)sw.Content;
-            ch.TheFlowDocument = (FlowDocument)ch.TheRichTextBox.Document;
-            TextBox tb = (TextBox)((Grid)ch.ConnectedLayout.Child).Children[1];
-            ch.TheTextBox = tb;
+
+            TextBox tb = (TextBox)((Grid)border.Child).Children[1];
             tb.KeyDown += MessageSend;
             tb.PreviewKeyDown += MessagesHistory;
-            tb.Tag = ch;
+
+            return border;
         }
 
-        private void MakeGameListTabItem(Channel ch)
+        public DataGrid MakeUserListTemplate()
         {
-            TabItem ti = new TabItem();
-            Border tiConent = (Border)XamlReader.Parse(
-                " <Border>" +
-                "     <ListBox HorizontalContentAlignment=\"Stretch\" Background=\"Transparent\">" +
-                "       <ListBox.ItemTemplate>" +
-                "          <DataTemplate>" +
-                "              <Grid Background=\"Transparent\">" +
-                "                  <Grid.ColumnDefinitions>" +
-                "                      <ColumnDefinition Width=\"22\"></ColumnDefinition>" +
-                "                      <ColumnDefinition Width=\"22\"></ColumnDefinition>" +
-                "                      <ColumnDefinition Width=\"240\"></ColumnDefinition>" +
-                "                      <ColumnDefinition Width=\"150\"></ColumnDefinition>" +
-                "                  </Grid.ColumnDefinitions>" +
-                "                  <Image Grid.Column=\"0\" Source=\"{Binding Path=Locked, Mode=OneWay}\" Width=\"16\" Height=\"16\" Margin=\"0,0,6,0\"></Image>" +
-                "                  <Image Grid.Column=\"1\" Source=\"{Binding Path=Country.Flag, Mode=OneWay}\" ToolTip=\"{Binding Path=Country.Name, Mode=OneWay}\" Width=\"22\" Height=\"18\"></Image>" +
-                "                  <Label Grid.Column=\"2\" FontSize=\"13\" HorizontalAlignment=\"Left\" Foreground=\"White\" Content=\"{Binding Path=Name, Mode=OneWay}\"></Label>" +
-                "                  <Label Grid.Column=\"3\" FontSize=\"13\" HorizontalAlignment=\"Left\" Foreground=\"White\" Content=\"{Binding Path=Hoster, Mode=OneWay}\"></Label>" +
-                "              </Grid>" +
-                "          </DataTemplate>" +
-                "      </ListBox.ItemTemplate>" +
-                "      <ListBox.ContextMenu>" +
-                "          <ContextMenu>" +
-                "              <MenuItem Header=\"Join this game\"></MenuItem>" +
-                "              <MenuItem Header=\"Silent join\"></MenuItem>" +
-                "              <MenuItem Header=\"Join and close snooper\"></MenuItem>" +
-                "              <MenuItem Header=\"Silent join and close snooper\"></MenuItem>" +
-                "          </ContextMenu>" +
-                "      </ListBox.ContextMenu>" +
-                "  </ListBox>" +
-                " </Border>"
-            , GlobalManager.XamlContext);
-
-            ti.Content = tiConent;
-
-            ListBox lb = (ListBox)tiConent.Child;
-            lb.MouseDoubleClick += GameDoubleClick;
-            lb.SelectionChanged += NoSelectionChange;
-            lb.LostFocus += GameList_LostFocus;
-            Binding b = new Binding();
-            b.Source = ch.GameList;
-            b.Mode = BindingMode.OneWay;
-            lb.SetBinding(ListBox.ItemsSourceProperty, b);
-
-            ((MenuItem)lb.ContextMenu.Items[0]).Click += JoinGameClick;
-            ((MenuItem)lb.ContextMenu.Items[0]).Tag = lb;
-            ((MenuItem)lb.ContextMenu.Items[1]).Click += SilentJoin;
-            ((MenuItem)lb.ContextMenu.Items[1]).Tag = lb;
-            ((MenuItem)lb.ContextMenu.Items[2]).Click += JoinAndClose;
-            ((MenuItem)lb.ContextMenu.Items[2]).Tag = lb;
-            ((MenuItem)lb.ContextMenu.Items[3]).Click += SilentJoinAndClose;
-            ((MenuItem)lb.ContextMenu.Items[3]).Tag = lb;
-
-            GameList.Items.Add(ti);
-        }
-
-        private void MakeUserListTemplate(Channel ch)
-        {
-            TabItem ti = new TabItem();
             DataGrid dg = (DataGrid)XamlReader.Parse(
-                " <DataGrid CanUserResizeRows=\"False\" Margin=\"0\" Padding=\"0\" CanUserAddRows=\"False\" CanUserDeleteRows=\"False\" Background=\"Transparent\" AutoGenerateColumns=\"False\" SelectionMode=\"Single\">" +
+                " <DataGrid CanUserResizeRows=\"False\" Margin=\"0\" Padding=\"0\" CanUserAddRows=\"False\" EnableColumnVirtualization=\"True\" EnableRowVirtualization=\"True\" CanUserDeleteRows=\"False\" Background=\"Transparent\" AutoGenerateColumns=\"False\" SelectionMode=\"Single\">" +
                 "     <DataGrid.ContextMenu>" +
                 "         <ContextMenu>" +
                 "             <MenuItem Name=\"Chat\" Header=\"Chat with this user\"></MenuItem>" +
+                "             <MenuItem Name=\"Conversation\"></MenuItem>" +
                 "             <MenuItem Name=\"Buddy\"></MenuItem>" +
                 "             <MenuItem Name=\"Ignore\"></MenuItem>" +
+                "             <MenuItem Name=\"TUS\"></MenuItem>" +
+                "             <MenuItem Name=\"Info\"></MenuItem>" +
                 "         </ContextMenu>" +
                 "     </DataGrid.ContextMenu>" +
                 "     <DataGrid.Columns>" +
@@ -403,44 +151,246 @@ namespace MySnooper
                 " </DataGrid>"
             , GlobalManager.XamlContext);
 
-            ch.TheDataGrid = dg;
             dg.RowStyle = (Style)UserList.FindResource("DataGridRowStyle");
             dg.ColumnHeaderStyle = (Style)UserList.FindResource("DataGridColumnHeaderStyle");
-            ti.Content = dg;
             dg.LostFocus += ClientList_LostFocus;
             dg.MouseDoubleClick += PrivateMessageClick;
             dg.SelectionChanged += NoSelectionChange;
+            dg.Sorting += dg_Sorting;
             ((MenuItem)dg.ContextMenu.Items[0]).Click += PrivateMessageClick2;
-            ((MenuItem)dg.ContextMenu.Items[1]).Click += AddOrRemoveBuddy;
-            ((MenuItem)dg.ContextMenu.Items[2]).Click += AddOrRemoveBan;
+            ((MenuItem)dg.ContextMenu.Items[1]).Click += AddOrRemoveClientConversation;
+            ((MenuItem)dg.ContextMenu.Items[2]).Click += AddOrRemoveBuddy;
+            ((MenuItem)dg.ContextMenu.Items[3]).Click += AddOrRemoveBan;
+            ((MenuItem)dg.ContextMenu.Items[4]).Click += WiewTusProfile;
             dg.ContextMenuOpening += ContextMenuBuilding;
-            dg.ContextMenuClosing += ContextMenuClear;
-            Binding b = new Binding();
-            b.Source = ch.Clients;
-            b.Mode = BindingMode.OneWay;
-            dg.SetBinding(DataGrid.ItemsSourceProperty, b);
 
-            UserList.Items.Add(ti);
+            return dg;
         }
 
-        private void AddToChannels(Channel ch)
+        void dg_Sorting(object sender, DataGridSortingEventArgs e)
         {
-            TabItem ti = new TabItem();
-            ti.Tag = ch;
-            ti.DataContext = ch;
-            ti.Header = ch.Name;
-            if (ch.IsPrivMsgChannel)
+            Channel ch = (Channel)((DataGrid)sender).DataContext;
+            if (!ch.Server.IsWormNet)
+                return;
+
+            e.Handled = true;
+            if (!e.Column.SortDirection.HasValue || e.Column.SortDirection.Value == System.ComponentModel.ListSortDirection.Descending)
             {
-                ti.Content = ch.ConnectedLayout;
-                ti.Style = (Style)Channels.FindResource("PrivMsgTabItem");
+                Properties.Settings.Default.ColumnOrder = e.Column.Header.ToString() + "|A";
+                e.Column.SortDirection = System.ComponentModel.ListSortDirection.Ascending;
             }
             else
             {
-                ti.Content = ch.DisconnectedLayout;
-                ti.Style = (Style)Channels.FindResource("ChannelTabItem");
+                Properties.Settings.Default.ColumnOrder = e.Column.Header.ToString() + "|D";
+                e.Column.SortDirection = System.ComponentModel.ListSortDirection.Descending;
             }
-            Channels.Items.Add(ti);
-            ch.TheTabItem = ti;
+            Properties.Settings.Default.Save();
+
+            foreach (var item in servers[0].ChannelList)
+            {
+                if (!item.Value.IsPrivMsgChannel)
+                {
+                    SetOrderForDataGrid(item.Value, e.Column.Header.ToString(), e.Column.SortDirection.Value);
+                }
+            }
+        }
+
+        public void SetOrderForDataGrid(Channel ch, string columnName, System.ComponentModel.ListSortDirection direction)
+        {
+            if (ch.TheDataGrid.ItemsSource != null)
+            {
+                var view = CollectionViewSource.GetDefaultView(ch.TheDataGrid.ItemsSource);
+                if (view != null)
+                {
+                    view.SortDescriptions.Clear();
+                    if (columnName != "Nick")
+                    {
+                        switch (columnName)
+                        {
+                            case "C.":
+                                view.SortDescriptions.Add(new System.ComponentModel.SortDescription("Country", direction));
+                                break;
+                            case "Rank":
+                                view.SortDescriptions.Add(new System.ComponentModel.SortDescription("Rank", direction));
+                                break;
+                            case "Clan":
+                                view.SortDescriptions.Add(new System.ComponentModel.SortDescription("Clan", direction));
+                                break;
+                        }
+                        view.SortDescriptions.Add(new System.ComponentModel.SortDescription("Name", System.ComponentModel.ListSortDirection.Ascending));
+                    }
+                    else
+                        view.SortDescriptions.Add(new System.ComponentModel.SortDescription("Name", direction));
+                }
+            }
+
+            foreach (DataGridColumn column in ch.TheDataGrid.Columns)
+            {
+                if (column.Header.ToString() == columnName)
+                    column.SortDirection = direction;
+                else
+                    column.SortDirection = null;
+            }
+        }
+
+        private void ClientList_LostFocus(object sender, RoutedEventArgs e)
+        {
+            DataGrid dg = (DataGrid)sender;
+            dg.SelectedIndex = -1;
+            e.Handled = true;
+        }
+
+        private void PrivateMessageClick2(object sender, RoutedEventArgs e)
+        {
+            Channel ch = (Channel)((MenuItem)sender).DataContext;
+            Client c = (Client)((MenuItem)sender).Tag;
+            OpenPrivateChat(c, ch.Server);
+            e.Handled = true;
+        }
+
+        private void AddOrRemoveClientConversation(object sender, RoutedEventArgs e)
+        {
+            object[] par = (object[])((MenuItem)sender).Tag;
+            Channel ch = (Channel)par[1];
+            Client c = (Client)par[0];
+
+            if (ch.IsInConversation(c))
+            {
+                ch.RemoveClientFromConversation(c);
+            }
+            else
+            {
+                ch.AddClientToConversation(c);
+            }
+        }
+
+
+        // If we open a private chat
+        private void PrivateMessageClick(object sender, MouseButtonEventArgs e)
+        {
+            DataGrid dg = (DataGrid)sender;
+            if (dg.SelectedItem != null)
+            {
+                Channel ch = (Channel)dg.DataContext;
+                Client c = dg.SelectedItem as Client;
+                if (c.LowerName != ch.Server.User.LowerName)
+                {
+                    OpenPrivateChat(c, ch.Server);
+                }
+            }
+            e.Handled = true;
+        }
+
+
+        public TabItem MakeGameListTabItem(Channel channel)
+        {
+            TabItem ti = new TabItem();
+            Grid grid = (Grid)XamlReader.Parse(
+                " <Grid>" +
+                "  <Grid.RowDefinitions>" +
+                "   <RowDefinition Height=\"34\" />" +
+                "   <RowDefinition Height=\"3\" />" +
+                "   <RowDefinition Height=\"*\" />" +
+                "  </Grid.RowDefinitions>" +
+                "  <Border Grid.Row=\"0\" BorderThickness=\"1,0,1,1\" BorderBrush=\"Gray\" Background=\"#123456\">" +
+                "   <DockPanel>" +
+                "    <Canvas DockPanel.Dock=\"Left\" Visibility=\"{Binding Path=CanHostVisibility, Mode=OneWay}\">" +
+                "     <StackPanel Canvas.Left=\"0\" Orientation=\"Horizontal\">" +
+                "      <Button Content=\"Host a game\" Focusable=\"False\" Height=\"33\" Background=\"Black\" BorderThickness=\"0,0,1,0\" Padding=\"15,0\" />" +
+                "      <Button Content=\"Refresh game list\" Focusable=\"False\" Height=\"33\" Background=\"Black\" BorderThickness=\"0,0,1,0\" Padding=\"15,0\" />" +
+                "     </StackPanel>" +
+                "    </Canvas>" +
+                "    <Canvas DockPanel.Dock=\"Right\" Visibility=\"{Binding Path=LeaveChannelVisibility, Mode=OneWay}\">" +
+                "     <Button Canvas.Right=\"0\" Height=\"33\" Background=\"Black\" BorderThickness=\"1,0,0,0\" Content=\"Leave this channel\" Focusable=\"False\" Padding=\"15,0\" />" +
+                "    </Canvas>" +
+                "    <StackPanel Orientation=\"Horizontal\" HorizontalAlignment=\"Center\" VerticalAlignment=\"Center\">" +
+                "     <TextBlock /> " +
+                "     <TextBlock Visibility=\"{Binding Path=LeaveChannelVisibility, Mode=OneWay}\" Text=\" | \" /> " +
+                "     <TextBlock Visibility=\"{Binding Path=LeaveChannelVisibility, Mode=OneWay}\" /> " +
+                "     <TextBlock Visibility=\"{Binding Path=LeaveChannelVisibility, Mode=OneWay}\" Text=\" Users\" /> " +
+                "     <TextBlock Visibility=\"{Binding Path=CanHostVisibility, Mode=OneWay}\" Text=\" | \" /> " +
+                "     <TextBlock Visibility=\"{Binding Path=CanHostVisibility, Mode=OneWay}\" /> " +
+                "     <TextBlock Visibility=\"{Binding Path=CanHostVisibility, Mode=OneWay}\" Text=\" Games\" /> " +
+                "    </StackPanel>" +
+                "   </DockPanel>" +
+                "  </Border>" +
+                "  <Border Grid.Row=\"2\">" +
+                "   <ListBox HorizontalContentAlignment=\"Stretch\" Background=\"Transparent\">" +
+                "    <ListBox.ItemTemplate>" +
+                "     <DataTemplate>" +
+                "      <Grid Background=\"Transparent\">" +
+                "       <Grid.ColumnDefinitions>" +
+                "        <ColumnDefinition Width=\"22\" />" +
+                "        <ColumnDefinition Width=\"22\" />" +
+                "        <ColumnDefinition Width=\"240\" />" +
+                "        <ColumnDefinition Width=\"150\" />" +
+                "       </Grid.ColumnDefinitions>" +
+                "       <Image Grid.Column=\"0\" Source=\"{Binding Path=Locked, Mode=OneWay}\" Width=\"16\" Height=\"16\" Margin=\"0,0,6,0\"></Image>" +
+                "       <Image Grid.Column=\"1\" Source=\"{Binding Path=Country.Flag, Mode=OneWay}\" ToolTip=\"{Binding Path=Country.Name, Mode=OneWay}\" Width=\"22\" Height=\"18\"></Image>" +
+                "       <Label Grid.Column=\"2\" FontSize=\"13\" HorizontalAlignment=\"Left\" Foreground=\"White\" Content=\"{Binding Path=Name, Mode=OneWay}\"></Label>" +
+                "       <Label Grid.Column=\"3\" FontSize=\"13\" HorizontalAlignment=\"Left\" Foreground=\"White\" Content=\"{Binding Path=Hoster, Mode=OneWay}\"></Label>" +
+                "      </Grid>" +
+                "     </DataTemplate>" +
+                "    </ListBox.ItemTemplate>" +
+                "    <ListBox.ContextMenu>" +
+                "     <ContextMenu>" +
+                "      <MenuItem Header=\"Join this game\"></MenuItem>" +
+                "      <MenuItem Header=\"Silent join\"></MenuItem>" +
+                "      <MenuItem Header=\"Join and close snooper\"></MenuItem>" +
+                "      <MenuItem Header=\"Silent join and close snooper\"></MenuItem>" +
+                "     </ContextMenu>" +
+                "    </ListBox.ContextMenu>" +
+                "   </ListBox>" +
+                "  </Border>" +
+                " </Grid>"
+            , GlobalManager.XamlContext);
+
+            ti.Content = grid;
+            ti.DataContext = channel;
+
+            DockPanel dp = (DockPanel)((Border)grid.Children[0]).Child;
+            StackPanel sp = (StackPanel)((Canvas)dp.Children[0]).Children[0];
+            Button hostBt = (Button)sp.Children[0];
+            hostBt.Click += GameHosting;
+
+            Button refreshBt = (Button)sp.Children[1];
+            refreshBt.Click += RefreshClick;
+
+            Button leaveChannelBt = (Button)((Canvas)dp.Children[1]).Children[0];
+            leaveChannelBt.Click += LeaveChannel;
+
+            StackPanel tbsp = (StackPanel)dp.Children[2];
+
+            TextBlock channelNameTB = (TextBlock)tbsp.Children[0];
+            channelNameTB.Text = channel.Name;
+
+            TextBlock userListTB = (TextBlock)tbsp.Children[2];
+            Binding b1 = new Binding("ClientCount");
+            b1.Source = channel;
+            b1.Mode = BindingMode.OneWay;
+            userListTB.SetBinding(TextBlock.TextProperty, b1);
+
+            TextBlock gameListTB = (TextBlock)tbsp.Children[5];
+            Binding b2 = new Binding("GameCount");
+            b2.Source = channel;
+            b2.Mode = BindingMode.OneWay;
+            gameListTB.SetBinding(TextBlock.TextProperty, b2);
+
+            ListBox lb = (ListBox)((Border)grid.Children[1]).Child;
+            lb.MouseDoubleClick += GameDoubleClick;
+            lb.SelectionChanged += NoSelectionChange;
+            lb.LostFocus += GameList_LostFocus;
+
+            ((MenuItem)lb.ContextMenu.Items[0]).Click += JoinGameClick;
+            ((MenuItem)lb.ContextMenu.Items[0]).Tag = lb;
+            ((MenuItem)lb.ContextMenu.Items[1]).Click += SilentJoin;
+            ((MenuItem)lb.ContextMenu.Items[1]).Tag = lb;
+            ((MenuItem)lb.ContextMenu.Items[2]).Click += JoinAndClose;
+            ((MenuItem)lb.ContextMenu.Items[2]).Tag = lb;
+            ((MenuItem)lb.ContextMenu.Items[3]).Click += SilentJoinAndClose;
+            ((MenuItem)lb.ContextMenu.Items[3]).Tag = lb;
+
+            return ti;
         }
     }
 }

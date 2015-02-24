@@ -42,22 +42,34 @@ namespace MySnooper
             InitializeComponent();
 
             Away = text != string.Empty;
-            AwayText.Text = Properties.Settings.Default.AwayMessage;
+            if (Away)
+                AwayText.Text = text;
+            else
+                AwayText.Text = Properties.Settings.Default.AwayMessage;
         }
 
         private void AwayClick(object sender, RoutedEventArgs e)
         {
+            e.Handled = true;
+
             if (Away)
+            {
                 Away = false;
+                AwayChanged(Away);
+                this.Close();
+            }
             else
             {
-                Away = true;
-                Properties.Settings.Default.AwayMessage = WormNetCharTable.RemoveNonWormNetChars(AwayText.Text.Trim());
-                Properties.Settings.Default.Save();
+                string text = WormNetCharTable.RemoveNonWormNetChars(AwayText.Text.Trim());
+                if (text.Length > 0)
+                {
+                    Away = true;
+                    Properties.Settings.Default.AwayMessage = text;
+                    Properties.Settings.Default.Save();
+                    AwayChanged(Away);
+                    this.Close();
+                }
             }
-
-            AwayChanged(Away);
-            e.Handled = true;
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)

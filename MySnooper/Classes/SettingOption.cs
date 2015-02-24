@@ -17,16 +17,17 @@ namespace MySnooper
             Name = name;
 
             int row = grid.RowDefinitions.Count;
-            object value = Properties.Settings.Default.GetType().GetProperty(Name).GetValue(Properties.Settings.Default);
+            object value = Properties.Settings.Default.GetType().GetProperty(Name).GetValue(Properties.Settings.Default, null);
 
             grid.RowDefinitions.Add(new RowDefinition() { Height = System.Windows.GridLength.Auto });
 
             // <Label Grid.Column="0" Grid.Row="1" Content="Auto login at startup:"></Label>
-            Label label = new Label();
-            label.Content = text;
-            Grid.SetRow(label, row);
-            Grid.SetColumn(label, 0);
-            grid.Children.Add(label);
+            TextBlock tb = new TextBlock();
+            tb.Text = text;
+            tb.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            Grid.SetRow(tb, row);
+            Grid.SetColumn(tb, 0);
+            grid.Children.Add(tb);
 
             // <CheckBox Name="AutoLogin" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" IsEnabled="False" Click="ShowLoginScreenChanged"></CheckBox>
             CheckBox cb = new CheckBox();
@@ -42,7 +43,7 @@ namespace MySnooper
             CheckBox cb = (CheckBox)sender;
             if (cb.IsChecked.HasValue)
             {
-                Properties.Settings.Default.GetType().GetProperty(Name).SetValue(Properties.Settings.Default, cb.IsChecked.Value);
+                Properties.Settings.Default.GetType().GetProperty(Name).SetValue(Properties.Settings.Default, cb.IsChecked.Value, null);
                 Properties.Settings.Default.Save();
             }
         }

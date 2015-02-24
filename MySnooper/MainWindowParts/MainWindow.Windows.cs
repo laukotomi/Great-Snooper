@@ -6,6 +6,7 @@ using System.IO;
 using System.Media;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 
 
 namespace MySnooper
@@ -18,7 +19,7 @@ namespace MySnooper
         // Opens a window to host a game
         private void GameHosting(object sender, RoutedEventArgs e)
         {
-            if (GameListChannel == null || !GameListChannel.Joined)
+            if (gameListChannel == null || !gameListChannel.Joined)
             {
                 MessageBox.Show(this, "You have to join a channel before host a game!", "Fail", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
@@ -30,24 +31,44 @@ namespace MySnooper
                 return;
             }
 
-            if (HostGame.IsBusy)
-            {
-                MessageBox.Show(this, "You are already hosted a game!", "Already hosted", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            if (StartGame.IsBusy)
-            {
-                MessageBox.Show(this, "You are in a game!", "Fail", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
             if (!CheckWAExe())
                 return;
 
+            if (gameProcess != null)
+            {
+                if (startedGameType == StartedGameTypes.Join)
+                {
+                    MessageBox.Show(this, "You are in a game!", "Fail", MessageBoxButton.OK, MessageBoxImage.Information);
+                    return;
+                }
+                else
+                {
+                    // Because of wormkit rehost module, this should be allowed
+                    gameProcess.Dispose();
+                    gameProcess = null;
+                }
+            }
+
+            if (searchHere != null && Properties.Settings.Default.AskLeagueSearcherOff)
+            {
+                MessageBoxResult res = MessageBox.Show("Would you like to turn off league searcher?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (res == MessageBoxResult.Yes)
+                    ClearSpamming();
+            }
+
+            if (Notifications.Count != 0 && Properties.Settings.Default.AskNotificatorOff)
+            {
+                MessageBoxResult res = MessageBox.Show("Would you like to turn off notificator?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
+                if (res == MessageBoxResult.Yes)
+                {
+                    Notifications.Clear();
+                    NotificatorImage.Source = NotificatorOff;
+                }
+            }
+
             string hexcc = "6487" + WormNetCharTable.Encode[GlobalManager.User.Country.CountryCode[1]].ToString("X") + WormNetCharTable.Encode[GlobalManager.User.Country.CountryCode[0]].ToString("X");
 
-            HostingWindow = new Hosting(ServerAddress, GameListChannel.Name.Substring(1), GameListChannel.Scheme, hexcc);
+            HostingWindow = new Hosting(ServerAddress, gameListChannel.Name.Substring(1), gameListChannel.Scheme, hexcc);
             HostingWindow.GameHosted += GameHosted;
             HostingWindow.Closing += HostingClosing;
             HostingWindow.Owner = this;
@@ -69,9 +90,43 @@ namespace MySnooper
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                ExitSnooper = exit;
-                if (!SnooperClosing)
-                    HostGame.RunWorkerAsync(parameters);
+                if (!snooperClosing)
+                {
+                    ExitSnooper = exit;
+
+                    startedGameType = StartedGameTypes.Host;
+                    gameProcess = new System.Diagnostics.Process();
+                    gameProcess.StartInfo.UseShellExecute = false;
+                    gameProcess.StartInfo.CreateNoWindow = true;
+                    gameProcess.StartInfo.RedirectStandardOutput = true;
+                    gameProcess.StartInfo.FileName = System.IO.Path.GetFullPath("Hoster.exe");
+                    gameProcess.StartInfo.Arguments = parameters;
+                    gameProcess.Start();
+                    string success = gameProcess.StandardOutput.ReadLine();
+
+                    if (success == "1")
+                    {
+                        HostingWindow.Close();
+
+                        if (Properties.Settings.Default.HostInfoToChannel) // GameListChannel is ok, coz it can't be changed since the Hosting window is opened
+                            SendMessageToChannel(">is hosting a game: " + Properties.Settings.Default.HostGameName, gameListChannel);
+
+                        if (ExitSnooper)
+                        {
+                            snooperClosing = true;
+                            this.Close();
+                            return;
+                        }
+
+                        if (Properties.Settings.Default.MarkAway)
+                            SendMessageToChannel("/away", null);
+                    }
+                    else
+                    {
+                        HostingWindow.RestoreHostButton();
+                        MessageBox.Show(this, "Failed to host a game. You may host too many games recently. Please wait some minutes!", "Failed to host a game", MessageBoxButton.OK, MessageBoxImage.Error);
+                    }
+                }
             }
             ));
         }
@@ -80,78 +135,116 @@ namespace MySnooper
         private void SettingsClicked(object sender, RoutedEventArgs e)
         {
             UserSettings window = new UserSettings();
-            window.MessageSettingsEvent += MessageSettingChanged;
-            window.SoundChanged += SoundChanged;
-            window.SoundEnabledChanged += SoundEnabledChanged;
+            window.SettingChanged += SettingChanged;
             window.Closing += SettingsClosing;
             window.Owner = this;
             window.ShowDialog();
             e.Handled = true;
         }
 
-        // These are here coz I didn't want to use lockers
-        private void SoundEnabledChanged(string name, bool enabled)
+        private void SettingChanged(object sender, string settingName, SettingChangedType type)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                switch (name)
+                switch (type)
                 {
-                    case "PMBeepEnabled":
-                        Properties.Settings.Default.PMBeepEnabled = enabled;
+                    case SettingChangedType.Sound:
+                        string value = (string)(Properties.Settings.Default.GetType().GetProperty(settingName).GetValue(Properties.Settings.Default, null));
+                        if (soundPlayers.ContainsKey(settingName))
+                            soundPlayers[settingName] = new SoundPlayer(new FileInfo(value).FullName);
+                        else
+                            soundPlayers.Add(settingName, new SoundPlayer(new FileInfo(value).FullName));
                         break;
-                    case "HBeepEnabled":
-                        Properties.Settings.Default.HBeepEnabled = enabled;
-                        break;
-                    case "BJBeepEnabled":
-                        Properties.Settings.Default.BJBeepEnabled = enabled;
-                        break;
-                    case "LeagueFoundBeepEnabled":
-                        Properties.Settings.Default.LeagueFoundBeepEnabled = enabled;
-                        break;
-                    case "LeagueFailBeepEnabled":
-                        Properties.Settings.Default.LeagueFailBeepEnabled = enabled;
-                        break;
-                }
-                Properties.Settings.Default.Save();
-            }
-            ));
-        }
 
-        // These are here coz I didn't want to use lockers
-        private void SoundChanged(string name)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                try
-                {
-                    switch (name)
-                    {
-                        case "PMBeepChange":
-                            PrivateMessageBeep = new SoundPlayer(new FileInfo(Properties.Settings.Default.PMBeep).FullName);
-                            break;
-                        case "HbeepChange":
-                            HighlightBeep = new SoundPlayer(new FileInfo(Properties.Settings.Default.HBeep).FullName);
-                            break;
-                        case "BJBeepChange":
-                            BuddyOnlineBeep = new SoundPlayer(new FileInfo(Properties.Settings.Default.BJBeep).FullName);
-                            break;
-                    }
-                }
-                catch (Exception e)
-                {
-                    ErrorLog.log(e);
-                }
-            }
-            ));
-        }
+                    case SettingChangedType.Style:
+                        for (int i = 0; i < servers.Count; i++)
+                        {
+                            if (servers[i].IsRunning)
+                            {
+                                foreach (var item in servers[i].ChannelList)
+                                {
+                                    if (item.Value.Joined)
+                                        LoadMessages(item.Value, GlobalManager.MaxMessagesDisplayed, true);
+                                }
+                            }
+                        }
+                        break;
 
-        private void MessageSettingChanged()
-        {
-            foreach (var item in WormNetM.ChannelList)
-            {
-                if (item.Value.Joined)
-                    LoadMessages(item.Value, GlobalManager.MaxMessagesDisplayed, true);
-            }
+                    default:
+                        switch (settingName)
+                        {
+                            case "ShowWormsChannel":
+                                Channel ch = servers[1].ChannelList["#worms"];
+                                if (Properties.Settings.Default.ShowWormsChannel)
+                                {
+                                    for (int i = 0; i < Channels.Items.Count; i++)
+                                    {
+                                        Channel channel = (Channel)((TabItem)Channels.Items[i]).DataContext;
+                                        if (channel.IsPrivMsgChannel)
+                                        {
+                                            Channels.Items.Insert(i, ch.ChannelTabItem);
+                                            return;
+                                        }
+                                    }
+                                    Channels.Items.Add(ch.ChannelTabItem);
+                                }
+                                else
+                                {
+                                    if (ch.Joined)
+                                    {
+                                        gameSurgeIsConnected = false;
+                                        ch.Part();
+                                        ch.Server.CancelAsync();
+                                    }
+                                    CloseChannelTab(ch, true);
+                                }
+                                break;
+
+                            case "ShowBannedUsers":
+                                for (int i = 0; i < servers.Count; i++)
+                                {
+                                    foreach (var item in servers[i].ChannelList)
+                                    {
+                                        if (!item.Value.IsPrivMsgChannel && item.Value.TheDataGrid.ItemsSource != null)
+                                        {
+                                            var view = CollectionViewSource.GetDefaultView(item.Value.TheDataGrid.ItemsSource);
+                                            if (view != null)
+                                            {
+                                                if (!Properties.Settings.Default.ShowBannedUsers)
+                                                {
+                                                    view.Filter = o =>
+                                                    {
+                                                        Client c = o as Client;
+                                                        if (c.IsBanned)
+                                                            return false;
+                                                        return true;
+                                                    };
+                                                }
+                                                else
+                                                    view.Filter = null;
+                                            }
+                                        }
+                                    }
+                                }
+                                break;
+
+                            case "MessageTime":
+                                for (int i = 0; i < servers.Count; i++)
+                                {
+                                    if (servers[i].IsRunning)
+                                    {
+                                        foreach (var item in servers[i].ChannelList)
+                                        {
+                                            if (item.Value.Joined)
+                                                LoadMessages(item.Value, GlobalManager.MaxMessagesDisplayed, true);
+                                        }
+                                    }
+                                }
+                                break;
+                        }
+                        break;
+                }
+            }));
         }
 
         private void SettingsClosing(object sender, CancelEventArgs e)
@@ -159,9 +252,7 @@ namespace MySnooper
             this.Dispatcher.Invoke(new Action(delegate()
             {
                 var obj = sender as UserSettings;
-                obj.MessageSettingsEvent -= MessageSettingChanged;
-                obj.SoundChanged -= SoundChanged;
-                obj.SoundEnabledChanged -= SoundEnabledChanged;
+                obj.SettingChanged -= SettingChanged;
                 obj.Closing -= SettingsClosing;
             }
             ));
@@ -170,7 +261,7 @@ namespace MySnooper
         private void BuddyListClicked(object sender, RoutedEventArgs e)
         {
             SortedObservableCollection<string> List2 = new SortedObservableCollection<string>();
-            foreach (var item in WormNetM.BuddyList)
+            foreach (var item in buddyList)
                 List2.Add(item.Value);
 
             ListEditor window = new ListEditor(List2, "Your buddy list");
@@ -198,7 +289,7 @@ namespace MySnooper
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                WormNetM.RemoveBuddy(name);
+                RemoveBuddy(name);
             }
             ));
         }
@@ -207,7 +298,7 @@ namespace MySnooper
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                WormNetM.AddBuddy(name);
+                AddBuddy(name);
             }
             ));
         }
@@ -215,7 +306,7 @@ namespace MySnooper
         private void BanListClicked(object sender, RoutedEventArgs e)
         {
             SortedObservableCollection<string> List2 = new SortedObservableCollection<string>();
-            foreach (var item in WormNetM.BanList)
+            foreach (var item in banList)
                 List2.Add(item.Value);
 
             ListEditor window = new ListEditor(List2, "Your ignore list");
@@ -243,7 +334,7 @@ namespace MySnooper
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                WormNetM.RemoveBan(name);
+                RemoveBan(name);
             }
             ));
         }
@@ -252,7 +343,7 @@ namespace MySnooper
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                WormNetM.AddBan(name);
+                AddBan(name);
             }
             ));
         }
@@ -260,19 +351,19 @@ namespace MySnooper
         // League searcher
         private void LeagueSearcher(object sender, RoutedEventArgs e)
         {
-            if (Leagues.Count == 0)
+            if (leagues.Count == 0)
             {
-                MessageBox.Show(this, "Failed to load league games!", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show(this, "Leagues may be still loading, please wait!", "No leagues available", MessageBoxButton.OK, MessageBoxImage.Hand);
                 return;
             }
 
-            if (GameListChannel == null || !GameListChannel.Joined)
+            if (gameListChannel == null || !gameListChannel.Joined)
             {
                 MessageBox.Show(this, "You have to join a channel, where you can look for league games!", "Fail", MessageBoxButton.OK, MessageBoxImage.Stop);
                 return;
             }
 
-            LeagueSearcher window = new LeagueSearcher(Leagues, FoundUsers, SpamText != string.Empty, SearchHere);
+            LeagueSearcher window = new LeagueSearcher(leagues, searchHere != null, spamAllowed);
             window.LuckyLuke += LuckyLuke;
             window.Closing += SearcherClosing;
             window.Owner = this;
@@ -295,18 +386,13 @@ namespace MySnooper
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                if (leagues == null) // Stop
+                if (leagues == null) // Stop request
                 {
-                    // Same goes in MainWindow.xaml.cs!
-                    SearchCounter = 100;
-                    SpamCounter = 0;
-                    SearchHere = null;
-                    SpamText = string.Empty;
-                    FoundUsers.Clear();
+                    ClearSpamming();
                 }
                 else
                 {
-                    SearchHere = GameListChannel;
+                    searchHere = gameListChannel;
 
                     if (spam)
                     {
@@ -320,16 +406,63 @@ namespace MySnooper
                                 sb.Append(" or ");
                         }
                         sb.Append(" anyone?");
-                        SpamText = sb.ToString();
+                        spamText = sb.ToString();
                     }
 
-                    FoundUsers.Clear();
+                    foundUsers.Clear();
                     foreach (var item in leagues)
-                        FoundUsers.Add(item.Key, new List<string>());
+                        foundUsers.Add(item.Key, new List<string>());
                 }
             }
             ));
         }
+
+        private void NotificatorOpen(object sender, RoutedEventArgs e)
+        {
+            if (gameListChannel == null || !gameListChannel.Joined)
+            {
+                MessageBox.Show(this, "You have to join a channel first!", "Fail", MessageBoxButton.OK, MessageBoxImage.Stop);
+                return;
+            }
+
+            Notificator window = new Notificator(Notifications.Count != 0);
+            window.NotificatorEvent += window_NotificatorEvent;
+            window.Closing += NotificatorClosing;
+            window.Owner = this;
+            window.ShowDialog();
+            e.Handled = true;
+        }
+
+        void window_NotificatorEvent(List<NotificatorClass> list)
+        {
+            this.Dispatcher.Invoke(new Action(delegate()
+            {
+                if (list == null) // Stop request
+                {
+                    Notifications.Clear();
+                    NotificatorImage.Source = NotificatorOff;
+                }
+                else
+                {
+                    foreach (NotificatorClass nc in list)
+                        Notifications.Add(nc);
+                    NotificatorImage.Source = NotificatorOn;
+                }
+            }
+            ));
+        }
+
+        private void NotificatorClosing(object sender, CancelEventArgs e)
+        {
+            this.Dispatcher.Invoke(new Action(delegate()
+            {
+                Notificator window = (Notificator)sender;
+                window.NotificatorEvent -= window_NotificatorEvent;
+                window.Closing -= NotificatorClosing;
+            }
+            ));
+        }
+
 
         private void AwayManager(object sender, RoutedEventArgs e)
         {
@@ -357,16 +490,17 @@ namespace MySnooper
             this.Dispatcher.Invoke(new Action(delegate()
             {
                 if (Away)
-                    this.AwayText = (Properties.Settings.Default.AwayMessage.Length == 0) ? "No reason specified." : Properties.Settings.Default.AwayMessage;
+                    SendMessageToChannel("/away", null);
                 else
-                    this.AwayText = string.Empty;
+                    SendMessageToChannel("/back", null);
+
             }
             ));
         }
 
         private void OpenNewsWindow()
         {
-            News window = new News(NewsList, NewsSeen);
+            News window = new News(newsList, newsSeen);
             window.Owner = this;
             window.ShowDialog();
         }

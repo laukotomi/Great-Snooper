@@ -12,10 +12,10 @@ namespace MySnooper
     {
         private void App_DispatcherUnhandledException(object sender, DispatcherUnhandledExceptionEventArgs e)
         {
-            ErrorLog.log(e.Exception);
+            ErrorLog.Log(e.Exception);
         }
 
-        public static string getVersion()
+        public static string GetVersion()
         {
             Version v = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version;
             if (v.Build == 0)

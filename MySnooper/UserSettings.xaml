@@ -8,19 +8,19 @@
         <Style BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
             <Setter Property="controls:ControlsHelper.HeaderFontSize" Value="18"></Setter>
         </Style>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+        </Style>
     </controls:MetroWindow.Resources>
     <TabControl Grid.Row="1" Background="Transparent">
         <TabItem Header="General settings">
             <ScrollViewer>
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical" Margin="0,20">
                     <Grid Name="GeneralSettingsGrid" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="350"></ColumnDefinition>
                             <ColumnDefinition Width="200"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="10"></RowDefinition>
-                        </Grid.RowDefinitions>
                     </Grid>
                     <Grid HorizontalAlignment="Center">
                         <Grid.RowDefinitions>
@@ -38,99 +38,53 @@
         </TabItem>
         <TabItem Header="Message styles">
             <ScrollViewer>
-                <Grid HorizontalAlignment="Center" Name="MessageStylesGrid">
+                <Grid HorizontalAlignment="Center" Name="MessageStylesGrid" Margin="0,20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="300"></ColumnDefinition>
                         <ColumnDefinition Width="80"></ColumnDefinition>
                         <ColumnDefinition Width="80"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="10"></RowDefinition>
-                    </Grid.RowDefinitions>
                 </Grid>
             </ScrollViewer>
         </TabItem>
 
-
         <TabItem Header="Sounds">
-            <Grid HorizontalAlignment="Center">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="280"></ColumnDefinition>
-                    <ColumnDefinition Width="300"></ColumnDefinition>
-                    <ColumnDefinition Width="80"></ColumnDefinition>
-                </Grid.ColumnDefinitions>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                    <RowDefinition Height="10"></RowDefinition>
-                    <RowDefinition Height="Auto"></RowDefinition>
-                </Grid.RowDefinitions>
-
-                <Label Grid.Column="0" Grid.Row="1" Content="Private message arrived:"></Label>
-                <StackPanel Grid.Column="1" Grid.Row="1" Orientation="Horizontal">
-                    <TextBox Name="PMBeep" Width="210" IsReadOnly="True"></TextBox>
-                    <Button Name="PMBeepChange" Content="Browse" Width="75" Click="SoundChange"></Button>
-                </StackPanel>
-                <CheckBox Grid.Column="2" Grid.Row="1" Name="PMBeepEnabled" Click="SoundEnabledChange" Content="Enable"></CheckBox>
-
-                <Label Grid.Column="0" Grid.Row="3" Content="When your name appears in chat:"></Label>
-                <StackPanel Grid.Column="1" Grid.Row="3" Orientation="Horizontal">
-                    <TextBox Name="HBeep" Width="210" IsReadOnly="True"></TextBox>
-                    <Button Name="HbeepChange" Content="Browse" Width="75" Click="SoundChange" Height="31" VerticalAlignment="Bottom"></Button>
-                </StackPanel>
-                <CheckBox Grid.Column="2" Grid.Row="3" Name="HBeepEnabled" Click="SoundEnabledChange" Content="Enable"></CheckBox>
-
-                <Label Grid.Column="0" Grid.Row="5" Content="When a buddy comes online:"></Label>
-                <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal">
-                    <TextBox Name="BJBeep" Width="210" IsReadOnly="True"></TextBox>
-                    <Button Name="BJBeepChange" Content="Browse" Width="75" Click="SoundChange"></Button>
-                </StackPanel>
-                <CheckBox Name="BJBeepEnabled" Click="SoundEnabledChange" Grid.Column="2" Grid.Row="5" Content="Enable"></CheckBox>
-
-                <Label Grid.Column="0" Grid.Row="7" FontSize="12" Content="When the snooper finds a league game:"></Label>
-                <StackPanel Grid.Column="1" Grid.Row="7" Orientation="Horizontal">
-                    <TextBox Name="LeagueFoundBeep" Width="210" IsReadOnly="True"></TextBox>
-                    <Button Name="LeagueFoundBeepChange" Content="Browse" Width="75" Click="SoundChange"></Button>
-                </StackPanel>
-                <CheckBox Name="LeagueFoundBeepEnabled" Click="SoundEnabledChange" Grid.Column="2" Grid.Row="7" Content="Enable"></CheckBox>
-
-                <Label Grid.Column="0" Grid.Row="9" FontSize="11" Content="When the snooper stops searching league game:"></Label>
-                <StackPanel Grid.Column="1" Grid.Row="9" Orientation="Horizontal">
-                    <TextBox Name="LeagueFailBeep" Width="210" IsReadOnly="True"></TextBox>
-                    <Button Name="LeagueFailBeepChange" Content="Browse" Width="75" Click="SoundChange"></Button>
-                </StackPanel>
-                <CheckBox Name="LeagueFailBeepEnabled" Click="SoundEnabledChange" Grid.Column="2" Grid.Row="9" Content="Enable"></CheckBox>
-            </Grid>
+            <ScrollViewer>
+                <Grid HorizontalAlignment="Center" Name="SoundsGrid" Margin="0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="280"></ColumnDefinition>
+                        <ColumnDefinition Width="300"></ColumnDefinition>
+                        <ColumnDefinition Width="80"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </ScrollViewer>
         </TabItem>
 
         <TabItem Header="About">
-            <StackPanel HorizontalAlignment="Center" Orientation="Vertical">
-                <StackPanel.Resources>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="Margin" Value="0,5"></Setter>
-                        <Setter Property="HorizontalAlignment" Value="Center"></Setter>
-                    </Style>
-                </StackPanel.Resources>
-                <TextBlock FontWeight="Bold" FontSize="20">Great Snooper</TextBlock>
-                <TextBlock Name="Version">Version: x.xx</TextBlock>
-                <TextBlock>This program was written by Tomi</TextBlock>
-                <TextBlock>You can contact me at http://www.tus-wa.com/profile/Tomi/ using private message</TextBlock>
-                <TextBlock>License: GPLv2</TextBlock>
-                <TextBlock></TextBlock>
-                <TextBlock FontWeight="Bold" FontSize="14">This program would never exist without the help of:</TextBlock>
-                <TextBlock>CyberShadow</TextBlock>
-                <TextBlock>Deadcode</TextBlock>
-                <TextBlock>LeTotalKiller</TextBlock>
-                <TextBlock>GreeN</TextBlock>
-                <TextBlock>StepS</TextBlock>
-                <TextBlock>.. and without this nice community ;)</TextBlock>
-            </StackPanel>
+            <ScrollViewer>
+                <StackPanel HorizontalAlignment="Center" Orientation="Vertical" Margin="0,20">
+                    <StackPanel.Resources>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Margin" Value="0,5"></Setter>
+                            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                        </Style>
+                    </StackPanel.Resources>
+                    <TextBlock FontWeight="Bold" FontSize="20">Great Snooper</TextBlock>
+                    <TextBlock Name="Version">Version: x.xx</TextBlock>
+                    <TextBlock>This program was written by Tomi</TextBlock>
+                    <TextBlock>You can contact me at http://www.tus-wa.com/profile/Tomi/ using private message</TextBlock>
+                    <TextBlock>License: GPLv2</TextBlock>
+                    <TextBlock></TextBlock>
+                    <TextBlock FontWeight="Bold" FontSize="14">This program would never exist without the help of:</TextBlock>
+                    <TextBlock>CyberShadow</TextBlock>
+                    <TextBlock>Deadcode</TextBlock>
+                    <TextBlock>GreatProfe (design)</TextBlock>
+                    <TextBlock>LeTotalKiller</TextBlock>
+                    <TextBlock>GreeN</TextBlock>
+                    <TextBlock>StepS</TextBlock>
+                    <TextBlock>.. and without this nice community ;)</TextBlock>
+                </StackPanel>
+            </ScrollViewer>
         </TabItem>
     </TabControl>
 </controls:MetroWindow>

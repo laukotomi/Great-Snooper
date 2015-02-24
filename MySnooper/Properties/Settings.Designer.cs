@@ -74,108 +74,108 @@ namespace MySnooper.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("F0FFFF|13|0|0|0|0|Tahoma")]
-        public string ChannelMessage {
+        public string ChannelMessageStyle {
             get {
-                return ((string)(this["ChannelMessage"]));
+                return ((string)(this["ChannelMessageStyle"]));
             }
             set {
-                this["ChannelMessage"] = value;
+                this["ChannelMessageStyle"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("808000|12|0|0|0|0|Tahoma")]
-        public string JoinMessage {
+        public string JoinMessageStyle {
             get {
-                return ((string)(this["JoinMessage"]));
+                return ((string)(this["JoinMessageStyle"]));
             }
             set {
-                this["JoinMessage"] = value;
+                this["JoinMessageStyle"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("808000|12|0|0|0|0|Tahoma")]
-        public string PartMessage {
+        public string PartMessageStyle {
             get {
-                return ((string)(this["PartMessage"]));
+                return ((string)(this["PartMessageStyle"]));
             }
             set {
-                this["PartMessage"] = value;
+                this["PartMessageStyle"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("808000|12|0|0|0|0|Tahoma")]
-        public string QuitMessage {
+        public string QuitMessageStyle {
             get {
-                return ((string)(this["QuitMessage"]));
+                return ((string)(this["QuitMessageStyle"]));
             }
             set {
-                this["QuitMessage"] = value;
+                this["QuitMessageStyle"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("FF0000|13|0|0|0|0|Tahoma")]
-        public string OfflineMessage {
+        public string OfflineMessageStyle {
             get {
-                return ((string)(this["OfflineMessage"]));
+                return ((string)(this["OfflineMessageStyle"]));
             }
             set {
-                this["OfflineMessage"] = value;
+                this["OfflineMessageStyle"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("FFFF00|13|0|0|0|0|Tahoma")]
-        public string ActionMessage {
+        public string ActionMessageStyle {
             get {
-                return ((string)(this["ActionMessage"]));
+                return ((string)(this["ActionMessageStyle"]));
             }
             set {
-                this["ActionMessage"] = value;
+                this["ActionMessageStyle"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("E9967A|13|0|0|0|0|Tahoma")]
-        public string UserMessage {
+        public string UserMessageStyle {
             get {
-                return ((string)(this["UserMessage"]));
+                return ((string)(this["UserMessageStyle"]));
             }
             set {
-                this["UserMessage"] = value;
+                this["UserMessageStyle"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("FF0000|13|0|0|0|0|Tahoma")]
-        public string NoticeMessage {
+        public string NoticeMessageStyle {
             get {
-                return ((string)(this["NoticeMessage"]));
+                return ((string)(this["NoticeMessageStyle"]));
             }
             set {
-                this["NoticeMessage"] = value;
+                this["NoticeMessageStyle"] = value;
             }
         }
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ADFF2F|13|0|0|0|0|Tahoma")]
-        public string BuddyJoinedMessage {
+        public string BuddyJoinedMessageStyle {
             get {
-                return ((string)(this["BuddyJoinedMessage"]));
+                return ((string)(this["BuddyJoinedMessageStyle"]));
             }
             set {
-                this["BuddyJoinedMessage"] = value;
+                this["BuddyJoinedMessageStyle"] = value;
             }
         }
         
@@ -482,12 +482,12 @@ namespace MySnooper.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("ADFF2F|13|0|0|0|0|Tahoma")]
-        public string LeagueFoundMessage {
+        public string LeagueFoundMessageStyle {
             get {
-                return ((string)(this["LeagueFoundMessage"]));
+                return ((string)(this["LeagueFoundMessageStyle"]));
             }
             set {
-                this["LeagueFoundMessage"] = value;
+                this["LeagueFoundMessageStyle"] = value;
             }
         }
         
@@ -536,18 +536,6 @@ namespace MySnooper.Properties {
             }
             set {
                 this["LeagueFailBeepEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool AutoJoinAnythingGoes {
-            get {
-                return ((bool)(this["AutoJoinAnythingGoes"]));
-            }
-            set {
-                this["AutoJoinAnythingGoes"] = value;
             }
         }
         
@@ -644,6 +632,210 @@ namespace MySnooper.Properties {
             }
             set {
                 this["ServerAddresses"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ShowWormsChannel {
+            get {
+                return ((bool)(this["ShowWormsChannel"]));
+            }
+            set {
+                this["ShowWormsChannel"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ChangeWormsNick {
+            get {
+                return ((bool)(this["ChangeWormsNick"]));
+            }
+            set {
+                this["ChangeWormsNick"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WormsNick {
+            get {
+                return ((string)(this["WormsNick"]));
+            }
+            set {
+                this["WormsNick"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool CloseToTray {
+            get {
+                return ((bool)(this["CloseToTray"]));
+            }
+            set {
+                this["CloseToTray"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool SaveInstantColors {
+            get {
+                return ((bool)(this["SaveInstantColors"]));
+            }
+            set {
+                this["SaveInstantColors"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string InstantColors {
+            get {
+                return ((string)(this["InstantColors"]));
+            }
+            set {
+                this["InstantColors"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string QuitMessagee {
+            get {
+                return ((string)(this["QuitMessagee"]));
+            }
+            set {
+                this["QuitMessagee"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("#AnythingGoes,")]
+        public string AutoJoinChannels {
+            get {
+                return ((string)(this["AutoJoinChannels"]));
+            }
+            set {
+                this["AutoJoinChannels"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool SpammingChecked {
+            get {
+                return ((bool)(this["SpammingChecked"]));
+            }
+            set {
+                this["SpammingChecked"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowBannedUsers {
+            get {
+                return ((bool)(this["ShowBannedUsers"]));
+            }
+            set {
+                this["ShowBannedUsers"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string InfoMessage {
+            get {
+                return ((string)(this["InfoMessage"]));
+            }
+            set {
+                this["InfoMessage"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ColumnOrder {
+            get {
+                return ((string)(this["ColumnOrder"]));
+            }
+            set {
+                this["ColumnOrder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Notificator {
+            get {
+                return ((string)(this["Notificator"]));
+            }
+            set {
+                this["Notificator"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AskNotificatorOff {
+            get {
+                return ((bool)(this["AskNotificatorOff"]));
+            }
+            set {
+                this["AskNotificatorOff"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool AskLeagueSearcherOff {
+            get {
+                return ((bool)(this["AskLeagueSearcherOff"]));
+            }
+            set {
+                this["AskLeagueSearcherOff"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Sounds\\LeagueFound.wav")]
+        public string NotificatorSound {
+            get {
+                return ((string)(this["NotificatorSound"]));
+            }
+            set {
+                this["NotificatorSound"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool NotificatorSoundEnabled {
+            get {
+                return ((bool)(this["NotificatorSoundEnabled"]));
+            }
+            set {
+                this["NotificatorSoundEnabled"] = value;
             }
         }
     }

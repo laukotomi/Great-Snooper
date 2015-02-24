@@ -12,21 +12,23 @@ namespace MySnooper
     /// Interaction logic for Settings.xaml
     /// </summary>
     
-    public delegate void MessageSettingChangedDelegate();
-    public delegate void SoundChangedDelegate(string name);
-    public delegate void SoundEnabledChangeDelegate(string name, bool enabled);
+    public enum SettingChangedType { NoType, Sound, Style };
+    public delegate void SettingChangedDelegate(object sender, string settingName, SettingChangedType type);
 
     public partial class UserSettings : MetroWindow
     {
-        public event MessageSettingChangedDelegate MessageSettingsEvent;
-        public event SoundChangedDelegate SoundChanged;
-        public event SoundEnabledChangeDelegate SoundEnabledChanged;
+        public event SettingChangedDelegate SettingChanged;
 
         public UserSettings()
         {
             InitializeComponent();
 
+            // General settings
             AddBoolSetting(GeneralSettingsGrid, "AutoLogIn", "Auto login at startup:");
+            AddTextListSetting(GeneralSettingsGrid, "AutoJoinChannels", "Join these channels on startup:", "Channel list");
+            AddBoolSetting(GeneralSettingsGrid, "ShowWormsChannel", "Show #worms channel:");
+            AddTextSetting(GeneralSettingsGrid, "WormsNick", "#worms channel nickname:", new NickNameValidator());
+            AddBoolSetting(GeneralSettingsGrid, "ChangeWormsNick", "Update #worms nick to WormNet nick at startup:");
             AddBoolSetting(GeneralSettingsGrid, "MessageJoinedGame", "Send message to the channel if I join a game:");
             AddBoolSetting(GeneralSettingsGrid, "MarkAway", "Mark me away when I host or join a game:");
             AddTextSetting(GeneralSettingsGrid, "AwayText", "Away message:");
@@ -34,67 +36,55 @@ namespace MySnooper
             AddTextSetting(GeneralSettingsGrid, "BackText", "Back message:");
             AddBoolSetting(GeneralSettingsGrid, "MessageTime", "Show the time when the message arrived:");
             AddBoolSetting(GeneralSettingsGrid, "DeleteLogs", "Delete channel logs older than 30 days at startup:");
-
-            // General settings
-            //AutoLogin.IsChecked = Properties.Settings.Default.AutoLogIn;
-            //MessageEnabled.IsChecked = Properties.Settings.Default.MessageJoinedGame;
-            //MarkAway.IsChecked = Properties.Settings.Default.MarkAway;
-            //AwayText.Text = Properties.Settings.Default.AwayText;
-            //SendBack.IsChecked = Properties.Settings.Default.SendBack;
-            //BackText.Text = Properties.Settings.Default.BackText;
-            //MessageTime.IsChecked = Properties.Settings.Default.MessageTime;
+            AddBoolSetting(GeneralSettingsGrid, "CloseToTray", "Exit button minimizes the snooper to tray:");
+            AddBoolSetting(GeneralSettingsGrid, "SaveInstantColors", "Save instant colors for users:");
+            AddBoolSetting(GeneralSettingsGrid, "ShowBannedUsers", "Show banned users in user list:");
+            AddTextSetting(GeneralSettingsGrid, "QuitMessage", "Quit message:", new GSVersionValidator());
+            AddTextSetting(GeneralSettingsGrid, "InfoMessage", "Information message (real name irc field):", new GSVersionValidator());
+            AddBoolSetting(GeneralSettingsGrid, "AskNotificatorOff", "Ask if I would like to turn off notificator:");
+            AddBoolSetting(GeneralSettingsGrid, "AskLeagueSearcherOff", "Ask if I would like to turn off league searcher:");
             WAExeText.Text = Properties.Settings.Default.WaExe;
-            //AutoJoinAnythingGoes.IsChecked = Properties.Settings.Default.AutoJoinAnythingGoes;
-            //DeleteOldLogs.IsChecked = Properties.Settings.Default.DeleteLogs;
 
             // Message styles
-            AddStyleSetting(MessageStylesGrid, "UserMessage", "Style of your message:", MessageSettings.UserMessage);
-            AddStyleSetting(MessageStylesGrid, "ChannelMessage", "Style of other users' message:", MessageSettings.ChannelMessage);
-            AddStyleSetting(MessageStylesGrid, "JoinMessage", "Join message style:", MessageSettings.JoinMessage);
-            AddStyleSetting(MessageStylesGrid, "PartMessage", "Part message style:", MessageSettings.PartMessage);
-            AddStyleSetting(MessageStylesGrid, "QuitMessage", "Quit message style:", MessageSettings.QuitMessage);
-            AddStyleSetting(MessageStylesGrid, "ActionMessage", "Action message style:", MessageSettings.ActionMessage);
-            AddStyleSetting(MessageStylesGrid, "NoticeMessage", "Notice message style:", MessageSettings.NoticeMessage);
-            AddStyleSetting(MessageStylesGrid, "OfflineMessage", "Offline user message style:", MessageSettings.OfflineMessage);
-            AddStyleSetting(MessageStylesGrid, "BuddyJoinedMessage", "Buddy joined message style:", MessageSettings.BuddyJoinedMessage);
+            AddStyleSetting(MessageStylesGrid, "UserMessageStyle", "Style of your message:", MessageSettings.UserMessage);
+            AddStyleSetting(MessageStylesGrid, "ChannelMessageStyle", "Style of other users' message:", MessageSettings.ChannelMessage);
+            AddStyleSetting(MessageStylesGrid, "JoinMessageStyle", "Join message style:", MessageSettings.JoinMessage);
+            AddStyleSetting(MessageStylesGrid, "PartMessageStyle", "Part message style:", MessageSettings.PartMessage);
+            AddStyleSetting(MessageStylesGrid, "QuitMessageStyle", "Quit message style:", MessageSettings.QuitMessage);
+            AddStyleSetting(MessageStylesGrid, "ActionMessageStyle", "Action message style:", MessageSettings.ActionMessage);
+            AddStyleSetting(MessageStylesGrid, "NoticeMessageStyle", "Notice message style:", MessageSettings.NoticeMessage);
+            AddStyleSetting(MessageStylesGrid, "OfflineMessageStyle", "Offline user message style:", MessageSettings.OfflineMessage);
+            AddStyleSetting(MessageStylesGrid, "BuddyJoinedMessageStyle", "Buddy joined message style:", MessageSettings.BuddyJoinedMessage);
             AddStyleSetting(MessageStylesGrid, "MessageTimeStyle", "Style of message arrived time:", MessageSettings.MessageTimeStyle);
             AddStyleSetting(MessageStylesGrid, "HyperLinkStyle", "Style of hyperlinks:", MessageSettings.HyperLinkStyle);
-            AddStyleSetting(MessageStylesGrid, "LeagueFoundMessage", "Found league text style:", MessageSettings.LeagueFoundMessage);
+            AddStyleSetting(MessageStylesGrid, "LeagueFoundMessageStyle", "Found text style:", MessageSettings.LeagueFoundMessage);
             
             // Sounds
-            PMBeep.Text = Properties.Settings.Default.PMBeep;
-            PMBeepEnabled.IsChecked = Properties.Settings.Default.PMBeepEnabled;
-
-            HBeep.Text = Properties.Settings.Default.HBeep;
-            HBeepEnabled.IsChecked = Properties.Settings.Default.HBeepEnabled;
-
-            BJBeep.Text = Properties.Settings.Default.BJBeep;
-            BJBeepEnabled.IsChecked = Properties.Settings.Default.BJBeepEnabled;
-
-            LeagueFoundBeep.Text = Properties.Settings.Default.LeagueFoundBeep;
-            LeagueFoundBeepEnabled.IsChecked = Properties.Settings.Default.LeagueFoundBeepEnabled;
-
-            LeagueFailBeep.Text = Properties.Settings.Default.LeagueFailBeep;
-            LeagueFailBeepEnabled.IsChecked = Properties.Settings.Default.LeagueFailBeepEnabled;
+            AddSoundSetting(SoundsGrid, "PMBeep", "PMBeepEnabled", "Private message arrived:");
+            AddSoundSetting(SoundsGrid, "HBeep", "HBeepEnabled", "When your name appears in chat:");
+            AddSoundSetting(SoundsGrid, "BJBeep", "BJBeepEnabled", "When a buddy comes online:");
+            AddSoundSetting(SoundsGrid, "LeagueFoundBeep", "LeagueFoundBeepEnabled", "When the snooper finds a league game:");
+            AddSoundSetting(SoundsGrid, "LeagueFailBeep", "LeagueFailBeepEnabled", "When the snooper stops searching league game:");
+            AddSoundSetting(SoundsGrid, "NotificatorSound", "NotificatorSoundEnabled", "When the notificator finds something:");
 
             // About
-            Version.Text = "Version: " + App.getVersion();
+            Version.Text = "Version: " + App.GetVersion();
         }
 
         private void AddBoolSetting(Grid grid, string name, string text)
         {
             int row = grid.RowDefinitions.Count;
-            bool value = (bool)(Properties.Settings.Default.GetType().GetProperty(name).GetValue(Properties.Settings.Default));
+            bool value = (bool)(Properties.Settings.Default.GetType().GetProperty(name).GetValue(Properties.Settings.Default, null));
 
             grid.RowDefinitions.Add(new RowDefinition() { Height = System.Windows.GridLength.Auto });
-            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(5) });
+            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(10) });
 
             // <Label Grid.Column="0" Grid.Row="1" Content="Auto login at startup:"></Label>
-            Label label = new Label();
-            label.Content = text;
-            Grid.SetRow(label, row);
-            Grid.SetColumn(label, 0);
-            grid.Children.Add(label);
+            TextBlock tb = new TextBlock();
+            tb.Text = text;
+            Grid.SetRow(tb, row);
+            Grid.SetColumn(tb, 0);
+            grid.Children.Add(tb);
 
             // <CheckBox Name="AutoLogin" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" IsEnabled="False" Click="ShowLoginScreenChanged"></CheckBox>
             CheckBox cb = new CheckBox();
@@ -112,65 +102,85 @@ namespace MySnooper
             if (cb.IsChecked.HasValue)
             {
                 string name = (string)cb.Tag;
-                Properties.Settings.Default.GetType().GetProperty(name).SetValue(Properties.Settings.Default, cb.IsChecked.Value);
+                Properties.Settings.Default.GetType().GetProperty(name).SetValue(Properties.Settings.Default, cb.IsChecked.Value, null);
                 Properties.Settings.Default.Save();
+
+                if (SettingChanged != null)
+                    SettingChanged(this, name, SettingChangedType.NoType);
             }
         }
 
-        private void AddTextSetting(Grid grid, string name, string text)
+        private void AddTextSetting(Grid grid, string name, string text, MyValidator validator = null)
         {
             int row = grid.RowDefinitions.Count;
-            string value = (string)(Properties.Settings.Default.GetType().GetProperty(name).GetValue(Properties.Settings.Default));
+            string value = (string)(Properties.Settings.Default.GetType().GetProperty(name).GetValue(Properties.Settings.Default, null));
 
             grid.RowDefinitions.Add(new RowDefinition() { Height = System.Windows.GridLength.Auto });
-            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(5) });
+            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(10) });
 
             // <Label Grid.Column="0" Grid.Row="1" Content="Auto login at startup:"></Label>
-            Label label = new Label();
-            label.Content = text;
-            Grid.SetRow(label, row);
-            Grid.SetColumn(label, 0);
-            grid.Children.Add(label);
+            TextBlock tb = new TextBlock();
+            tb.Text = text;
+            Grid.SetRow(tb, row);
+            Grid.SetColumn(tb, 0);
+            grid.Children.Add(tb);
 
             // <TextBox Name="BackText" Grid.Column="1" Grid.Row="6" LostKeyboardFocus="BackTextChanged"></TextBox>
-            TextBox tb = new TextBox();
-            tb.Tag = name;
-            tb.Text = value;
-            tb.LostKeyboardFocus += TextHandler;
-            Grid.SetRow(tb, row);
-            Grid.SetColumn(tb, 1);
-            grid.Children.Add(tb);
+            TextBox tb2 = new TextBox();
+            tb2.Tag = new object[] { name, validator };
+            tb2.Text = value;
+            tb2.LostKeyboardFocus += TextHandler;
+            Grid.SetRow(tb2, row);
+            Grid.SetColumn(tb2, 1);
+            grid.Children.Add(tb2);
         }
 
         private void TextHandler(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
         {
             TextBox tb = (TextBox)sender;
-            string name = (string)tb.Tag;
-            Properties.Settings.Default.GetType().GetProperty(name).SetValue(Properties.Settings.Default, tb.Text);
+            object[] tag = (object[])tb.Tag;
+            string name = (string)tag[0];
+            MyValidator validator = (MyValidator)tag[1];
+            string text = WormNetCharTable.RemoveNonWormNetChars(tb.Text.Trim());
+
+            if (validator != null)
+            {
+                string error = validator.Validate(text);
+                if (error != string.Empty)
+                {
+                    MessageBox.Show(error, "Invalid value", MessageBoxButton.OK, MessageBoxImage.Stop);
+                    return;
+                }
+            }
+
+            Properties.Settings.Default.GetType().GetProperty(name).SetValue(Properties.Settings.Default, text, null);
             Properties.Settings.Default.Save();
+
+            if (SettingChanged != null)
+                SettingChanged(this, name, SettingChangedType.NoType);
         }
 
         private void AddStyleSetting(Grid grid, string name, string text, MessageSetting setting)
         {
             int row = grid.RowDefinitions.Count;
             grid.RowDefinitions.Add(new RowDefinition() { Height = System.Windows.GridLength.Auto });
-            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(5) });
+            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(10) });
 
             // <Label Grid.Column="0" Grid.Row="1" Content="Auto login at startup:"></Label>
-            Label label = new Label();
-            label.Content = text;
-            Grid.SetRow(label, row);
-            Grid.SetColumn(label, 0);
-            grid.Children.Add(label);
-
             TextBlock tb = new TextBlock();
-            tb.VerticalAlignment = System.Windows.VerticalAlignment.Center;
+            tb.Text = text;
+            Grid.SetRow(tb, row);
+            Grid.SetColumn(tb, 0);
+            grid.Children.Add(tb);
+
+            TextBlock tb2 = new TextBlock();
+            tb2.VerticalAlignment = System.Windows.VerticalAlignment.Center;
             Run run = new Run("Example");
             MessageSettings.LoadSettingsFor(run, setting);
-            tb.Inlines.Add(run);
-            Grid.SetRow(tb, row);
-            Grid.SetColumn(tb, 1);
-            grid.Children.Add(tb);
+            tb2.Inlines.Add(run);
+            Grid.SetRow(tb2, row);
+            Grid.SetColumn(tb2, 1);
+            grid.Children.Add(tb2);
 
             // <Button Grid.Row="1" Grid.Column="1" Content="Change" Click="FontChange" Name="UserMessage"></Button>
             Button b = new Button();
@@ -191,7 +201,15 @@ namespace MySnooper
             var window = new FontChooser((string)tag[0], (string)tag[1], (MessageSetting)tag[2]);
             window.SaveSetting += window_SaveSetting;
             window.Owner = this;
+            window.Closing += window_Closing;
             window.ShowDialog();
+        }
+
+        void window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            FontChooser window = (FontChooser)sender;
+            window.SaveSetting -= window_SaveSetting;
+            window.Closing -= window_Closing;
         }
 
         void window_SaveSetting()
@@ -202,82 +220,127 @@ namespace MySnooper
                 Run run = (Run)tag[3];
                 MessageSetting setting = (MessageSetting)tag[2];
                 MessageSettings.LoadSettingsFor(run, setting);
+
+                if (SettingChanged != null)
+                    SettingChanged(this, (string)tag[0], SettingChangedType.Style);
             }
             ));
         }
 
+        private void AddSoundSetting(Grid grid, string name, string name2, string text)
+        {
+            int row = grid.RowDefinitions.Count;
+            string value = (string)(Properties.Settings.Default.GetType().GetProperty(name).GetValue(Properties.Settings.Default, null));
+            bool value2 = (bool)(Properties.Settings.Default.GetType().GetProperty(name2).GetValue(Properties.Settings.Default, null));
+
+            grid.RowDefinitions.Add(new RowDefinition() { Height = System.Windows.GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(10) });
+
+            /*
+                <Label Grid.Column="0" Grid.Row="5" Content="When a buddy comes online:"></Label>
+                <StackPanel Grid.Column="1" Grid.Row="5" Orientation="Horizontal">
+                    <TextBox Name="BJBeep" Width="210" IsReadOnly="True"></TextBox>
+                    <Button Name="BJBeepChange" Content="Browse" Width="75" Click="SoundChange"></Button>
+                </StackPanel>
+                <CheckBox Name="BJBeepEnabled" Click="SoundEnabledChange" Grid.Column="2" Grid.Row="5" Content="Enable"></CheckBox>
+            */
+
+            // <Label Grid.Column="0" Grid.Row="1" Content="Auto login at startup:"></Label>
+            TextBlock tb = new TextBlock();
+            tb.Text = text;
+            Grid.SetRow(tb, row);
+            Grid.SetColumn(tb, 0);
+            grid.Children.Add(tb);
+
+            StackPanel sp = new StackPanel();
+            sp.Orientation = Orientation.Horizontal;
+            Grid.SetRow(sp, row);
+            Grid.SetColumn(sp, 1);
+
+            TextBox tb2 = new TextBox();
+            tb2.IsReadOnly = true;
+            tb2.Width = 210;
+            tb2.Text = value;
+            sp.Children.Add(tb2);
+
+            Button b = new Button();
+            b.Content = "Browse";
+            b.Width = 75;
+            b.Click += SoundChange;
+            b.Tag = new object[] { tb2, name };
+            sp.Children.Add(b);
+
+            grid.Children.Add(sp);
+
+            CheckBox cb = new CheckBox();
+            cb.Content = "Enabled";
+            cb.IsChecked = value2;
+            cb.Click += BoolHandler;
+            cb.Tag = name2;
+            Grid.SetRow(cb, row);
+            Grid.SetColumn(cb, 2);
+            grid.Children.Add(cb);
+        }
+
+
         private void SoundChange(object sender, RoutedEventArgs e)
         {
-            var obj = sender as Button;
+            object[] data = (object[])((Button)sender).Tag;
+            TextBox tb = (TextBox)data[0];
+
             Microsoft.Win32.OpenFileDialog dlg = new Microsoft.Win32.OpenFileDialog();
             dlg.Filter = "WAV Files|*.wav";
-            switch (obj.Name)
-            {
-                case "PMBeepChange":
-                    if (File.Exists(PMBeep.Text))
-                        dlg.InitialDirectory = new FileInfo(PMBeep.Text).Directory.FullName;
-                    break;
-                case "HbeepChange":
-                    if (File.Exists(HBeep.Text))
-                        dlg.InitialDirectory = new FileInfo(HBeep.Text).Directory.FullName;
-                    break;
-                case "BJBeepChange":
-                    if (File.Exists(BJBeep.Text))
-                        dlg.InitialDirectory = new FileInfo(BJBeep.Text).Directory.FullName;
-                    break;
-                case "LeagueFoundBeepChange":
-                    if (File.Exists(LeagueFoundBeep.Text))
-                        dlg.InitialDirectory = new FileInfo(LeagueFoundBeep.Text).Directory.FullName;
-                    break;
-                case "LeagueFailBeepChange":
-                    if (File.Exists(LeagueFailBeep.Text))
-                        dlg.InitialDirectory = new FileInfo(LeagueFailBeep.Text).Directory.FullName;
-                    break;
-            }
+            if (File.Exists(tb.Text))
+                dlg.InitialDirectory = new FileInfo(tb.Text).Directory.FullName;
 
             // Display OpenFileDialog by calling ShowDialog method 
             Nullable<bool> result = dlg.ShowDialog();
 
             // Get the selected file name and display in a TextBox 
-            if (result == true)
+            if (result.HasValue && result.Value == true)
             {
-                // Open document 
                 string filename = dlg.FileName;
-
-                switch (obj.Name)
-                {
-                    case "PMBeepChange":
-                        PMBeep.Text = filename;
-                        Properties.Settings.Default.PMBeep = filename;
-                        break;
-                    case "HbeepChange":
-                        HBeep.Text = filename;
-                        Properties.Settings.Default.HBeep = filename;
-                        break;
-                    case "BJBeppChange":
-                        BJBeep.Text = filename;
-                        Properties.Settings.Default.BJBeep = filename;
-                        break;
-                    case "LeagueFoundBeepChange":
-                        LeagueFoundBeep.Text = filename;
-                        Properties.Settings.Default.LeagueFoundBeep = filename;
-                        break;
-                    case "LeagueFailBeepChange":
-                        LeagueFailBeep.Text = filename;
-                        Properties.Settings.Default.LeagueFailBeep = filename;
-                        break;
-                }
+                string name = (string)data[1];
+                tb.Text = filename;
+                Properties.Settings.Default.GetType().GetProperty(name).SetValue(Properties.Settings.Default, filename, null);
                 Properties.Settings.Default.Save();
-                if (SoundChanged != null)
-                    SoundChanged(obj.Name);
+
+                if (SettingChanged != null)
+                    SettingChanged(this, name, SettingChangedType.Sound);
             }
         }
 
-        private void SoundEnabledChange(object sender, RoutedEventArgs e)
+        private void AddTextListSetting(Grid grid, string name, string text, string editortext)
         {
-            var obj = sender as CheckBox;
-            if (SoundEnabledChanged != null)
-                SoundEnabledChanged(obj.Name, obj.IsChecked.Value);
+            int row = grid.RowDefinitions.Count;
+
+            grid.RowDefinitions.Add(new RowDefinition() { Height = System.Windows.GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(10) });
+
+            // <Label Grid.Column="0" Grid.Row="1" Content="Auto login at startup:"></Label>
+            TextBlock tb = new TextBlock();
+            tb.Text = text;
+            Grid.SetRow(tb, row);
+            Grid.SetColumn(tb, 0);
+            grid.Children.Add(tb);
+
+            // <TextBox Name="BackText" Grid.Column="1" Grid.Row="6" LostKeyboardFocus="BackTextChanged"></TextBox>
+            Button bt = new Button();
+            bt.Content = "Edit";
+            bt.Tag = new string[] { name, editortext };
+            bt.Click += TextListHandler;
+            Grid.SetRow(bt, row);
+            Grid.SetColumn(bt, 1);
+            grid.Children.Add(bt);
+        }
+
+        private void TextListHandler(object sender, RoutedEventArgs e)
+        {
+            string[] data = (string[])((Button)sender).Tag;
+            ListEditor window = new ListEditor(data[0], data[1]);
+            window.Owner = this;
+            window.ShowDialog();
+            e.Handled = true;
         }
 
         private void WAExeChange(object sender, RoutedEventArgs e)
@@ -294,7 +357,6 @@ namespace MySnooper
             // Get the selected file name and display in a TextBox 
             if (result.HasValue && result.Value == true)
             {
-                // Open document 
                 WAExeText.Text = dlg.FileName;
                 Properties.Settings.Default.WaExe = dlg.FileName;
                 Properties.Settings.Default.Save();

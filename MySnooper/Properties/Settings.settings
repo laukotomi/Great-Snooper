@@ -14,31 +14,31 @@
     <Setting Name="UserCountry" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">-1</Value>
     </Setting>
-    <Setting Name="ChannelMessage" Type="System.String" Scope="User">
+    <Setting Name="ChannelMessageStyle" Type="System.String" Scope="User">
       <Value Profile="(Default)">F0FFFF|13|0|0|0|0|Tahoma</Value>
     </Setting>
-    <Setting Name="JoinMessage" Type="System.String" Scope="User">
+    <Setting Name="JoinMessageStyle" Type="System.String" Scope="User">
       <Value Profile="(Default)">808000|12|0|0|0|0|Tahoma</Value>
     </Setting>
-    <Setting Name="PartMessage" Type="System.String" Scope="User">
+    <Setting Name="PartMessageStyle" Type="System.String" Scope="User">
       <Value Profile="(Default)">808000|12|0|0|0|0|Tahoma</Value>
     </Setting>
-    <Setting Name="QuitMessage" Type="System.String" Scope="User">
+    <Setting Name="QuitMessageStyle" Type="System.String" Scope="User">
       <Value Profile="(Default)">808000|12|0|0|0|0|Tahoma</Value>
     </Setting>
-    <Setting Name="OfflineMessage" Type="System.String" Scope="User">
+    <Setting Name="OfflineMessageStyle" Type="System.String" Scope="User">
       <Value Profile="(Default)">FF0000|13|0|0|0|0|Tahoma</Value>
     </Setting>
-    <Setting Name="ActionMessage" Type="System.String" Scope="User">
+    <Setting Name="ActionMessageStyle" Type="System.String" Scope="User">
       <Value Profile="(Default)">FFFF00|13|0|0|0|0|Tahoma</Value>
     </Setting>
-    <Setting Name="UserMessage" Type="System.String" Scope="User">
+    <Setting Name="UserMessageStyle" Type="System.String" Scope="User">
       <Value Profile="(Default)">E9967A|13|0|0|0|0|Tahoma</Value>
     </Setting>
-    <Setting Name="NoticeMessage" Type="System.String" Scope="User">
+    <Setting Name="NoticeMessageStyle" Type="System.String" Scope="User">
       <Value Profile="(Default)">FF0000|13|0|0|0|0|Tahoma</Value>
     </Setting>
-    <Setting Name="BuddyJoinedMessage" Type="System.String" Scope="User">
+    <Setting Name="BuddyJoinedMessageStyle" Type="System.String" Scope="User">
       <Value Profile="(Default)">ADFF2F|13|0|0|0|0|Tahoma</Value>
     </Setting>
     <Setting Name="BuddyList" Type="System.String" Scope="User">
@@ -116,7 +116,7 @@
     <Setting Name="AutoLogIn" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="LeagueFoundMessage" Type="System.String" Scope="User">
+    <Setting Name="LeagueFoundMessageStyle" Type="System.String" Scope="User">
       <Value Profile="(Default)">ADFF2F|13|0|0|0|0|Tahoma</Value>
     </Setting>
     <Setting Name="LeagueFoundBeep" Type="System.String" Scope="User">
@@ -129,9 +129,6 @@
       <Value Profile="(Default)">Sounds\LeagueFail.wav</Value>
     </Setting>
     <Setting Name="LeagueFailBeepEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="AutoJoinAnythingGoes" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="AwayMessage" Type="System.String" Scope="User">
@@ -157,6 +154,57 @@
     </Setting>
     <Setting Name="ServerAddresses" Type="System.String" Scope="User">
       <Value Profile="(Default)">wormnet1.team17.com</Value>
+    </Setting>
+    <Setting Name="ShowWormsChannel" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ChangeWormsNick" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="WormsNick" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="CloseToTray" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="SaveInstantColors" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="InstantColors" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="QuitMessagee" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AutoJoinChannels" Type="System.String" Scope="User">
+      <Value Profile="(Default)">#AnythingGoes,</Value>
+    </Setting>
+    <Setting Name="SpammingChecked" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="ShowBannedUsers" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="InfoMessage" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="ColumnOrder" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Notificator" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="AskNotificatorOff" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="AskLeagueSearcherOff" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="NotificatorSound" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Sounds\LeagueFound.wav</Value>
+    </Setting>
+    <Setting Name="NotificatorSoundEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

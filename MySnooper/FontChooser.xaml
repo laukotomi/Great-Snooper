@@ -4,7 +4,14 @@
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Title="Font Chooser" TitlebarHeight="40" Background="Black" Height="420" Width="500" WindowTransitionsEnabled="False"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">    
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
+    <controls:MetroWindow.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="Foreground" Value="White" />
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5,5" />
+        </Style>
+    </controls:MetroWindow.Resources>
     <DockPanel Grid.Row="1">
         <Border DockPanel.Dock="Top" Height="50" Background="#33373f">
             <TextBlock Name="Example" Text="Example text" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
@@ -31,7 +38,7 @@
                 </ListView.Resources>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <TextBlock Text="{Binding Key, Mode=OneWay}" FontFamily="{Binding Value, Mode=OneWay}" Foreground="AliceBlue" FontSize="12" Margin="0,2" />
+                        <TextBlock Text="{Binding Key, Mode=OneWay}" FontFamily="{Binding Value, Mode=OneWay}" Foreground="AliceBlue" FontSize="12" Margin="5,2" />
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
@@ -50,22 +57,22 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
 
-                <Label Grid.Row="0" Grid.Column="0" Content="Size:"></Label>
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="Size:" />
                 <ComboBox Grid.Row="0" Grid.Column="1" Name="TheSize" SelectionChanged="FontSizeChanged"></ComboBox>
 
-                <Label Grid.Row="1" Grid.Column="0" Content="Color:"></Label>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Color:"></TextBlock>
                 <xctk:ColorPicker Grid.Row="1" Grid.Column="1" Name="TheColor" UsingAlphaChannel="False" ShowDropDownButton="False" ShowStandardColors="False" SelectedColorChanged="ColorChanged"></xctk:ColorPicker>
 
-                <Label Grid.Row="2" Grid.Column="0" Content="Bold:"></Label>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Bold:" />
                 <CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Name="TheBold" HorizontalAlignment="Center" Click="BoldChanged"></CheckBox>
 
-                <Label Grid.Row="3" Grid.Column="0" Content="Italic:"></Label>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Italic:" />
                 <CheckBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Name="TheItalic" HorizontalAlignment="Center" Click="ItalicChanged"></CheckBox>
 
-                <Label Grid.Row="4" Grid.Column="0" Content="Strikethrough:"></Label>
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Strikethrough:" />
                 <CheckBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Name="TheStrikethrough" HorizontalAlignment="Center" Click="StrikethroughChanged"></CheckBox>
 
-                <Label Grid.Row="5" Grid.Column="0" Content="Underline:"></Label>
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Underline:" />
                 <CheckBox Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Name="TheUnderline" HorizontalAlignment="Center" Click="UnderlineChanged"></CheckBox>
             </Grid>
 

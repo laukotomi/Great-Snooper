@@ -3,93 +3,99 @@
     public static class CountriesClass
     {
         // The countries object
-        public static SortedObservableCollection<CountryClass> Countries = new SortedObservableCollection<CountryClass>()
+        public static SortedObservableCollection<CountryClass> Countries = new SortedObservableCollection<CountryClass>();
+
+        public static CountryClass DefaultCountry { get; private set; }
+
+        public static void Initialize()
         {
-            new CountryClass("United Kingdom", "GB"),
-            new CountryClass("Argentina", "AR"),
-            new CountryClass("Australia", "AU"),
-            new CountryClass("Austria", "AT"),
-            new CountryClass("Belgium", "BE"),
-            new CountryClass("Brazil", "BR"),
-            new CountryClass("Canada", "CA"),
-            new CountryClass("Croatia", "HR"),
-            new CountryClass("Bosnia", "BA"),
-            new CountryClass("Cyprus", "CY"),
-            new CountryClass("Czech", "CZ"),
-            new CountryClass("Denmark", "DK"),
-            new CountryClass("Finland", "FI"),
-            new CountryClass("France", "FR"),
-            new CountryClass("Georgia", "GE"),
-            new CountryClass("Germany", "DE"),
-            new CountryClass("Greece", "GR"),
-            new CountryClass("Hongkong", "HK"),
-            new CountryClass("Hungary", "HU"),
-            new CountryClass("Iceland", "IS"),
-            new CountryClass("India", "IN"),
-            new CountryClass("Indonesia", "ID"),
-            new CountryClass("Iran", "IR"),
-            new CountryClass("Iraq", "IQ"),
-            new CountryClass("Ireland", "IE"),
-            new CountryClass("Israel", "IL"),
-            new CountryClass("Italy", "IT"),
-            new CountryClass("Japan", "JP"),
-            new CountryClass("Liechtenstein", "LI"),
-            new CountryClass("Luxembourg", "LU"),
-            new CountryClass("Malaysia", "MY"),
-            new CountryClass("Malta", "MT"),
-            new CountryClass("Mexico", "MX"),
-            new CountryClass("Morocco", "MA"),
-            new CountryClass("Netherlands", "NL"),
-            new CountryClass("Newzealand", "NZ"),
-            new CountryClass("Norway", "NO"),
-            new CountryClass("Poland", "PL"),
-            new CountryClass("Portugal", "PT"),
-            new CountryClass("Puertorico", "PR"),
-            new CountryClass("Romania", "RO"),
-            new CountryClass("Russia", "RU"),
-            new CountryClass("Singapore", "SG"),
-            new CountryClass("South Africa", "ZA"),
-            new CountryClass("Spain", "ES"),
-            new CountryClass("Sweden", "SE"),
-            new CountryClass("Switzerland", "CH"),
-            new CountryClass("Turkey", "TR"),
-            new CountryClass("USA", "US"),
-            new CountryClass("Unknown", "UN"),
-            new CountryClass("Blank 1", "B1"),
-            new CountryClass("Blank 2", "B2"),
-            new CountryClass("Blank 3", "B3"),
-            new CountryClass("Chile", "CL"),
-            new CountryClass("Serbia", "RS"),
-            new CountryClass("Slovenia", "SI"),
-            new CountryClass("Lebanon", "LB"),
-            new CountryClass("Moldova", "MO"),
-            new CountryClass("Ukraine", "UA"),
-            new CountryClass("Latvia", "LV"),
-            new CountryClass("Slovakia", "SK"),
-            new CountryClass("Costa Rica", "CR"),
-            new CountryClass("Estonia", "EE"),
-            new CountryClass("China", "CN"),
-            new CountryClass("Colombia", "CO"),
-            new CountryClass("Ecuador", "EC"),
-            new CountryClass("Uruguay", "UY"),
-            new CountryClass("Venezuela", "VE"),
-            new CountryClass("Lithuania", "LT"),
-            new CountryClass("Bulgaria", "BG"),
-            new CountryClass("Egypt", "EG"),
-            new CountryClass("Saudi Arabia", "SA"),
-            new CountryClass("South Korea", "KR"),
-            new CountryClass("Belarus", "BY"),
-            new CountryClass("Peru", "PE"),
-            new CountryClass("Algeria", "DZ"),
-            new CountryClass("Kazakhstan", "KZ"),
-            new CountryClass("El Salvador", "SV"),
-            new CountryClass("Taiwan", "TW"),
-            new CountryClass("Jamaica", "JM"),
-            new CountryClass("Guatemala", "GT"),
-            new CountryClass("Marshall Islands", "MH"),
-            new CountryClass("Macedonia", "MK"),
-            new CountryClass("United Arab Emirates", "AE")
-        };
+            Countries.Add(new CountryClass("United Kingdom", "GB"));
+            Countries.Add(new CountryClass("Argentina", "AR"));
+            Countries.Add(new CountryClass("Australia", "AU"));
+            Countries.Add(new CountryClass("Austria", "AT"));
+            Countries.Add(new CountryClass("Belgium", "BE"));
+            Countries.Add(new CountryClass("Brazil", "BR"));
+            Countries.Add(new CountryClass("Canada", "CA"));
+            Countries.Add(new CountryClass("Croatia", "HR"));
+            Countries.Add(new CountryClass("Bosnia", "BA"));
+            Countries.Add(new CountryClass("Cyprus", "CY"));
+            Countries.Add(new CountryClass("Czech", "CZ"));
+            Countries.Add(new CountryClass("Denmark", "DK"));
+            Countries.Add(new CountryClass("Finland", "FI"));
+            Countries.Add(new CountryClass("France", "FR"));
+            Countries.Add(new CountryClass("Georgia", "GE"));
+            Countries.Add(new CountryClass("Germany", "DE"));
+            Countries.Add(new CountryClass("Greece", "GR"));
+            Countries.Add(new CountryClass("Hongkong", "HK"));
+            Countries.Add(new CountryClass("Hungary", "HU"));
+            Countries.Add(new CountryClass("Iceland", "IS"));
+            Countries.Add(new CountryClass("India", "IN"));
+            Countries.Add(new CountryClass("Indonesia", "ID"));
+            Countries.Add(new CountryClass("Iran", "IR"));
+            Countries.Add(new CountryClass("Iraq", "IQ"));
+            Countries.Add(new CountryClass("Ireland", "IE"));
+            Countries.Add(new CountryClass("Israel", "IL"));
+            Countries.Add(new CountryClass("Italy", "IT"));
+            Countries.Add(new CountryClass("Japan", "JP"));
+            Countries.Add(new CountryClass("Liechtenstein", "LI"));
+            Countries.Add(new CountryClass("Luxembourg", "LU"));
+            Countries.Add(new CountryClass("Malaysia", "MY"));
+            Countries.Add(new CountryClass("Malta", "MT"));
+            Countries.Add(new CountryClass("Mexico", "MX"));
+            Countries.Add(new CountryClass("Morocco", "MA"));
+            Countries.Add(new CountryClass("Netherlands", "NL"));
+            Countries.Add(new CountryClass("Newzealand", "NZ"));
+            Countries.Add(new CountryClass("Norway", "NO"));
+            Countries.Add(new CountryClass("Poland", "PL"));
+            Countries.Add(new CountryClass("Portugal", "PT"));
+            Countries.Add(new CountryClass("Puertorico", "PR"));
+            Countries.Add(new CountryClass("Romania", "RO"));
+            Countries.Add(new CountryClass("Russia", "RU"));
+            Countries.Add(new CountryClass("Singapore", "SG"));
+            Countries.Add(new CountryClass("South Africa", "ZA"));
+            Countries.Add(new CountryClass("Spain", "ES"));
+            Countries.Add(new CountryClass("Sweden", "SE"));
+            Countries.Add(new CountryClass("Switzerland", "CH"));
+            Countries.Add(new CountryClass("Turkey", "TR"));
+            Countries.Add(new CountryClass("USA", "US"));
+            Countries.Add(new CountryClass("Unknown", "UN"));
+            Countries.Add(new CountryClass("Blank 1", "B1"));
+            Countries.Add(new CountryClass("Blank 2", "B2"));
+            Countries.Add(new CountryClass("Blank 3", "B3"));
+            Countries.Add(new CountryClass("Chile", "CL"));
+            Countries.Add(new CountryClass("Serbia", "RS"));
+            Countries.Add(new CountryClass("Slovenia", "SI"));
+            Countries.Add(new CountryClass("Lebanon", "LB"));
+            Countries.Add(new CountryClass("Moldova", "MO"));
+            Countries.Add(new CountryClass("Ukraine", "UA"));
+            Countries.Add(new CountryClass("Latvia", "LV"));
+            Countries.Add(new CountryClass("Slovakia", "SK"));
+            Countries.Add(new CountryClass("Costa Rica", "CR"));
+            Countries.Add(new CountryClass("Estonia", "EE"));
+            Countries.Add(new CountryClass("China", "CN"));
+            Countries.Add(new CountryClass("Colombia", "CO"));
+            Countries.Add(new CountryClass("Ecuador", "EC"));
+            Countries.Add(new CountryClass("Uruguay", "UY"));
+            Countries.Add(new CountryClass("Venezuela", "VE"));
+            Countries.Add(new CountryClass("Lithuania", "LT"));
+            Countries.Add(new CountryClass("Bulgaria", "BG"));
+            Countries.Add(new CountryClass("Egypt", "EG"));
+            Countries.Add(new CountryClass("Saudi Arabia", "SA"));
+            Countries.Add(new CountryClass("South Korea", "KR"));
+            Countries.Add(new CountryClass("Belarus", "BY"));
+            Countries.Add(new CountryClass("Peru", "PE"));
+            Countries.Add(new CountryClass("Algeria", "DZ"));
+            Countries.Add(new CountryClass("Kazakhstan", "KZ"));
+            Countries.Add(new CountryClass("El Salvador", "SV"));
+            Countries.Add(new CountryClass("Taiwan", "TW"));
+            Countries.Add(new CountryClass("Jamaica", "JM"));
+            Countries.Add(new CountryClass("Guatemala", "GT"));
+            Countries.Add(new CountryClass("Marshall Islands", "MH"));
+            Countries.Add(new CountryClass("Macedonia", "MK"));
+            Countries.Add(new CountryClass("United Arab Emirates", "AE"));
+
+            DefaultCountry = GetCountryByID(49);
+        }
 
         // Get a country by its country code
         public static CountryClass GetCountryByCC(string CountryCode)
@@ -99,7 +105,7 @@
                 if (Countries[i].CountryCode == CountryCode)
                     return Countries[i];
             }
-            return GetCountryByID(49);
+            return DefaultCountry;
         }
 
         // Get a country by its ID (this method is needed, because the countries will be stored in order of their names not in order of their IDs)
@@ -110,7 +116,7 @@
                 if (Countries[i].ID == ID)
                     return Countries[i];
             }
-            return GetCountryByID(49);
+            return DefaultCountry;
         }
     }
 }

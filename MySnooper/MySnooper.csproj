@@ -9,7 +9,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MySnooper</RootNamespace>
     <AssemblyName>Great Snooper</AssemblyName>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
@@ -41,6 +41,7 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <Prefer32Bit>false</Prefer32Bit>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -53,6 +54,7 @@
     <Prefer32Bit>false</Prefer32Bit>
     <RunCodeAnalysis>false</RunCodeAnalysis>
     <CodeAnalysisIgnoreGeneratedCode>true</CodeAnalysisIgnoreGeneratedCode>
+    <UseVSHostingProcess>false</UseVSHostingProcess>
   </PropertyGroup>
   <PropertyGroup>
     <ManifestCertificateThumbprint>12398E398C843A6E768DBCC8A6D7189DA26A879E</ManifestCertificateThumbprint>
@@ -73,13 +75,11 @@
     <SignAssembly>false</SignAssembly>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net451\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification">
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net40\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>
-    <Reference Include="MahApps.Metro, Version=1.0.0.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\MahApps.Metro.dll</HintPath>
+    <Reference Include="MahApps.Metro">
+      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net40\MahApps.Metro.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
@@ -90,9 +90,8 @@
     <Reference Include="System.Net" />
     <Reference Include="System.Web" />
     <Reference Include="System.Windows.Forms" />
-    <Reference Include="System.Windows.Interactivity, Version=4.5.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net45\System.Windows.Interactivity.dll</HintPath>
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MahApps.Metro.1.0.0.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
     </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="System.Core" />
@@ -101,23 +100,10 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="Xceed.Wpf.AvalonDock">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.3\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.3\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.3\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.3\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
-    </Reference>
     <Reference Include="Xceed.Wpf.DataGrid">
       <HintPath>..\packages\Extended.Wpf.Toolkit.2.3\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
     </Reference>
-    <Reference Include="Xceed.Wpf.Toolkit, Version=2.3.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Xceed.Wpf.Toolkit">
       <HintPath>..\packages\Extended.Wpf.Toolkit.2.3\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
     </Reference>
   </ItemGroup>
@@ -133,13 +119,18 @@
     <Compile Include="Classes\ExtensionMethods.cs" />
     <Compile Include="Classes\GlobalManager.cs" />
     <Compile Include="Classes\MessageSetting.cs" />
-    <Compile Include="Classes\MySortedList.cs" />
+    <Compile Include="Classes\NotificatorClass.cs" />
     <Compile Include="Classes\RankClass.cs" />
     <Compile Include="Classes\RanksClass.cs" />
     <Compile Include="Classes\SettingOption.cs" />
     <Compile Include="Classes\UITaskClasses.cs" />
+    <Compile Include="Classes\WebDownload.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Classes\WormNetCharTable.cs" />
     <Compile Include="Classes\ErrorLog.cs" />
+    <Compile Include="CustomUIThings\HalfValueConverter.cs" />
+    <Compile Include="CustomUIThings\SliderWithDraggingEvents.cs" />
     <Compile Include="FontChooser.xaml.cs">
       <DependentUpon>FontChooser.xaml</DependentUpon>
     </Compile>
@@ -165,8 +156,12 @@
     <Compile Include="Classes\MessageClass.cs" />
     <Compile Include="Classes\MessageSettings.cs" />
     <Compile Include="CustomUIThings\TrayFlash.cs" />
+    <Compile Include="Classes\MyValidator.cs" />
     <Compile Include="News.xaml.cs">
       <DependentUpon>News.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Notificator.xaml.cs">
+      <DependentUpon>Notificator.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
@@ -213,7 +208,6 @@
     </Compile>
     <Compile Include="Classes\Channel.cs" />
     <Compile Include="Classes\CountriesClass.cs" />
-    <Compile Include="Classes\IRCManipulator.cs" />
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -222,6 +216,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="News.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Notificator.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -248,6 +246,7 @@
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
@@ -275,12 +274,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\search.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\banned.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\buddy.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\locked.png" />
@@ -319,22 +312,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\tuslogo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\scales.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\flame.png" />
-    <Resource Include="Resources\fp.png" />
-    <Resource Include="Resources\message.png" />
-    <Resource Include="Resources\mingvase.png" />
-    <Resource Include="Resources\sheep.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\army.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="Resources\kamikaze.png" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
@@ -378,6 +355,132 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\close.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\flags\flag000.PNG" />
+    <Resource Include="Resources\flags\flag001.PNG" />
+    <Resource Include="Resources\flags\flag002.PNG" />
+    <Resource Include="Resources\flags\flag003.PNG" />
+    <Resource Include="Resources\flags\flag004.PNG" />
+    <Resource Include="Resources\flags\flag005.PNG" />
+    <Resource Include="Resources\flags\flag006.PNG" />
+    <Resource Include="Resources\flags\flag007.PNG" />
+    <Resource Include="Resources\flags\flag008.PNG" />
+    <Resource Include="Resources\flags\flag009.PNG" />
+    <Resource Include="Resources\flags\flag010.PNG" />
+    <Resource Include="Resources\flags\flag011.PNG" />
+    <Resource Include="Resources\flags\flag012.PNG" />
+    <Resource Include="Resources\flags\flag013.PNG" />
+    <Resource Include="Resources\flags\flag014.PNG" />
+    <Resource Include="Resources\flags\flag015.PNG" />
+    <Resource Include="Resources\flags\flag016.PNG" />
+    <Resource Include="Resources\flags\flag017.PNG" />
+    <Resource Include="Resources\flags\flag018.PNG" />
+    <Resource Include="Resources\flags\flag019.PNG" />
+    <Resource Include="Resources\flags\flag020.PNG" />
+    <Resource Include="Resources\flags\flag021.PNG" />
+    <Resource Include="Resources\flags\flag022.PNG" />
+    <Resource Include="Resources\flags\flag023.PNG" />
+    <Resource Include="Resources\flags\flag024.PNG" />
+    <Resource Include="Resources\flags\flag025.PNG" />
+    <Resource Include="Resources\flags\flag026.PNG" />
+    <Resource Include="Resources\flags\flag027.PNG" />
+    <Resource Include="Resources\flags\flag028.PNG" />
+    <Resource Include="Resources\flags\flag029.PNG" />
+    <Resource Include="Resources\flags\flag030.PNG" />
+    <Resource Include="Resources\flags\flag031.PNG" />
+    <Resource Include="Resources\flags\flag032.PNG" />
+    <Resource Include="Resources\flags\flag033.PNG" />
+    <Resource Include="Resources\flags\flag034.PNG" />
+    <Resource Include="Resources\flags\flag035.PNG" />
+    <Resource Include="Resources\flags\flag036.PNG" />
+    <Resource Include="Resources\flags\flag037.PNG" />
+    <Resource Include="Resources\flags\flag038.PNG" />
+    <Resource Include="Resources\flags\flag039.PNG" />
+    <Resource Include="Resources\flags\flag040.PNG" />
+    <Resource Include="Resources\flags\flag041.PNG" />
+    <Resource Include="Resources\flags\flag042.PNG" />
+    <Resource Include="Resources\flags\flag043.PNG" />
+    <Resource Include="Resources\flags\flag044.PNG" />
+    <Resource Include="Resources\flags\flag045.PNG" />
+    <Resource Include="Resources\flags\flag046.PNG" />
+    <Resource Include="Resources\flags\flag047.PNG" />
+    <Resource Include="Resources\flags\flag048.PNG" />
+    <Resource Include="Resources\flags\flag049.PNG" />
+    <Resource Include="Resources\flags\flag050.PNG" />
+    <Resource Include="Resources\flags\flag051.PNG" />
+    <Resource Include="Resources\flags\flag052.PNG" />
+    <Resource Include="Resources\flags\flag053.PNG" />
+    <Resource Include="Resources\flags\flag054.PNG" />
+    <Resource Include="Resources\flags\flag055.PNG" />
+    <Resource Include="Resources\flags\flag056.PNG" />
+    <Resource Include="Resources\flags\flag057.PNG" />
+    <Resource Include="Resources\flags\flag058.PNG" />
+    <Resource Include="Resources\flags\flag059.PNG" />
+    <Resource Include="Resources\flags\flag060.PNG" />
+    <Resource Include="Resources\flags\flag061.PNG" />
+    <Resource Include="Resources\flags\flag062.PNG" />
+    <Resource Include="Resources\flags\flag063.PNG" />
+    <Resource Include="Resources\flags\flag064.PNG" />
+    <Resource Include="Resources\flags\flag065.PNG" />
+    <Resource Include="Resources\flags\flag066.PNG" />
+    <Resource Include="Resources\flags\flag067.PNG" />
+    <Resource Include="Resources\flags\flag068.PNG" />
+    <Resource Include="Resources\flags\flag069.PNG" />
+    <Resource Include="Resources\flags\flag070.PNG" />
+    <Resource Include="Resources\flags\flag071.PNG" />
+    <Resource Include="Resources\flags\flag072.PNG" />
+    <Resource Include="Resources\flags\flag073.PNG" />
+    <Resource Include="Resources\flags\flag074.PNG" />
+    <Resource Include="Resources\flags\flag075.PNG" />
+    <Resource Include="Resources\flags\flag076.PNG" />
+    <Resource Include="Resources\flags\flag077.PNG" />
+    <Resource Include="Resources\flags\flag078.PNG" />
+    <Resource Include="Resources\flags\flag079.PNG" />
+    <Resource Include="Resources\flags\flag080.PNG" />
+    <Resource Include="Resources\flags\flag081.PNG" />
+    <Resource Include="Resources\flags\flag082.PNG" />
+    <Resource Include="Resources\flags\flag083.PNG" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\banned.png" />
+    <Resource Include="Resources\buddy.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\logout.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tusanalizer.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tusreport.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tuscomplaints.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tusstandings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tuscup.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tustournaments.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tuspm.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\tusrecent.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\gstopic.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\notificator.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\notificatoron.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Windows.Media;
 using System.Windows.Media.Imaging;
 
 namespace MySnooper
@@ -41,16 +42,18 @@ namespace MySnooper
             try
             {
                 Picture = new BitmapImage();
+                RenderOptions.SetBitmapScalingMode(Picture, BitmapScalingMode.LowQuality);
                 Picture.DecodePixelWidth = 48;
                 Picture.DecodePixelHeight = 17;
                 Picture.CacheOption = BitmapCacheOption.OnLoad;
                 Picture.BeginInit();
                 Picture.UriSource = new Uri("pack://application:,,,/Resources/ranks/rank" + ID.ToString() + ".png");
                 Picture.EndInit();
+                Picture.Freeze();
             }
             catch (Exception e)
             {
-                ErrorLog.log(e);
+                ErrorLog.Log(e);
             }
         }
 
