@@ -376,8 +376,9 @@ namespace MySnooper
                                 p.StartInfo.UseShellExecute = true;
                                 p.StartInfo.Verb = "runas";
                             }
-                            p.StartInfo.FileName = "Updater.exe";
+                            p.StartInfo.FileName = "Updater2.exe";
                             p.Start();
+                            snooperClosing = true;
                             this.Close();
                             return;
                         }
