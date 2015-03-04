@@ -16,7 +16,7 @@ namespace MySnooper
 
     public class IRCCommunicator
     {
-        public enum ConnectionStates { Connected, UsernameInUse, Disconnected, Error }
+        public enum ConnectionStates { Connected, UsernameInUse, Disconnected, Error, AuthOK, AuthBad }
 
         // Private IRC variables
         private readonly string serverAddress;
@@ -466,7 +466,8 @@ namespace MySnooper
             else if ((command == "privmsg" || command == "notice"))
             {
                 string clientName = m.Groups[1].Value;
-                if (!IsWormNet && clientName.ToLower() == "global")
+                string lower = clientName.ToLower();
+                if (!IsWormNet && lower == "global")
                     return false;
 
                 int spacePos = m.Groups[4].Value.IndexOf(' ');
@@ -477,11 +478,24 @@ namespace MySnooper
                         channelHash = clientName;
                     string message = m.Groups[4].Value.Substring(spacePos + 2);
 
+                    /*
+                    if (!IsWormNet && lower == "authserv" && ConnectionState != null)
+                    {
+                        if (message == "I recognize you.")
+                        {
+                            ConnectionState(this, ConnectionStates.AuthOK);
+                            return false;
+                        }
+                        else
+                            ConnectionState(this, ConnectionStates.AuthBad);
+                    }
+                    */
+
                     // Is it action message? (CTCP message) (\x01ACTION message..\x01)
-                    if (message[0] == '\x01' && message[message.Length - 1] == '\x01')
+                    if (message.Length > 2 && message[0] == '\x01' && message[message.Length - 1] == '\x01')
                     {
                         spacePos = message.IndexOf(' ');
-                        if (spacePos != -1)
+                        if (spacePos != -1) // ctcp command with message
                         {
                             string ctcpCommand = message.Substring(1, spacePos - 1).ToLower();
                             message = message.Substring(spacePos + 1, message.Length - spacePos - 2);
@@ -530,7 +544,16 @@ namespace MySnooper
                                     return false;
                             }
                         }
-                        else return false;
+                        else
+                        {
+                            string ctcpCommand = message.Substring(1, message.Length - 2).ToLower();
+                            switch (ctcpCommand)
+                            {
+                                case "version":
+                                    Send("NOTICE " + clientName + " :VERSION Great Snooper v" + App.GetVersion());
+                                    break;
+                            }
+                        }
                     }
                     else
                     {
@@ -589,6 +612,10 @@ namespace MySnooper
                     if (spacePos2 != -1)
                     {
                         this.serverIrcAddress = ':' + line.Substring(spacePos, spacePos2 - spacePos).ToLower();
+
+                        //if (!this.IsWormNet)
+                        //    Send("authserv auth " + this.User.Name + " " + Properties.Settings.Default.WormsPassword);
+
                         if (ConnectionState != null)
                             ConnectionState.BeginInvoke(this, ConnectionStates.Connected, null, null);
                     }

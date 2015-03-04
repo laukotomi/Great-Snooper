@@ -137,3 +137,4 @@ C:\VS\Great-Snooper\MySnooper\bin\Debug\Xceed.Wpf.DataGrid.dll
 C:\VS\Great-Snooper\MySnooper\bin\Debug\Xceed.Wpf.Toolkit.dll
 C:\VS\Great-Snooper\MySnooper\obj\Debug\Notificator.baml
 C:\VS\Great-Snooper\MySnooper\obj\Debug\Notificator.g.cs
+C:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper.TrustInfo.xml

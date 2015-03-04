@@ -290,7 +290,7 @@ namespace MySnooper
             int k = 0, i = loadFrom;
             for (; i >= 0 && k < count; i--)
             {
-                if (!ch.Messages[i].Sender.IsBanned)
+                if (!ch.Messages[i].Sender.IsBanned || Properties.Settings.Default.ShowBannedMessages)
                 {
                     bool insert = ch.TheFlowDocument.Blocks.Count != 0;
                     if (AddNewMessage(ch, ch.Messages[i], insert))
@@ -310,7 +310,7 @@ namespace MySnooper
 
         public bool AddNewMessage(Channel ch, MessageClass message, bool insert = false, string highlightWord = "")
         {
-            if (ChatMode && (
+            if (Properties.Settings.Default.ChatMode && (
                 message.Style.Type == MessageTypes.Part ||
                 message.Style.Type == MessageTypes.Join ||
                 message.Style.Type == MessageTypes.Quit)

@@ -169,7 +169,7 @@
                 <Image Source="Resources/sound.png" Width="24" Height="24"></Image>
             </Button>
 
-            <loc2:SliderWithDraggingEvents ToolTipService.Placement="Bottom" ToolTip="Volume" Maximum="100" SmallChange="1" LargeChange="10" Value="100" Width="100" VerticalAlignment="Center" Focusable="False" Margin="8" ValueChanged="SliderValueChanged" ThumbDragStarted="SliderChangeWithThumb" ThumbDragCompleted="VolumeChanged" />
+            <loc2:SliderWithDraggingEvents Loaded="VolumeSliderLoaded" ToolTipService.Placement="Bottom" ToolTip="Volume" Maximum="100" SmallChange="1" LargeChange="10" Value="100" Width="100" VerticalAlignment="Center" Focusable="False" Margin="8" ValueChanged="SliderValueChanged" ThumbDragStarted="SliderChangeWithThumb" ThumbDragCompleted="VolumeChanged" />
         </controls:WindowCommands>
     </controls:MetroWindow.LeftWindowCommands>
     
@@ -301,9 +301,9 @@
     <!-- Content -->
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="*" MinWidth="100"></ColumnDefinition>
+            <ColumnDefinition Width="100*" MinWidth="100" Name="LeftColumn"></ColumnDefinition>
             <ColumnDefinition Width="Auto"></ColumnDefinition>
-            <ColumnDefinition Width="400" MinWidth="100"></ColumnDefinition>
+            <ColumnDefinition Width="40*" MinWidth="100" Name="RightColumn"></ColumnDefinition>
         </Grid.ColumnDefinitions>
 
         <tb:TaskbarIcon x:Name="myNotifyIcon" ToolTipText="Great Snooper" IconSource="Resources/icon.ico" DoubleClickCommand="{x:Static loc:MainWindow.DoubleClickCommand}">
@@ -340,9 +340,9 @@
 
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
-                <RowDefinition Height="2*"></RowDefinition>
+                <RowDefinition Height="40*" MinHeight="50" Name="GameListGridRow"></RowDefinition>
                 <RowDefinition Height="Auto"></RowDefinition>
-                <RowDefinition Height="5*"></RowDefinition>
+                <RowDefinition Height="100*" MinHeight="50" Name="ChannelsGridRow"></RowDefinition>
             </Grid.RowDefinitions>
 
             <!-- Game list -->
@@ -370,9 +370,87 @@
                         </Setter>
                     </Style>
                 </TabControl.Style>
+                <TabControl.Resources>
+                    <Style x:Key="ListBoxItemStyle"
+           TargetType="{x:Type ListBoxItem}">
+                        <Setter Property="Foreground"
+                Value="{DynamicResource BlackBrush}" />
+                        <Setter Property="HorizontalContentAlignment"
+                Value="Stretch" />
+                        <Setter Property="VerticalContentAlignment"
+                Value="Center" />
+                        <Setter Property="MinHeight"
+                Value="0" />
+                        <Setter Property="Margin"
+                Value="0" />
+                        <Setter Property="Height" Value="20" />
+                        <Setter Property="SnapsToDevicePixels"
+                Value="True" />
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="{x:Type ListBoxItem}">
+                                    <Border x:Name="Border"
+                            Background="{TemplateBinding Background}"
+                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                        <ContentPresenter Margin="5, 0, 0, 0"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}" />
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsSelected"
+                                 Value="True">
+                                            <Setter TargetName="Border"
+                                    Property="Background"
+                                    Value="{DynamicResource AccentColorBrush2}" />
+                                            <Setter Property="Foreground"
+                                    Value="{DynamicResource AccentSelectedColorBrush}" />
+                                        </Trigger>
+                                        <Trigger Property="IsMouseOver"
+                                 Value="True">
+                                            <Setter TargetName="Border"
+                                    Property="Background"
+                                    Value="{DynamicResource AccentColorBrush3}" />
+                                        </Trigger>
+                                        <Trigger Property="IsEnabled"
+                                 Value="False">
+                                            <Setter Property="Foreground"
+                                    Value="{DynamicResource GrayBrush7}" />
+                                        </Trigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsEnabled"
+                                           Value="False" />
+                                                <Condition Property="IsSelected"
+                                           Value="True" />
+                                            </MultiTrigger.Conditions>
+                                            <Setter TargetName="Border"
+                                    Property="Background"
+                                    Value="{DynamicResource GrayBrush7}" />
+                                            <Setter Property="Foreground"
+                                    Value="{DynamicResource AccentSelectedColorBrush}" />
+                                        </MultiTrigger>
+                                        <MultiTrigger>
+                                            <MultiTrigger.Conditions>
+                                                <Condition Property="IsSelected"
+                                           Value="True" />
+                                                <Condition Property="Selector.IsSelectionActive"
+                                           Value="True" />
+                                            </MultiTrigger.Conditions>
+                                            <Setter TargetName="Border"
+                                    Property="Background"
+                                    Value="{DynamicResource AccentColorBrush2}" />
+                                        </MultiTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+                </TabControl.Resources>
             </TabControl>
 
-            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" ResizeBehavior="PreviousAndNext" Height="3" Background="Black"/>
+            
+            <GridSplitter Grid.Row="1" HorizontalAlignment="Stretch" Focusable="False" ResizeBehavior="PreviousAndNext" Height="3" Background="Black" DragCompleted="LayoutChanged" />
 
 
             <!-- The tabcontrol to list channels and messages -->
@@ -465,7 +543,7 @@
             </TabControl>
         </Grid>
 
-        <GridSplitter Grid.Column="1" Background="Black" Width="4" ResizeBehavior="PreviousAndNext"></GridSplitter>
+        <GridSplitter Grid.Column="1" Background="Black" Width="4" Focusable="False" ResizeBehavior="PreviousAndNext" DragCompleted="LayoutChanged2"></GridSplitter>
 
         <!-- User list, filter, news -->
         <Grid Grid.Column="2">
@@ -503,8 +581,10 @@
                 <TabControl.Resources>
                     <Style x:Key="DataGridRowStyle" TargetType="DataGridRow">
                         <Setter Property="Foreground" Value="{DynamicResource BlackBrush}" />
-                        <Setter Property="Margin" Value="0,0,0,0" />
+                        <Setter Property="Margin" Value="0" />
                         <Setter Property="Background" Value="Transparent" />
+                        <Setter Property="BorderThickness" Value="0" />
+                        <Setter Property="Padding" Value="0" />
                         <Style.Triggers>
                             <DataTrigger Binding="{Binding Path=IsBuddy, Mode=OneWay}" Value="True">
                                 <Setter Property="Background">
@@ -524,13 +604,6 @@
                                 <Setter Property="Background" Value="{DynamicResource AccentColorBrush2}" />
                                 <Setter Property="Foreground" Value="{DynamicResource AccentSelectedColorBrush}" />
                             </Trigger>
-                            <MultiTrigger>
-                                <MultiTrigger.Conditions>
-                                    <Condition Property="IsSelected" Value="True" />
-                                    <Condition Property="Selector.IsSelectionActive" Value="True" />
-                                </MultiTrigger.Conditions>
-                                <Setter Property="Background" Value="{DynamicResource AccentColorBrush2}" />
-                            </MultiTrigger>
                             <MultiDataTrigger>
                                 <MultiDataTrigger.Conditions>
                                     <Condition Binding="{Binding Path=IsMouseOver, RelativeSource={RelativeSource Self}}" Value="True" />
@@ -538,6 +611,13 @@
                                 </MultiDataTrigger.Conditions>
                                 <Setter Property="Background" Value="{DynamicResource AccentColorBrush3}" />
                             </MultiDataTrigger>
+                            <MultiTrigger>
+                                <MultiTrigger.Conditions>
+                                    <Condition Property="IsSelected" Value="True" />
+                                    <Condition Property="Selector.IsSelectionActive" Value="True" />
+                                </MultiTrigger.Conditions>
+                                <Setter Property="Background" Value="{DynamicResource AccentColorBrush2}" />
+                            </MultiTrigger>
                         </Style.Triggers>
                     </Style>
 

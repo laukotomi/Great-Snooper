@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace MySnooper
 {
@@ -23,6 +25,12 @@ namespace MySnooper
                 sb.Append(',');
             }
             return sb.ToString();
+        }
+
+        public static void AddValueChanged(this DependencyProperty property, object sourceObject, EventHandler handler)
+        {
+            DependencyPropertyDescriptor dpd = DependencyPropertyDescriptor.FromProperty(property, property.OwnerType);
+            dpd.AddValueChanged(sourceObject, handler);
         }
     }
 }

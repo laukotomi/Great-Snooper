@@ -1,6 +1,8 @@
 ﻿using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Text;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -97,7 +99,7 @@ namespace MySnooper
         public DataGrid MakeUserListTemplate()
         {
             DataGrid dg = (DataGrid)XamlReader.Parse(
-                " <DataGrid CanUserResizeRows=\"False\" Margin=\"0\" Padding=\"0\" CanUserAddRows=\"False\" EnableColumnVirtualization=\"True\" EnableRowVirtualization=\"True\" CanUserDeleteRows=\"False\" Background=\"Transparent\" AutoGenerateColumns=\"False\" SelectionMode=\"Single\">" +
+                " <DataGrid CanUserResizeRows=\"False\" CanUserReorderColumns=\"False\" Margin=\"0\" Padding=\"0\" CanUserAddRows=\"False\" EnableColumnVirtualization=\"True\" EnableRowVirtualization=\"True\" CanUserDeleteRows=\"False\" Background=\"Transparent\" AutoGenerateColumns=\"False\" SelectionMode=\"Single\">" +
                 "     <DataGrid.ContextMenu>" +
                 "         <ContextMenu>" +
                 "             <MenuItem Name=\"Chat\" Header=\"Chat with this user\"></MenuItem>" +
@@ -119,7 +121,7 @@ namespace MySnooper
                 "         <DataGridTemplateColumn Header=\"Rank\" IsReadOnly=\"True\" SortMemberPath=\"Rank\" Width=\"58\">" +
                 "             <DataGridTemplateColumn.CellTemplate>" +
                 "                 <DataTemplate>" +
-                "                     <Image HorizontalAlignment=\"Left\" VerticalAlignment=\"Center\" ToolTip=\"{Binding Path=Rank.Name, Mode=OneWay}\" Source=\"{Binding Path=Rank.Picture, Mode=OneWay}\" Width=\"48\" Height=\"17\"></Image>" +
+                "                     <Image HorizontalAlignment=\"Left\" VerticalAlignment=\"Center\" ToolTip=\"{Binding Path=Rank.Name, Mode=OneWay}\" Margin=\"0\" Source=\"{Binding Path=Rank.Picture, Mode=OneWay}\" Width=\"48\" Height=\"17\"></Image>" +
                 "                 </DataTemplate>" +
                 "             </DataGridTemplateColumn.CellTemplate>" +
                 "         </DataGridTemplateColumn>" +
@@ -143,7 +145,14 @@ namespace MySnooper
                 "         <DataGridTemplateColumn Header=\"Clan\" IsReadOnly=\"True\" SortMemberPath=\"Clan\" Width=\"2*\">" +
                 "             <DataGridTemplateColumn.CellTemplate>" +
                 "                 <DataTemplate>" +
-                "                     <Label HorizontalAlignment=\"Left\" Foreground=\"AliceBlue\" VerticalAlignment=\"Center\" FontSize=\"11\" Content=\"{Binding Path=Clan, Mode=OneWay}\"></Label>" +
+                "                     <TextBlock HorizontalAlignment=\"Left\" Foreground=\"AliceBlue\" VerticalAlignment=\"Center\" FontSize=\"12\" Text=\"{Binding Path=Clan, Mode=OneWay}\"></TextBlock>" +
+                "                 </DataTemplate>" +
+                "             </DataGridTemplateColumn.CellTemplate>" +
+                "         </DataGridTemplateColumn>" +
+                "         <DataGridTemplateColumn Header=\"Info\" IsReadOnly=\"True\" SortMemberPath=\"ClientApp\" Width=\"3*\">" +
+                "             <DataGridTemplateColumn.CellTemplate>" +
+                "                 <DataTemplate>" +
+                "                     <TextBlock HorizontalAlignment=\"Left\" Foreground=\"AliceBlue\" VerticalAlignment=\"Center\" FontSize=\"12\" Text=\"{Binding Path=ClientApp, Mode=OneWay}\"></TextBlock>" +
                 "                 </DataTemplate>" +
                 "             </DataGridTemplateColumn.CellTemplate>" +
                 "         </DataGridTemplateColumn>" +
@@ -151,6 +160,8 @@ namespace MySnooper
                 " </DataGrid>"
             , GlobalManager.XamlContext);
 
+            dg.MinRowHeight = 0;
+            dg.RowHeight = 18;
             dg.RowStyle = (Style)UserList.FindResource("DataGridRowStyle");
             dg.ColumnHeaderStyle = (Style)UserList.FindResource("DataGridColumnHeaderStyle");
             dg.LostFocus += ClientList_LostFocus;
@@ -163,9 +174,74 @@ namespace MySnooper
             ((MenuItem)dg.ContextMenu.Items[3]).Click += AddOrRemoveBan;
             ((MenuItem)dg.ContextMenu.Items[4]).Click += WiewTusProfile;
             dg.ContextMenuOpening += ContextMenuBuilding;
+            dg.PreviewMouseUp += dg_MouseUp;
+
+            if (!Properties.Settings.Default.ShowInfoColumn)
+                dg.Columns[4].Visibility = System.Windows.Visibility.Collapsed;
+
+            SetClientListDGColumns(dg);
+            
+            foreach (var column in dg.Columns)
+            {
+                DataGridColumn.ActualWidthProperty.AddValueChanged(column, delegate
+                {
+                    if (changing || Mouse.LeftButton == MouseButtonState.Released)
+                        return;
+
+                    changing = true;
+                });
+            }
 
             return dg;
         }
+
+        void dg_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            if (changing)
+            {
+                changing = false;
+
+                // Save column widths
+                var dg = (DataGrid)sender;
+                var sb = new StringBuilder();
+                int i = 0;
+                List<int> help = new List<int>() { 2, 3, 4 };
+                double sum = 0;
+                foreach (var idx in help)
+                {
+                    if (dg.Columns[idx].Visibility == System.Windows.Visibility.Visible)
+                        sum += dg.Columns[idx].ActualWidth;
+                }
+
+                foreach (var column in dg.Columns)
+                {
+                    if (column.Visibility == System.Windows.Visibility.Visible)
+                    {
+                        if (i < 2)
+                        {
+                            sb.Append(Convert.ToInt32(column.ActualWidth));
+                            sb.Append('|');
+                        }
+                        else
+                        {
+                            sb.Append(Convert.ToInt32((column.ActualWidth / sum) * 100));
+                            sb.Append('|');
+                        }
+                    }
+                    else
+                        sb.Append("0|");
+
+                    i++;
+                }
+
+                Properties.Settings.Default.ClientListDGColumns = sb.ToString();
+                Properties.Settings.Default.Save();
+
+                SetClientListDGColumns();
+            }
+        }
+
+        bool changing = false;
 
         void dg_Sorting(object sender, DataGridSortingEventArgs e)
         {
@@ -203,6 +279,10 @@ namespace MySnooper
                 if (view != null)
                 {
                     view.SortDescriptions.Clear();
+                    
+                    view.SortDescriptions.Add(new System.ComponentModel.SortDescription("IsBanned", System.ComponentModel.ListSortDirection.Ascending));
+                    view.SortDescriptions.Add(new System.ComponentModel.SortDescription("IsBuddy", System.ComponentModel.ListSortDirection.Descending));
+
                     if (columnName != "Nick")
                     {
                         switch (columnName)
@@ -316,6 +396,11 @@ namespace MySnooper
                 "  </Border>" +
                 "  <Border Grid.Row=\"2\">" +
                 "   <ListBox HorizontalContentAlignment=\"Stretch\" Background=\"Transparent\">" +
+                "    <ListBox.ItemContainerStyle>" +
+                "     <Style TargetType=\"ListBoxItem\">" +
+                "      <Setter Property=\"Height\" Value=\"20\" />" +
+                "     </Style>" +
+                "    </ListBox.ItemContainerStyle>" +
                 "    <ListBox.ItemTemplate>" +
                 "     <DataTemplate>" +
                 "      <Grid Background=\"Transparent\">" +
@@ -325,10 +410,10 @@ namespace MySnooper
                 "        <ColumnDefinition Width=\"240\" />" +
                 "        <ColumnDefinition Width=\"150\" />" +
                 "       </Grid.ColumnDefinitions>" +
-                "       <Image Grid.Column=\"0\" Source=\"{Binding Path=Locked, Mode=OneWay}\" Width=\"16\" Height=\"16\" Margin=\"0,0,6,0\"></Image>" +
-                "       <Image Grid.Column=\"1\" Source=\"{Binding Path=Country.Flag, Mode=OneWay}\" ToolTip=\"{Binding Path=Country.Name, Mode=OneWay}\" Width=\"22\" Height=\"18\"></Image>" +
-                "       <Label Grid.Column=\"2\" FontSize=\"13\" HorizontalAlignment=\"Left\" Foreground=\"White\" Content=\"{Binding Path=Name, Mode=OneWay}\"></Label>" +
-                "       <Label Grid.Column=\"3\" FontSize=\"13\" HorizontalAlignment=\"Left\" Foreground=\"White\" Content=\"{Binding Path=Hoster, Mode=OneWay}\"></Label>" +
+                "       <Image Grid.Column=\"0\" VerticalAlignment=\"Center\" Source=\"{Binding Path=Locked, Mode=OneWay}\" Width=\"16\" Height=\"16\" Margin=\"0,0,6,0\"></Image>" +
+                "       <Image Grid.Column=\"1\" Source=\"{Binding Path=Country.Flag, Mode=OneWay}\" ToolTip=\"{Binding Path=Country.Name, Mode=OneWay}\" Width=\"22\" Height=\"18\" Margin=\"0,0,6,0\"></Image>" +
+                "       <TextBlock Grid.Column=\"2\" FontSize=\"13\" HorizontalAlignment=\"Left\" VerticalAlignment=\"Center\" Foreground=\"White\" Text=\"{Binding Path=Name, Mode=OneWay}\" />" +
+                "       <TextBlock Grid.Column=\"3\" FontSize=\"13\" HorizontalAlignment=\"Left\" VerticalAlignment=\"Center\" Foreground=\"White\" Text=\"{Binding Path=Hoster, Mode=OneWay}\" />" +
                 "      </Grid>" +
                 "     </DataTemplate>" +
                 "    </ListBox.ItemTemplate>" +
@@ -377,6 +462,7 @@ namespace MySnooper
             gameListTB.SetBinding(TextBlock.TextProperty, b2);
 
             ListBox lb = (ListBox)((Border)grid.Children[1]).Child;
+            lb.ItemContainerStyle = (Style)GameList.FindResource("ListBoxItemStyle");
             lb.MouseDoubleClick += GameDoubleClick;
             lb.SelectionChanged += NoSelectionChange;
             lb.LostFocus += GameList_LostFocus;

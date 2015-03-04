@@ -88,11 +88,11 @@ namespace MySnooper
                 if (gameProcess.Start())
                 {
                     if (Properties.Settings.Default.MessageJoinedGame && !SilentJoined)
-                    {
                         SendMessageToChannel(">is joining a game: " + game.Name, gameListChannel);
-                    }
                     if (Properties.Settings.Default.MarkAway)
                         SendMessageToChannel("/away", null);
+                    if (Properties.Settings.Default.HideSnooper)
+                        this.Hide();
                 }
                 else
                 {
@@ -104,20 +104,46 @@ namespace MySnooper
 
         private void GameProcess()
         {
-            if (gameProcess.HasExited)
+            if (startedGameType == StartedGameTypes.Host)
             {
-                SendMessageToChannel("/back", null);
-                gameProcess.Dispose();
-                gameProcess = null;
+                // gameProcess = hoster.exe
+                if (gameProcess.HasExited)
+                {
+                    SendMessageToChannel("/back", null);
+                    gameProcess.Dispose();
+                    gameProcess = null;
+
+                    if (Properties.Settings.Default.HideSnooper)
+                    {
+                        this.Show();
+                        this.Activate();
+                    }
+                }
             }
-            else if (startedGameType == StartedGameTypes.Join && ExitSnooper)
+            else
             {
                 IntPtr hwnd = FindWindow("Worms2D", null);
                 if (hwnd != IntPtr.Zero)
                 {
-                    snooperClosing = true;
-                    this.Close();
-                    return;
+                    if (ExitSnooper)
+                    {
+                        snooperClosing = true;
+                        this.Close();
+                        return;
+                    }
+                }
+                // gameProcess = wa.exe
+                else if (gameProcess.HasExited)
+                {
+                    SendMessageToChannel("/back", null);
+                    gameProcess.Dispose();
+                    gameProcess = null;
+
+                    if (Properties.Settings.Default.HideSnooper)
+                    {
+                        this.Show();
+                        this.Activate();
+                    }
                 }
             }
         }
@@ -191,9 +217,10 @@ namespace MySnooper
 
         public void NotificatorFound(string str, Channel ch)
         {
-            if (!isWindowFocused)
+            if (Properties.Settings.Default.TrayFlashing && !isWindowFocused)
                 this.FlashWindow();
-            myNotifyIcon.ShowBalloonTip(null, str, Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
+            if (Properties.Settings.Default.TrayNotifications)
+                myNotifyIcon.ShowBalloonTip(null, str, Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
 
             SoundPlayer sp;
             if (Properties.Settings.Default.NotificatorSoundEnabled && SoundEnabled && soundPlayers.TryGetValue("NotificatorSound", out sp))

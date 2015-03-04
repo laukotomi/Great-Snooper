@@ -13,7 +13,7 @@
         </Style>
     </controls:MetroWindow.Resources>
     <TabControl Grid.Row="1" Background="Transparent">
-        <TabItem Header="General settings">
+        <TabItem Header="General">
             <ScrollViewer>
                 <StackPanel Orientation="Vertical" Margin="0,20">
                     <Grid Name="GeneralSettingsGrid" HorizontalAlignment="Center">
@@ -36,15 +36,68 @@
                 </StackPanel>
             </ScrollViewer>
         </TabItem>
-        <TabItem Header="Message styles">
+
+        <TabItem Header="Appearance">
             <ScrollViewer>
-                <Grid HorizontalAlignment="Center" Name="MessageStylesGrid" Margin="0,20">
+                <Grid Name="AppearanceGrid" HorizontalAlignment="Center" Margin="0,20">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="300"></ColumnDefinition>
-                        <ColumnDefinition Width="80"></ColumnDefinition>
-                        <ColumnDefinition Width="80"></ColumnDefinition>
+                        <ColumnDefinition Width="500"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                 </Grid>
+            </ScrollViewer>
+        </TabItem>
+
+        <TabItem Header="Window">
+            <ScrollViewer>
+                <Grid Name="WindowGrid" HorizontalAlignment="Center" Margin="0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="500"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </ScrollViewer>
+        </TabItem>
+        
+        <TabItem Header="Notifications">
+            <ScrollViewer>
+                <Grid Name="NotificationsGrid" HorizontalAlignment="Center" Margin="0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="500"></ColumnDefinition>
+                        <ColumnDefinition Width="50"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </ScrollViewer>
+        </TabItem>
+
+        <TabItem Header="#worms">
+            <ScrollViewer>
+                <Grid Name="WormsGrid" HorizontalAlignment="Center" Margin="0,20">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="350"></ColumnDefinition>
+                        <ColumnDefinition Width="200"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </ScrollViewer>
+        </TabItem>
+        
+        <TabItem Header="Messages">
+            <ScrollViewer>
+                <StackPanel Orientation="Vertical" Margin="0,20">
+                    <Grid Name="MessagesGrid" HorizontalAlignment="Center">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="410"></ColumnDefinition>
+                            <ColumnDefinition Width="50"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    <Grid HorizontalAlignment="Center" Name="MessageStylesGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="300"></ColumnDefinition>
+                            <ColumnDefinition Width="80"></ColumnDefinition>
+                            <ColumnDefinition Width="80"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </StackPanel>
             </ScrollViewer>
         </TabItem>
 

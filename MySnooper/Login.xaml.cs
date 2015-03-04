@@ -47,7 +47,7 @@ namespace MySnooper
         private string tusNickStr;
 
         public static RoutedCommand DoubleClickCommand = new RoutedCommand();
-        private bool closing = false;
+        private bool cancelled = false;
 
         public Login()
         {
@@ -61,8 +61,11 @@ namespace MySnooper
                     }
                     catch (Exception) { }
 
-                    Properties.Settings.Default.QuitMessagee = "Great Snooper v" + App.GetVersion();
-                    Properties.Settings.Default.InfoMessage = "Great Snooper v" + App.GetVersion();
+                    var validator = new GSVersionValidator();
+                    if (validator.Validate(Properties.Settings.Default.QuitMessagee) != string.Empty)
+                        Properties.Settings.Default.QuitMessagee = "Great Snooper v" + App.GetVersion();
+                    if (validator.Validate(Properties.Settings.Default.InfoMessage) != string.Empty)
+                        Properties.Settings.Default.InfoMessage = "Great Snooper v" + App.GetVersion();
                     Properties.Settings.Default.SettingsUpgraded = true;
                     Properties.Settings.Default.Save();
                 }
@@ -175,7 +178,8 @@ namespace MySnooper
                 }
             }
 
-            myNotifyIcon.ShowBalloonTip(null, "Welcome to Great Snooper!", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
+            if (Properties.Settings.Default.TrayNotifications)
+                myNotifyIcon.ShowBalloonTip(null, "Welcome to Great Snooper!", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
 
             // Delete old logs
             string logsDirectory = GlobalManager.SettingsPath + @"\Logs";
@@ -494,7 +498,7 @@ namespace MySnooper
                 switch (state)
                 {
                     case IRCCommunicator.ConnectionStates.Connected:
-                        if (!closing)
+                        if (!cancelled)
                         {
                             new MainWindow(wormNetC, serverAddress).Show();
                             loggedIn = true;
@@ -504,7 +508,7 @@ namespace MySnooper
                         break;
 
                     case IRCCommunicator.ConnectionStates.UsernameInUse:
-                        if (!closing)
+                        if (!cancelled)
                         {
                             MessageBox.Show(this,
                                 "This nickname is already in use! Please choose an other one!" + Environment.NewLine + Environment.NewLine +
@@ -512,33 +516,15 @@ namespace MySnooper
                                 , "Nickname is alredy in use", MessageBoxButton.OK, MessageBoxImage.Information
                             );
                         }
-                        else
-                        {
-                            this.Close();
-                            return;
-                        }
                         break;
 
                     case IRCCommunicator.ConnectionStates.Error:
-                        if (!closing)
+                        if (!cancelled)
                         {
                             MessageBox.Show(this,
                                 "Could not connect to the server! Check if the server address is ok or try again later (probably maintenance time)!"
                                 , "Connection error", MessageBoxButton.OK, MessageBoxImage.Error
                             );
-                        }
-                        else
-                        {
-                            this.Close();
-                            return;
-                        }
-                        break;
-
-                    case IRCCommunicator.ConnectionStates.Disconnected:
-                        if (closing)
-                        {
-                            this.Close();
-                            return;
                         }
                         break;
                 }
@@ -615,7 +601,7 @@ namespace MySnooper
 
         private void WindowClosing(object sender, CancelEventArgs e)
         {
-            closing = true;
+            cancelled = true;
             
             if (tusLoginWorker != null && tusLoginWorker.IsBusy)
             {

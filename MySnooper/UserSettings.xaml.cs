@@ -26,26 +26,40 @@ namespace MySnooper
             // General settings
             AddBoolSetting(GeneralSettingsGrid, "AutoLogIn", "Auto login at startup:");
             AddTextListSetting(GeneralSettingsGrid, "AutoJoinChannels", "Join these channels on startup:", "Channel list");
-            AddBoolSetting(GeneralSettingsGrid, "ShowWormsChannel", "Show #worms channel:");
-            AddTextSetting(GeneralSettingsGrid, "WormsNick", "#worms channel nickname:", new NickNameValidator());
-            AddBoolSetting(GeneralSettingsGrid, "ChangeWormsNick", "Update #worms nick to WormNet nick at startup:");
-            AddBoolSetting(GeneralSettingsGrid, "MessageJoinedGame", "Send message to the channel if I join a game:");
+            AddBoolSetting(GeneralSettingsGrid, "MessageJoinedGame", "Send a message to the channel if I join a game:");
             AddBoolSetting(GeneralSettingsGrid, "MarkAway", "Mark me away when I host or join a game:");
             AddTextSetting(GeneralSettingsGrid, "AwayText", "Away message:");
             AddBoolSetting(GeneralSettingsGrid, "SendBack", "Send back message in private chats if I am back:");
             AddTextSetting(GeneralSettingsGrid, "BackText", "Back message:");
-            AddBoolSetting(GeneralSettingsGrid, "MessageTime", "Show the time when the message arrived:");
             AddBoolSetting(GeneralSettingsGrid, "DeleteLogs", "Delete channel logs older than 30 days at startup:");
-            AddBoolSetting(GeneralSettingsGrid, "CloseToTray", "Exit button minimizes the snooper to tray:");
             AddBoolSetting(GeneralSettingsGrid, "SaveInstantColors", "Save instant colors for users:");
-            AddBoolSetting(GeneralSettingsGrid, "ShowBannedUsers", "Show banned users in user list:");
             AddTextSetting(GeneralSettingsGrid, "QuitMessagee", "Quit message:", new GSVersionValidator());
             AddTextSetting(GeneralSettingsGrid, "InfoMessage", "Information message (real name irc field):", new GSVersionValidator());
-            AddBoolSetting(GeneralSettingsGrid, "AskNotificatorOff", "Ask if I would like to turn off notificator:");
-            AddBoolSetting(GeneralSettingsGrid, "AskLeagueSearcherOff", "Ask if I would like to turn off league searcher:");
             WAExeText.Text = Properties.Settings.Default.WaExe;
 
+            // Appearance
+            AddBoolSetting(AppearanceGrid, "ShowBannedUsers", "Show banned users in user list:");
+            AddBoolSetting(AppearanceGrid, "ShowBannedMessages", "Show messages of banned users in the channels:");
+            AddBoolSetting(AppearanceGrid, "ShowInfoColumn", "Show information column in user list:");
+
+            // Window
+            AddBoolSetting(WindowGrid, "CloseToTray", "Exit button minimizes the snooper to tray:");
+            AddBoolSetting(WindowGrid, "HideSnooper", "Hide snooper to tray when I host or join a game:");
+
+            // Notifications
+            AddBoolSetting(NotificationsGrid, "AskNotificatorOff", "Ask if I would like to turn off notificator when I host or join a game:");
+            AddBoolSetting(NotificationsGrid, "AskLeagueSearcherOff", "Ask if I would like to turn off league searcher when I host or join a game:");
+            AddBoolSetting(NotificationsGrid, "TrayNotifications", "Enable tray balloon messages:");
+            AddBoolSetting(NotificationsGrid, "TrayFlashing", "Enable tray flashing:");
+
+            // #worms
+            AddBoolSetting(WormsGrid, "ShowWormsChannel", "Show #worms channel:");
+            AddTextSetting(WormsGrid, "WormsNick", "#worms channel nickname:", new NickNameValidator());
+            //AddTextSetting(GeneralSettingsGrid, "WormsPassword", "#worms channel password:");
+            AddBoolSetting(WormsGrid, "ChangeWormsNick", "Update #worms nick to WormNet nick at startup:");
+
             // Message styles
+            AddBoolSetting(MessagesGrid, "MessageTime", "Show the time when the message arrived:");
             AddStyleSetting(MessageStylesGrid, "UserMessageStyle", "Style of your message:", MessageSettings.UserMessage);
             AddStyleSetting(MessageStylesGrid, "ChannelMessageStyle", "Style of other users' message:", MessageSettings.ChannelMessage);
             AddStyleSetting(MessageStylesGrid, "JoinMessageStyle", "Join message style:", MessageSettings.JoinMessage);
@@ -88,6 +102,7 @@ namespace MySnooper
 
             // <CheckBox Name="AutoLogin" Grid.Column="1" Grid.Row="1" HorizontalAlignment="Left" IsEnabled="False" Click="ShowLoginScreenChanged"></CheckBox>
             CheckBox cb = new CheckBox();
+            cb.Focusable = false;
             cb.Tag = name;
             cb.IsChecked = value;
             cb.Click += BoolHandler;
@@ -184,6 +199,7 @@ namespace MySnooper
 
             // <Button Grid.Row="1" Grid.Column="1" Content="Change" Click="FontChange" Name="UserMessage"></Button>
             Button b = new Button();
+            b.Focusable = false;
             b.Tag = new object[] { name, text, setting, run };
             b.Content = "Change";
             b.Click += StyleHandler;
@@ -264,6 +280,7 @@ namespace MySnooper
             sp.Children.Add(tb2);
 
             Button b = new Button();
+            b.Focusable = false;
             b.Content = "Browse";
             b.Width = 75;
             b.Click += SoundChange;
@@ -273,6 +290,7 @@ namespace MySnooper
             grid.Children.Add(sp);
 
             CheckBox cb = new CheckBox();
+            cb.Focusable = false;
             cb.Content = "Enabled";
             cb.IsChecked = value2;
             cb.Click += BoolHandler;
@@ -326,6 +344,7 @@ namespace MySnooper
 
             // <TextBox Name="BackText" Grid.Column="1" Grid.Row="6" LostKeyboardFocus="BackTextChanged"></TextBox>
             Button bt = new Button();
+            bt.Focusable = false;
             bt.Content = "Edit";
             bt.Tag = new string[] { name, editortext };
             bt.Click += TextListHandler;

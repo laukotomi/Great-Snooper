@@ -171,6 +171,8 @@ namespace MySnooper
         public MainWindow(IRCCommunicator WormNetC, string serverAddress)
         {
             InitializeComponent();
+            GameListGridRow.Height = new GridLength(Properties.Settings.Default.GameListGridRowStarts, GridUnitType.Star);
+            RightColumn.Width = new GridLength(Properties.Settings.Default.RightColumnStars, GridUnitType.Star);
             System.Diagnostics.Process.GetCurrentProcess().PriorityClass = System.Diagnostics.ProcessPriorityClass.BelowNormal;
             this.DataContext = this;
             this.ServerAddress = serverAddress;
@@ -529,7 +531,7 @@ namespace MySnooper
                 else
                 {
                     SearchCounter++;
-                    if (SearchCounter >= 60)
+                    if (SearchCounter >= 90)
                     {
                         SendMessageToChannel(spamText, searchHere);
                         SearchCounter = 0;
@@ -537,9 +539,10 @@ namespace MySnooper
                         spamCounter++;
                         if (spamCounter >= 10)
                         {
-                            ClearSpamming();
                             searchHere.AddMessage(GlobalManager.SystemClient, "Great snooper stopped spamming and searching for league game(s)!", MessageSettings.OfflineMessage);
-                            myNotifyIcon.ShowBalloonTip(null, "Great snooper stopped spamming and searching for league game(s)!", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
+                            if (Properties.Settings.Default.TrayNotifications)
+                                myNotifyIcon.ShowBalloonTip(null, "Great snooper stopped spamming and searching for league game(s)!", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
+                            ClearSpamming();
 
                             SoundPlayer sp;
                             if (Properties.Settings.Default.LeagueFailBeepEnabled && SoundEnabled && soundPlayers.TryGetValue("LeagueFailBeep", out sp))
@@ -830,9 +833,10 @@ namespace MySnooper
                                 {
                                     foundUsers[item.Key].Add(c.LowerName);
                                     highlightWord = words[i];
-                                    if (!isWindowFocused)
+                                    if (Properties.Settings.Default.TrayFlashing && !isWindowFocused)
                                         this.FlashWindow();
-                                    myNotifyIcon.ShowBalloonTip(null, c.Name + ": " + task.Message, Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
+                                    if (Properties.Settings.Default.TrayNotifications)
+                                        myNotifyIcon.ShowBalloonTip(null, c.Name + ": " + task.Message, Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
 
                                     SoundPlayer sp;
                                     if (Properties.Settings.Default.LeagueFoundBeepEnabled && SoundEnabled && soundPlayers.TryGetValue("LeagueFoundBeep", out sp))
@@ -884,9 +888,10 @@ namespace MySnooper
                     {
                         ch.NewMessages = true;
                         ch.BeepSoundPlay = false;
-                        if (!isWindowFocused)
+                        if (Properties.Settings.Default.TrayFlashing && !isWindowFocused)
                             this.FlashWindow();
-                        myNotifyIcon.ShowBalloonTip(null, c.Name + ": " + task.Message, Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
+                        if (Properties.Settings.Default.TrayNotifications)
+                            myNotifyIcon.ShowBalloonTip(null, c.Name + ": " + task.Message, Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
 
                         SoundPlayer pmbeep;
                         if (Properties.Settings.Default.PMBeepEnabled && SoundEnabled && soundPlayers.TryGetValue("PMBeep", out pmbeep))
@@ -955,7 +960,8 @@ namespace MySnooper
                     {
                         buddyJoined = true;
                         ch.AddMessage(c, "joined the channel.", MessageSettings.BuddyJoinedMessage);
-                        myNotifyIcon.ShowBalloonTip(null, c.Name + " is online.", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
+                        if (Properties.Settings.Default.TrayNotifications)
+                            myNotifyIcon.ShowBalloonTip(null, c.Name + " is online.", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
                     }
                     else
                         ch.AddMessage(c, "joined the channel.", MessageSettings.JoinMessage);
@@ -1256,14 +1262,17 @@ namespace MySnooper
                     AddBan(client.Name);
 
                 // Reload channel messages
-                for (int i = 0; i < servers.Count; i++)
+                if (!Properties.Settings.Default.ShowBannedMessages)
                 {
-                    if (servers[i].IsRunning && servers[i].Clients.ContainsKey(client.LowerName))
+                    for (int i = 0; i < servers.Count; i++)
                     {
-                        foreach (var item in servers[i].ChannelList)
+                        if (servers[i].IsRunning && servers[i].Clients.ContainsKey(client.LowerName))
                         {
-                            if (!item.Value.IsPrivMsgChannel && item.Value.Joined && item.Value.Clients.Contains(client))
-                                LoadMessages(item.Value, GlobalManager.MaxMessagesDisplayed, true);
+                            foreach (var item in servers[i].ChannelList)
+                            {
+                                if (!item.Value.IsPrivMsgChannel && item.Value.Joined && item.Value.Clients.Contains(client))
+                                    LoadMessages(item.Value, GlobalManager.MaxMessagesDisplayed, true);
+                            }
                         }
                     }
                 }
@@ -1538,7 +1547,9 @@ namespace MySnooper
                     ch.TheTextBox.Focus();
                 }
             }
-            this.StopFlashingWindow();
+
+            if (Properties.Settings.Default.TrayFlashing)
+                this.StopFlashingWindow();
         }
 
         // Need to know that if the window is activated to play beep sounds
@@ -1563,7 +1574,8 @@ namespace MySnooper
             if (!snooperClosing && Properties.Settings.Default.CloseToTray)
             {
                 this.Hide();
-                myNotifyIcon.ShowBalloonTip(null, "Great Snooper is still running here.", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
+                if (Properties.Settings.Default.TrayNotifications)
+                    myNotifyIcon.ShowBalloonTip(null, "Great Snooper is still running here.", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
                 e.Cancel = true;
                 return;
             }
@@ -1685,7 +1697,7 @@ namespace MySnooper
                         }
                     }
 
-                    if (reconnecting)
+                    if (reconnecting || sender.IsWormNet)
                     {
                         foreach (var item in sender.ChannelList)
                         {
@@ -1697,9 +1709,23 @@ namespace MySnooper
                             }
                         }
                     }
-                    else if (!sender.IsWormNet && gameSurgeIsConnected)
+                    else if (gameSurgeIsConnected)
+                    {
                         sender.JoinChannel("#worms");
+                    }
                 }
+                /*
+                else if (state == IRCCommunicator.ConnectionStates.AuthOK && gameSurgeIsConnected)
+                {
+                    sender.JoinChannel("#worms");
+                }
+                else if (state == IRCCommunicator.ConnectionStates.AuthBad)
+                {
+                    sender.ChannelList["#worms"].Part();
+                    gameSurgeIsConnected = false;
+                    sender.CancelAsync();
+                }
+                */
                 else
                 {
                     if (!sender.IsWormNet)
@@ -1793,7 +1819,16 @@ namespace MySnooper
                 {
                     Client c;
                     if (servers[i].Clients.TryGetValue(lowerName, out c))
+                    {
                         c.IsBuddy = true;
+
+                        // Refresh sorting
+                        foreach (Channel ch in c.Channels)
+                        {
+                            ch.Clients.Remove(c);
+                            ch.Clients.Add(c);
+                        }
+                    }
                 }
             }
         }
@@ -1809,7 +1844,16 @@ namespace MySnooper
                 {
                     Client c;
                     if (servers[i].Clients.TryGetValue(lowerName, out c))
+                    {
                         c.IsBuddy = false;
+
+                        // Refresh sorting
+                        foreach (Channel ch in c.Channels)
+                        {
+                            ch.Clients.Remove(c);
+                            ch.Clients.Add(c);
+                        }
+                    }
                 }
             }
         }
@@ -1835,7 +1879,16 @@ namespace MySnooper
                 {
                     Client c;
                     if (servers[i].Clients.TryGetValue(lowerName, out c))
+                    {
                         c.IsBanned = true;
+
+                        // Refresh sorting
+                        foreach (Channel ch in c.Channels)
+                        {
+                            ch.Clients.Remove(c);
+                            ch.Clients.Add(c);
+                        }
+                    }
                 }
             }
         }
@@ -1851,7 +1904,16 @@ namespace MySnooper
                 {
                     Client c;
                     if (servers[i].Clients.TryGetValue(lowerName, out c))
+                    {
                         c.IsBanned = false;
+
+                        // Refresh sorting
+                        foreach (Channel ch in c.Channels)
+                        {
+                            ch.Clients.Remove(c);
+                            ch.Clients.Add(c);
+                        }
+                    }
                 }
             }
         }
@@ -1889,6 +1951,60 @@ namespace MySnooper
             this.Show();
             this.Activate();
             e.Handled = true;
+        }
+
+        private void LayoutChanged(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            Properties.Settings.Default.GameListGridRowStarts = Convert.ToInt32((GameListGridRow.ActualHeight / ChannelsGridRow.ActualHeight) * 100);
+            Properties.Settings.Default.Save();
+        }
+
+        private void LayoutChanged2(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
+        {
+            Properties.Settings.Default.RightColumnStars = Convert.ToInt32((RightColumn.ActualWidth / LeftColumn.ActualWidth) * 100);
+            Properties.Settings.Default.Save();
+        }
+
+        private void SetClientListDGColumns(DataGrid dg = null)
+        {
+            string[] settings;
+            settings = Properties.Settings.Default.ClientListDGColumns.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+            if (settings.Length == 0)
+                return;
+
+            if (dg == null)
+            {
+                for (int j = 0; j < servers.Count; j++)
+                {
+                    foreach (var item in servers[j].ChannelList)
+                    {
+                        if (!item.Value.IsPrivMsgChannel && item.Value.TheDataGrid != null)
+                        {
+                            SetClientListDGColumnsForDG(item.Value.TheDataGrid, settings);
+                        }
+                    }
+                }
+            }
+            else
+            {
+                SetClientListDGColumnsForDG(dg, settings);
+            }
+        }
+
+        private void SetClientListDGColumnsForDG(DataGrid dg, string[] settings)
+        {
+            int i = 0;
+            foreach (var column in dg.Columns)
+            {
+                if (i < 2)
+                {
+                    column.Width = new DataGridLength(Convert.ToInt32(settings[i++]), DataGridLengthUnitType.Pixel);
+                }
+                else
+                {
+                    column.Width = new DataGridLength(Convert.ToInt32(settings[i++]), DataGridLengthUnitType.Star);
+                }
+            }
         }
     }
 }

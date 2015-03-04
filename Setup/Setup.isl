@@ -346,7 +346,7 @@
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{8BA3C882-6621-4D9F-A884-27C1BE053678}</td><td>SOUNDS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>MahApps.Metro.dll</td><td>{78690705-48DA-47AA-A487-D77DAEDE7BF1}</td><td>INSTALLDIR</td><td>2</td><td/><td>mahapps.metro.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>System.Windows.Interactivity.dll</td><td>{50FD0FC5-4B78-495D-8479-4596A175777C}</td><td>INSTALLDIR</td><td>2</td><td/><td>system.windows.interactivity</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Updater.exe</td><td>{625F3955-C1D8-4EC8-A96F-BC8795E4B545}</td><td>INSTALLDIR</td><td>2</td><td/><td>updater.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Updater2.exe</td><td>{11F0025A-0F5D-4C0E-BF87-969F598BF2FC}</td><td>INSTALLDIR</td><td>2</td><td/><td>updater2.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Xceed.Wpf.DataGrid.dll</td><td>{F2F5E56D-2632-4E9E-87BA-C373C290123B}</td><td>INSTALLDIR</td><td>2</td><td/><td>xceed.wpf.datagrid.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Xceed.Wpf.Toolkit.dll</td><td>{13753D9B-669B-48DE-93B3-6F2D6D2619AE}</td><td>INSTALLDIR</td><td>2</td><td/><td>xceed.wpf.toolkit.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
@@ -1178,6 +1178,8 @@
 		<row><td>WindowsFolder</td><td>TARGETDIR</td><td>.:Windows</td><td/><td>0</td><td/></row>
 		<row><td>WindowsVolume</td><td>TARGETDIR</td><td>.:WinRoot</td><td/><td>0</td><td/></row>
 		<row><td>greats_1_great_snooper</td><td>toomitoo</td><td>GREATS~1|Great Snooper</td><td/><td>1</td><td/></row>
+		<row><td>greats_1_great_snooper1</td><td>tomi</td><td>GREATS~1|Great Snooper</td><td/><td>1</td><td/></row>
+		<row><td>tomi</td><td>ProgramMenuFolder</td><td>Tomi</td><td/><td>1</td><td/></row>
 		<row><td>toomitoo</td><td>ProgramMenuFolder</td><td>ToOMiToO</td><td/><td>1</td><td/></row>
 	</table>
 
@@ -1877,7 +1879,7 @@
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT1</td></row>
 		<row><td>AlwaysInstall</td><td>MahApps.Metro.dll</td></row>
 		<row><td>AlwaysInstall</td><td>System.Windows.Interactivity.dll</td></row>
-		<row><td>AlwaysInstall</td><td>Updater.exe</td></row>
+		<row><td>AlwaysInstall</td><td>Updater2.exe</td></row>
 		<row><td>AlwaysInstall</td><td>Xceed.Wpf.DataGrid.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Xceed.Wpf.Toolkit.dll</td></row>
 	</table>
@@ -1910,7 +1912,7 @@
 		<row><td>mahapps.metro.xml</td><td>ISX_DEFAULTCOMPONENT</td><td>MAHAPP~1.XML|MahApps.Metro.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\VS\Great-Snooper\MySnooper\bin\Release\MahApps.Metro.xml</td><td>1</td><td/></row>
 		<row><td>pmbeep.wav</td><td>ISX_DEFAULTCOMPONENT1</td><td>pmbeep.wav</td><td>0</td><td/><td/><td/><td>1</td><td>C:\VS\Great-Snooper\MySnooper\bin\Release\Sounds\pmbeep.wav</td><td>1</td><td/></row>
 		<row><td>system.windows.interactivity</td><td>System.Windows.Interactivity.dll</td><td>SYSTEM~1.DLL|System.Windows.Interactivity.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\VS\Great-Snooper\MySnooper\bin\Release\System.Windows.Interactivity.dll</td><td>1</td><td/></row>
-		<row><td>updater.exe</td><td>Updater.exe</td><td>Updater.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\VS\Great-Snooper\MySnooper\bin\Release\Updater.exe</td><td>1</td><td/></row>
+		<row><td>updater2.exe</td><td>Updater2.exe</td><td>Updater2.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\VS\Great-Snooper\MySnooper\bin\Release\Updater2.exe</td><td>1</td><td/></row>
 		<row><td>xceed.wpf.datagrid.dll</td><td>Xceed.Wpf.DataGrid.dll</td><td>XCEEDW~1.DLL|Xceed.Wpf.DataGrid.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\VS\Great-Snooper\MySnooper\bin\Release\Xceed.Wpf.DataGrid.dll</td><td>1</td><td/></row>
 		<row><td>xceed.wpf.toolkit.dll</td><td>Xceed.Wpf.Toolkit.dll</td><td>XCEEDW~1.DLL|Xceed.Wpf.Toolkit.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\VS\Great-Snooper\MySnooper\bin\Release\Xceed.Wpf.Toolkit.dll</td><td>1</td><td/></row>
 	</table>
@@ -2063,7 +2065,7 @@
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_A698FBE8_742E_47CB_B6AE_B6D76E2FA891_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>MahApps.Metro.dll</td><td/><td/><td>_A937843B_90E0_4F3B_9B6A_5D1AD18C95CC_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>System.Windows.Interactivity.dll</td><td/><td/><td>_FB70C40A_D4AE_408C_AA1D_04CD47CFB0D2_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Updater.exe</td><td/><td/><td>_4A0A3AB2_C051_4892_947A_3A11BECE0194_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Updater2.exe</td><td/><td/><td>_77FD63F1_18F4_4B8C_BCC6_0821B17962BF_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Xceed.Wpf.DataGrid.dll</td><td/><td/><td>_728F1838_75D0_4B86_B6FB_B7E50FC7CAC4_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Xceed.Wpf.Toolkit.dll</td><td/><td/><td>_9E0220E3_04DD_4482_9B37_E9F2E75ABF31_FILTER</td><td/><td/><td/><td/></row>
 	</table>
@@ -3497,6 +3499,7 @@
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME1</td><td>1033</td><td>Great Snooper</td><td>0</td><td/><td>-1054659537</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME2</td><td>1033</td><td>LAUNCH~1.EXE|Launch Hoster.exe</td><td>0</td><td/><td>-1054643505</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME3</td><td>1033</td><td>LAUNCH~1.EXE|Launch Updater.exe</td><td>0</td><td/><td>-1054647569</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME4</td><td>1033</td><td>LAUNCH~1.EXE|Launch Updater2.exe</td><td>0</td><td/><td>161699275</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO</td><td>1033</td><td>From the list of servers below, select the database server you would like to target.</td><td>0</td><td/><td>-1054655985</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_DB</td><td>1033</td><td>From the list of catalog names below, select the database catalog you would like to target.</td><td>0</td><td/><td>-1054655985</td></row>
 		<row><td>IDS_SQLBROWSE_INTRO_TEMPLATE</td><td>1033</td><td>[IS_SQLBROWSE_INTRO]</td><td>0</td><td/><td>-1054655985</td></row>
@@ -3901,6 +3904,7 @@
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;VSSolutionFolder&gt;\Images\icon.ico</td><td>0</td></row>
 		<row><td>Great_Snooper.exe1_3DD80C28B56E4567B15AE6ABF5CE98FB.exe</td><td/><td>C:\VS\Great-Snooper\MySnooper\bin\Release\Great Snooper.exe</td><td>0</td></row>
 		<row><td>Great_Snooper.exe_CEF6E5FD20B0486B82D38A3EC27E6F1B.exe</td><td/><td>C:\VS\Great-Snooper\MySnooper\bin\Release\Great Snooper.exe</td><td>0</td></row>
+		<row><td>Updater2.exe_82321F26E0974AF3A34929D425C3DA70.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\GenericExe.ico</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -4411,7 +4415,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{A65AA4F2-6053-4251-8421-DCCD960E307B}</td><td/></row>
 		<row><td>ProductName</td><td>Great Snooper</td><td/></row>
-		<row><td>ProductVersion</td><td>1.04.2000</td><td/></row>
+		<row><td>ProductVersion</td><td>1.04.4000</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4489,7 +4493,10 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="i2">InstallMode</col>
 		<row><td>FileKey1</td><td>Great_Snooper.exe</td><td/><td>toomitoo</td><td>2</td></row>
 		<row><td>FileKey2</td><td>Great_Snooper.exe</td><td/><td>greats_1_great_snooper</td><td>2</td></row>
+		<row><td>FileKey3</td><td>Updater2.exe</td><td/><td>tomi</td><td>2</td></row>
+		<row><td>FileKey4</td><td>Updater2.exe</td><td/><td>greats_1_great_snooper1</td><td>2</td></row>
 		<row><td>Great_Snooper.exe</td><td>Great_Snooper.exe</td><td/><td>greats_1_great_snooper</td><td>2</td></row>
+		<row><td>Updater2.exe</td><td>Updater2.exe</td><td/><td>greats_1_great_snooper1</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4577,6 +4584,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="I4">ISAttributes</col>
 		<row><td>Great_Snooper.exe</td><td>greats_1_great_snooper</td><td>##IDS_SHORTCUT_DISPLAY_NAME1##</td><td>Great_Snooper.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Great_Snooper.exe_CEF6E5FD20B0486B82D38A3EC27E6F1B.exe</td><td>1</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
 		<row><td>Great_Snooper.exe1</td><td>DesktopFolder</td><td>##IDS_SHORTCUT_DISPLAY_NAME1##</td><td>Great_Snooper.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Great_Snooper.exe1_3DD80C28B56E4567B15AE6ABF5CE98FB.exe</td><td>1</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>Updater2.exe</td><td>greats_1_great_snooper1</td><td>##IDS_SHORTCUT_DISPLAY_NAME4##</td><td>Updater2.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Updater2.exe_82321F26E0974AF3A34929D425C3DA70.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">

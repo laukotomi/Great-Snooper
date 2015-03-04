@@ -18,9 +18,10 @@ namespace MySnooper
             {
                 ch.NewMessages = true;
                 ch.BeepSoundPlay = false;
-                if (!isWindowFocused)
+                if (Properties.Settings.Default.TrayFlashing && !isWindowFocused)
                     this.FlashWindow();
-                myNotifyIcon.ShowBalloonTip(null, "You have been highlighted!", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
+                if (Properties.Settings.Default.TrayNotifications)
+                    myNotifyIcon.ShowBalloonTip(null, "You have been highlighted!", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
 
                 SoundPlayer sp;
                 if (Properties.Settings.Default.HBeepEnabled && SoundEnabled && soundPlayers.TryGetValue("HBeep", out sp))

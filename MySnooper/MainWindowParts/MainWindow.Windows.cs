@@ -120,6 +120,9 @@ namespace MySnooper
 
                         if (Properties.Settings.Default.MarkAway)
                             SendMessageToChannel("/away", null);
+
+                        if (Properties.Settings.Default.HideSnooper)
+                            this.Hide();
                     }
                     else
                     {
@@ -229,6 +232,8 @@ namespace MySnooper
                                 break;
 
                             case "MessageTime":
+                            case "ShowBannedMessages":
+                                // Reload messages
                                 for (int i = 0; i < servers.Count; i++)
                                 {
                                     if (servers[i].IsRunning)
@@ -237,6 +242,19 @@ namespace MySnooper
                                         {
                                             if (item.Value.Joined)
                                                 LoadMessages(item.Value, GlobalManager.MaxMessagesDisplayed, true);
+                                        }
+                                    }
+                                }
+                                break;
+
+                            case "ShowInfoColumn":
+                                for (int i = 0; i < servers.Count; i++)
+                                {
+                                    foreach (var item in servers[i].ChannelList)
+                                    {
+                                        if (!item.Value.IsPrivMsgChannel && item.Value.TheDataGrid != null)
+                                        {
+                                            item.Value.TheDataGrid.Columns[4].Visibility = (Properties.Settings.Default.ShowInfoColumn) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
                                         }
                                     }
                                 }

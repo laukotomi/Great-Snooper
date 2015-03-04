@@ -24,7 +24,6 @@ namespace MySnooper
         /*
          * Chat Mode On / Off variables
          */
-        private bool ChatMode = false;
         private Image ChatModeImage;
         private ImageSource ChatModeOffImage;
         private BitmapImage ChatModeOnImage;
@@ -123,6 +122,9 @@ namespace MySnooper
             ChatModeOnImage.EndInit();
             ChatModeOnImage.Freeze();
 
+            if (Properties.Settings.Default.ChatMode)
+                ChatModeImage.Source = ChatModeOnImage;
+
             e.Handled = true;
         }
 
@@ -131,16 +133,17 @@ namespace MySnooper
          */
         private void ChatModeOnOffClick(object sender, RoutedEventArgs e)
         {
-            if (ChatMode)
+            if (Properties.Settings.Default.ChatMode)
             {
-                ChatMode = false;
+                Properties.Settings.Default.ChatMode = false;
                 ChatModeImage.Source = ChatModeOffImage;
             }
             else
             {
-                ChatMode = true;
+                Properties.Settings.Default.ChatMode = true;
                 ChatModeImage.Source = ChatModeOnImage;
             }
+            Properties.Settings.Default.Save();
 
             for (int i = 0; i < servers.Count; i++)
             {
@@ -214,7 +217,16 @@ namespace MySnooper
             e.Handled = true;
         }
 
-        private bool SliderThumb = false; 
+        private bool SliderThumb = false;
+        private bool CanChangeVolume = false;
+
+        private void VolumeSliderLoaded(object sender, RoutedEventArgs e)
+        {
+            CanChangeVolume = true;
+            Slider slider = (Slider)sender;
+            slider.Value = Properties.Settings.Default.Volume;
+        }
+
         private void VolumeChanged(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
             Slider slider = (Slider)sender;
@@ -223,6 +235,12 @@ namespace MySnooper
 
         private void ChangeVolume(double value)
         {
+            if (!CanChangeVolume)
+                return;
+
+            Properties.Settings.Default.Volume = Convert.ToInt32(value);
+            Properties.Settings.Default.Save();
+
             // Calculate the volume that's being set. BTW: this is a trackbar!
             uint NewVolume = (uint)((ushort.MaxValue / 100) * value);
             // Set the same volume for both the left and the right channels

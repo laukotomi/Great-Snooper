@@ -4,28 +4,28 @@
   <description asmv2:iconFile="icon.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Great Snooper" version="1.4.0.0" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="Great Snooper" version="1.4.4.0" language="neutral" processorArchitecture="msil" />
     <commandLine file="Great Snooper.exe" parameters="" />
   </entryPoint>
   <trustInfo>
     <security>
       <applicationRequestMinimum>
-        <PermissionSet Unrestricted="true" ID="Custom" SameSite="site" />
+        <PermissionSet version="1" class="System.Security.NamedPermissionSet" Name="LocalIntranet" Description="Default rights given to applications on the local intranet" Unrestricted="true" ID="Custom" SameSite="site" />
         <defaultAssemblyRequest permissionSetReference="Custom" />
       </applicationRequestMinimum>
       <requestedPrivileges xmlns="urn:schemas-microsoft-com:asm.v3">
-        <!--
-          UAC Manifest Options
-          If you want to change the Windows User Account Control level replace the 
-          requestedExecutionLevel node with one of the following.
+        <!-- UAC Manifest Options
+            If you want to change the Windows User Account Control level replace the 
+            requestedExecutionLevel node with one of the following.
 
         <requestedExecutionLevel  level="asInvoker" uiAccess="false" />
         <requestedExecutionLevel  level="requireAdministrator" uiAccess="false" />
         <requestedExecutionLevel  level="highestAvailable" uiAccess="false" />
 
-         If you want to utilize File and Registry Virtualization for backward 
-         compatibility then delete the requestedExecutionLevel node.
-    -->
+            Specifying requestedExecutionLevel node will disable file and registry virtualization.
+            If you want to utilize File and Registry Virtualization for backward 
+            compatibility then delete the requestedExecutionLevel node.
+        -->
         <requestedExecutionLevel level="asInvoker" uiAccess="false" />
       </requestedPrivileges>
     </security>
@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Great Snooper.exe" size="477696">
-      <assemblyIdentity name="Great Snooper" version="1.4.0.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Great Snooper.exe" size="489472">
+      <assemblyIdentity name="Great Snooper" version="1.4.4.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>FiYmo66BoyzaEdGPcvgrxEtstAI=</dsig:DigestValue>
+        <dsig:DigestValue>oHKsV8vxmeEHXkhyzmEiX3JGCSY=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -114,13 +114,13 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Great Snooper.exe.config" size="8437">
+  <file name="Great Snooper.exe.config" size="9592">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>DYU54k1Otdj8pIb64cdaM4A+MCg=</dsig:DigestValue>
+      <dsig:DigestValue>8S8FGaF+4cJcv+8nj6YdDioa+S0=</dsig:DigestValue>
     </hash>
   </file>
   <file name="icon.ico" size="9662">
@@ -132,4 +132,18 @@
       <dsig:DigestValue>GVBgkGABSiIQaMx6IJBhymyM2YY=</dsig:DigestValue>
     </hash>
   </file>
+  <compatibility xmlns="urn:schemas-microsoft-com:compatibility.v1">
+    <application>
+      <!-- A list of all Windows versions that this application is designed to work with. 
+      Windows will automatically select the most compatible environment.-->
+      <!-- If your application is designed to work with Windows Vista, uncomment the following supportedOS node-->
+      <!--<supportedOS Id="{e2011457-1546-43c5-a5fe-008deee3d3f0}"></supportedOS>-->
+      <!-- If your application is designed to work with Windows 7, uncomment the following supportedOS node-->
+      <!--<supportedOS Id="{35138b9a-5d96-4fbd-8e2d-a2440225f93a}"/>-->
+      <!-- If your application is designed to work with Windows 8, uncomment the following supportedOS node-->
+      <!--<supportedOS Id="{4a2f28e3-53b9-4441-ba9c-d69d4a4a6e38}"></supportedOS>-->
+      <!-- If your application is designed to work with Windows 8.1, uncomment the following supportedOS node-->
+      <!--<supportedOS Id="{1f676c76-80e1-4239-95bb-83d0f6d0da78}"/>-->
+    </application>
+  </compatibility>
 </asmv1:assembly>

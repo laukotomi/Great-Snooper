@@ -838,5 +838,137 @@ namespace MySnooper.Properties {
                 this["NotificatorSoundEnabled"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string WormsPassword {
+            get {
+                return ((string)(this["WormsPassword"]));
+            }
+            set {
+                this["WormsPassword"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool TrayFlashing {
+            get {
+                return ((bool)(this["TrayFlashing"]));
+            }
+            set {
+                this["TrayFlashing"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool TrayNotifications {
+            get {
+                return ((bool)(this["TrayNotifications"]));
+            }
+            set {
+                this["TrayNotifications"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool HideSnooper {
+            get {
+                return ((bool)(this["HideSnooper"]));
+            }
+            set {
+                this["HideSnooper"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowBannedMessages {
+            get {
+                return ((bool)(this["ShowBannedMessages"]));
+            }
+            set {
+                this["ShowBannedMessages"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("40")]
+        public int GameListGridRowStarts {
+            get {
+                return ((int)(this["GameListGridRowStarts"]));
+            }
+            set {
+                this["GameListGridRowStarts"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("50")]
+        public int RightColumnStars {
+            get {
+                return ((int)(this["RightColumnStars"]));
+            }
+            set {
+                this["RightColumnStars"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string ClientListDGColumns {
+            get {
+                return ((string)(this["ClientListDGColumns"]));
+            }
+            set {
+                this["ClientListDGColumns"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ShowInfoColumn {
+            get {
+                return ((bool)(this["ShowInfoColumn"]));
+            }
+            set {
+                this["ShowInfoColumn"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("100")]
+        public int Volume {
+            get {
+                return ((int)(this["Volume"]));
+            }
+            set {
+                this["Volume"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ChatMode {
+            get {
+                return ((bool)(this["ChatMode"]));
+            }
+            set {
+                this["ChatMode"] = value;
+            }
+        }
     }
 }

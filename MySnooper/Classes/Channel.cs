@@ -527,48 +527,57 @@ namespace MySnooper
 
             MessageClass msg = new MessageClass(sender, message, style);
             Messages.Add(msg);
-            if (!sender.IsBanned)
+            if (!sender.IsBanned || !IsPrivMsgChannel && Properties.Settings.Default.ShowBannedMessages)
                 mw.AddNewMessage(this, msg, false, highlightWord);
         }
 
         public void Part()
         {
-            for (int i = 0; i < this.Clients.Count; i++)
+            if (this.Clients != null)
             {
-                Client c = this.Clients[i];
-                if (IsPrivMsgChannel)
+                for (int i = 0; i < this.Clients.Count; i++)
                 {
-                    c.PMChannels.Remove(this);
-                    c.PropertyChanged -= TheClient_PropertyChanged;
-
-                    if (!this._disabled && this.Clients.Count > 1 && c.OnlineStatus != 0 && this.Messages.Count > 0)
+                    Client c = this.Clients[i];
+                    if (IsPrivMsgChannel)
                     {
-                        this.Server.Send("PRIVMSG " + c.Name + " :" + "\x01" + "CLEAVING " + this.HashName + "\x01");
+                        c.PMChannels.Remove(this);
+                        c.PropertyChanged -= TheClient_PropertyChanged;
+
+                        if (!this._disabled && this.Clients.Count > 1 && c.OnlineStatus != 0 && this.Messages.Count > 0)
+                        {
+                            this.Server.Send("PRIVMSG " + c.Name + " :" + "\x01" + "CLEAVING " + this.HashName + "\x01");
+                        }
+                    }
+                    else
+                    {
+                        c.Channels.Remove(this);
+                    }
+
+                    if (c.Channels.Count == 0)
+                    {
+                        if (c.PMChannels.Count > 0)
+                            c.OnlineStatus = 2;
+                        else
+                            this.Server.Clients.Remove(c.LowerName);
                     }
                 }
-                else
-                {
-                    c.Channels.Remove(this);
-                }
 
-                if (c.Channels.Count == 0)
-                {
-                    if (c.PMChannels.Count > 0)
-                        c.OnlineStatus = 2;
-                    else
-                        this.Server.Clients.Remove(c.LowerName);
-                }
+                Clients.Clear();
             }
 
-            this.AddMessage(this.Server.User, "has left the channel.", MessageSettings.PartMessage);
-            Log(Messages.Count, true);
+            if (this.Messages != null)
+            {
+                this.AddMessage(this.Server.User, "has left the channel.", MessageSettings.PartMessage);
+                Log(Messages.Count, true);
+                Messages.Clear();
+            }
 
-            Clients.Clear();
-            Messages.Clear();
             if (GameList != null)
                 GameList.Clear();
-            userMessages.Clear();
-            TheFlowDocument.Blocks.Clear();
+            if (userMessages != null)
+                userMessages.Clear();
+            if (TheFlowDocument != null)
+                TheFlowDocument.Blocks.Clear();
 
             if (!IsPrivMsgChannel)
             {
