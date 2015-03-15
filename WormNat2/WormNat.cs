@@ -40,10 +40,6 @@ namespace WormNat2
         private string CC;
         private bool UseWormNat;
 
-        [DllImport("user32.dll", SetLastError = true)]
-        internal static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
-
         public WormNat(string ServerAddress, string GameExePath, string NickName, string HostName, string PassWord, string ChannelName, string ChannelScheme, string Location, string CC, string UseWormNat)
         {
             this.ServerAddress = ServerAddress;
@@ -178,7 +174,7 @@ namespace WormNat2
                         break;
                 }
 
-                IntPtr hwnd = FindWindow("Worms2D", null);
+                IntPtr hwnd = NativeMethods.FindWindow("Worms2D", null);
                 if (hwnd != IntPtr.Zero)
                 {
                     break;

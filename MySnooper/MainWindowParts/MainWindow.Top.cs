@@ -16,7 +16,7 @@ namespace MySnooper
         /*
          * Sound On / Off variables
          */
-        private bool SoundEnabled = true;
+        private bool SoundEnabled = false;
         private Image SoundOnOffImage;
         private ImageSource SoundEnabledImage;
         private BitmapImage SoundDisabledImage;
@@ -235,7 +235,7 @@ namespace MySnooper
 
         private void ChangeVolume(double value)
         {
-            if (!CanChangeVolume)
+            if (!CanChangeVolume) // To prevent that the default value in the xaml code overwrite the value stored in settings
                 return;
 
             Properties.Settings.Default.Volume = Convert.ToInt32(value);
@@ -246,12 +246,12 @@ namespace MySnooper
             // Set the same volume for both the left and the right channels
             uint NewVolumeAllChannels = ((NewVolume & 0x0000ffff) | ((uint)NewVolume << 16));
             // Set the volume
-            waveOutSetVolume(IntPtr.Zero, NewVolumeAllChannels);
+            NativeMethods.waveOutSetVolume(IntPtr.Zero, NewVolumeAllChannels);
 
             SliderThumb = false;
 
             SoundPlayer sp;
-            if (soundPlayers.TryGetValue("PMBeep", out sp))
+            if (SoundEnabled && soundPlayers.TryGetValue("PMBeep", out sp))
             {
                 try
                 {

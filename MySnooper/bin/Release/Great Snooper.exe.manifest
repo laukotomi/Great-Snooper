@@ -4,7 +4,7 @@
   <description asmv2:iconFile="icon.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Great Snooper" version="1.4.4.0" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="Great Snooper" version="1.4.5.0" language="neutral" processorArchitecture="msil" />
     <commandLine file="Great Snooper.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Great Snooper.exe" size="447488">
-      <assemblyIdentity name="Great Snooper" version="1.4.4.0" language="neutral" processorArchitecture="msil" />
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Great Snooper.exe" size="451072">
+      <assemblyIdentity name="Great Snooper" version="1.4.5.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>X85j/a1PkOqMQVDpHedRBzjaZgw=</dsig:DigestValue>
+        <dsig:DigestValue>/RAAFrdQeAELUDfCLBp1ORK0hfw=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -114,13 +114,13 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Great Snooper.exe.config" size="9592">
+  <file name="Great Snooper.exe.config" size="9593">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>8S8FGaF+4cJcv+8nj6YdDioa+S0=</dsig:DigestValue>
+      <dsig:DigestValue>ADzhPFEJIG5k+WIklOWocwkdrew=</dsig:DigestValue>
     </hash>
   </file>
   <file name="icon.ico" size="9662">

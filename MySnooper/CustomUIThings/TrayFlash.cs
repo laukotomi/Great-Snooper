@@ -4,6 +4,16 @@ using System.Windows.Interop;
 
 namespace MySnooper
 {
+    [StructLayout(LayoutKind.Sequential)]
+    internal struct FLASHWINFO
+    {
+        public UInt32 cbSize; //The size of the structure in bytes.
+        public IntPtr hwnd; //A Handle to the Window to be Flashed. The window can be either opened or minimized.
+        public UInt32 dwFlags; //The Flash Status.
+        public UInt32 uCount; // number of times to flash the window
+        public UInt32 dwTimeout; //The rate at which the Window is to be flashed, in milliseconds. If Zero, the function uses the default cursor blink rate.
+    }
+
     public static class WindowExtensions
     {
         #region Window Flashing API Stuff
@@ -14,20 +24,6 @@ namespace MySnooper
         private const UInt32 FLASHW_ALL = 3; //Flash both the window caption and taskbar button.
         private const UInt32 FLASHW_TIMER = 4; //Flash continuously, until the FLASHW_STOP flag is set.
         private const UInt32 FLASHW_TIMERNOFG = 12; //Flash continuously until the window comes to the foreground.
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct FLASHWINFO
-        {
-            public UInt32 cbSize; //The size of the structure in bytes.
-            public IntPtr hwnd; //A Handle to the Window to be Flashed. The window can be either opened or minimized.
-            public UInt32 dwFlags; //The Flash Status.
-            public UInt32 uCount; // number of times to flash the window
-            public UInt32 dwTimeout; //The rate at which the Window is to be flashed, in milliseconds. If Zero, the function uses the default cursor blink rate.
-        }
-
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        private static extern bool FlashWindowEx(ref FLASHWINFO pwfi);
 
         #endregion
 
@@ -44,7 +40,7 @@ namespace MySnooper
             };
 
             info.cbSize = Convert.ToUInt32(Marshal.SizeOf(info));
-            FlashWindowEx(ref info);
+            NativeMethods.FlashWindowEx(ref info);
         }
 
         public static void StopFlashingWindow(this System.Windows.Window win)
@@ -58,7 +54,7 @@ namespace MySnooper
             info.uCount = UInt32.MaxValue;
             info.dwTimeout = 0;
 
-            FlashWindowEx(ref info);
+            NativeMethods.FlashWindowEx(ref info);
         }
     }
 }

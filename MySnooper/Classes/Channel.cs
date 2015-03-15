@@ -73,6 +73,8 @@ namespace MySnooper
         public DataGrid TheDataGrid { get; private set; }
         public bool ShowOlderMessagesInserted { get; private set; }
 
+        public bool IsReconnecting { get; private set; }
+
         // These properties may change and then they may notify the UI thread about that
         public string Name
         {
@@ -531,7 +533,7 @@ namespace MySnooper
                 mw.AddNewMessage(this, msg, false, highlightWord);
         }
 
-        public void Part()
+        public void ClearClients()
         {
             if (this.Clients != null)
             {
@@ -564,6 +566,11 @@ namespace MySnooper
 
                 Clients.Clear();
             }
+        }
+
+        public void Part()
+        {
+            ClearClients();
 
             if (this.Messages != null)
             {
@@ -746,12 +753,14 @@ namespace MySnooper
 
         public void Reconnecting(bool reconnecting)
         {
+            this.IsReconnecting = reconnecting;
             if (reconnecting)
             {
                 if (this.Joined)
                 {
+                    if (!IsPrivMsgChannel)
+                        this.ClearClients();
                     this.LoadDisconnectedLayout();
-                    this.Clients.Clear();
                 }
                 this.Loading(true);
             }

@@ -296,6 +296,9 @@ namespace MySnooper
                             case "Clan":
                                 view.SortDescriptions.Add(new System.ComponentModel.SortDescription("Clan", direction));
                                 break;
+                            case "Info":
+                                view.SortDescriptions.Add(new System.ComponentModel.SortDescription("ClientApp", direction));
+                                break;
                         }
                         view.SortDescriptions.Add(new System.ComponentModel.SortDescription("Name", System.ComponentModel.ListSortDirection.Ascending));
                     }

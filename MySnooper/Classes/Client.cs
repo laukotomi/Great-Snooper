@@ -27,6 +27,8 @@ namespace MySnooper
         public string TusLink { get; set; }
         public List<Channel> Channels { get; private set; }
         public List<Channel> PMChannels { get; private set; }
+        public List<Channel> AddToChannel { get; private set; }
+        public string ClientAppL { get; private set; }
 
         public string Name
         {
@@ -46,6 +48,7 @@ namespace MySnooper
             set
             {
                 _clientApp = value;
+                ClientAppL = value.ToLower();
                 if (PropertyChanged != null)
                     PropertyChanged(this, new PropertyChangedEventArgs("ClientApp"));
             }
@@ -157,6 +160,7 @@ namespace MySnooper
             this.Rank = RanksClass.GetRankByInt(0);
             this.Channels = new List<Channel>();
             this.PMChannels = new List<Channel>();
+            this.AddToChannel = new List<Channel>();
         }
 
         // IComparable interface

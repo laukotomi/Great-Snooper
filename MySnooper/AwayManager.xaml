@@ -17,7 +17,7 @@
         </Grid.RowDefinitions>
 
         <TextBlock Grid.Row="0" Grid.Column="0" Text="Away text:" Foreground="White" VerticalAlignment="Center" />
-        <TextBox Grid.Row="0" Grid.Column="1" Name="AwayText" MaxLength="100"></TextBox>
+        <TextBox Grid.Row="0" Grid.Column="1" Name="AwayText" MaxLength="100" KeyDown="AwayWithEnter"></TextBox>
 
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Name="AwayButton" Click="AwayClick" Content="Set away" Width="100" Margin="10,0"/>

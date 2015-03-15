@@ -125,9 +125,11 @@
       <DependentUpon>AwayManager.xaml</DependentUpon>
     </Compile>
     <Compile Include="Classes\BBParser.cs" />
+    <Compile Include="Classes\EventArgsClasses.cs" />
     <Compile Include="Classes\ExtensionMethods.cs" />
     <Compile Include="Classes\GlobalManager.cs" />
     <Compile Include="Classes\MessageSetting.cs" />
+    <Compile Include="Classes\NativeMethods.cs" />
     <Compile Include="Classes\NotificatorClass.cs" />
     <Compile Include="Classes\RankClass.cs" />
     <Compile Include="Classes\RanksClass.cs" />

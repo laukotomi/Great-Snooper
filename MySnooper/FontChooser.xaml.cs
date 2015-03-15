@@ -1,4 +1,5 @@
 ﻿using MahApps.Metro.Controls;
+using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
@@ -10,7 +11,7 @@ using Xceed.Wpf.Toolkit;
 
 namespace MySnooper
 {
-    public delegate void SaveSettingsDelegate();
+    public delegate void SaveSettingsDelegate(object sender, EventArgs e);
 
     public partial class FontChooser : MetroWindow
     {
@@ -117,7 +118,7 @@ namespace MySnooper
             Properties.Settings.Default.Save();
 
             if (SaveSetting != null)
-                SaveSetting.BeginInvoke(null, null);
+                SaveSetting.BeginInvoke(this, null, null, null);
 
             this.Close();
         }

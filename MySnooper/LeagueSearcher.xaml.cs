@@ -8,7 +8,7 @@ using System.Windows.Input;
 
 namespace MySnooper
 {
-    public delegate void LookForThese(Dictionary<string, string> leagues, bool spam);
+    public delegate void LookForThese(object sender, LookForTheseEventArgs e);
 
     /// <summary>
     /// Interaction logic for LeagueSearcher.xaml
@@ -56,7 +56,7 @@ namespace MySnooper
             if (searching) // Stop!
             {
                 StartButton.Content = "Start searching";
-                LuckyLuke(null, false);
+                LuckyLuke(this, null);
                 searching = false;
                 TheList.IsEnabled = true;
                 this.Spam.IsEnabled = true;
@@ -77,7 +77,7 @@ namespace MySnooper
                 }
                 Properties.Settings.Default.Save();
 
-                LuckyLuke(leaguesToSearch, Spam.IsChecked.Value);
+                LuckyLuke(this, new LookForTheseEventArgs(leaguesToSearch, Spam.IsChecked.Value));
                 this.Close();
             }
             e.Handled = true;

@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 
 namespace MySnooper
 {
-    public delegate void NotificatorDelegate(List<NotificatorClass> list);
+    public delegate void NotificatorDelegate(object sender, NotificatorEventArgs e);
 
     /// <summary>
     /// Interaction logic for Notificator.xaml
@@ -72,7 +72,7 @@ namespace MySnooper
             if (searching) // Stop!
             {
                 StartButton.Content = "Start searching";
-                NotificatorEvent(null);
+                NotificatorEvent(this, null);
                 searching = false;
                 TheList.IsEnabled = true;
             }
@@ -110,7 +110,7 @@ namespace MySnooper
                 {
                     Properties.Settings.Default.Notificator = sb.ToString();
                     Properties.Settings.Default.Save();
-                    NotificatorEvent(list);
+                    NotificatorEvent(this, new NotificatorEventArgs(list));
                     this.Close();
                 }
             }

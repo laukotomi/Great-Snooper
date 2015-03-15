@@ -13,7 +13,7 @@ namespace MySnooper
     /// </summary>
     
     public enum SettingChangedType { NoType, Sound, Style };
-    public delegate void SettingChangedDelegate(object sender, string settingName, SettingChangedType type);
+    public delegate void SettingChangedDelegate(object sender, SettingChangedEventArgs e);
 
     public partial class UserSettings : MetroWindow
     {
@@ -121,7 +121,7 @@ namespace MySnooper
                 Properties.Settings.Default.Save();
 
                 if (SettingChanged != null)
-                    SettingChanged(this, name, SettingChangedType.NoType);
+                    SettingChanged(this, new SettingChangedEventArgs(name, SettingChangedType.NoType));
             }
         }
 
@@ -172,7 +172,7 @@ namespace MySnooper
             Properties.Settings.Default.Save();
 
             if (SettingChanged != null)
-                SettingChanged(this, name, SettingChangedType.NoType);
+                SettingChanged(this, new SettingChangedEventArgs(name, SettingChangedType.NoType));
         }
 
         private void AddStyleSetting(Grid grid, string name, string text, MessageSetting setting)
@@ -228,7 +228,7 @@ namespace MySnooper
             window.Closing -= window_Closing;
         }
 
-        void window_SaveSetting()
+        void window_SaveSetting(object sender, EventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
@@ -238,7 +238,7 @@ namespace MySnooper
                 MessageSettings.LoadSettingsFor(run, setting);
 
                 if (SettingChanged != null)
-                    SettingChanged(this, (string)tag[0], SettingChangedType.Style);
+                    SettingChanged(this, new SettingChangedEventArgs((string)tag[0], SettingChangedType.Style));
             }
             ));
         }
@@ -324,7 +324,7 @@ namespace MySnooper
                 Properties.Settings.Default.Save();
 
                 if (SettingChanged != null)
-                    SettingChanged(this, name, SettingChangedType.Sound);
+                    SettingChanged(this, new SettingChangedEventArgs(name, SettingChangedType.Sound));
             }
         }
 

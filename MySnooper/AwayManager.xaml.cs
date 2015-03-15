@@ -4,7 +4,7 @@ using System.Windows.Input;
 
 namespace MySnooper
 {
-    public delegate void AwayChangedDelegate(bool Away);
+    public delegate void AwayChangedDelegate(object sender, BoolEventArgs e);
     /// <summary>
     /// Interaction logic for AwayManager.xaml
     /// </summary>
@@ -50,12 +50,13 @@ namespace MySnooper
 
         private void AwayClick(object sender, RoutedEventArgs e)
         {
-            e.Handled = true;
+            if (e != null)
+                e.Handled = true;
 
             if (Away)
             {
                 Away = false;
-                AwayChanged(Away);
+                AwayChanged(this, new BoolEventArgs(Away));
                 this.Close();
             }
             else
@@ -66,7 +67,7 @@ namespace MySnooper
                     Away = true;
                     Properties.Settings.Default.AwayMessage = text;
                     Properties.Settings.Default.Save();
-                    AwayChanged(Away);
+                    AwayChanged(this, new BoolEventArgs(Away));
                     this.Close();
                 }
             }
@@ -76,6 +77,15 @@ namespace MySnooper
         {
             this.Close();
             e.Handled = true;
+        }
+
+        private void AwayWithEnter(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                AwayClick(null, null);
+                e.Handled = true;
+            }
         }
     }
 }

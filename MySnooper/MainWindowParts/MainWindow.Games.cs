@@ -25,9 +25,6 @@ namespace MySnooper
         // Hosting a game
         private Hosting HostingWindow;
 
-        [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
-        internal static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-
         // Check if WA.exe is set correctly
         private bool CheckWAExe()
         {
@@ -122,7 +119,7 @@ namespace MySnooper
             }
             else
             {
-                IntPtr hwnd = FindWindow("Worms2D", null);
+                IntPtr hwnd = NativeMethods.FindWindow("Worms2D", null);
                 if (hwnd != IntPtr.Zero)
                 {
                     if (ExitSnooper)

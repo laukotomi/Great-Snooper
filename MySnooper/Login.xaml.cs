@@ -491,11 +491,11 @@ namespace MySnooper
         }
 
 
-        private void ConnectionState(IRCCommunicator sender, IRCCommunicator.ConnectionStates state)
+        private void ConnectionState(object sender, ConnectionStateEventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                switch (state)
+                switch (e.State)
                 {
                     case IRCCommunicator.ConnectionStates.Connected:
                         if (!cancelled)
@@ -658,20 +658,20 @@ namespace MySnooper
             e.Handled = true;
         }
 
-        private void AddServer(string item)
+        private void AddServer(object sender, StringEventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                this.ServerList.Add(item);
+                this.ServerList.Add(e.Argument);
             }
             ));
         }
 
-        private void RemoveServer(string item)
+        private void RemoveServer(object sender, StringEventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                this.ServerList.Remove(item);
+                this.ServerList.Remove(e.Argument);
             }
             ));
         }

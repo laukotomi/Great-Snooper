@@ -97,6 +97,11 @@ namespace MySnooper
                             SendActionMessage(text, channel, userMessage);
                         break;
 
+                    case "msg":
+                        if (text.Contains(" "))
+                            channel.Server.Send("PRIVMSG " + channel.Name + " :" + text);
+                        break;
+
                     case "nick":
                         if (text.Length > 0 && channel != null && channel.Joined && !channel.Server.IsWormNet)
                             channel.Server.Send("NICK " + text);
@@ -109,6 +114,19 @@ namespace MySnooper
                     case "back":
                         backText = (text.Length == 0) ? Properties.Settings.Default.BackText : text;
                         AwayText = string.Empty;
+                        break;
+
+                    case "ctcp":
+                        if (channel != null && channel.Joined && text.Length > 0)
+                        {
+                            if (channel.IsPrivMsgChannel)
+                            {
+                                if (channel.Clients.Count == 1)
+                                    channel.Server.Send("PRIVMSG " + channel.Clients[0].Name + " :" + "\x01" + text + "\x01");
+                            }
+                            else
+                                channel.Server.Send("PRIVMSG " + channel.Name + " :" + "\x01" + text + "\x01");
+                        }
                         break;
 
                     case "gs":
@@ -205,7 +223,7 @@ namespace MySnooper
                     }
                 }
                 else if (channel.Clients[0].OnlineStatus != 0)
-                    channel.Server.Send("PRIVMSG " + channel.Clients[0] + " :" + "\x01" + "ACTION " + text + "\x01");
+                    channel.Server.Send("PRIVMSG " + channel.Clients[0].Name + " :" + "\x01" + "ACTION " + text + "\x01");
             }
             else
                 channel.Server.Send("PRIVMSG " + channel.Name + " :" + "\x01" + "ACTION " + text + "\x01");

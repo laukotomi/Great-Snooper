@@ -162,10 +162,6 @@ namespace MySnooper
             }
         }
 
-        [DllImport("winmm.dll")]
-        public static extern int waveOutSetVolume(IntPtr hwo, uint dwVolume);
-
-
         // Constructor        
         public MainWindow() { } // Never used, but visual stdio throws an error if not exists
         public MainWindow(IRCCommunicator WormNetC, string serverAddress)
@@ -248,6 +244,8 @@ namespace MySnooper
 
         private void MainWindow_Loaded(object sender, EventArgs e)
         {
+            SoundEnabled = true;
+
             // Download news and league list
             LoadSettings();
         }
@@ -540,8 +538,6 @@ namespace MySnooper
                         if (spamCounter >= 10)
                         {
                             searchHere.AddMessage(GlobalManager.SystemClient, "Great snooper stopped spamming and searching for league game(s)!", MessageSettings.OfflineMessage);
-                            if (Properties.Settings.Default.TrayNotifications)
-                                myNotifyIcon.ShowBalloonTip(null, "Great snooper stopped spamming and searching for league game(s)!", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
                             ClearSpamming();
 
                             SoundPlayer sp;
@@ -945,16 +941,20 @@ namespace MySnooper
                     if (c.OnlineStatus != 1)
                     {
                         ch.Server.GetInfoAboutClient(task.ClientName);
+                        // Reset client info
                         c.TusActive = false;
                         c.ClientGreatSnooper = false;
                         c.OnlineStatus = 1;
+                        c.AddToChannel.Add(ch); // Client will be added to the channel if information is arrived to keep the client list sorted properly
 
                         foreach (Channel channel in c.PMChannels)
                             channel.AddMessage(c, "is online.", MessageSettings.JoinMessage);
                     }
-
-                    c.Channels.Add(ch);
-                    ch.Clients.Add(c);
+                    else
+                    {
+                        c.Channels.Add(ch);
+                        ch.Clients.Add(c);
+                    }
 
                     if (c.IsBuddy)
                     {
@@ -977,7 +977,6 @@ namespace MySnooper
                             }
                         }
                     }
-
                 }
                 else
                     return;
@@ -1141,6 +1140,19 @@ namespace MySnooper
                 c.Channels.Add(ch);
                 ch.Clients.Add(c);
             }
+
+            if (c.AddToChannel.Count > 0)
+            {
+                foreach (Channel channel in c.AddToChannel)
+                {
+                    if (!c.Channels.Contains(ch))
+                    {
+                        c.Channels.Add(channel);
+                        channel.Clients.Add(c);
+                    }
+                }
+                c.AddToChannel.Clear();
+            }
         }
         #endregion
 
@@ -1292,12 +1304,13 @@ namespace MySnooper
                 if (client.LowerName != ch.Server.User.LowerName)
                 {
                     chat.Tag = client;
-                    chat.Visibility = System.Windows.Visibility.Visible;
+                    chat.IsEnabled = true;
                 }
                 else
-                    chat.Visibility = System.Windows.Visibility.Collapsed;
+                    chat.IsEnabled = false;
 
                 MenuItem conversation = (MenuItem)obj.ContextMenu.Items[1];
+                conversation.Header = "Add to conversation";
                 if (client.CanConversation() && client.LowerName != ch.Server.User.LowerName)
                 {
                     if (ch.IsPrivMsgChannel && ch.Clients[0].CanConversation())
@@ -1305,25 +1318,22 @@ namespace MySnooper
                         conversation.Tag = new object[] { client, ch };
                         if (ch.IsInConversation(client))
                         {
+                            conversation.Header = "Remove from conversation";
                             if (ch.Clients.Count == 1 && ch.Clients[0] == client)
-                                conversation.Visibility = System.Windows.Visibility.Collapsed;
+                                conversation.IsEnabled = false;
                             else
-                            {
-                                conversation.Header = "Remove from conversation";
-                                conversation.Visibility = System.Windows.Visibility.Visible;
-                            }
+                                conversation.IsEnabled = true;
                         }
                         else
                         {
-                            conversation.Header = "Add to conversation";
-                            conversation.Visibility = System.Windows.Visibility.Visible;
+                            conversation.IsEnabled = true;
                         }
                     }
                     else
-                        conversation.Visibility = System.Windows.Visibility.Collapsed;
+                        conversation.IsEnabled = false;
                 }
                 else
-                    conversation.Visibility = System.Windows.Visibility.Collapsed;
+                    conversation.IsEnabled = false;
 
                 MenuItem buddy = (MenuItem)obj.ContextMenu.Items[2];
                 if (client.IsBuddy)
@@ -1519,6 +1529,7 @@ namespace MySnooper
                                     || c.Clan.Length >= filters[i].Length && c.Clan.Substring(0, filters[i].Length).ToLower() == filters[i]
                                     || c.Country != null && c.Country.LowerName.Length >= filters[i].Length && c.Country.LowerName.Substring(0, filters[i].Length) == filters[i]
                                     || c.Rank != null && c.Rank.LowerName.Length >= filters[i].Length && c.Rank.LowerName.Substring(0, filters[i].Length) == filters[i]
+                                    || Properties.Settings.Default.ShowInfoColumn && c.ClientAppL.Contains(filters[i])
                                     || c.IsBuddy && "buddy".Length >= filters[i].Length && "buddy".Substring(0, filters[i].Length) == filters[i]
                                     || c.IsBanned && "ignored".Length >= filters[i].Length && "ignored".Substring(0, filters[i].Length) == filters[i]
                                 )
@@ -1585,7 +1596,7 @@ namespace MySnooper
             // Stop the clock
             timer.Stop();
 
-            if (!loadSettings.IsCompleted)
+            if (loadSettings.Status == TaskStatus.WaitingForActivation)
             {
                 loadSettingsCTS.Cancel();
                 e.Cancel = true;
@@ -1599,14 +1610,14 @@ namespace MySnooper
                 gameProcess = null;
             }
 
-            if (tusTask != null && !tusTask.IsCompleted)
+            if (tusTask != null && tusTask.Status == TaskStatus.WaitingForActivation)
             {
                 TusCTS.Cancel();
                 e.Cancel = true;
                 return;
             }
 
-            if (wormWebC.LoadGamesTask != null && !wormWebC.LoadGamesTask.IsCompleted)
+            if (wormWebC.LoadGamesTask != null && wormWebC.LoadGamesTask.Status == TaskStatus.WaitingForActivation)
             {
                 wormWebC.LoadGamesCTS.Cancel();
                 e.Cancel = true;
@@ -1674,44 +1685,46 @@ namespace MySnooper
         }
 
         // IRCThread will notify us when it is done. Then we close the window
-        private void ConnectionState(IRCCommunicator sender, IRCCommunicator.ConnectionStates state)
+        private void ConnectionState(object sender, ConnectionStateEventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
+                IRCCommunicator server = (IRCCommunicator)sender;
+
                 if (snooperClosing)
                 {
-                    if (state == IRCCommunicator.ConnectionStates.Connected)
-                        sender.CancelAsync();
+                    if (e.State == IRCCommunicator.ConnectionStates.Connected)
+                        server.CancelAsync();
                     else
                         this.Close();
                 }
-                else if (state == IRCCommunicator.ConnectionStates.Connected)
+                else if (e.State == IRCCommunicator.ConnectionStates.Connected)
                 {
                     bool reconnecting = false;
-                    foreach (var item in sender.ChannelList)
+                    foreach (var item in server.ChannelList)
                     {
-                        if (item.Value.Joined)
+                        if (item.Value.IsReconnecting)
                         {
                             reconnecting = true;
                             break;
                         }
                     }
 
-                    if (reconnecting || sender.IsWormNet)
+                    if (reconnecting || server.IsWormNet)
                     {
-                        foreach (var item in sender.ChannelList)
+                        foreach (var item in server.ChannelList)
                         {
                             item.Value.Reconnecting(false);
                             if (item.Value.Joined && !item.Value.IsPrivMsgChannel)
                             {
-                                sender.JoinChannel(item.Value.Name);
-                                sender.GetChannelClients(item.Value.Name);
+                                server.JoinChannel(item.Value.Name);
+                                server.GetChannelClients(item.Value.Name);
                             }
                         }
                     }
                     else if (gameSurgeIsConnected)
                     {
-                        sender.JoinChannel("#worms");
+                        server.JoinChannel("#worms");
                     }
                 }
                 /*
@@ -1728,12 +1741,12 @@ namespace MySnooper
                 */
                 else
                 {
-                    if (!sender.IsWormNet)
+                    if (!server.IsWormNet)
                     {
-                        if (state == IRCCommunicator.ConnectionStates.UsernameInUse)
+                        if (e.State == IRCCommunicator.ConnectionStates.UsernameInUse)
                         {
                             bool reconnecting = false;
-                            foreach (var item in sender.ChannelList)
+                            foreach (var item in server.ChannelList)
                             {
                                 if (item.Value.Joined)
                                 {
@@ -1744,7 +1757,7 @@ namespace MySnooper
 
                             if (!reconnecting)
                             {
-                                foreach (var item in sender.ChannelList)
+                                foreach (var item in server.ChannelList)
                                 {
                                     item.Value.Loading(false);
                                 }
@@ -1759,12 +1772,11 @@ namespace MySnooper
                     }
 
                     // Reconnect needed
-                    foreach (var item in sender.ChannelList)
+                    foreach (var item in server.ChannelList)
                     {
                         item.Value.Reconnecting(true);
                     }
-                    sender.Clients.Clear();
-                    sender.Reconnect();
+                    server.Reconnect();
                 }
             }
             ));

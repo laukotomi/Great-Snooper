@@ -9,7 +9,7 @@ using System.Windows.Input;
 
 namespace MySnooper
 {
-    public delegate void GameHostedDelegate(string parameters, bool exit);
+    public delegate void GameHostedDelegate(object sender, GameHostedEventArgs e);
 
     public partial class Hosting : MetroWindow
     {
@@ -140,7 +140,8 @@ namespace MySnooper
             if (e != null)
                 e.Handled = true;
 
-            GameHosted.BeginInvoke(ServerAddress + " \"" + Properties.Settings.Default.WaExe + "\" " + GlobalManager.User.Name + " \"" + sb.ToString() + "\" \"" + GamePassword.Text + "\" " + ChannelName + " " + ChannelScheme + " " + GlobalManager.User.Country.ID.ToString() + " " + CC + " " + WN, ExitSnooper.IsChecked.Value, null, null);
+            GameHostedEventArgs args = new GameHostedEventArgs(ServerAddress + " \"" + Properties.Settings.Default.WaExe + "\" " + GlobalManager.User.Name + " \"" + sb.ToString() + "\" \"" + GamePassword.Text + "\" " + ChannelName + " " + ChannelScheme + " " + GlobalManager.User.Country.ID.ToString() + " " + CC + " " + WN, ExitSnooper.IsChecked.Value);
+            GameHosted.BeginInvoke(this, args, null, null);
         }
 
         public void RestoreHostButton()

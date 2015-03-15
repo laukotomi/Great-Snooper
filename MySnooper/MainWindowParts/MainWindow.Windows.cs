@@ -86,13 +86,13 @@ namespace MySnooper
             ));
         }
 
-        private void GameHosted(string parameters, bool exit)
+        private void GameHosted(object sender, GameHostedEventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
                 if (!snooperClosing)
                 {
-                    ExitSnooper = exit;
+                    ExitSnooper = e.Arguments;
 
                     startedGameType = StartedGameTypes.Host;
                     gameProcess = new System.Diagnostics.Process();
@@ -100,7 +100,7 @@ namespace MySnooper
                     gameProcess.StartInfo.CreateNoWindow = true;
                     gameProcess.StartInfo.RedirectStandardOutput = true;
                     gameProcess.StartInfo.FileName = System.IO.Path.GetFullPath("Hoster.exe");
-                    gameProcess.StartInfo.Arguments = parameters;
+                    gameProcess.StartInfo.Arguments = e.Parameters;
                     gameProcess.Start();
                     string success = gameProcess.StandardOutput.ReadLine();
 
@@ -145,18 +145,18 @@ namespace MySnooper
             e.Handled = true;
         }
 
-        private void SettingChanged(object sender, string settingName, SettingChangedType type)
+        private void SettingChanged(object sender, SettingChangedEventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                switch (type)
+                switch (e.Type)
                 {
                     case SettingChangedType.Sound:
-                        string value = (string)(Properties.Settings.Default.GetType().GetProperty(settingName).GetValue(Properties.Settings.Default, null));
-                        if (soundPlayers.ContainsKey(settingName))
-                            soundPlayers[settingName] = new SoundPlayer(new FileInfo(value).FullName);
+                        string value = (string)(Properties.Settings.Default.GetType().GetProperty(e.SettingName).GetValue(Properties.Settings.Default, null));
+                        if (soundPlayers.ContainsKey(e.SettingName))
+                            soundPlayers[e.SettingName] = new SoundPlayer(new FileInfo(value).FullName);
                         else
-                            soundPlayers.Add(settingName, new SoundPlayer(new FileInfo(value).FullName));
+                            soundPlayers.Add(e.SettingName, new SoundPlayer(new FileInfo(value).FullName));
                         break;
 
                     case SettingChangedType.Style:
@@ -174,7 +174,7 @@ namespace MySnooper
                         break;
 
                     default:
-                        switch (settingName)
+                        switch (e.SettingName)
                         {
                             case "ShowWormsChannel":
                                 Channel ch = servers[1].ChannelList["#worms"];
@@ -303,20 +303,20 @@ namespace MySnooper
             ));
         }
 
-        private void RemoveUserFromBuddyList(string name)
+        private void RemoveUserFromBuddyList(object sender, StringEventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                RemoveBuddy(name);
+                RemoveBuddy(e.Argument);
             }
             ));
         }
 
-        private void AddUserToBuddyList(string name)
+        private void AddUserToBuddyList(object sender, StringEventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                AddBuddy(name);
+                AddBuddy(e.Argument);
             }
             ));
         }
@@ -348,20 +348,20 @@ namespace MySnooper
             ));
         }
 
-        private void RemoveUserFromBanList(string name)
+        private void RemoveUserFromBanList(object sender, StringEventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                RemoveBan(name);
+                RemoveBan(e.Argument);
             }
             ));
         }
 
-        private void AddUserToBanList(string name)
+        private void AddUserToBanList(object sender, StringEventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                AddBan(name);
+                AddBan(e.Argument);
             }
             ));
         }
@@ -400,11 +400,11 @@ namespace MySnooper
             ));
         }
 
-        private void LuckyLuke(Dictionary<string, string> leagues, bool spam)
+        private void LuckyLuke(object sender, LookForTheseEventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                if (leagues == null) // Stop request
+                if (e == null) // Stop request
                 {
                     ClearSpamming();
                 }
@@ -412,15 +412,15 @@ namespace MySnooper
                 {
                     searchHere = gameListChannel;
 
-                    if (spam)
+                    if (e.Spam)
                     {
                         var sb = new System.Text.StringBuilder();
                         int i = 0;
-                        foreach (var item in leagues)
+                        foreach (var item in e.Leagues)
                         {
                             i++;
                             sb.Append(item.Value);
-                            if (i < leagues.Count)
+                            if (i < e.Leagues.Count)
                                 sb.Append(" or ");
                         }
                         sb.Append(" anyone?");
@@ -428,7 +428,7 @@ namespace MySnooper
                     }
 
                     foundUsers.Clear();
-                    foreach (var item in leagues)
+                    foreach (var item in e.Leagues)
                         foundUsers.Add(item.Key, new List<string>());
                 }
             }
@@ -451,18 +451,18 @@ namespace MySnooper
             e.Handled = true;
         }
 
-        void window_NotificatorEvent(List<NotificatorClass> list)
+        void window_NotificatorEvent(object sender, NotificatorEventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                if (list == null) // Stop request
+                if (e == null) // Stop request
                 {
                     Notifications.Clear();
                     NotificatorImage.Source = NotificatorOff;
                 }
                 else
                 {
-                    foreach (NotificatorClass nc in list)
+                    foreach (NotificatorClass nc in e.NotificatorList)
                         Notifications.Add(nc);
                     NotificatorImage.Source = NotificatorOn;
                 }
@@ -503,15 +503,14 @@ namespace MySnooper
             ));
         }
 
-        private void AwayChanged(bool Away)
+        private void AwayChanged(object sender, BoolEventArgs e)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
-                if (Away)
-                    SendMessageToChannel("/away", null);
+                if (e.Argument)
+                    SendMessageToChannel("/away " + Properties.Settings.Default.AwayMessage, null);
                 else
                     SendMessageToChannel("/back", null);
-
             }
             ));
         }

@@ -8,8 +8,8 @@ using System.Windows.Input;
 
 namespace MySnooper
 {
-    public delegate void ItemRemovedDelegate(string item);
-    public delegate void ItemAddedDelegate(string item);
+    public delegate void ItemRemovedDelegate(object sender, StringEventArgs e);
+    public delegate void ItemAddedDelegate(object sender, StringEventArgs e);
 
     public partial class ListEditor : MetroWindow
     {
@@ -84,7 +84,7 @@ namespace MySnooper
                 }
 
                 if (ItemRemoved != null)
-                    ItemRemoved(selected);
+                    ItemRemoved(this, new StringEventArgs(selected));
             }
         }
 
@@ -132,7 +132,7 @@ namespace MySnooper
                         }
 
                         if (ItemAdded != null)
-                            ItemAdded(str);
+                            ItemAdded(this, new StringEventArgs(str));
                     }
                     obj.Clear();
                 }

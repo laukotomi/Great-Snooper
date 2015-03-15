@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace MySnooper
 {
-    public delegate void ConnectionStateDelegate(IRCCommunicator sender, IRCCommunicator.ConnectionStates state);
+    public delegate void ConnectionStateDelegate(object sender, ConnectionStateEventArgs e);
 
     public class IRCCommunicator
     {
@@ -400,7 +400,7 @@ namespace MySnooper
 
             if (ConnectionState != null)
             {
-                ConnectionState.BeginInvoke(this, state, null, null);
+                ConnectionState.BeginInvoke(this, new ConnectionStateEventArgs(state), null, null);
             }
         }
 
@@ -617,7 +617,7 @@ namespace MySnooper
                         //    Send("authserv auth " + this.User.Name + " " + Properties.Settings.Default.WormsPassword);
 
                         if (ConnectionState != null)
-                            ConnectionState.BeginInvoke(this, ConnectionStates.Connected, null, null);
+                            ConnectionState.BeginInvoke(this, new ConnectionStateEventArgs(ConnectionStates.Connected), null, null);
                     }
                     break;
 
