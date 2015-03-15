@@ -62,10 +62,10 @@ namespace MySnooper
                     catch (Exception) { }
 
                     var validator = new GSVersionValidator();
-                    if (validator.Validate(Properties.Settings.Default.QuitMessagee) != string.Empty)
+                    if (Properties.Settings.Default.QuitMessagee == string.Empty || validator.Validate(Properties.Settings.Default.QuitMessagee) != string.Empty)
                         Properties.Settings.Default.QuitMessagee = "Great Snooper v" + App.GetVersion();
-                    if (validator.Validate(Properties.Settings.Default.InfoMessage) != string.Empty)
-                        Properties.Settings.Default.InfoMessage = "Great Snooper v" + App.GetVersion();
+                    //if (Properties.Settings.Default.InfoMessage == string.Empty || validator.Validate(Properties.Settings.Default.InfoMessage) != string.Empty)
+                    //    Properties.Settings.Default.InfoMessage = "Great Snooper v" + App.GetVersion();
                     Properties.Settings.Default.SettingsUpgraded = true;
                     Properties.Settings.Default.Save();
                 }

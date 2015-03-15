@@ -229,7 +229,7 @@ namespace MySnooper
                         }
                     }
                     else
-                        sb.Append("0|");
+                        sb.Append("5|");
 
                     i++;
                 }

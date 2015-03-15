@@ -418,7 +418,7 @@ namespace MySnooper
             if (this.IsWormNet)
                 Send("PASS ELSILRACLIHP"); // Password
             Send("NICK " + this.User.Name); // Nick
-            Send("USER " + nickClan + " hostname servername :" + countryID.ToString() + " " + this.User.Rank.ID.ToString() + " " + this.User.Country.CountryCode + " " + Properties.Settings.Default.InfoMessage); // USER message
+            Send("USER " + nickClan + " hostname servername :" + countryID.ToString() + " " + this.User.Rank.ID.ToString() + " " + this.User.Country.CountryCode + " Great Snooper v" + App.GetVersion()); // USER message
         }
 
         private bool ProcessClientMessage(string line)

@@ -34,7 +34,7 @@ namespace MySnooper
             AddBoolSetting(GeneralSettingsGrid, "DeleteLogs", "Delete channel logs older than 30 days at startup:");
             AddBoolSetting(GeneralSettingsGrid, "SaveInstantColors", "Save instant colors for users:");
             AddTextSetting(GeneralSettingsGrid, "QuitMessagee", "Quit message:", new GSVersionValidator());
-            AddTextSetting(GeneralSettingsGrid, "InfoMessage", "Information message (real name irc field):", new GSVersionValidator());
+            //AddTextSetting(GeneralSettingsGrid, "InfoMessage", "Information message (real name irc field):", new GSVersionValidator());
             WAExeText.Text = Properties.Settings.Default.WaExe;
 
             // Appearance

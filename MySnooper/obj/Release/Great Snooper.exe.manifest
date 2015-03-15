@@ -4,7 +4,7 @@
   <description asmv2:iconFile="icon.ico" xmlns="urn:schemas-microsoft-com:asm.v1" />
   <application />
   <entryPoint>
-    <assemblyIdentity name="Great Snooper" version="1.4.5.0" language="neutral" processorArchitecture="msil" />
+    <assemblyIdentity name="Great Snooper" version="1.4.6.0" language="neutral" processorArchitecture="msil" />
     <commandLine file="Great Snooper.exe" parameters="" />
   </entryPoint>
   <trustInfo>
@@ -44,13 +44,13 @@
   </dependency>
   <dependency>
     <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Great Snooper.exe" size="451072">
-      <assemblyIdentity name="Great Snooper" version="1.4.5.0" language="neutral" processorArchitecture="msil" />
+      <assemblyIdentity name="Great Snooper" version="1.4.6.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>/RAAFrdQeAELUDfCLBp1ORK0hfw=</dsig:DigestValue>
+        <dsig:DigestValue>LAyRwB9a1p40HGoZD2FKmML5st0=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
