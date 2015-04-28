@@ -15,19 +15,17 @@ namespace WormNat2
     {
         private const string ProxyAddress = "proxy.worms2d.info";
         private const int ControlPort = 17018;
-        private int GamePort = 17011;
+        private const int GamePort = 17011;
 
-        private int ExternalPort = 0;
-        private bool Stopping = false;
-        private int ConnectionThreadCounter = 0;
+        private volatile bool Stopping = false;
+        private volatile bool CloseGame = false;
+        private volatile int ExternalPort = 0;
+        private volatile int ConnectionThreadCounter = 0;
 
         private string GameID = string.Empty;
-        private bool CloseGame = false;
 
-        private object StoppingLocker = new object();
         private object ExternalPortLocker = new object();
         private object ConnectionThreadCounterLocker = new object();
-        private object CloseGameLocker = new object();
 
         private string ServerAddress;
         private string GameExePath;
@@ -58,6 +56,7 @@ namespace WormNat2
         private void ConnectionThread(int ProxyPort)
         {
             Console.WriteLine("Client joined on port: " + ProxyPort);
+
             lock (ConnectionThreadCounterLocker)
             {
                 ConnectionThreadCounter++;
@@ -135,11 +134,8 @@ namespace WormNat2
 
                     while (true)
                     {
-                        lock (StoppingLocker)
-                        {
-                            if (Stopping)
-                                break;
-                        }
+                        if (Stopping)
+                            break;
 
                         if (ControlSocket.Poll(5000, SelectMode.SelectRead) && ControlSocket.Available == 0)
                             break;
@@ -168,11 +164,8 @@ namespace WormNat2
         {
             while (true)
             {
-                lock (CloseGameLocker)
-                {
-                    if (CloseGame)
-                        break;
-                }
+                if (CloseGame)
+                    break;
 
                 IntPtr hwnd = NativeMethods.FindWindow("Worms2D", null);
                 if (hwnd != IntPtr.Zero)
@@ -280,10 +273,7 @@ namespace WormNat2
                 if (UseWormNat)
                 {
                     // Ask and wait for the ConrtolThread to stop itself
-                    lock (StoppingLocker)
-                    {
-                        Stopping = true;
-                    }
+                    Stopping = true;
                     while (true)
                     {
                         lock (ExternalPortLocker)
@@ -328,10 +318,7 @@ namespace WormNat2
             // Ask and wait for the CloseGameThread to stop itself and close the game
             if (t2.IsAlive)
             {
-                lock (CloseGameLocker)
-                {
-                    CloseGame = true;
-                }
+                CloseGame = true;
                 while (t2.IsAlive)
                 {
                     Thread.Sleep(10);
@@ -342,10 +329,7 @@ namespace WormNat2
             if (UseWormNat)
             {
                 // Ask and wait for the ConrtolThread to stop itself
-                lock (StoppingLocker)
-                {
-                    Stopping = true;
-                }
+                Stopping = true;
                 while (true)
                 {
                     lock (ExternalPortLocker)

@@ -37,7 +37,7 @@
             </ScrollViewer>
         </TabItem>
 
-        <TabItem Header="Appearance">
+        <TabItem Header="User groups">
             <ScrollViewer>
                 <Grid Name="AppearanceGrid" HorizontalAlignment="Center" Margin="0,20">
                     <Grid.ColumnDefinitions>

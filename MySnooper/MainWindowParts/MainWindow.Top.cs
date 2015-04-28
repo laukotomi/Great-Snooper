@@ -16,40 +16,40 @@ namespace MySnooper
         /*
          * Sound On / Off variables
          */
-        private bool SoundEnabled = false;
-        private Image SoundOnOffImage;
-        private ImageSource SoundEnabledImage;
-        private BitmapImage SoundDisabledImage;
+        private bool soundEnabled = false;
+        private Image soundOnOffImage;
+        private ImageSource soundEnabledImage;
+        private BitmapImage soundDisabledImage;
 
         /*
          * Chat Mode On / Off variables
          */
-        private Image ChatModeImage;
-        private ImageSource ChatModeOffImage;
-        private BitmapImage ChatModeOnImage;
+        private Image chatModeImage;
+        private ImageSource chatModeOffImage;
+        private BitmapImage chatModeOnImage;
 
         /*
          * Chat Mode On / Off variables
          */
-        private string AwayOnOffDefaultTooltip;
-        private Button AwayOnOffButton;
-        private Image AwayOnOffImage;
-        private ImageSource AwayOffImage;
-        private BitmapImage AwayOnImage;
+        private string awayOnOffDefaultTooltip;
+        private Button awayOnOffButton;
+        private Image awayOnOffImage;
+        private ImageSource awayOffImage;
+        private BitmapImage awayOnImage;
 
         /*
          * League Searcher sources
          */
-        private Image LeagueSearcherImage;
-        private ImageSource LeagueSearcherOff;
-        private BitmapImage LeagueSearcherOn;
+        private Image leagueSearcherImage;
+        private ImageSource leagueSearcherOff;
+        private BitmapImage leagueSearcherOn;
 
         /*
          * League Searcher sources
          */
-        private Image NotificatorImage;
-        private ImageSource NotificatorOff;
-        private BitmapImage NotificatorOn;
+        private Image notificatorImage;
+        private ImageSource notificatorOff;
+        private BitmapImage notificatorOn;
 
 
 
@@ -70,17 +70,20 @@ namespace MySnooper
          */
         private void SoundOnOffLoaded(object sender, RoutedEventArgs e)
         {
-            SoundOnOffImage = (Image)((Button)sender).Content;
-            SoundEnabledImage = SoundOnOffImage.Source;
+            soundOnOffImage = (Image)((Button)sender).Content;
+            soundEnabledImage = soundOnOffImage.Source;
 
-            SoundDisabledImage = new BitmapImage();
-            SoundDisabledImage.DecodePixelHeight = Convert.ToInt32(SoundOnOffImage.Height);
-            SoundDisabledImage.DecodePixelWidth = Convert.ToInt32(SoundOnOffImage.Width);
-            SoundDisabledImage.CacheOption = BitmapCacheOption.OnLoad;
-            SoundDisabledImage.BeginInit();
-            SoundDisabledImage.UriSource = new Uri("pack://application:,,,/Resources/soundoff.png");
-            SoundDisabledImage.EndInit();
-            SoundDisabledImage.Freeze();
+            soundDisabledImage = new BitmapImage();
+            soundDisabledImage.DecodePixelHeight = Convert.ToInt32(soundOnOffImage.Height);
+            soundDisabledImage.DecodePixelWidth = Convert.ToInt32(soundOnOffImage.Width);
+            soundDisabledImage.CacheOption = BitmapCacheOption.OnLoad;
+            soundDisabledImage.BeginInit();
+            soundDisabledImage.UriSource = new Uri("pack://application:,,,/Resources/soundoff.png");
+            soundDisabledImage.EndInit();
+            soundDisabledImage.Freeze();
+
+            if (Properties.Settings.Default.MuteState)
+                soundOnOffImage.Source = soundDisabledImage;
 
             e.Handled = true;
         }
@@ -91,16 +94,14 @@ namespace MySnooper
          */
         private void SoundOnOffClick(object sender, RoutedEventArgs e)
         {
-            if (SoundEnabled)
-            {
-                SoundEnabled = false;
-                SoundOnOffImage.Source = SoundDisabledImage;
-            }
+            if (soundEnabled)
+                soundOnOffImage.Source = soundDisabledImage;
             else
-            {
-                SoundEnabled = true;
-                SoundOnOffImage.Source = SoundEnabledImage;
-            }
+                soundOnOffImage.Source = soundEnabledImage;
+
+            soundEnabled = !soundEnabled;
+            Properties.Settings.Default.MuteState = !Properties.Settings.Default.MuteState;
+            Properties.Settings.Default.Save();
 
             e.Handled = true;
         }
@@ -110,20 +111,20 @@ namespace MySnooper
          */
         private void ChatModeOnOffLoaded(object sender, RoutedEventArgs e)
         {
-            ChatModeImage = (Image)((Button)sender).Content;
-            ChatModeOffImage = ChatModeImage.Source;
+            chatModeImage = (Image)((Button)sender).Content;
+            chatModeOffImage = chatModeImage.Source;
 
-            ChatModeOnImage = new BitmapImage();
-            ChatModeOnImage.DecodePixelHeight = Convert.ToInt32(ChatModeImage.Height);
-            ChatModeOnImage.DecodePixelWidth = Convert.ToInt32(ChatModeImage.Width);
-            ChatModeOnImage.CacheOption = BitmapCacheOption.OnLoad;
-            ChatModeOnImage.BeginInit();
-            ChatModeOnImage.UriSource = new Uri("pack://application:,,,/Resources/chatmodeon.png");
-            ChatModeOnImage.EndInit();
-            ChatModeOnImage.Freeze();
+            chatModeOnImage = new BitmapImage();
+            chatModeOnImage.DecodePixelHeight = Convert.ToInt32(chatModeImage.Height);
+            chatModeOnImage.DecodePixelWidth = Convert.ToInt32(chatModeImage.Width);
+            chatModeOnImage.CacheOption = BitmapCacheOption.OnLoad;
+            chatModeOnImage.BeginInit();
+            chatModeOnImage.UriSource = new Uri("pack://application:,,,/Resources/chatmodeon.png");
+            chatModeOnImage.EndInit();
+            chatModeOnImage.Freeze();
 
             if (Properties.Settings.Default.ChatMode)
-                ChatModeImage.Source = ChatModeOnImage;
+                chatModeImage.Source = chatModeOnImage;
 
             e.Handled = true;
         }
@@ -136,18 +137,18 @@ namespace MySnooper
             if (Properties.Settings.Default.ChatMode)
             {
                 Properties.Settings.Default.ChatMode = false;
-                ChatModeImage.Source = ChatModeOffImage;
+                chatModeImage.Source = chatModeOffImage;
             }
             else
             {
                 Properties.Settings.Default.ChatMode = true;
-                ChatModeImage.Source = ChatModeOnImage;
+                chatModeImage.Source = chatModeOnImage;
             }
             Properties.Settings.Default.Save();
 
-            for (int i = 0; i < servers.Count; i++)
+            for (int i = 0; i < Servers.Count; i++)
             {
-                foreach (var item in servers[i].ChannelList)
+                foreach (var item in Servers[i].ChannelList)
                 {
                     if (!item.Value.IsPrivMsgChannel && item.Value.Joined)
                         LoadMessages(item.Value, GlobalManager.MaxMessagesDisplayed, true);
@@ -162,17 +163,17 @@ namespace MySnooper
          */
         private void LeagueSearcherLoaded(object sender, RoutedEventArgs e)
         {
-            LeagueSearcherImage = (Image)((Button)sender).Content;
-            LeagueSearcherOff = LeagueSearcherImage.Source;
+            leagueSearcherImage = (Image)((Button)sender).Content;
+            leagueSearcherOff = leagueSearcherImage.Source;
 
-            LeagueSearcherOn = new BitmapImage();
-            LeagueSearcherOn.DecodePixelHeight = Convert.ToInt32(LeagueSearcherImage.Height);
-            LeagueSearcherOn.DecodePixelWidth = Convert.ToInt32(LeagueSearcherImage.Width);
-            LeagueSearcherOn.CacheOption = BitmapCacheOption.OnLoad;
-            LeagueSearcherOn.BeginInit();
-            LeagueSearcherOn.UriSource = new Uri("pack://application:,,,/Resources/searching.png");
-            LeagueSearcherOn.EndInit();
-            LeagueSearcherOn.Freeze();
+            leagueSearcherOn = new BitmapImage();
+            leagueSearcherOn.DecodePixelHeight = Convert.ToInt32(leagueSearcherImage.Height);
+            leagueSearcherOn.DecodePixelWidth = Convert.ToInt32(leagueSearcherImage.Width);
+            leagueSearcherOn.CacheOption = BitmapCacheOption.OnLoad;
+            leagueSearcherOn.BeginInit();
+            leagueSearcherOn.UriSource = new Uri("pack://application:,,,/Resources/searching.png");
+            leagueSearcherOn.EndInit();
+            leagueSearcherOn.Freeze();
 
             e.Handled = true;
         }
@@ -183,36 +184,36 @@ namespace MySnooper
          */
         private void AwayOnOffLoaded(object sender, RoutedEventArgs e)
         {
-            AwayOnOffButton = (Button)sender;
-            AwayOnOffImage = (Image)AwayOnOffButton.Content;
-            AwayOffImage = AwayOnOffImage.Source;
-            AwayOnOffDefaultTooltip = AwayOnOffButton.ToolTip.ToString();
+            awayOnOffButton = (Button)sender;
+            awayOnOffImage = (Image)awayOnOffButton.Content;
+            awayOffImage = awayOnOffImage.Source;
+            awayOnOffDefaultTooltip = awayOnOffButton.ToolTip.ToString();
 
-            AwayOnImage = new BitmapImage();
-            AwayOnImage.DecodePixelHeight = Convert.ToInt32(AwayOnOffImage.Height);
-            AwayOnImage.DecodePixelWidth = Convert.ToInt32(AwayOnOffImage.Width);
-            AwayOnImage.CacheOption = BitmapCacheOption.OnLoad;
-            AwayOnImage.BeginInit();
-            AwayOnImage.UriSource = new Uri("pack://application:,,,/Resources/away.png");
-            AwayOnImage.EndInit();
-            AwayOnImage.Freeze();
+            awayOnImage = new BitmapImage();
+            awayOnImage.DecodePixelHeight = Convert.ToInt32(awayOnOffImage.Height);
+            awayOnImage.DecodePixelWidth = Convert.ToInt32(awayOnOffImage.Width);
+            awayOnImage.CacheOption = BitmapCacheOption.OnLoad;
+            awayOnImage.BeginInit();
+            awayOnImage.UriSource = new Uri("pack://application:,,,/Resources/away.png");
+            awayOnImage.EndInit();
+            awayOnImage.Freeze();
 
             e.Handled = true;
         }
 
         private void NotificatorOnOffLoaded(object sender, RoutedEventArgs e)
         {
-            NotificatorImage = (Image)((Button)sender).Content;
-            NotificatorOff = NotificatorImage.Source;
+            notificatorImage = (Image)((Button)sender).Content;
+            notificatorOff = notificatorImage.Source;
 
-            NotificatorOn = new BitmapImage();
-            NotificatorOn.DecodePixelHeight = Convert.ToInt32(NotificatorImage.Height);
-            NotificatorOn.DecodePixelWidth = Convert.ToInt32(NotificatorImage.Width);
-            NotificatorOn.CacheOption = BitmapCacheOption.OnLoad;
-            NotificatorOn.BeginInit();
-            NotificatorOn.UriSource = new Uri("pack://application:,,,/Resources/notificatoron.png");
-            NotificatorOn.EndInit();
-            NotificatorOn.Freeze();
+            notificatorOn = new BitmapImage();
+            notificatorOn.DecodePixelHeight = Convert.ToInt32(notificatorImage.Height);
+            notificatorOn.DecodePixelWidth = Convert.ToInt32(notificatorImage.Width);
+            notificatorOn.CacheOption = BitmapCacheOption.OnLoad;
+            notificatorOn.BeginInit();
+            notificatorOn.UriSource = new Uri("pack://application:,,,/Resources/notificatoron.png");
+            notificatorOn.EndInit();
+            notificatorOn.Freeze();
 
             e.Handled = true;
         }
@@ -250,18 +251,7 @@ namespace MySnooper
 
             SliderThumb = false;
 
-            SoundPlayer sp;
-            if (SoundEnabled && soundPlayers.TryGetValue("PMBeep", out sp))
-            {
-                try
-                {
-                    sp.Play();
-                }
-                catch (Exception ex)
-                {
-                    ErrorLog.Log(ex);
-                }
-            }
+            this.PlaySound("PMBeep");
         }
 
         private void SliderChangeWithThumb(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
@@ -276,6 +266,12 @@ namespace MySnooper
                 Slider slider = (Slider)sender;
                 ChangeVolume(slider.Value);
             }
+        }
+
+        private void OpenNews(object sender, RoutedEventArgs e)
+        {
+            OpenNewsWindow();
+            e.Handled = true;
         }
     }
 }

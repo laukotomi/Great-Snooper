@@ -51,17 +51,13 @@ namespace MySnooper
                 }
             }
             catch (Exception) { }
-            lock (ErrorLog.Locker)
-            {
-                ErrorLog.Logging = false;
-            }
+            ErrorLog.Logging = false;
         }
     }
 
     public static class ErrorLog
     {
-        public static bool Logging = false;
-        public static object Locker = new object();
+        public static volatile bool Logging = false;
         private static string filename = string.Empty;
 
         public static void Log(Exception ex)
@@ -74,17 +70,14 @@ namespace MySnooper
 
             while (true)
             {
-                lock (Locker)
+                if (!Logging)
                 {
-                    if (!Logging)
-                    {
-                        Logging = true;
-                        ExceptionLogger el = new ExceptionLogger(ex, filename);
-                        Thread t = new Thread(el.DoLog);
-                        t.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
-                        t.Start();
-                        break;
-                    }
+                    Logging = true;
+                    ExceptionLogger el = new ExceptionLogger(ex, filename);
+                    Thread t = new Thread(el.DoLog);
+                    t.CurrentUICulture = new System.Globalization.CultureInfo("en-US");
+                    t.Start();
+                    break;
                 }
                 Thread.Sleep(10);
             }

@@ -612,15 +612,13 @@ namespace MySnooper
             
             if (!loggedIn && wormNetC != null && wormNetC.IsRunning)
             {
-                wormNetC.CancelAsync();
+                wormNetC.Cancel = true;
                 e.Cancel = true;
                 return;
             }
 
             if (loggedIn)
-            {
                 wormNetC.ConnectionState -= ConnectionState;
-            }
 
             Properties.Settings.Default.ServerAddresses = ServerList.Serialize();
             Properties.Settings.Default.Save();
@@ -650,7 +648,6 @@ namespace MySnooper
                 serverList.Add(server);
 
             ListEditor window = new ListEditor(serverList, "Server list", ListEditor.ListModes.Normal);
-            window.Closing += ServerListWindowClosed;
             window.ItemRemoved += RemoveServer;
             window.ItemAdded += AddServer;
             window.Owner = this;
@@ -672,18 +669,6 @@ namespace MySnooper
             this.Dispatcher.Invoke(new Action(delegate()
             {
                 this.ServerList.Remove(e.Argument);
-            }
-            ));
-        }
-
-        private void ServerListWindowClosed(object sender, CancelEventArgs e)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                var obj = sender as ListEditor;
-                obj.Closing -= ServerListWindowClosed;
-                obj.ItemRemoved -= RemoveServer;
-                obj.ItemAdded -= AddServer;
             }
             ));
         }

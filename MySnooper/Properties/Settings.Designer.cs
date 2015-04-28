@@ -12,7 +12,7 @@ namespace MySnooper.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "12.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -758,18 +758,6 @@ namespace MySnooper.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string InfoMessage {
-            get {
-                return ((string)(this["InfoMessage"]));
-            }
-            set {
-                this["InfoMessage"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string ColumnOrder {
             get {
                 return ((string)(this["ColumnOrder"]));
@@ -878,18 +866,6 @@ namespace MySnooper.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool HideSnooper {
-            get {
-                return ((bool)(this["HideSnooper"]));
-            }
-            set {
-                this["HideSnooper"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool ShowBannedMessages {
             get {
                 return ((bool)(this["ShowBannedMessages"]));
@@ -968,6 +944,42 @@ namespace MySnooper.Properties {
             }
             set {
                 this["ChatMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool ActionMessageWithGT {
+            get {
+                return ((bool)(this["ActionMessageWithGT"]));
+            }
+            set {
+                this["ActionMessageWithGT"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EnergySaveMode {
+            get {
+                return ((bool)(this["EnergySaveMode"]));
+            }
+            set {
+                this["EnergySaveMode"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool MuteState {
+            get {
+                return ((bool)(this["MuteState"]));
+            }
+            set {
+                this["MuteState"] = value;
             }
         }
     }

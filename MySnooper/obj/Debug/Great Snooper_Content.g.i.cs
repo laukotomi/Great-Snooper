@@ -8,6 +8,6 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/notificatoron.png")]
+[assembly: System.Windows.Resources.AssemblyAssociatedContentFileAttribute("resources/newsicon.png")]
 
 

@@ -7,34 +7,24 @@ namespace MySnooper
     public partial class MainWindow : MetroWindow
     {
         // Highlight (If a message contained your name in the messages of one of the channels)
-        private void Highlight(Channel ch)
+        public void Highlight(Channel ch)
         {
             if (Channels.SelectedItem == null || !ch.BeepSoundPlay)
                 return;
 
             Channel msgch = (Channel)((TabItem)Channels.SelectedItem).DataContext;
 
-            if (ch.BeepSoundPlay && (msgch != ch || !isWindowFocused))
+            if (ch.BeepSoundPlay && (msgch != ch || !IsWindowFocused))
             {
                 ch.NewMessages = true;
                 ch.BeepSoundPlay = false;
-                if (Properties.Settings.Default.TrayFlashing && !isWindowFocused)
+                if (Properties.Settings.Default.TrayFlashing && !IsWindowFocused)
                     this.FlashWindow();
                 if (Properties.Settings.Default.TrayNotifications)
                     myNotifyIcon.ShowBalloonTip(null, "You have been highlighted!", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
 
-                SoundPlayer sp;
-                if (Properties.Settings.Default.HBeepEnabled && SoundEnabled && soundPlayers.TryGetValue("HBeep", out sp))
-                {
-                    try
-                    {
-                        sp.Play();
-                    }
-                    catch (System.Exception e)
-                    {
-                        ErrorLog.Log(e);
-                    }
-                }
+                if (Properties.Settings.Default.HBeepEnabled)
+                    this.PlaySound("HBeep");
             }
         }
     }

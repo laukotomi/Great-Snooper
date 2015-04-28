@@ -73,7 +73,7 @@ namespace MySnooper
         }
 
         // Send a message to a channel (+ user functions)
-        private void SendMessageToChannel(string textToSend, Channel channel, bool userMessage = false)
+        public void SendMessageToChannel(string textToSend, Channel channel, bool userMessage = false)
         {
             // Command message
             if (textToSend[0] == '/')
@@ -99,12 +99,12 @@ namespace MySnooper
 
                     case "msg":
                         if (text.Contains(" "))
-                            channel.Server.Send("PRIVMSG " + channel.Name + " :" + text);
+                            channel.Server.SendMessage(channel.Name, text);
                         break;
 
                     case "nick":
                         if (text.Length > 0 && channel != null && channel.Joined && !channel.Server.IsWormNet)
-                            channel.Server.Send("NICK " + text);
+                            channel.Server.NickChange(text);
                         break;
 
                     case "away":
@@ -119,13 +119,23 @@ namespace MySnooper
                     case "ctcp":
                         if (channel != null && channel.Joined && text.Length > 0)
                         {
+                            string ctcpCommand = text;
+                            string ctcpText = string.Empty;
+
+                            spacePos = text.IndexOf(' ');
+                            if (spacePos != -1)
+                            {
+                                ctcpCommand = text.Substring(0, spacePos);
+                                ctcpText = text.Substring(spacePos + 1);
+                            }
+
                             if (channel.IsPrivMsgChannel)
                             {
                                 if (channel.Clients.Count == 1)
-                                    channel.Server.Send("PRIVMSG " + channel.Clients[0].Name + " :" + "\x01" + text + "\x01");
+                                    channel.Server.SendCTCPMessage(channel.Clients[0].Name, ctcpCommand, ctcpText);
                             }
                             else
-                                channel.Server.Send("PRIVMSG " + channel.Name + " :" + "\x01" + text + "\x01");
+                                channel.Server.SendCTCPMessage(channel.Name, ctcpCommand, ctcpText);
                         }
                         break;
 
@@ -133,11 +143,11 @@ namespace MySnooper
                         var sb = new StringBuilder();
                         var helper = new Dictionary<string, bool>();
                         int count = 0;
-                        for (int i = 0; i < servers.Count; i++)
+                        for (int i = 0; i < Servers.Count; i++)
                         {
-                            if (servers[i].IsRunning)
+                            if (Servers[i].IsRunning)
                             {
-                                foreach (var item in servers[i].Clients)
+                                foreach (var item in Servers[i].Clients)
                                 {
                                     if (item.Value.ClientGreatSnooper && !helper.ContainsKey(item.Value.Name))
                                     {
@@ -168,7 +178,7 @@ namespace MySnooper
                 }
             }
             // Action message
-            else if (textToSend[0] == '>')
+            else if (Properties.Settings.Default.ActionMessageWithGT && textToSend[0] == '>')
             {
                 string text = textToSend.Substring(1).Trim();
                 if (text.Length > 0)
@@ -188,14 +198,15 @@ namespace MySnooper
                             foreach (Client c in channel.Clients)
                             {
                                 if (c.OnlineStatus != 0 && !c.IsBanned)
-                                    channel.Server.Send("PRIVMSG " + c.Name + " :" + "\x01" + "CMESSAGE " + channel.HashName + "|" + text + "\x01");
+                                    channel.Server.SendCTCPMessage(c.Name, "CMESSAGE", channel.HashName + "|" + text);
                             }
                         }
                         else if (channel.Clients[0].OnlineStatus != 0)
-                            channel.Server.Send("PRIVMSG " + channel.Clients[0].Name + " :" + text);
+                            channel.Server.SendMessage(channel.Clients[0].Name, text);
                     }
                     else
-                        channel.Server.Send("PRIVMSG " + channel.Name + " :" + text);
+                        channel.Server.SendMessage(channel.Name, text);
+
                     channel.AddMessage(channel.Server.User, text, MessageSettings.UserMessage);
                     if (userMessage)
                     {
@@ -219,14 +230,15 @@ namespace MySnooper
                     foreach (Client c in channel.Clients)
                     {
                         if (c.OnlineStatus != 0 && !c.IsBanned)
-                            channel.Server.Send("PRIVMSG " + c.Name + " :" + "\x01" + "CACTION " + channel.HashName + "|" + text + "\x01");
+                            channel.Server.SendCTCPMessage(c.Name, "CACTION", channel.HashName + "|" + text);
                     }
                 }
                 else if (channel.Clients[0].OnlineStatus != 0)
-                    channel.Server.Send("PRIVMSG " + channel.Clients[0].Name + " :" + "\x01" + "ACTION " + text + "\x01");
+                    channel.Server.SendCTCPMessage(channel.Clients[0].Name, "ACTION", text);
             }
             else
-                channel.Server.Send("PRIVMSG " + channel.Name + " :" + "\x01" + "ACTION " + text + "\x01");
+                channel.Server.SendCTCPMessage(channel.Name, "ACTION", text);
+
             channel.AddMessage(channel.Server.User, text, MessageSettings.ActionMessage);
             if (userMessage)
             {
@@ -326,7 +338,7 @@ namespace MySnooper
             return k;
         }
 
-        public bool AddNewMessage(Channel ch, MessageClass message, bool insert = false, string highlightWord = "")
+        public bool AddNewMessage(Channel ch, MessageClass message, bool insert = false)
         {
             if (Properties.Settings.Default.ChatMode && (
                 message.Style.Type == MessageTypes.Part ||
@@ -385,7 +397,7 @@ namespace MySnooper
                         Italic word = new Italic(new Run(words[i]));
                         p.Inlines.Add(word);
                     }
-                    else if (highlightWord == words[i])
+                    else if (message.HighlightWord == words[i])
                     {
                         // Flush the sb content
                         if (sb.Length > 0)
@@ -417,7 +429,6 @@ namespace MySnooper
                         MessageSettings.LoadSettingsFor(word, MessageSettings.HyperLinkStyle);
                         word.NavigateUri = new Uri(words[i]);
                         word.RequestNavigate += OpenURLInBrowser;
-                        word.Unloaded += HyperlinkUnloaded;
                         p.Inlines.Add(word);
                     }
                     else
@@ -526,11 +537,11 @@ namespace MySnooper
 
         private void ChangeMessageColorForClient(Client c, SolidColorBrush color)
         {
-            for (int i = 0; i < servers.Count; i++)
+            for (int i = 0; i < Servers.Count; i++)
             {
-                if (servers[i].IsRunning)
+                if (Servers[i].IsRunning)
                 {
-                    foreach (var item in servers[i].ChannelList)
+                    foreach (var item in Servers[i].ChannelList)
                     {
                         Channel ch = item.Value;
                         if (ch.Joined && ch.TheFlowDocument.Blocks.Count > 0)
@@ -547,17 +558,6 @@ namespace MySnooper
                     }
                 }
             }
-        }
-
-
-
-        // Unload subscribed hyperlink events
-        private void HyperlinkUnloaded(object sender, RoutedEventArgs e)
-        {
-            var obj = sender as Hyperlink;
-            obj.RequestNavigate -= OpenURLInBrowser;
-            obj.Unloaded -= HyperlinkUnloaded;
-            e.Handled = true;
         }
 
         private void OpenURLInBrowser(object sender, RequestNavigateEventArgs e)

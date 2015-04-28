@@ -46,9 +46,9 @@ namespace MySnooper
 
                 string lowerName = data[0].ToLower();
                 Client c;
-                for (int j = 0; j < servers.Count; j++)
+                for (int j = 0; j < Servers.Count; j++)
                 {
-                    if (servers[j].IsRunning && servers[j].Clients.TryGetValue(lowerName, out c))
+                    if (Servers[j].IsRunning && Servers[j].Clients.TryGetValue(lowerName, out c))
                     {
                         if (c.TusActive == false)
                         {

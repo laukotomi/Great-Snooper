@@ -24,6 +24,7 @@ namespace MySnooper
 
         private Dictionary<string, bool> NewsSeen;
 
+        public News() { } // Never used, but visual stdio throws an error if not exists
         public News(List<Dictionary<string, string>> news, Dictionary<string, bool> NewsSeen)
         {
             InitializeComponent();
@@ -51,9 +52,9 @@ namespace MySnooper
                     string tc;
                     if (item.TryGetValue("textcolor", out tc))
                         rtb.Foreground = new SolidColorBrush((Color)ColorConverter.ConvertFromString(tc));
-                    string fs;
+                    string fs = "13";
                     if (item.TryGetValue("fontsize", out fs))
-                        rtb.FontSize = 13;//double.Parse(fs);
+                        rtb.FontSize = double.Parse(fs);
                     rtb.Document = BBParser.Parse(item["bbcode"]);
                     g.Children.Add(rtb);
                     NewsFlipView.Items.Add(g);

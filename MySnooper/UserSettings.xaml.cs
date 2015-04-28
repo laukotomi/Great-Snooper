@@ -34,17 +34,16 @@ namespace MySnooper
             AddBoolSetting(GeneralSettingsGrid, "DeleteLogs", "Delete channel logs older than 30 days at startup:");
             AddBoolSetting(GeneralSettingsGrid, "SaveInstantColors", "Save instant colors for users:");
             AddTextSetting(GeneralSettingsGrid, "QuitMessagee", "Quit message:", new GSVersionValidator());
-            //AddTextSetting(GeneralSettingsGrid, "InfoMessage", "Information message (real name irc field):", new GSVersionValidator());
             WAExeText.Text = Properties.Settings.Default.WaExe;
 
             // Appearance
-            AddBoolSetting(AppearanceGrid, "ShowBannedUsers", "Show banned users in user list:");
-            AddBoolSetting(AppearanceGrid, "ShowBannedMessages", "Show messages of banned users in the channels:");
-            AddBoolSetting(AppearanceGrid, "ShowInfoColumn", "Show information column in user list:");
 
             // Window
+            AddBoolSetting(WindowGrid, "ShowBannedUsers", "Show banned users in user list:");
+            AddBoolSetting(WindowGrid, "ShowBannedMessages", "Show messages of banned users in the channels:");
+            AddBoolSetting(WindowGrid, "ShowInfoColumn", "Show information column in user list:");
             AddBoolSetting(WindowGrid, "CloseToTray", "Exit button minimizes the snooper to tray:");
-            AddBoolSetting(WindowGrid, "HideSnooper", "Hide snooper to tray when I host or join a game:");
+            AddBoolSetting(WindowGrid, "EnergySaveMode", "Energy save mode:");
 
             // Notifications
             AddBoolSetting(NotificationsGrid, "AskNotificatorOff", "Ask if I would like to turn off notificator when I host or join a game:");
@@ -60,6 +59,7 @@ namespace MySnooper
 
             // Message styles
             AddBoolSetting(MessagesGrid, "MessageTime", "Show the time when the message arrived:");
+            AddBoolSetting(MessagesGrid, "ActionMessageWithGT", "Action message using '>' character:");
             AddStyleSetting(MessageStylesGrid, "UserMessageStyle", "Style of your message:", MessageSettings.UserMessage);
             AddStyleSetting(MessageStylesGrid, "ChannelMessageStyle", "Style of other users' message:", MessageSettings.ChannelMessage);
             AddStyleSetting(MessageStylesGrid, "JoinMessageStyle", "Join message style:", MessageSettings.JoinMessage);
@@ -217,15 +217,7 @@ namespace MySnooper
             var window = new FontChooser((string)tag[0], (string)tag[1], (MessageSetting)tag[2]);
             window.SaveSetting += window_SaveSetting;
             window.Owner = this;
-            window.Closing += window_Closing;
             window.ShowDialog();
-        }
-
-        void window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
-        {
-            FontChooser window = (FontChooser)sender;
-            window.SaveSetting -= window_SaveSetting;
-            window.Closing -= window_Closing;
         }
 
         void window_SaveSetting(object sender, EventArgs e)

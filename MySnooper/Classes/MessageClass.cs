@@ -8,15 +8,17 @@ namespace MySnooper
     {
         public Client Sender { get; private set; }
         public string Message { get; private set; }
+        public string HighlightWord { get; private set; }
         public DateTime Time { get; private set; }
         public MessageSetting Style { get; private set; }
 
-        public MessageClass(Client Sender, string Message, MessageSetting setting)
+        public MessageClass(Client Sender, string Message, MessageSetting setting, string highlightWord)
         {
             this.Sender = Sender;
             this.Message = Message;
             this.Style = setting;
             this.Time = DateTime.Now;
+            this.HighlightWord = highlightWord;
         }
     }
 }

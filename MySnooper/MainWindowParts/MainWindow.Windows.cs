@@ -49,7 +49,7 @@ namespace MySnooper
                 }
             }
 
-            if (searchHere != null && Properties.Settings.Default.AskLeagueSearcherOff)
+            if (SearchHere != null && Properties.Settings.Default.AskLeagueSearcherOff)
             {
                 MessageBoxResult res = MessageBox.Show("Would you like to turn off league searcher?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (res == MessageBoxResult.Yes)
@@ -62,7 +62,7 @@ namespace MySnooper
                 if (res == MessageBoxResult.Yes)
                 {
                     Notifications.Clear();
-                    NotificatorImage.Source = NotificatorOff;
+                    notificatorImage.Source = notificatorOff;
                 }
             }
 
@@ -70,20 +70,8 @@ namespace MySnooper
 
             HostingWindow = new Hosting(ServerAddress, gameListChannel.Name.Substring(1), gameListChannel.Scheme, hexcc);
             HostingWindow.GameHosted += GameHosted;
-            HostingWindow.Closing += HostingClosing;
             HostingWindow.Owner = this;
             HostingWindow.ShowDialog();
-        }
-
-        private void HostingClosing(object sender, CancelEventArgs e)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                var obj = sender as Hosting;
-                obj.GameHosted -= GameHosted;
-                obj.Closing -= HostingClosing;
-            }
-            ));
         }
 
         private void GameHosted(object sender, GameHostedEventArgs e)
@@ -95,6 +83,8 @@ namespace MySnooper
                     ExitSnooper = e.Arguments;
 
                     startedGameType = StartedGameTypes.Host;
+                    lobbyWindow = IntPtr.Zero;
+                    gameWindow = IntPtr.Zero;
                     gameProcess = new System.Diagnostics.Process();
                     gameProcess.StartInfo.UseShellExecute = false;
                     gameProcess.StartInfo.CreateNoWindow = true;
@@ -120,9 +110,6 @@ namespace MySnooper
 
                         if (Properties.Settings.Default.MarkAway)
                             SendMessageToChannel("/away", null);
-
-                        if (Properties.Settings.Default.HideSnooper)
-                            this.Hide();
                     }
                     else
                     {
@@ -139,7 +126,6 @@ namespace MySnooper
         {
             UserSettings window = new UserSettings();
             window.SettingChanged += SettingChanged;
-            window.Closing += SettingsClosing;
             window.Owner = this;
             window.ShowDialog();
             e.Handled = true;
@@ -160,11 +146,11 @@ namespace MySnooper
                         break;
 
                     case SettingChangedType.Style:
-                        for (int i = 0; i < servers.Count; i++)
+                        for (int i = 0; i < Servers.Count; i++)
                         {
-                            if (servers[i].IsRunning)
+                            if (Servers[i].IsRunning)
                             {
-                                foreach (var item in servers[i].ChannelList)
+                                foreach (var item in Servers[i].ChannelList)
                                 {
                                     if (item.Value.Joined)
                                         LoadMessages(item.Value, GlobalManager.MaxMessagesDisplayed, true);
@@ -177,7 +163,7 @@ namespace MySnooper
                         switch (e.SettingName)
                         {
                             case "ShowWormsChannel":
-                                Channel ch = servers[1].ChannelList["#worms"];
+                                Channel ch = Servers[1].ChannelList["#worms"];
                                 if (Properties.Settings.Default.ShowWormsChannel)
                                 {
                                     for (int i = 0; i < Channels.Items.Count; i++)
@@ -194,39 +180,18 @@ namespace MySnooper
                                 else
                                 {
                                     if (ch.Joined)
-                                    {
-                                        gameSurgeIsConnected = false;
                                         ch.Part();
-                                        ch.Server.CancelAsync();
-                                    }
                                     CloseChannelTab(ch, true);
                                 }
                                 break;
 
                             case "ShowBannedUsers":
-                                for (int i = 0; i < servers.Count; i++)
+                                for (int i = 0; i < Servers.Count; i++)
                                 {
-                                    foreach (var item in servers[i].ChannelList)
+                                    foreach (var item in Servers[i].ChannelList)
                                     {
                                         if (!item.Value.IsPrivMsgChannel && item.Value.TheDataGrid.ItemsSource != null)
-                                        {
-                                            var view = CollectionViewSource.GetDefaultView(item.Value.TheDataGrid.ItemsSource);
-                                            if (view != null)
-                                            {
-                                                if (!Properties.Settings.Default.ShowBannedUsers)
-                                                {
-                                                    view.Filter = o =>
-                                                    {
-                                                        Client c = o as Client;
-                                                        if (c.IsBanned)
-                                                            return false;
-                                                        return true;
-                                                    };
-                                                }
-                                                else
-                                                    view.Filter = null;
-                                            }
-                                        }
+                                            SetDefaultViewForChannel(item.Value);
                                     }
                                 }
                                 break;
@@ -234,11 +199,11 @@ namespace MySnooper
                             case "MessageTime":
                             case "ShowBannedMessages":
                                 // Reload messages
-                                for (int i = 0; i < servers.Count; i++)
+                                for (int i = 0; i < Servers.Count; i++)
                                 {
-                                    if (servers[i].IsRunning)
+                                    if (Servers[i].IsRunning)
                                     {
-                                        foreach (var item in servers[i].ChannelList)
+                                        foreach (var item in Servers[i].ChannelList)
                                         {
                                             if (item.Value.Joined)
                                                 LoadMessages(item.Value, GlobalManager.MaxMessagesDisplayed, true);
@@ -248,9 +213,9 @@ namespace MySnooper
                                 break;
 
                             case "ShowInfoColumn":
-                                for (int i = 0; i < servers.Count; i++)
+                                for (int i = 0; i < Servers.Count; i++)
                                 {
-                                    foreach (var item in servers[i].ChannelList)
+                                    foreach (var item in Servers[i].ChannelList)
                                     {
                                         if (!item.Value.IsPrivMsgChannel && item.Value.TheDataGrid != null)
                                         {
@@ -265,17 +230,6 @@ namespace MySnooper
             }));
         }
 
-        private void SettingsClosing(object sender, CancelEventArgs e)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                var obj = sender as UserSettings;
-                obj.SettingChanged -= SettingChanged;
-                obj.Closing -= SettingsClosing;
-            }
-            ));
-        }
-
         private void BuddyListClicked(object sender, RoutedEventArgs e)
         {
             SortedObservableCollection<string> List2 = new SortedObservableCollection<string>();
@@ -283,24 +237,11 @@ namespace MySnooper
                 List2.Add(item.Value);
 
             ListEditor window = new ListEditor(List2, "Your buddy list");
-            window.Closing += BuddyListWindowClosed;
             window.ItemRemoved += RemoveUserFromBuddyList;
             window.ItemAdded += AddUserToBuddyList;
             window.Owner = this;
             window.ShowDialog();
             e.Handled = true;
-        }
-
-        private void BuddyListWindowClosed(object sender, EventArgs e)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                var obj = sender as ListEditor;
-                obj.Closing -= BuddyListWindowClosed;
-                obj.ItemRemoved -= RemoveUserFromBuddyList;
-                obj.ItemAdded -= AddUserToBuddyList;
-            }
-            ));
         }
 
         private void RemoveUserFromBuddyList(object sender, StringEventArgs e)
@@ -328,24 +269,11 @@ namespace MySnooper
                 List2.Add(item.Value);
 
             ListEditor window = new ListEditor(List2, "Your ignore list");
-            window.Closing += BanListWindowClosed;
             window.ItemRemoved += RemoveUserFromBanList;
             window.ItemAdded += AddUserToBanList;
             window.Owner = this;
             window.ShowDialog();
             e.Handled = true;
-        }
-
-        private void BanListWindowClosed(object sender, EventArgs e)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                var obj = sender as ListEditor;
-                obj.Closing -= BanListWindowClosed;
-                obj.ItemRemoved -= RemoveUserFromBanList;
-                obj.ItemAdded -= AddUserToBanList;
-            }
-            ));
         }
 
         private void RemoveUserFromBanList(object sender, StringEventArgs e)
@@ -381,23 +309,11 @@ namespace MySnooper
                 return;
             }
 
-            LeagueSearcher window = new LeagueSearcher(leagues, searchHere != null, spamAllowed);
+            LeagueSearcher window = new LeagueSearcher(leagues, SearchHere != null, spamAllowed);
             window.LuckyLuke += LuckyLuke;
-            window.Closing += SearcherClosing;
             window.Owner = this;
             window.ShowDialog();
             e.Handled = true;
-        }
-
-        private void SearcherClosing(object sender, CancelEventArgs e)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                LeagueSearcher window = (LeagueSearcher)sender;
-                window.LuckyLuke -= LuckyLuke;
-                window.Closing -= SearcherClosing;
-            }
-            ));
         }
 
         private void LuckyLuke(object sender, LookForTheseEventArgs e)
@@ -410,7 +326,7 @@ namespace MySnooper
                 }
                 else
                 {
-                    searchHere = gameListChannel;
+                    SearchHere = gameListChannel;
 
                     if (e.Spam)
                     {
@@ -427,9 +343,9 @@ namespace MySnooper
                         spamText = sb.ToString();
                     }
 
-                    foundUsers.Clear();
+                    FoundUsers.Clear();
                     foreach (var item in e.Leagues)
-                        foundUsers.Add(item.Key, new List<string>());
+                        FoundUsers.Add(item.Key, new List<string>());
                 }
             }
             ));
@@ -445,7 +361,6 @@ namespace MySnooper
 
             Notificator window = new Notificator(Notifications.Count != 0);
             window.NotificatorEvent += window_NotificatorEvent;
-            window.Closing += NotificatorClosing;
             window.Owner = this;
             window.ShowDialog();
             e.Handled = true;
@@ -458,49 +373,25 @@ namespace MySnooper
                 if (e == null) // Stop request
                 {
                     Notifications.Clear();
-                    NotificatorImage.Source = NotificatorOff;
+                    notificatorImage.Source = notificatorOff;
                 }
                 else
                 {
                     foreach (NotificatorClass nc in e.NotificatorList)
                         Notifications.Add(nc);
-                    NotificatorImage.Source = NotificatorOn;
+                    notificatorImage.Source = notificatorOn;
                 }
             }
             ));
         }
 
-        private void NotificatorClosing(object sender, CancelEventArgs e)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                Notificator window = (Notificator)sender;
-                window.NotificatorEvent -= window_NotificatorEvent;
-                window.Closing -= NotificatorClosing;
-            }
-            ));
-        }
-
-
         private void AwayManager(object sender, RoutedEventArgs e)
         {
             AwayManager window = new AwayManager(AwayText);
             window.AwayChanged += AwayChanged;
-            window.Closing += AwayManagerClosing;
             window.Owner = this;
             window.ShowDialog();
             e.Handled = true;
-        }
-
-        private void AwayManagerClosing(object sender, CancelEventArgs e)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                AwayManager window = (AwayManager)sender;
-                window.AwayChanged -= AwayChanged;
-                window.Closing -= AwayManagerClosing;
-            }
-            ));
         }
 
         private void AwayChanged(object sender, BoolEventArgs e)

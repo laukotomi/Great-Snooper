@@ -65,6 +65,11 @@
                             <Image Source="Resources/log.png" Width="30" />
                         </MenuItem.Icon>
                     </MenuItem>
+                    <MenuItem Header="Show news" Click="OpenNews">
+                        <MenuItem.Icon>
+                            <Image Source="Resources/newsIcon.png" Width="30" />
+                        </MenuItem.Icon>
+                    </MenuItem>
                     <MenuItem Header="Settings" Click="SettingsClicked">
                         <MenuItem.Icon>
                             <Image Source="Resources/settings.png" Width="30" />

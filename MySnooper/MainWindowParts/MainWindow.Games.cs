@@ -1,6 +1,7 @@
 ﻿using MahApps.Metro.Controls;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Media;
 using System.Runtime.InteropServices;
 using System.Threading;
@@ -55,7 +56,7 @@ namespace MySnooper
             if (!CheckWAExe())
                 return;
 
-            if (searchHere != null && Properties.Settings.Default.AskLeagueSearcherOff)
+            if (SearchHere != null && Properties.Settings.Default.AskLeagueSearcherOff)
             {
                 MessageBoxResult res = MessageBox.Show("Would you like to turn off league searcher?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Question);
                 if (res == MessageBoxResult.Yes)
@@ -68,7 +69,7 @@ namespace MySnooper
                 if (res == MessageBoxResult.Yes)
                 {
                     Notifications.Clear();
-                    NotificatorImage.Source = NotificatorOff;
+                    notificatorImage.Source = notificatorOff;
                 }
             }
 
@@ -78,6 +79,8 @@ namespace MySnooper
                 ExitSnooper = exit;
 
                 startedGameType = StartedGameTypes.Join;
+                lobbyWindow = IntPtr.Zero;
+                gameWindow = IntPtr.Zero;
                 gameProcess = new System.Diagnostics.Process();
                 gameProcess.StartInfo.UseShellExecute = false;
                 gameProcess.StartInfo.FileName = Properties.Settings.Default.WaExe;
@@ -88,8 +91,6 @@ namespace MySnooper
                         SendMessageToChannel(">is joining a game: " + game.Name, gameListChannel);
                     if (Properties.Settings.Default.MarkAway)
                         SendMessageToChannel("/away", null);
-                    if (Properties.Settings.Default.HideSnooper)
-                        this.Hide();
                 }
                 else
                 {
@@ -99,8 +100,16 @@ namespace MySnooper
             }
         }
 
+        IntPtr lobbyWindow = IntPtr.Zero;
+        IntPtr gameWindow = IntPtr.Zero;
+
         private void GameProcess()
         {
+            if (lobbyWindow == IntPtr.Zero)
+                lobbyWindow = NativeMethods.FindWindow(null, "Worms Armageddon");
+            if (gameWindow == IntPtr.Zero)
+                gameWindow = NativeMethods.FindWindow(null, "Worms2D");
+
             if (startedGameType == StartedGameTypes.Host)
             {
                 // gameProcess = hoster.exe
@@ -109,39 +118,33 @@ namespace MySnooper
                     SendMessageToChannel("/back", null);
                     gameProcess.Dispose();
                     gameProcess = null;
-
-                    if (Properties.Settings.Default.HideSnooper)
-                    {
-                        this.Show();
-                        this.Activate();
-                    }
+                    return;
                 }
             }
             else
             {
-                IntPtr hwnd = NativeMethods.FindWindow("Worms2D", null);
-                if (hwnd != IntPtr.Zero)
+                if (ExitSnooper && gameWindow != IntPtr.Zero)
                 {
-                    if (ExitSnooper)
-                    {
-                        snooperClosing = true;
-                        this.Close();
-                        return;
-                    }
+                    snooperClosing = true;
+                    this.Close();
+                    return;
                 }
                 // gameProcess = wa.exe
-                else if (gameProcess.HasExited)
+                if (gameProcess.HasExited)
                 {
                     SendMessageToChannel("/back", null);
                     gameProcess.Dispose();
                     gameProcess = null;
-
-                    if (Properties.Settings.Default.HideSnooper)
-                    {
-                        this.Show();
-                        this.Activate();
-                    }
+                    return;
                 }
+            }
+
+            if (Properties.Settings.Default.EnergySaveMode && lobbyWindow != IntPtr.Zero)
+            {
+                if (NativeMethods.GetPlacement(lobbyWindow).showCmd == ShowWindowCommands.Normal && !EnergySaveModeOn)
+                    EnterEnergySaveMode();
+                else if (EnergySaveModeOn)
+                    LeaveEnergySaveMode();
             }
         }
 
@@ -208,29 +211,19 @@ namespace MySnooper
         // GameListForce is checked in MainWindow.xaml.cs : ClockTick()
         private void RefreshClick(object sender, RoutedEventArgs e)
         {
-            gameListForce = true;
+            GameListForce = true;
             e.Handled = true;
         }
 
         public void NotificatorFound(string str, Channel ch)
         {
-            if (Properties.Settings.Default.TrayFlashing && !isWindowFocused)
+            if (Properties.Settings.Default.TrayFlashing && !IsWindowFocused)
                 this.FlashWindow();
             if (Properties.Settings.Default.TrayNotifications)
                 myNotifyIcon.ShowBalloonTip(null, str, Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
 
-            SoundPlayer sp;
-            if (Properties.Settings.Default.NotificatorSoundEnabled && SoundEnabled && soundPlayers.TryGetValue("NotificatorSound", out sp))
-            {
-                try
-                {
-                    sp.Play();
-                }
-                catch (Exception ex)
-                {
-                    ErrorLog.Log(ex);
-                }
-            }
+            if (Properties.Settings.Default.NotificatorSoundEnabled)
+                this.PlaySound("NotificatorSound");
         }
     }
 }

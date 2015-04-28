@@ -20,6 +20,6 @@
         </Style>
     </controls:MetroWindow.Resources>
     <Grid>
-        <controls:FlipView Height="225" Width="350" Name="NewsFlipView" HorizontalAlignment="Center" VerticalAlignment="Center" IsBannerEnabled="False" SelectionChanged="NewsFlipView_SelectionChanged" />
+        <controls:FlipView MinHeight="225" Width="350" Name="NewsFlipView" MouseOverGlowEnabled="False" HorizontalAlignment="Center" VerticalAlignment="Center" IsBannerEnabled="False" SelectionChanged="NewsFlipView_SelectionChanged" />
     </Grid>
 </controls:MetroWindow>

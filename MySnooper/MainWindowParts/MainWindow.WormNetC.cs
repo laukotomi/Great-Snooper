@@ -51,7 +51,7 @@ namespace MySnooper
                     ch.Server.JoinChannel(ch.Name);
                 else
                 {
-                    gameSurgeIsConnected = true;
+                    GameSurgeIsConnected = true;
                     ch.Server.Connect();
                 }
             }
@@ -262,7 +262,7 @@ namespace MySnooper
             }
             Properties.Settings.Default.Save();
 
-            foreach (var item in servers[0].ChannelList)
+            foreach (var item in Servers[0].ChannelList)
             {
                 if (!item.Value.IsPrivMsgChannel)
                 {

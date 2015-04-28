@@ -64,16 +64,15 @@ namespace MySnooper
         public TabItem ChannelTabItem { get; private set; }
         public Border DisconnectedLayout { get; private set; }
         private Border connectedLayout;
-        private TabItem gameListTabItem;
         private TextBlock header;
         public RichTextBox TheRichTextBox { get; private set; }
         public FlowDocument TheFlowDocument { get; private set; }
         public ListBox GameListBox { get; private set; }
         public TextBox TheTextBox { get; private set; }
         public DataGrid TheDataGrid { get; private set; }
-        public bool ShowOlderMessagesInserted { get; private set; }
 
         public bool IsReconnecting { get; private set; }
+        public bool MessageReloadNeeded { get; set; } // When a message arrives while the snooper is minimized
 
         // These properties may change and then they may notify the UI thread about that
         public string Name
@@ -128,6 +127,7 @@ namespace MySnooper
                     GenerateHeader();
             }
         }
+
         public string ClientCount
         {
             get
@@ -135,6 +135,7 @@ namespace MySnooper
                 return _clientCount.ToString();
             }
         }
+
         public string GameCount
         {
             get
@@ -142,6 +143,7 @@ namespace MySnooper
                 return _gameCount.ToString();
             }
         }
+
         public bool CanHost
         {
             get { return _canHost; }
@@ -157,6 +159,10 @@ namespace MySnooper
 
         public bool Disabled
         {
+            get
+            {
+                return _disabled;
+            }
             set
             {
                 _disabled = value;
@@ -214,6 +220,7 @@ namespace MySnooper
             this.Name = name;
             this.Description = description;
             this.MessagesLoadedFrom = 0;
+            this.MessageReloadNeeded = false;
 
             // Make channel layout
             this.ChannelTabItem = new TabItem();
@@ -285,7 +292,8 @@ namespace MySnooper
                 ti.Content = this.TheDataGrid;
                 mw.UserList.Items.Add(ti);
 
-                this.gameListTabItem = mw.MakeGameListTabItem(this);
+                TabItem gameListTabItem = mw.MakeGameListTabItem(this);
+                GameListBox = (ListBox)((Border)((Grid)gameListTabItem.Content).Children[1]).Child;
                 mw.GameList.Items.Add(gameListTabItem);
             }
 
@@ -295,7 +303,6 @@ namespace MySnooper
             this.SendBack = false;
             this.IsLoading = false;
             this.UserMessageLoadedIdx = -1;
-            this.ShowOlderMessagesInserted = false;
             this.Server.ChannelList.Add(this.HashName, this);
         }
 
@@ -450,8 +457,7 @@ namespace MySnooper
                 {
                     this.GameList = new SortedObservableCollection<Game>();
                     this.GameList.CollectionChanged += GameList_CollectionChanged;
-                    ListBox lb = (ListBox)((Border)((Grid)this.gameListTabItem.Content).Children[1]).Child;
-                    lb.ItemsSource = this.GameList;
+                    this.GameListBox.ItemsSource = this.GameList;
                 }
             }
 
@@ -460,20 +466,7 @@ namespace MySnooper
                 this.Clients = new SortedObservableCollection<Client>();
                 this.Clients.CollectionChanged += Clients_CollectionChanged;
                 this.TheDataGrid.ItemsSource = this.Clients;
-                if (!Properties.Settings.Default.ShowBannedUsers)
-                {
-                    var view = CollectionViewSource.GetDefaultView(this.TheDataGrid.ItemsSource);
-                    if (view != null)
-                    {
-                        view.Filter = o =>
-                        {
-                            Client c = o as Client;
-                            if (c.IsBanned)
-                                return false;
-                            return true;
-                        };
-                    }
-                }
+                mw.SetDefaultViewForChannel(this);
 
                 if (Server.IsWormNet)
                 {
@@ -527,10 +520,13 @@ namespace MySnooper
                 Log(GlobalManager.NumOfOldMessagesToBeLoaded);
             }
 
-            MessageClass msg = new MessageClass(sender, message, style);
+            MessageClass msg = new MessageClass(sender, message, style, highlightWord);
             Messages.Add(msg);
-            if (!sender.IsBanned || !IsPrivMsgChannel && Properties.Settings.Default.ShowBannedMessages)
-                mw.AddNewMessage(this, msg, false, highlightWord);
+
+            if (mw.EnergySaveModeOn)
+                this.MessageReloadNeeded = true;
+            else if (!sender.IsBanned || !IsPrivMsgChannel && Properties.Settings.Default.ShowBannedMessages)
+                mw.AddNewMessage(this, msg, false);
         }
 
         public void ClearClients()
@@ -546,9 +542,7 @@ namespace MySnooper
                         c.PropertyChanged -= TheClient_PropertyChanged;
 
                         if (!this._disabled && this.Clients.Count > 1 && c.OnlineStatus != 0 && this.Messages.Count > 0)
-                        {
-                            this.Server.Send("PRIVMSG " + c.Name + " :" + "\x01" + "CLEAVING " + this.HashName + "\x01");
-                        }
+                            this.Server.SendCTCPMessage(c.Name, "CLEAVING", this.HashName);
                     }
                     else
                     {
@@ -594,6 +588,16 @@ namespace MySnooper
 
             if (this.IsLoading)
                 this.Loading(false);
+
+            if (this.Server.IsWormNet)
+            {
+                this.Server.LeaveChannel(this.Name);
+            }
+            else
+            {
+                mw.GameSurgeIsConnected = false;
+                this.Server.Cancel = true;
+            }
         }
 
         public void UserMessagesAdd(string message)
@@ -809,7 +813,7 @@ namespace MySnooper
                 foreach (Client client in this.Clients)
                 {
                     if (client.OnlineStatus != 0 && client != c)
-                        this.Server.Send("PRIVMSG " + client.Name + " :" + "\x01" + "CLIENTADD " + this.HashName + "|" + c.Name + "\x01");
+                        this.Server.SendCTCPMessage(client.Name, "CLIENTADD", this.HashName + "|" + c.Name);
                 }
             }
 
@@ -853,11 +857,11 @@ namespace MySnooper
                 foreach (Client client in this.Clients)
                 {
                     if (client.OnlineStatus != 0)
-                        this.Server.Send("PRIVMSG " + client.Name + " :" + "\x01" + "CLIENTREM " + this.HashName + "|" + c.Name + "\x01");
+                        this.Server.SendCTCPMessage(client.Name, "CLIENTREM", this.HashName + "|" + c.Name);
                 }
 
                 if (c.OnlineStatus != 0)
-                    this.Server.Send("PRIVMSG " + c.Name + " :" + "\x01" + "CLIENTREM " + this.HashName + "|" + c.Name + "\x01");
+                    this.Server.SendCTCPMessage(c.Name, "CLIENTREM", this.HashName + "|" + c.Name);
             }
 
             // update hashname
