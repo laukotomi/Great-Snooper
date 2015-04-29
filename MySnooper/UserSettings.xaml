@@ -39,7 +39,7 @@
 
         <TabItem Header="User groups">
             <ScrollViewer>
-                <Grid Name="AppearanceGrid" HorizontalAlignment="Center" Margin="0,20">
+                <Grid Name="UserGroupsGrid" HorizontalAlignment="Center" Margin="0,20">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="500"></ColumnDefinition>
                         <ColumnDefinition Width="50"></ColumnDefinition>
