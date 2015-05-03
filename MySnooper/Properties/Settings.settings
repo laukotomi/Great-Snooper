@@ -38,9 +38,6 @@
     <Setting Name="NoticeMessageStyle" Type="System.String" Scope="User">
       <Value Profile="(Default)">FF0000|13|0|0|0|0|Tahoma</Value>
     </Setting>
-    <Setting Name="BuddyJoinedMessageStyle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">ADFF2F|13|0|0|0|0|Tahoma</Value>
-    </Setting>
     <Setting Name="BuddyList" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -167,12 +164,6 @@
     <Setting Name="CloseToTray" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="SaveInstantColors" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="InstantColors" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="QuitMessagee" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -241,6 +232,48 @@
     </Setting>
     <Setting Name="MuteState" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Group0" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Buddies|9933CC00</Value>
+    </Setting>
+    <Setting Name="Group0List" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Group1" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Clanmates|8F07CEE6</Value>
+    </Setting>
+    <Setting Name="Group1List" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Group2" Type="System.String" Scope="User">
+      <Value Profile="(Default)">League players|AFFF8C00</Value>
+    </Setting>
+    <Setting Name="Group2List" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Group3" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Other 1|D7B024EB</Value>
+    </Setting>
+    <Setting Name="Group3List" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Group4" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Other 2|AFFF00FF</Value>
+    </Setting>
+    <Setting Name="Group4List" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Group5" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Other 3|D791A6BA</Value>
+    </Setting>
+    <Setting Name="Group5List" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Group6" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Other 4|B9D8BFD8</Value>
+    </Setting>
+    <Setting Name="Group6List" Type="System.String" Scope="User">
+      <Value Profile="(Default)" />
     </Setting>
   </Settings>
 </SettingsFile>

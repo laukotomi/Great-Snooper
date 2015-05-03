@@ -91,53 +91,6 @@ d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\MySnooper.Properties.Resou
 d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\MySnooper.csproj.GenerateResource.Cache
 d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\Great Snooper.exe.manifest
 d:\VS\Great Snooper\Great-Snooper\MySnooper\obj\Debug\Great Snooper.application
-C:\VS\Great-Snooper\MySnooper\bin\Debug\Great Snooper.exe.config
-C:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper.exe
-C:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper.pdb
-C:\VS\Great-Snooper\MySnooper\bin\Debug\Great Snooper.exe.manifest
-C:\VS\Great-Snooper\MySnooper\bin\Debug\Great Snooper.application
-C:\VS\Great-Snooper\MySnooper\bin\Debug\Great Snooper.exe
-C:\VS\Great-Snooper\MySnooper\bin\Debug\Great Snooper.pdb
-C:\VS\Great-Snooper\MySnooper\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
-C:\VS\Great-Snooper\MySnooper\bin\Debug\System.Windows.Interactivity.dll
-C:\VS\Great-Snooper\MySnooper\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
-C:\VS\Great-Snooper\MySnooper\bin\Debug\Hardcodet.Wpf.TaskbarNotification.xml
-C:\VS\Great-Snooper\MySnooper\obj\Debug\AwayManager.baml
-C:\VS\Great-Snooper\MySnooper\obj\Debug\FontChooser.baml
-C:\VS\Great-Snooper\MySnooper\obj\Debug\Hosting.baml
-C:\VS\Great-Snooper\MySnooper\obj\Debug\LeagueSearcher.baml
-C:\VS\Great-Snooper\MySnooper\obj\Debug\ListEditor.baml
-C:\VS\Great-Snooper\MySnooper\obj\Debug\UserSettings.baml
-C:\VS\Great-Snooper\MySnooper\obj\Debug\App.baml
-C:\VS\Great-Snooper\MySnooper\obj\Debug\AwayManager.g.cs
-C:\VS\Great-Snooper\MySnooper\obj\Debug\FontChooser.g.cs
-C:\VS\Great-Snooper\MySnooper\obj\Debug\Hosting.g.cs
-C:\VS\Great-Snooper\MySnooper\obj\Debug\LeagueSearcher.g.cs
-C:\VS\Great-Snooper\MySnooper\obj\Debug\ListEditor.g.cs
-C:\VS\Great-Snooper\MySnooper\obj\Debug\Login.g.cs
-C:\VS\Great-Snooper\MySnooper\obj\Debug\MainWindow.g.cs
-C:\VS\Great-Snooper\MySnooper\obj\Debug\News.g.cs
-C:\VS\Great-Snooper\MySnooper\obj\Debug\UserSettings.g.cs
-C:\VS\Great-Snooper\MySnooper\obj\Debug\App.g.cs
-C:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper_MarkupCompile.cache
-C:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper_MarkupCompile.lref
-C:\VS\Great-Snooper\MySnooper\obj\Debug\Login.baml
-C:\VS\Great-Snooper\MySnooper\obj\Debug\MainWindow.baml
-C:\VS\Great-Snooper\MySnooper\obj\Debug\News.baml
-C:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper.g.resources
-C:\VS\Great-Snooper\MySnooper\obj\Debug\MySnooper.Properties.Resources.resources
-C:\VS\Great-Snooper\MySnooper\obj\Debug\MySnooper.csproj.GenerateResource.Cache
-C:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper.exe.manifest
-C:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper.application
-C:\VS\Great-Snooper\MySnooper\obj\Debug\MySnooper.csprojResolveAssemblyReference.cache
-C:\VS\Great-Snooper\MySnooper\obj\Debug\GeneratedInternalTypeHelper.g.cs
-C:\VS\Great-Snooper\MySnooper\bin\Debug\MahApps.Metro.dll
-C:\VS\Great-Snooper\MySnooper\bin\Debug\MahApps.Metro.xml
-C:\VS\Great-Snooper\MySnooper\bin\Debug\Xceed.Wpf.DataGrid.dll
-C:\VS\Great-Snooper\MySnooper\bin\Debug\Xceed.Wpf.Toolkit.dll
-C:\VS\Great-Snooper\MySnooper\obj\Debug\Notificator.baml
-C:\VS\Great-Snooper\MySnooper\obj\Debug\Notificator.g.cs
-C:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper.TrustInfo.xml
 d:\VS\Great-Snooper\MySnooper\bin\Debug\Great Snooper.exe.config
 d:\VS\Great-Snooper\MySnooper\bin\Debug\Great Snooper.exe.manifest
 d:\VS\Great-Snooper\MySnooper\bin\Debug\Great Snooper.application
@@ -199,3 +152,49 @@ d:\VS\Great-Snooper\MySnooper\bin\Debug\ro\Xceed.Wpf.AvalonDock.resources.dll
 d:\VS\Great-Snooper\MySnooper\bin\Debug\ru\Xceed.Wpf.AvalonDock.resources.dll
 d:\VS\Great-Snooper\MySnooper\bin\Debug\sv\Xceed.Wpf.AvalonDock.resources.dll
 d:\VS\Great-Snooper\MySnooper\bin\Debug\zh-Hans\Xceed.Wpf.AvalonDock.resources.dll
+c:\VS\Great-Snooper\MySnooper\bin\Debug\Great Snooper.exe.config
+c:\VS\Great-Snooper\MySnooper\bin\Debug\Great Snooper.exe.manifest
+c:\VS\Great-Snooper\MySnooper\bin\Debug\Great Snooper.application
+c:\VS\Great-Snooper\MySnooper\bin\Debug\Great Snooper.exe
+c:\VS\Great-Snooper\MySnooper\bin\Debug\Great Snooper.pdb
+c:\VS\Great-Snooper\MySnooper\bin\Debug\Hardcodet.Wpf.TaskbarNotification.dll
+c:\VS\Great-Snooper\MySnooper\bin\Debug\MahApps.Metro.dll
+c:\VS\Great-Snooper\MySnooper\bin\Debug\System.Windows.Interactivity.dll
+c:\VS\Great-Snooper\MySnooper\bin\Debug\Xceed.Wpf.Toolkit.dll
+c:\VS\Great-Snooper\MySnooper\bin\Debug\Hardcodet.Wpf.TaskbarNotification.pdb
+c:\VS\Great-Snooper\MySnooper\bin\Debug\Hardcodet.Wpf.TaskbarNotification.xml
+c:\VS\Great-Snooper\MySnooper\bin\Debug\MahApps.Metro.xml
+c:\VS\Great-Snooper\MySnooper\obj\Debug\MySnooper.csprojResolveAssemblyReference.cache
+c:\VS\Great-Snooper\MySnooper\obj\Debug\AwayManager.baml
+c:\VS\Great-Snooper\MySnooper\obj\Debug\FontChooser.baml
+c:\VS\Great-Snooper\MySnooper\obj\Debug\Hosting.baml
+c:\VS\Great-Snooper\MySnooper\obj\Debug\LeagueSearcher.baml
+c:\VS\Great-Snooper\MySnooper\obj\Debug\ListEditor.baml
+c:\VS\Great-Snooper\MySnooper\obj\Debug\UserSettings.baml
+c:\VS\Great-Snooper\MySnooper\obj\Debug\AwayManager.g.cs
+c:\VS\Great-Snooper\MySnooper\obj\Debug\FontChooser.g.cs
+c:\VS\Great-Snooper\MySnooper\obj\Debug\Hosting.g.cs
+c:\VS\Great-Snooper\MySnooper\obj\Debug\LeagueSearcher.g.cs
+c:\VS\Great-Snooper\MySnooper\obj\Debug\ListEditor.g.cs
+c:\VS\Great-Snooper\MySnooper\obj\Debug\Login.g.cs
+c:\VS\Great-Snooper\MySnooper\obj\Debug\MainWindow.g.cs
+c:\VS\Great-Snooper\MySnooper\obj\Debug\News.g.cs
+c:\VS\Great-Snooper\MySnooper\obj\Debug\Notificator.g.cs
+c:\VS\Great-Snooper\MySnooper\obj\Debug\UserSettings.g.cs
+c:\VS\Great-Snooper\MySnooper\obj\Debug\App.g.cs
+c:\VS\Great-Snooper\MySnooper\obj\Debug\GeneratedInternalTypeHelper.g.cs
+c:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper_MarkupCompile.cache
+c:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper_MarkupCompile.lref
+c:\VS\Great-Snooper\MySnooper\obj\Debug\App.baml
+c:\VS\Great-Snooper\MySnooper\obj\Debug\Login.baml
+c:\VS\Great-Snooper\MySnooper\obj\Debug\MainWindow.baml
+c:\VS\Great-Snooper\MySnooper\obj\Debug\News.baml
+c:\VS\Great-Snooper\MySnooper\obj\Debug\Notificator.baml
+c:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper.g.resources
+c:\VS\Great-Snooper\MySnooper\obj\Debug\MySnooper.Properties.Resources.resources
+c:\VS\Great-Snooper\MySnooper\obj\Debug\MySnooper.csproj.GenerateResource.Cache
+c:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper.TrustInfo.xml
+c:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper.exe.manifest
+c:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper.application
+c:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper.exe
+c:\VS\Great-Snooper\MySnooper\obj\Debug\Great Snooper.pdb

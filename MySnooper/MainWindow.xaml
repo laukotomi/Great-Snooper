@@ -50,11 +50,6 @@
                             <Image Source="Resources/down.png" Width="25" Margin="3,0,5,0" />
                         </StackPanel>
                     </MenuItem.Header>
-                    <MenuItem Header="Buddy list" Click="BuddyListClicked">
-                        <MenuItem.Icon>
-                            <Image Source="Resources/buddy.png" Width="30" />
-                        </MenuItem.Icon>
-                    </MenuItem>
                     <MenuItem Header="Ignore list" Click="BanListClicked">
                         <MenuItem.Icon>
                             <Image Source="Resources/banned.png" Width="30" />
@@ -590,14 +585,8 @@
                         <Setter Property="Background" Value="Transparent" />
                         <Setter Property="BorderThickness" Value="0" />
                         <Setter Property="Padding" Value="0" />
+                        <Setter Property="Background" Value="{Binding Path=Group.GroupColor}" />
                         <Style.Triggers>
-                            <DataTrigger Binding="{Binding Path=IsBuddy, Mode=OneWay}" Value="True">
-                                <Setter Property="Background">
-                                    <Setter.Value>
-                                        <SolidColorBrush Color="Green" Opacity="0.6"></SolidColorBrush>
-                                    </Setter.Value>
-                                </Setter>
-                            </DataTrigger>
                             <DataTrigger Binding="{Binding Path=IsBanned, Mode=OneWay}" Value="True">
                                 <Setter Property="Background">
                                     <Setter.Value>

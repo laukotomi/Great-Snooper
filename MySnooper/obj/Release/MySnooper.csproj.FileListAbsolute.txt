@@ -194,7 +194,6 @@ C:\VS\Great-Snooper\MySnooper\bin\Release\Great Snooper.exe
 C:\VS\Great-Snooper\MySnooper\bin\Release\Great Snooper.pdb
 C:\VS\Great-Snooper\MySnooper\bin\Release\MahApps.Metro.dll
 C:\VS\Great-Snooper\MySnooper\bin\Release\System.Windows.Interactivity.dll
-C:\VS\Great-Snooper\MySnooper\bin\Release\Xceed.Wpf.DataGrid.dll
 C:\VS\Great-Snooper\MySnooper\bin\Release\Xceed.Wpf.Toolkit.dll
 C:\VS\Great-Snooper\MySnooper\bin\Release\MahApps.Metro.xml
 C:\VS\Great-Snooper\MySnooper\obj\Release\AwayManager.baml

@@ -99,7 +99,7 @@ namespace MySnooper
                         HostingWindow.Close();
 
                         if (Properties.Settings.Default.HostInfoToChannel) // GameListChannel is ok, coz it can't be changed since the Hosting window is opened
-                            SendMessageToChannel(">is hosting a game: " + Properties.Settings.Default.HostGameName, gameListChannel);
+                            SendMessageToChannel("/me is hosting a game: " + Properties.Settings.Default.HostGameName, gameListChannel);
 
                         if (ExitSnooper)
                         {
@@ -124,11 +124,11 @@ namespace MySnooper
         // Settings window
         private void SettingsClicked(object sender, RoutedEventArgs e)
         {
+            e.Handled = true;
             UserSettings window = new UserSettings();
             window.SettingChanged += SettingChanged;
             window.Owner = this;
             window.ShowDialog();
-            e.Handled = true;
         }
 
         private void SettingChanged(object sender, SettingChangedEventArgs e)
@@ -154,6 +154,51 @@ namespace MySnooper
                                 {
                                     if (item.Value.Joined)
                                         LoadMessages(item.Value, GlobalManager.MaxMessagesDisplayed, true);
+                                }
+                            }
+                        }
+                        break;
+
+                    case SettingChangedType.UserGroup:
+                        groupsGenerated = false;
+                        break;
+
+                    case SettingChangedType.UserGroupPlayer:
+                        string lowerName = e.SettingName.ToLower();
+                        Client c = null;
+                        for (int i = 0; i < Servers.Count; i++)
+                        {
+                            if (Servers[i].IsRunning)
+                            {
+                                if (Servers[i].Clients.TryGetValue(lowerName, out c))
+                                {
+                                    UserGroup group = null;
+                                    if (UserGroups.Users.TryGetValue(lowerName, out group))
+                                    {
+                                        c.Group = group;
+                                        ChangeMessageColorForClient(c, group.TextColor);
+                                    }
+                                    else
+                                    {
+                                        c.Group = null;
+                                        ChangeMessageColorForClient(c, null);
+                                    }
+                                }
+                            }
+                        }
+                        break;
+
+                    case SettingChangedType.UserGroupColor:
+                        UserGroup ug = (UserGroup)e.UserObject;
+                        Client client = null;
+                        foreach (var item in ug.Users)
+                        {
+                            for (int i = 0; i < Servers.Count; i++)
+                            {
+                                if (Servers[i].IsRunning)
+                                {
+                                    if (Servers[i].Clients.TryGetValue(item.Key, out client))
+                                        ChangeMessageColorForClient(client, ug.TextColor);
                                 }
                             }
                         }
@@ -190,7 +235,7 @@ namespace MySnooper
                                 {
                                     foreach (var item in Servers[i].ChannelList)
                                     {
-                                        if (!item.Value.IsPrivMsgChannel && item.Value.TheDataGrid.ItemsSource != null)
+                                        if (!item.Value.IsPrivMsgChannel)
                                             SetDefaultViewForChannel(item.Value);
                                     }
                                 }
@@ -230,40 +275,9 @@ namespace MySnooper
             }));
         }
 
-        private void BuddyListClicked(object sender, RoutedEventArgs e)
-        {
-            SortedObservableCollection<string> List2 = new SortedObservableCollection<string>();
-            foreach (var item in buddyList)
-                List2.Add(item.Value);
-
-            ListEditor window = new ListEditor(List2, "Your buddy list");
-            window.ItemRemoved += RemoveUserFromBuddyList;
-            window.ItemAdded += AddUserToBuddyList;
-            window.Owner = this;
-            window.ShowDialog();
-            e.Handled = true;
-        }
-
-        private void RemoveUserFromBuddyList(object sender, StringEventArgs e)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                RemoveBuddy(e.Argument);
-            }
-            ));
-        }
-
-        private void AddUserToBuddyList(object sender, StringEventArgs e)
-        {
-            this.Dispatcher.Invoke(new Action(delegate()
-            {
-                AddBuddy(e.Argument);
-            }
-            ));
-        }
-
         private void BanListClicked(object sender, RoutedEventArgs e)
         {
+            e.Handled = true;
             SortedObservableCollection<string> List2 = new SortedObservableCollection<string>();
             foreach (var item in banList)
                 List2.Add(item.Value);
@@ -273,7 +287,6 @@ namespace MySnooper
             window.ItemAdded += AddUserToBanList;
             window.Owner = this;
             window.ShowDialog();
-            e.Handled = true;
         }
 
         private void RemoveUserFromBanList(object sender, StringEventArgs e)
@@ -297,6 +310,7 @@ namespace MySnooper
         // League searcher
         private void LeagueSearcher(object sender, RoutedEventArgs e)
         {
+            e.Handled = true;
             if (leagues.Count == 0)
             {
                 MessageBox.Show(this, "Leagues may be still loading, please wait!", "No leagues available", MessageBoxButton.OK, MessageBoxImage.Hand);
@@ -313,7 +327,6 @@ namespace MySnooper
             window.LuckyLuke += LuckyLuke;
             window.Owner = this;
             window.ShowDialog();
-            e.Handled = true;
         }
 
         private void LuckyLuke(object sender, LookForTheseEventArgs e)
@@ -353,6 +366,7 @@ namespace MySnooper
 
         private void NotificatorOpen(object sender, RoutedEventArgs e)
         {
+            e.Handled = true;
             if (gameListChannel == null || !gameListChannel.Joined)
             {
                 MessageBox.Show(this, "You have to join a channel first!", "Fail", MessageBoxButton.OK, MessageBoxImage.Stop);
@@ -363,7 +377,6 @@ namespace MySnooper
             window.NotificatorEvent += window_NotificatorEvent;
             window.Owner = this;
             window.ShowDialog();
-            e.Handled = true;
         }
 
         void window_NotificatorEvent(object sender, NotificatorEventArgs e)
@@ -387,11 +400,11 @@ namespace MySnooper
 
         private void AwayManager(object sender, RoutedEventArgs e)
         {
+            e.Handled = true;
             AwayManager window = new AwayManager(AwayText);
             window.AwayChanged += AwayChanged;
             window.Owner = this;
             window.ShowDialog();
-            e.Handled = true;
         }
 
         private void AwayChanged(object sender, BoolEventArgs e)

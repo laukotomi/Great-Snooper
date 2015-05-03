@@ -53,6 +53,12 @@ namespace MySnooper
         {
             if (firstStart)
             {
+                WormNetCharTable.Initialize();
+                MessageSettings.Initialize();
+                CountriesClass.Initialize();
+                GlobalManager.Initialize();
+                UserGroups.Initialize();
+
                 if (!Properties.Settings.Default.SettingsUpgraded)
                 {
                     try
@@ -62,11 +68,11 @@ namespace MySnooper
                     catch (Exception) { }
 
                     var validator = new GSVersionValidator();
-                    if (Properties.Settings.Default.QuitMessagee == string.Empty || validator.Validate(Properties.Settings.Default.QuitMessagee) != string.Empty)
+                    string quitMessage = Properties.Settings.Default.QuitMessagee;
+                    if (Properties.Settings.Default.QuitMessagee == string.Empty || validator.Validate(ref quitMessage) != string.Empty)
                         Properties.Settings.Default.QuitMessagee = "Great Snooper v" + App.GetVersion();
-                    //if (Properties.Settings.Default.InfoMessage == string.Empty || validator.Validate(Properties.Settings.Default.InfoMessage) != string.Empty)
-                    //    Properties.Settings.Default.InfoMessage = "Great Snooper v" + App.GetVersion();
                     Properties.Settings.Default.SettingsUpgraded = true;
+                    Properties.Settings.Default.Group0List = Properties.Settings.Default.BuddyList;
                     Properties.Settings.Default.Save();
                 }
 
@@ -75,11 +81,6 @@ namespace MySnooper
                                 typeof(Timeline),
                                 new FrameworkPropertyMetadata { DefaultValue = 25 }
                 );
-
-                WormNetCharTable.Initialize();
-                MessageSettings.Initialize();
-                CountriesClass.Initialize();
-                GlobalManager.Initialize();
             }
             InitializeComponent();
             DataContext = this;

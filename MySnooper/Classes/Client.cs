@@ -10,12 +10,12 @@ namespace MySnooper
         private RankClass _rank;
         private CountryClass _country = null;
         private bool _isBanned = false;
-        private bool _isBuddy = false;
         private bool _tusActive = false;
         private string _tusNick = string.Empty;
         private int _onlineStatus = 0; // 0 = offline, 1 = online, 2 = not known (client is not in the channel where we are)
         private string _name;
         private string _clientApp;
+        private UserGroup _group = GlobalManager.DefaultGroup;
 
         // Variables
         public bool ClientGreatSnooper { get; set; }
@@ -109,7 +109,8 @@ namespace MySnooper
                     PropertyChanged(this, new PropertyChangedEventArgs("Country"));
             }
         }
-        public bool IsBanned {
+        public bool IsBanned
+        {
             get
             {
                 return _isBanned;
@@ -122,20 +123,9 @@ namespace MySnooper
                     PropertyChanged(this, new PropertyChangedEventArgs("IsBanned"));
             }
         }
-        public bool IsBuddy {
-            get
-            {
-                return _isBuddy;
-            }
-            set
-            {
-                _isBuddy = value;
-                // Notify the UI thread!
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("IsBuddy"));
-            }
-        }
-        public bool TusActive {
+
+        public bool TusActive
+        {
             get
             {
                 return _tusActive;
@@ -149,7 +139,31 @@ namespace MySnooper
             }
         }
 
+        public UserGroup Group
+        {
+            get
+            {
+                return _group;
+            }
+            set
+            {
+                if (value != null)
+                    _group = value;
+                else
+                    _group = GlobalManager.DefaultGroup;
 
+                // Refresh sorting
+                foreach (Channel ch in Channels)
+                {
+                    ch.Clients.Remove(this);
+                    ch.Clients.Add(this);
+                }
+
+                // Notify the UI thread!
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("Group"));
+            }
+        }
 
         // Constructor
         public Client(string name, string clan = "")
@@ -161,6 +175,9 @@ namespace MySnooper
             this.Channels = new List<Channel>();
             this.PMChannels = new List<Channel>();
             this.AddToChannel = new List<Channel>();
+            UserGroup group = null;
+            if (UserGroups.Users.TryGetValue(this.LowerName, out group))
+                Group = group;
         }
 
         // IComparable interface
@@ -177,7 +194,7 @@ namespace MySnooper
             {
                 return false;
             }
-            
+
             // If parameter cannot be cast to Point return false.
             Client cl = obj as Client;
             if ((System.Object)cl == null)
@@ -196,7 +213,7 @@ namespace MySnooper
             {
                 return false;
             }
-            
+
             // Return true if the fields match:
             return LowerName == cl.LowerName;
         }

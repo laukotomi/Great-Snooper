@@ -16,7 +16,6 @@ namespace MySnooper
         public static MessageSetting ActionMessage { get; private set; }
         public static MessageSetting UserMessage { get; private set; }
         public static MessageSetting NoticeMessage { get; private set; }
-        public static MessageSetting BuddyJoinedMessage { get; private set; }
         public static MessageSetting MessageTimeStyle { get; private set; }
         public static MessageSetting HyperLinkStyle { get; private set; }
         public static MessageSetting LeagueFoundMessage { get; private set; }
@@ -32,7 +31,6 @@ namespace MySnooper
             ActionMessage = SettingToObj(Properties.Settings.Default.ActionMessageStyle, MessageTypes.Action);
             UserMessage = SettingToObj(Properties.Settings.Default.UserMessageStyle, MessageTypes.User);
             NoticeMessage = SettingToObj(Properties.Settings.Default.NoticeMessageStyle, MessageTypes.Notice);
-            BuddyJoinedMessage = SettingToObj(Properties.Settings.Default.BuddyJoinedMessageStyle, MessageTypes.BuddyJoined);
             MessageTimeStyle = SettingToObj(Properties.Settings.Default.MessageTimeStyle, MessageTypes.Time);
             HyperLinkStyle = SettingToObj(Properties.Settings.Default.HyperLinkStyle, MessageTypes.Hyperlink);
             LeagueFoundMessage = SettingToObj(Properties.Settings.Default.LeagueFoundMessageStyle, MessageTypes.League);

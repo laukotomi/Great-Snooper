@@ -104,7 +104,7 @@ namespace MySnooper
                 "         <ContextMenu>" +
                 "             <MenuItem Name=\"Chat\" Header=\"Chat with this user\"></MenuItem>" +
                 "             <MenuItem Name=\"Conversation\"></MenuItem>" +
-                "             <MenuItem Name=\"Buddy\"></MenuItem>" +
+                "             <MenuItem Name=\"Group\" Header=\"Group\"></MenuItem>" +
                 "             <MenuItem Name=\"Ignore\"></MenuItem>" +
                 "             <MenuItem Name=\"TUS\"></MenuItem>" +
                 "             <MenuItem Name=\"Info\"></MenuItem>" +
@@ -170,7 +170,6 @@ namespace MySnooper
             dg.Sorting += dg_Sorting;
             ((MenuItem)dg.ContextMenu.Items[0]).Click += PrivateMessageClick2;
             ((MenuItem)dg.ContextMenu.Items[1]).Click += AddOrRemoveClientConversation;
-            ((MenuItem)dg.ContextMenu.Items[2]).Click += AddOrRemoveBuddy;
             ((MenuItem)dg.ContextMenu.Items[3]).Click += AddOrRemoveBan;
             ((MenuItem)dg.ContextMenu.Items[4]).Click += WiewTusProfile;
             dg.ContextMenuOpening += ContextMenuBuilding;
@@ -279,9 +278,9 @@ namespace MySnooper
                 if (view != null)
                 {
                     view.SortDescriptions.Clear();
-                    
+
                     view.SortDescriptions.Add(new System.ComponentModel.SortDescription("IsBanned", System.ComponentModel.ListSortDirection.Ascending));
-                    view.SortDescriptions.Add(new System.ComponentModel.SortDescription("IsBuddy", System.ComponentModel.ListSortDirection.Descending));
+                    view.SortDescriptions.Add(new System.ComponentModel.SortDescription("Group.ID", System.ComponentModel.ListSortDirection.Ascending));
 
                     if (columnName != "Nick")
                     {

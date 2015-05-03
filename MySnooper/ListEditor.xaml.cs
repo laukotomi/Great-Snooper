@@ -137,6 +137,8 @@ namespace MySnooper
                     obj.Clear();
                 }
             }
+            else if (e.Key == Key.Escape)
+                this.Close();
         }
 
         private void AddToListEnter(object sender, KeyboardFocusChangedEventArgs e)

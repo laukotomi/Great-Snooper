@@ -2,6 +2,8 @@
 using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Media;
 using System.Net;
@@ -27,7 +29,6 @@ namespace MySnooper
         // Lists
         private readonly Dictionary<string, string> leagues = new Dictionary<string,string>();
         private readonly Dictionary<string, string> banList = new Dictionary<string, string>();
-        private readonly Dictionary<string, string> buddyList = new Dictionary<string, string>();
         public readonly Dictionary<string, string> AutoJoinList = new Dictionary<string, string>();
         public readonly List<IRCCommunicator> Servers = new List<IRCCommunicator>();
         private readonly List<Dictionary<string, string>> newsList = new List<Dictionary<string,string>>();
@@ -217,7 +218,6 @@ namespace MySnooper
                 soundPlayers.Add("NotificatorSound", new SoundPlayer(new FileInfo(Properties.Settings.Default.NotificatorSound).FullName));
 
             // Deserialize lists
-            this.buddyList.DeSerialize(Properties.Settings.Default.BuddyList);
             this.banList.DeSerialize(Properties.Settings.Default.BanList);
             this.AutoJoinList.DeSerialize(Properties.Settings.Default.AutoJoinChannels);
 
@@ -225,24 +225,6 @@ namespace MySnooper
             string[] list = Properties.Settings.Default.NewsSeen.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             for (int i = 0; i < list.Length; i++)
                 newsSeen.Add(list[i], false);
-
-            if (Properties.Settings.Default.SaveInstantColors)
-            {
-                // Unserialize instant colors
-                list = Properties.Settings.Default.InstantColors.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                for (int i = 0; i < list.Length; i++)
-                {
-                    string[] keyValue = list[i].Split(new char[] { ':' });
-                    var color = Color.FromRgb(
-                        byte.Parse(keyValue[1].Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
-                        byte.Parse(keyValue[1].Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
-                        byte.Parse(keyValue[1].Substring(4, 2), System.Globalization.NumberStyles.HexNumber)
-                    );
-                    var scb = new SolidColorBrush(color);
-                    scb.Freeze();
-                    ChoosedColors.Add(keyValue[0], scb);
-                }
-            }
 
             // Initialize a timer which will help updating things that should be updated periodically (game list, news..)
             // Initialize a timer which will process data that is sent to the UI thread from the irc threads
@@ -270,6 +252,8 @@ namespace MySnooper
 
         private void EnterEnergySaveMode()
         {
+            Debug.WriteLine("EnergySaveMode is ON", "EnergySaveMode");
+
             EnergySaveModeOn = true;
             for (int i = 0; i < Servers.Count; i++)
             {
@@ -291,6 +275,8 @@ namespace MySnooper
 
         private void LeaveEnergySaveMode()
         {
+            Debug.WriteLine("EnergySaveMode is OFF", "EnergySaveMode");
+
             EnergySaveModeOn = false;
             for (int i = 0; i < Servers.Count; i++)
             {
@@ -301,7 +287,10 @@ namespace MySnooper
                         if (item.Value.Joined)
                         {
                             if (item.Value.TheDataGrid != null && item.Value.TheDataGrid.ItemsSource == null)
+                            {
                                 item.Value.TheDataGrid.ItemsSource = item.Value.Clients;
+                                SetDefaultOrderForChannel(item.Value);
+                            }
                             if (item.Value.GameListBox != null && item.Value.GameListBox.ItemsSource == null)
                                 item.Value.GameListBox.ItemsSource = item.Value.GameList;
                             if (item.Value.MessageReloadNeeded)
@@ -713,7 +702,7 @@ namespace MySnooper
             if (ch.TheDataGrid != null)
             {
                 var view = CollectionViewSource.GetDefaultView(ch.TheDataGrid.ItemsSource);
-                if (view != null && view.Filter != null)
+                if (view != null)
                 {
                     Filter.Text = "Filter..";
                     if (!Properties.Settings.Default.ShowBannedUsers)
@@ -731,25 +720,39 @@ namespace MySnooper
                 }
             }
         }
+
+        public void SetDefaultOrderForChannel(Channel ch)
+        {
+            if (ch.Server.IsWormNet)
+            {
+                string[] order = Properties.Settings.Default.ColumnOrder.Split(new char[] { '|' });
+                if (order.Length == 2)
+                {
+                    ListSortDirection dir = order[1] == "D" ? ListSortDirection.Descending : ListSortDirection.Ascending;
+                    SetOrderForDataGrid(ch, order[0], dir);
+                }
+                else
+                    SetOrderForDataGrid(ch, "Nick", ListSortDirection.Ascending);
+            }
+            else
+            {
+                if (ch.TheDataGrid.ItemsSource != null)
+                {
+                    var view = CollectionViewSource.GetDefaultView(ch.TheDataGrid.ItemsSource);
+                    if (view != null)
+                    {
+                        view.SortDescriptions.Clear();
+                        view.SortDescriptions.Add(new System.ComponentModel.SortDescription("IsBanned", System.ComponentModel.ListSortDirection.Ascending));
+                        view.SortDescriptions.Add(new System.ComponentModel.SortDescription("Group.ID", System.ComponentModel.ListSortDirection.Ascending));
+                        view.SortDescriptions.Add(new System.ComponentModel.SortDescription("Name", ListSortDirection.Ascending));
+                    }
+                }
+
+            }
+        }
         #endregion
 
-        // Buddy and Ignore things
-        public void AddOrRemoveBuddy(object sender, RoutedEventArgs e)
-        {
-            var obj = sender as MenuItem;
-            var contextMenu = obj.Parent as ContextMenu;
-            var item = contextMenu.PlacementTarget as DataGrid;
-            if (item.SelectedIndex != -1)
-            {
-                var client = item.SelectedItem as Client;
-                if (client.IsBuddy)
-                    RemoveBuddy(client.Name);
-                else
-                    AddBuddy(client.Name);
-            }
-            e.Handled = true;
-        }
-
+        // Ignore things
         public void AddOrRemoveBan(object sender, RoutedEventArgs e)
         {
             var obj = sender as MenuItem;
@@ -781,6 +784,8 @@ namespace MySnooper
             }
             e.Handled = true;
         }
+
+        private bool groupsGenerated = false;
 
         public void ContextMenuBuilding(object sender, ContextMenuEventArgs e)
         {
@@ -826,10 +831,31 @@ namespace MySnooper
                     conversation.IsEnabled = false;
 
                 MenuItem buddy = (MenuItem)obj.ContextMenu.Items[2];
-                if (client.IsBuddy)
-                    buddy.Header = "Remove from buddy list";
+                if (!groupsGenerated)
+                {
+                    buddy.Items.Clear();
+                    var defItem = new MenuItem() { Header = "No group" };
+                    defItem.Click += RemoveUserFromGroup;
+                    buddy.Items.Add(defItem);
+
+                    foreach (var item in UserGroups.Groups)
+                    {
+                        var menuItem = new MenuItem() { Header = item.Value.Name, Foreground = item.Value.TextColor, Tag = item.Value };
+                        menuItem.Click += AddUserToGroup;
+                        buddy.Items.Add(menuItem);
+                    }
+                    groupsGenerated = true;
+                }
+
+                foreach (MenuItem item in buddy.Items)
+                {
+                    item.FontWeight = FontWeights.Normal;
+                }
+
+                if (client.Group.ID == int.MaxValue)
+                    ((MenuItem)buddy.Items[0]).FontWeight = FontWeights.Bold;
                 else
-                    buddy.Header = "Add to buddy list";
+                    ((MenuItem)buddy.Items[client.Group.ID + 1]).FontWeight = FontWeights.Bold;
 
                 MenuItem ignore = (MenuItem)obj.ContextMenu.Items[3];
                 if (client.IsBanned)
@@ -852,9 +878,34 @@ namespace MySnooper
             }
         }
 
+        private void RemoveUserFromGroup(object sender, RoutedEventArgs e)
+        {
+            var menuItem = (MenuItem)sender;
+            var contextMenu = (ContextMenu)((MenuItem)menuItem.Parent).Parent;
+            var item = contextMenu.PlacementTarget as DataGrid;
+            if (item.SelectedIndex != -1)
+            {
+                var client = item.SelectedItem as Client;
+                UserGroups.AddOrRemoveUser(client, null);
+                ChangeMessageColorForClient(client, null);
+            }
+        }
+
+        private void AddUserToGroup(object sender, RoutedEventArgs e)
+        {
+            var menuItem = (MenuItem)sender;
+            var contextMenu = (ContextMenu)((MenuItem)menuItem.Parent).Parent;
+            var item = contextMenu.PlacementTarget as DataGrid;
+            if (item.SelectedIndex != -1)
+            {
+                var client = item.SelectedItem as Client;
+                var group = (UserGroup)menuItem.Tag;
+                UserGroups.AddOrRemoveUser(client, group);
+                ChangeMessageColorForClient(client, group.TextColor);
+            }
+        }
+
         #region Private chat UI things (open, close)
-
-
         public void OpenPrivateChat(Client client, IRCCommunicator server)
         {
             if (client.IsBanned)
@@ -1029,8 +1080,6 @@ namespace MySnooper
                                     || c.Country != null && c.Country.LowerName.Length >= filters[i].Length && c.Country.LowerName.Substring(0, filters[i].Length) == filters[i]
                                     || c.Rank != null && c.Rank.LowerName.Length >= filters[i].Length && c.Rank.LowerName.Substring(0, filters[i].Length) == filters[i]
                                     || Properties.Settings.Default.ShowInfoColumn && c.ClientAppL.Contains(filters[i])
-                                    || c.IsBuddy && "buddy".Length >= filters[i].Length && "buddy".Substring(0, filters[i].Length) == filters[i]
-                                    || c.IsBanned && "ignored".Length >= filters[i].Length && "ignored".Substring(0, filters[i].Length) == filters[i]
                                 )
                                     return true;
                             }
@@ -1164,22 +1213,7 @@ namespace MySnooper
             }
 
             // Serialize buddy list and ban list and save them
-            Properties.Settings.Default.BuddyList = this.buddyList.Serialize();
             Properties.Settings.Default.BanList = this.banList.Serialize();
-
-            if (Properties.Settings.Default.SaveInstantColors)
-            {
-                // Serialize instant colors
-                var sb = new System.Text.StringBuilder();
-                foreach (var item in ChoosedColors)
-                {
-                    sb.Append(item.Key);
-                    sb.Append(":");
-                    sb.Append(string.Format("{0:X2}{1:X2}{2:X2}", item.Value.Color.R, item.Value.Color.G, item.Value.Color.B));
-                    sb.Append(',');
-                }
-                Properties.Settings.Default.InstantColors = sb.ToString();
-            }
             Properties.Settings.Default.Save();
 
             myNotifyIcon.Dispose();
@@ -1315,66 +1349,6 @@ namespace MySnooper
             }
             e.Handled = true;
         }
-
-        // Buddy list things
-        #region Buddy list
-        public void AddBuddy(string name)
-        {
-            string lowerName = name.ToLower();
-            buddyList.Add(lowerName, name);
-
-            for (int i = 0; i < Servers.Count; i++)
-            {
-                if (Servers[i].IsRunning)
-                {
-                    Client c;
-                    if (Servers[i].Clients.TryGetValue(lowerName, out c))
-                    {
-                        c.IsBuddy = true;
-
-                        // Refresh sorting
-                        foreach (Channel ch in c.Channels)
-                        {
-                            ch.Clients.Remove(c);
-                            ch.Clients.Add(c);
-                        }
-                    }
-                }
-            }
-        }
-
-        public void RemoveBuddy(string name)
-        {
-            string lowerName = name.ToLower();
-            buddyList.Remove(lowerName);
-
-            for (int i = 0; i < Servers.Count; i++)
-            {
-                if (Servers[i].IsRunning)
-                {
-                    Client c;
-                    if (Servers[i].Clients.TryGetValue(lowerName, out c))
-                    {
-                        c.IsBuddy = false;
-
-                        // Refresh sorting
-                        foreach (Channel ch in c.Channels)
-                        {
-                            ch.Clients.Remove(c);
-                            ch.Clients.Add(c);
-                        }
-                    }
-                }
-            }
-        }
-
-        public bool IsBuddy(string name)
-        {
-            return buddyList.ContainsKey(name);
-        }
-        #endregion
-
-
 
         // Ban list things
         #region Ban list

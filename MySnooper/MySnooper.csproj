@@ -84,7 +84,8 @@
     <ApplicationManifest>Properties\app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Hardcodet.Wpf.TaskbarNotification">
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net40\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
     </Reference>
     <Reference Include="MahApps.Metro, Version=1.1.2.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
@@ -111,22 +112,6 @@
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
     <Reference Include="WindowsBase" />
-    <Reference Include="Xceed.Wpf.AvalonDock">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.4\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.4\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.4\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010">
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.4\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
-    </Reference>
-    <Reference Include="Xceed.Wpf.DataGrid, Version=2.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\packages\Extended.Wpf.Toolkit.2.4\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
-    </Reference>
     <Reference Include="Xceed.Wpf.Toolkit, Version=2.4.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\packages\Extended.Wpf.Toolkit.2.4\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
@@ -140,22 +125,23 @@
     <Compile Include="AwayManager.xaml.cs">
       <DependentUpon>AwayManager.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Classes\BBParser.cs" />
+    <Compile Include="StaticClasses\BBParser.cs" />
     <Compile Include="Classes\EventArgsClasses.cs" />
     <Compile Include="Classes\ExtensionMethods.cs" />
-    <Compile Include="Classes\GlobalManager.cs" />
+    <Compile Include="StaticClasses\GlobalManager.cs" />
     <Compile Include="Classes\MessageSetting.cs" />
-    <Compile Include="Classes\NativeMethods.cs" />
+    <Compile Include="StaticClasses\NativeMethods.cs" />
     <Compile Include="Classes\NotificatorClass.cs" />
     <Compile Include="Classes\RankClass.cs" />
-    <Compile Include="Classes\RanksClass.cs" />
-    <Compile Include="Classes\SettingOption.cs" />
+    <Compile Include="StaticClasses\RanksClass.cs" />
     <Compile Include="Classes\UITaskClasses.cs" />
+    <Compile Include="Classes\UserGroup.cs" />
+    <Compile Include="StaticClasses\UserGroups.cs" />
     <Compile Include="Classes\WebDownload.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Classes\WormNetCharTable.cs" />
-    <Compile Include="Classes\ErrorLog.cs" />
+    <Compile Include="StaticClasses\WormNetCharTable.cs" />
+    <Compile Include="StaticClasses\ErrorLog.cs" />
     <Compile Include="CustomUIThings\HalfValueConverter.cs" />
     <Compile Include="CustomUIThings\SliderWithDraggingEvents.cs" />
     <Compile Include="FontChooser.xaml.cs">
@@ -181,7 +167,7 @@
     <Compile Include="MainWindowParts\MainWindow.WormNetC.cs" />
     <Compile Include="MainWindowParts\MainWindow.WormnetM.cs" />
     <Compile Include="Classes\MessageClass.cs" />
-    <Compile Include="Classes\MessageSettings.cs" />
+    <Compile Include="StaticClasses\MessageSettings.cs" />
     <Compile Include="CustomUIThings\TrayFlash.cs" />
     <Compile Include="Classes\MyValidator.cs" />
     <Compile Include="News.xaml.cs">
@@ -234,7 +220,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Classes\Channel.cs" />
-    <Compile Include="Classes\CountriesClass.cs" />
+    <Compile Include="StaticClasses\CountriesClass.cs" />
     <Compile Include="Login.xaml.cs">
       <DependentUpon>Login.xaml</DependentUpon>
     </Compile>
@@ -473,7 +459,6 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\banned.png" />
-    <Resource Include="Resources\buddy.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\logout.png" />

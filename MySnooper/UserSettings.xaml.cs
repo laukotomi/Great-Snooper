@@ -3,16 +3,17 @@ using System;
 using System.IO;
 using System.Windows;
 using System.Windows.Controls;
-using System.Collections.Generic;
 using System.Windows.Documents;
+using System.Windows.Media;
+using Xceed.Wpf.Toolkit;
 
 namespace MySnooper
 {
     /// <summary>
     /// Interaction logic for Settings.xaml
     /// </summary>
-    
-    public enum SettingChangedType { NoType, Sound, Style };
+
+    public enum SettingChangedType { NoType, Sound, Style, UserGroup, UserGroupPlayer, UserGroupColor };
     public delegate void SettingChangedDelegate(object sender, SettingChangedEventArgs e);
 
     public partial class UserSettings : MetroWindow
@@ -28,15 +29,18 @@ namespace MySnooper
             AddTextListSetting(GeneralSettingsGrid, "AutoJoinChannels", "Join these channels on startup:", "Channel list");
             AddBoolSetting(GeneralSettingsGrid, "MessageJoinedGame", "Send a message to the channel if I join a game:");
             AddBoolSetting(GeneralSettingsGrid, "MarkAway", "Mark me away when I host or join a game:");
-            AddTextSetting(GeneralSettingsGrid, "AwayText", "Away message:");
+            AddTextSetting(GeneralSettingsGrid, "AwayText", "Away message:", new IRCTextValidator());
             AddBoolSetting(GeneralSettingsGrid, "SendBack", "Send back message in private chats if I am back:");
-            AddTextSetting(GeneralSettingsGrid, "BackText", "Back message:");
+            AddTextSetting(GeneralSettingsGrid, "BackText", "Back message:", new IRCTextValidator());
             AddBoolSetting(GeneralSettingsGrid, "DeleteLogs", "Delete channel logs older than 30 days at startup:");
-            AddBoolSetting(GeneralSettingsGrid, "SaveInstantColors", "Save instant colors for users:");
             AddTextSetting(GeneralSettingsGrid, "QuitMessagee", "Quit message:", new GSVersionValidator());
             WAExeText.Text = Properties.Settings.Default.WaExe;
 
-            // Appearance
+            // User groups
+            foreach (var item in UserGroups.Groups)
+            {
+                AddUserGroupSetting(UserGroupsGrid, item.Value, new NotEmptyValidator());
+            }
 
             // Window
             AddBoolSetting(WindowGrid, "ShowBannedUsers", "Show banned users in user list:");
@@ -68,11 +72,10 @@ namespace MySnooper
             AddStyleSetting(MessageStylesGrid, "ActionMessageStyle", "Action message style:", MessageSettings.ActionMessage);
             AddStyleSetting(MessageStylesGrid, "NoticeMessageStyle", "Notice message style:", MessageSettings.NoticeMessage);
             AddStyleSetting(MessageStylesGrid, "OfflineMessageStyle", "Offline user message style:", MessageSettings.OfflineMessage);
-            AddStyleSetting(MessageStylesGrid, "BuddyJoinedMessageStyle", "Buddy joined message style:", MessageSettings.BuddyJoinedMessage);
             AddStyleSetting(MessageStylesGrid, "MessageTimeStyle", "Style of message arrived time:", MessageSettings.MessageTimeStyle);
             AddStyleSetting(MessageStylesGrid, "HyperLinkStyle", "Style of hyperlinks:", MessageSettings.HyperLinkStyle);
             AddStyleSetting(MessageStylesGrid, "LeagueFoundMessageStyle", "Found text style:", MessageSettings.LeagueFoundMessage);
-            
+
             // Sounds
             AddSoundSetting(SoundsGrid, "PMBeep", "PMBeepEnabled", "Private message arrived:");
             AddSoundSetting(SoundsGrid, "HBeep", "HBeepEnabled", "When your name appears in chat:");
@@ -96,6 +99,8 @@ namespace MySnooper
             // <Label Grid.Column="0" Grid.Row="1" Content="Auto login at startup:"></Label>
             TextBlock tb = new TextBlock();
             tb.Text = text;
+            if (name == "buddiesGroup")
+                tb.IsEnabled = false;
             Grid.SetRow(tb, row);
             Grid.SetColumn(tb, 0);
             grid.Children.Add(tb);
@@ -125,7 +130,7 @@ namespace MySnooper
             }
         }
 
-        private void AddTextSetting(Grid grid, string name, string text, MyValidator validator = null)
+        private void AddTextSetting(Grid grid, string name, string text, MyValidator validator)
         {
             int row = grid.RowDefinitions.Count;
             string value = (string)(Properties.Settings.Default.GetType().GetProperty(name).GetValue(Properties.Settings.Default, null));
@@ -156,16 +161,13 @@ namespace MySnooper
             object[] tag = (object[])tb.Tag;
             string name = (string)tag[0];
             MyValidator validator = (MyValidator)tag[1];
-            string text = WormNetCharTable.RemoveNonWormNetChars(tb.Text.Trim());
+            string text = tb.Text;
 
-            if (validator != null)
+            string error = validator.Validate(ref text);
+            if (error != string.Empty)
             {
-                string error = validator.Validate(text);
-                if (error != string.Empty)
-                {
-                    MessageBox.Show(error, "Invalid value", MessageBoxButton.OK, MessageBoxImage.Stop);
-                    return;
-                }
+                System.Windows.MessageBox.Show(error, "Invalid value", MessageBoxButton.OK, MessageBoxImage.Stop);
+                return;
             }
 
             Properties.Settings.Default.GetType().GetProperty(name).SetValue(Properties.Settings.Default, text, null);
@@ -347,11 +349,147 @@ namespace MySnooper
 
         private void TextListHandler(object sender, RoutedEventArgs e)
         {
+            e.Handled = true;
             string[] data = (string[])((Button)sender).Tag;
             ListEditor window = new ListEditor(data[0], data[1]);
             window.Owner = this;
             window.ShowDialog();
+        }
+
+        private void AddUserGroupSetting(Grid grid, UserGroup ug, MyValidator validator)
+        {
+            int row = grid.RowDefinitions.Count;
+            grid.RowDefinitions.Add(new RowDefinition() { Height = System.Windows.GridLength.Auto });
+            grid.RowDefinitions.Add(new RowDefinition() { Height = new GridLength(10) });
+
+            // <TextBox Name="BackText" Grid.Column="1" Grid.Row="6" LostKeyboardFocus="BackTextChanged"></TextBox>
+            TextBox tb2 = new TextBox();
+            tb2.Tag = new object[] { ug, validator };
+            tb2.Text = ug.Name;
+            tb2.LostKeyboardFocus += GroupTextHandler;
+            if (ug.ID == UserGroups.BuddiesGroupID)
+                tb2.IsEnabled = false;
+            Grid.SetRow(tb2, row);
+            Grid.SetColumn(tb2, 0);
+            grid.Children.Add(tb2);
+
+            var cp = new ColorPicker();
+            cp.Focusable = false;
+            cp.SelectedColor = ug.GroupColor.Color;
+            cp.SelectedColorChanged += GroupColorChanged;
+            cp.Tag = ug;
+            Grid.SetRow(cp, row);
+            Grid.SetColumn(cp, 2);
+            grid.Children.Add(cp);
+
+            Button bt = new Button();
+            bt.Focusable = false;
+            bt.Content = "Players";
+            bt.Tag = ug;
+            bt.Click += GroupTextListHandler;
+            Grid.SetRow(bt, row);
+            Grid.SetColumn(bt, 4);
+            grid.Children.Add(bt);
+        }
+
+        UserGroup groupColorHelper = null;
+
+        private void GroupColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
+        {
+            var obj = (ColorPicker)sender;
+            var group = (UserGroup)obj.Tag;
+            group.GroupColor = new SolidColorBrush(obj.SelectedColor);
+            if (groupColorHelper == null)
+                groupColorHelper = group;
+            else if (groupColorHelper.ID != group.ID)
+            {
+                groupColorHelper.SaveSettings(); // explicit save
+                if (SettingChanged != null)
+                    SettingChanged(this, new SettingChangedEventArgs(groupColorHelper.SettingName, SettingChangedType.UserGroupColor, groupColorHelper));
+                groupColorHelper = group;
+            }
+
+            if (SettingChanged != null)
+                SettingChanged(this, new SettingChangedEventArgs(group.SettingName, SettingChangedType.UserGroup));
+        }
+
+        private void GroupTextHandler(object sender, System.Windows.Input.KeyboardFocusChangedEventArgs e)
+        {
+            TextBox tb = (TextBox)sender;
+            object[] tag = (object[])tb.Tag;
+            var group = (UserGroup)tag[0];
+            MyValidator validator = (MyValidator)tag[1];
+            string text = tb.Text.Trim();
+
+            string error = validator.Validate(ref text);
+            if (error != string.Empty)
+            {
+                System.Windows.MessageBox.Show(error, "Invalid value", MessageBoxButton.OK, MessageBoxImage.Stop);
+                return;
+            }
+
+            group.Name = text;
+            group.SaveSettings();
+
+            if (SettingChanged != null)
+                SettingChanged(this, new SettingChangedEventArgs(group.SettingName, SettingChangedType.UserGroup));
+        }
+
+        UserGroup openedUG = null;
+        private void GroupTextListHandler(object sender, RoutedEventArgs e)
+        {
             e.Handled = true;
+            UserGroup ug = (UserGroup)((Button)sender).Tag;
+            openedUG = ug;
+            ListEditor window = new ListEditor(ug.SettingName + "List", ug.Name);
+            window.ItemRemoved += window_ItemRemoved;
+            window.ItemAdded += window_ItemAdded;
+            window.Owner = this;
+            window.ShowDialog();
+        }
+
+        void window_ItemAdded(object sender, StringEventArgs e)
+        {
+            this.Dispatcher.Invoke(new Action(delegate()
+            {
+                string lowerName = e.Argument.ToLower();
+                openedUG.Users.Add(lowerName, e.Argument);
+                if (!UserGroups.Users.ContainsKey(lowerName))
+                {
+                    UserGroups.Users.Add(lowerName, openedUG);
+                }
+                else if (UserGroups.Users[lowerName].ID > openedUG.ID)
+                {
+                    UserGroups.Users[lowerName] = openedUG;
+                }
+
+                if (SettingChanged != null)
+                    SettingChanged(this, new SettingChangedEventArgs(e.Argument, SettingChangedType.UserGroupPlayer, openedUG));
+            }
+            ));
+        }
+
+        void window_ItemRemoved(object sender, StringEventArgs e)
+        {
+            this.Dispatcher.Invoke(new Action(delegate()
+            {
+                string lowerName = e.Argument.ToLower();
+                openedUG.Users.Remove(lowerName);
+                UserGroups.Users.Remove(lowerName);
+
+                foreach (var item in UserGroups.Groups)
+                {
+                    if (item.Value.Users.ContainsKey(lowerName))
+                    {
+                        UserGroups.Users.Add(lowerName, item.Value);
+                        break;
+                    }
+                }
+
+                if (SettingChanged != null)
+                    SettingChanged(this, new SettingChangedEventArgs(e.Argument, SettingChangedType.UserGroupPlayer, openedUG));
+            }
+            ));
         }
 
         private void WAExeChange(object sender, RoutedEventArgs e)
@@ -371,6 +509,16 @@ namespace MySnooper
                 WAExeText.Text = dlg.FileName;
                 Properties.Settings.Default.WaExe = dlg.FileName;
                 Properties.Settings.Default.Save();
+            }
+        }
+
+        private void MetroWindow_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (groupColorHelper != null)
+            {
+                groupColorHelper.SaveSettings();
+                if (SettingChanged != null)
+                    SettingChanged.BeginInvoke(this, new SettingChangedEventArgs(groupColorHelper.Name, SettingChangedType.UserGroupColor, groupColorHelper), null, null);
             }
         }
     }

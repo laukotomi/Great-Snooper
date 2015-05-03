@@ -12,7 +12,7 @@ namespace MySnooper.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "11.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "12.0.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -164,18 +164,6 @@ namespace MySnooper.Properties {
             }
             set {
                 this["NoticeMessageStyle"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("ADFF2F|13|0|0|0|0|Tahoma")]
-        public string BuddyJoinedMessageStyle {
-            get {
-                return ((string)(this["BuddyJoinedMessageStyle"]));
-            }
-            set {
-                this["BuddyJoinedMessageStyle"] = value;
             }
         }
         
@@ -685,30 +673,6 @@ namespace MySnooper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool SaveInstantColors {
-            get {
-                return ((bool)(this["SaveInstantColors"]));
-            }
-            set {
-                this["SaveInstantColors"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string InstantColors {
-            get {
-                return ((string)(this["InstantColors"]));
-            }
-            set {
-                this["InstantColors"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string QuitMessagee {
             get {
@@ -980,6 +944,174 @@ namespace MySnooper.Properties {
             }
             set {
                 this["MuteState"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Buddies|9933CC00")]
+        public string Group0 {
+            get {
+                return ((string)(this["Group0"]));
+            }
+            set {
+                this["Group0"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Group0List {
+            get {
+                return ((string)(this["Group0List"]));
+            }
+            set {
+                this["Group0List"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Clanmates|8F07CEE6")]
+        public string Group1 {
+            get {
+                return ((string)(this["Group1"]));
+            }
+            set {
+                this["Group1"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Group1List {
+            get {
+                return ((string)(this["Group1List"]));
+            }
+            set {
+                this["Group1List"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("League players|AFFF8C00")]
+        public string Group2 {
+            get {
+                return ((string)(this["Group2"]));
+            }
+            set {
+                this["Group2"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Group2List {
+            get {
+                return ((string)(this["Group2List"]));
+            }
+            set {
+                this["Group2List"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Other 1|D7B024EB")]
+        public string Group3 {
+            get {
+                return ((string)(this["Group3"]));
+            }
+            set {
+                this["Group3"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Group3List {
+            get {
+                return ((string)(this["Group3List"]));
+            }
+            set {
+                this["Group3List"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Other 2|AFFF00FF")]
+        public string Group4 {
+            get {
+                return ((string)(this["Group4"]));
+            }
+            set {
+                this["Group4"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Group4List {
+            get {
+                return ((string)(this["Group4List"]));
+            }
+            set {
+                this["Group4List"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Other 3|D791A6BA")]
+        public string Group5 {
+            get {
+                return ((string)(this["Group5"]));
+            }
+            set {
+                this["Group5"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Group5List {
+            get {
+                return ((string)(this["Group5List"]));
+            }
+            set {
+                this["Group5List"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Other 4|B9D8BFD8")]
+        public string Group6 {
+            get {
+                return ((string)(this["Group6"]));
+            }
+            set {
+                this["Group6"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string Group6List {
+            get {
+                return ((string)(this["Group6List"]));
+            }
+            set {
+                this["Group6List"] = value;
             }
         }
     }

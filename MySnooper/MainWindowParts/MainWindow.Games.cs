@@ -88,7 +88,7 @@ namespace MySnooper
                 if (gameProcess.Start())
                 {
                     if (Properties.Settings.Default.MessageJoinedGame && !SilentJoined)
-                        SendMessageToChannel(">is joining a game: " + game.Name, gameListChannel);
+                        SendMessageToChannel("/me is joining a game: " + game.Name, gameListChannel);
                     if (Properties.Settings.Default.MarkAway)
                         SendMessageToChannel("/away", null);
                 }
@@ -141,8 +141,11 @@ namespace MySnooper
 
             if (Properties.Settings.Default.EnergySaveMode && lobbyWindow != IntPtr.Zero)
             {
-                if (NativeMethods.GetPlacement(lobbyWindow).showCmd == ShowWindowCommands.Normal && !EnergySaveModeOn)
-                    EnterEnergySaveMode();
+                if (NativeMethods.GetPlacement(lobbyWindow).showCmd == ShowWindowCommands.Normal)
+                {
+                    if (!EnergySaveModeOn)
+                        EnterEnergySaveMode();
+                }
                 else if (EnergySaveModeOn)
                     LeaveEnergySaveMode();
             }

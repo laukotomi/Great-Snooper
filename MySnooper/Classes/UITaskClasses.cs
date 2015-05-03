@@ -99,7 +99,6 @@ namespace MySnooper
             {
                 c = new Client(ClientName);
                 c.IsBanned = mw.IsBanned(fromLow);
-                c.IsBuddy = mw.IsBuddy(fromLow);
                 c.OnlineStatus = 2;
                 Sender.Clients.Add(c.LowerName, c);
             }
@@ -286,7 +285,6 @@ namespace MySnooper
                 return;
 
             string lowerName = ClientName.ToLower();
-            bool buddyJoined = false;
             bool userJoined = false;
 
             if (lowerName != Sender.User.LowerName)
@@ -298,7 +296,6 @@ namespace MySnooper
                     {
                         c = new Client(ClientName, Clan);
                         c.IsBanned = mw.IsBanned(lowerName);
-                        c.IsBuddy = mw.IsBuddy(lowerName);
                         Sender.Clients.Add(lowerName, c);
                     }
 
@@ -320,15 +317,15 @@ namespace MySnooper
                         ch.Clients.Add(c);
                     }
 
-                    if (c.IsBuddy)
+                    ch.AddMessage(c, "joined the channel.", MessageSettings.JoinMessage);
+
+                    if (c.Group.ID == UserGroups.BuddiesGroupID)
                     {
-                        buddyJoined = true;
-                        ch.AddMessage(c, "joined the channel.", MessageSettings.BuddyJoinedMessage);
                         if (Properties.Settings.Default.TrayNotifications)
                             mw.NotifyIcon.ShowBalloonTip(null, c.Name + " is online.", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
+                        if (Properties.Settings.Default.BJBeepEnabled)
+                            mw.PlaySound("BJBeep");
                     }
-                    else
-                        ch.AddMessage(c, "joined the channel.", MessageSettings.JoinMessage);
 
                     if (mw.Notifications.Count > 0)
                     {
@@ -364,9 +361,6 @@ namespace MySnooper
                     }
                 }
             }
-
-            if (buddyJoined && Properties.Settings.Default.BJBeepEnabled)
-                mw.PlaySound("BJBeep");
 
             if (userJoined && mw.Channels.SelectedItem != null)
             {
@@ -449,7 +443,6 @@ namespace MySnooper
                 {
                     c = new Client(ClientName, Clan);
                     c.IsBanned = mw.IsBanned(lowerName);
-                    c.IsBuddy = mw.IsBuddy(lowerName);
                     Sender.Clients.Add(lowerName, c);
                 }
                 else // we don't have any common channel with this client

@@ -19,24 +19,24 @@ namespace WormNat2
 
         private volatile bool Stopping = false;
         private volatile bool CloseGame = false;
-        private volatile int ExternalPort = 0;
-        private volatile int ConnectionThreadCounter = 0;
 
-        private string GameID = string.Empty;
-
+        private int ExternalPort = 0;
+        private int ConnectionThreadCounter = 0;
         private object ExternalPortLocker = new object();
         private object ConnectionThreadCounterLocker = new object();
 
-        private string ServerAddress;
-        private string GameExePath;
-        private string NickName;
-        private string HostName;
-        private string PassWord;
-        private string ChannelName;
-        private string ChannelScheme;
-        private string Location;
-        private string CC;
-        private bool UseWormNat;
+        private string GameID = string.Empty;
+
+        private readonly string ServerAddress;
+        private readonly string GameExePath;
+        private readonly string NickName;
+        private readonly string HostName;
+        private readonly string PassWord;
+        private readonly string ChannelName;
+        private readonly string ChannelScheme;
+        private readonly string Location;
+        private readonly string CC;
+        private readonly bool UseWormNat;
 
         public WormNat(string ServerAddress, string GameExePath, string NickName, string HostName, string PassWord, string ChannelName, string ChannelScheme, string Location, string CC, string UseWormNat)
         {

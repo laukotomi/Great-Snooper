@@ -73,11 +73,13 @@ namespace MySnooper
         //  string settingName, SettingChangedType type
         public string SettingName { get; private set; }
         public SettingChangedType Type { get; private set; }
+        public object UserObject { get; private set; }
 
-        public SettingChangedEventArgs(string settingName, SettingChangedType type)
+        public SettingChangedEventArgs(string settingName, SettingChangedType type, object userObject = null)
         {
             SettingName = settingName;
             Type = type;
+            UserObject = userObject;
         }
     }
 }

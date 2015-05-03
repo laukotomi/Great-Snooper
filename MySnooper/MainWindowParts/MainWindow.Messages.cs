@@ -358,6 +358,8 @@ namespace MySnooper
                 SolidColorBrush b;
                 if (ChoosedColors.TryGetValue(message.Sender.LowerName, out b))
                     p.Foreground = b;
+                else if (message.Sender.Group.ID != int.MaxValue)
+                    p.Foreground = message.Sender.Group.TextColor;
 
                 // Time when the message arrived
                 if (Properties.Settings.Default.MessageTime)

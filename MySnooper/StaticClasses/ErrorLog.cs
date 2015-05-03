@@ -4,32 +4,22 @@ using System.Threading;
 
 namespace MySnooper
 {
-    public class ExceptionLogger
+    public static class ErrorLog
     {
-        private byte mode;
-        private string filename;
-        private string errorstr;
-        private Exception ex;
-
-        public ExceptionLogger(Exception ex, string filename)
+        public class ExceptionLogger
         {
-            this.mode = 1;
-            this.ex = ex;
-            this.filename = filename;
-        }
+            private string filename;
+            private Exception ex;
 
-        public ExceptionLogger(string error, string filename)
-        {
-            this.mode = 2;
-            this.errorstr = error;
-            this.filename = filename;
-        }
-
-        public void DoLog()
-        {
-            try
+            public ExceptionLogger(Exception ex, string filename)
             {
-                if (mode == 1)
+                this.ex = ex;
+                this.filename = filename;
+            }
+
+            public void DoLog()
+            {
+                try
                 {
                     using (StreamWriter w = new StreamWriter(filename, true))
                     {
@@ -40,23 +30,11 @@ namespace MySnooper
                         w.WriteLine(Environment.NewLine + Environment.NewLine + Environment.NewLine);
                     }
                 }
-                else if (mode == 2)
-                {
-                    using (StreamWriter w = new StreamWriter(filename, true))
-                    {
-                        w.WriteLine(DateTime.Now.ToString("U"));
-                        w.WriteLine(errorstr);
-                        w.WriteLine(Environment.NewLine + Environment.NewLine + Environment.NewLine);
-                    }
-                }
+                catch (Exception) { }
+                ErrorLog.Logging = false;
             }
-            catch (Exception) { }
-            ErrorLog.Logging = false;
         }
-    }
 
-    public static class ErrorLog
-    {
         public static volatile bool Logging = false;
         private static string filename = string.Empty;
 

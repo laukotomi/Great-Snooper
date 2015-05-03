@@ -238,6 +238,7 @@ namespace Updater
             }
             // Generate the final list about what should be updated, deleted etc.
             worker.ReportProgress(4);
+            Thread.Sleep(3000); // To wait Great Snooper to exit!
             Dictionary<string, Change> realChanges = new Dictionary<string, Change>();
 
             foreach (KeyValuePair<string, List<Change>> item in versionChanges)

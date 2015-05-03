@@ -18,6 +18,7 @@ namespace MySnooper
             DebugMode = false;
             SystemClient = new Client("System");
             UITasks = new ConcurrentQueue<UITask>();
+            DefaultGroup = new UserGroup(int.MaxValue);
         }
 
         public static Client User { get; set; }
@@ -51,5 +52,7 @@ namespace MySnooper
         public static string SettingsPath { get; private set; }
 
         public static ConcurrentQueue<UITask> UITasks { get; private set; }
+
+        public static UserGroup DefaultGroup { get; private set; }
     }
 }

@@ -3,7 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Title="Settings" TitlebarHeight="40" Background="Black" Height="525" Width="800" WindowTransitionsEnabled="False"
-        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False">
+        WindowStartupLocation="CenterScreen" ResizeMode="NoResize" ShowInTaskbar="False" Closing="MetroWindow_Closing">
     <controls:MetroWindow.Resources>
         <Style BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
             <Setter Property="controls:ControlsHelper.HeaderFontSize" Value="18"></Setter>
@@ -41,8 +41,11 @@
             <ScrollViewer>
                 <Grid Name="UserGroupsGrid" HorizontalAlignment="Center" Margin="0,20">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="500"></ColumnDefinition>
-                        <ColumnDefinition Width="50"></ColumnDefinition>
+                        <ColumnDefinition Width="250"></ColumnDefinition>
+                        <ColumnDefinition Width="20"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
+                        <ColumnDefinition Width="20"></ColumnDefinition>
+                        <ColumnDefinition Width="100"></ColumnDefinition>
                     </Grid.ColumnDefinitions>
                 </Grid>
             </ScrollViewer>

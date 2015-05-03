@@ -347,7 +347,6 @@
 		<row><td>MahApps.Metro.dll</td><td>{78690705-48DA-47AA-A487-D77DAEDE7BF1}</td><td>INSTALLDIR</td><td>2</td><td/><td>mahapps.metro.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>System.Windows.Interactivity.dll</td><td>{50FD0FC5-4B78-495D-8479-4596A175777C}</td><td>INSTALLDIR</td><td>2</td><td/><td>system.windows.interactivity</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Updater2.exe</td><td>{11F0025A-0F5D-4C0E-BF87-969F598BF2FC}</td><td>INSTALLDIR</td><td>2</td><td/><td>updater2.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Xceed.Wpf.DataGrid.dll</td><td>{F2F5E56D-2632-4E9E-87BA-C373C290123B}</td><td>INSTALLDIR</td><td>2</td><td/><td>xceed.wpf.datagrid.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>Xceed.Wpf.Toolkit.dll</td><td>{13753D9B-669B-48DE-93B3-6F2D6D2619AE}</td><td>INSTALLDIR</td><td>2</td><td/><td>xceed.wpf.toolkit.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
@@ -1880,7 +1879,6 @@
 		<row><td>AlwaysInstall</td><td>MahApps.Metro.dll</td></row>
 		<row><td>AlwaysInstall</td><td>System.Windows.Interactivity.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Updater2.exe</td></row>
-		<row><td>AlwaysInstall</td><td>Xceed.Wpf.DataGrid.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Xceed.Wpf.Toolkit.dll</td></row>
 	</table>
 
@@ -1913,7 +1911,6 @@
 		<row><td>pmbeep.wav</td><td>ISX_DEFAULTCOMPONENT1</td><td>pmbeep.wav</td><td>0</td><td/><td/><td/><td>1</td><td>C:\VS\Great-Snooper\MySnooper\bin\Release\Sounds\pmbeep.wav</td><td>1</td><td/></row>
 		<row><td>system.windows.interactivity</td><td>System.Windows.Interactivity.dll</td><td>SYSTEM~1.DLL|System.Windows.Interactivity.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\VS\Great-Snooper\MySnooper\bin\Release\System.Windows.Interactivity.dll</td><td>1</td><td/></row>
 		<row><td>updater2.exe</td><td>Updater2.exe</td><td>Updater2.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\VS\Great-Snooper\MySnooper\bin\Release\Updater2.exe</td><td>1</td><td/></row>
-		<row><td>xceed.wpf.datagrid.dll</td><td>Xceed.Wpf.DataGrid.dll</td><td>XCEEDW~1.DLL|Xceed.Wpf.DataGrid.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\VS\Great-Snooper\MySnooper\bin\Release\Xceed.Wpf.DataGrid.dll</td><td>1</td><td/></row>
 		<row><td>xceed.wpf.toolkit.dll</td><td>Xceed.Wpf.Toolkit.dll</td><td>XCEEDW~1.DLL|Xceed.Wpf.Toolkit.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\VS\Great-Snooper\MySnooper\bin\Release\Xceed.Wpf.Toolkit.dll</td><td>1</td><td/></row>
 	</table>
 
@@ -2066,7 +2063,6 @@
 		<row><td>MahApps.Metro.dll</td><td/><td/><td>_A937843B_90E0_4F3B_9B6A_5D1AD18C95CC_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>System.Windows.Interactivity.dll</td><td/><td/><td>_FB70C40A_D4AE_408C_AA1D_04CD47CFB0D2_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Updater2.exe</td><td/><td/><td>_77FD63F1_18F4_4B8C_BCC6_0821B17962BF_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Xceed.Wpf.DataGrid.dll</td><td/><td/><td>_728F1838_75D0_4B86_B6FB_B7E50FC7CAC4_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>Xceed.Wpf.Toolkit.dll</td><td/><td/><td>_9E0220E3_04DD_4482_9B37_E9F2E75ABF31_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
@@ -2684,7 +2680,7 @@
 		<col def="I2">Encoded</col>
 		<col def="S0">Comment</col>
 		<col def="I4">TimeStamp</col>
-		<row><td>COMPANY_NAME</td><td>1033</td><td>Tomi</td><td>0</td><td/><td>-1054663825</td></row>
+		<row><td>COMPANY_NAME</td><td>1033</td><td>Tomi</td><td>0</td><td/><td>446914123</td></row>
 		<row><td>DN_AlwaysInstall</td><td>1033</td><td>Always Install</td><td>0</td><td/><td>-1054655985</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_COLOR</td><td>1033</td><td>The color settings of your system are not adequate for running [ProductName].</td><td>0</td><td/><td>-1054655985</td></row>
 		<row><td>IDPROP_EXPRESS_LAUNCH_CONDITION_OS</td><td>1033</td><td>The operating system is not adequate for running [ProductName].</td><td>0</td><td/><td>-1054655985</td></row>
@@ -3789,11 +3785,11 @@
 		<row><td>IDS__TargetReq_DESC_RAM</td><td>1033</td><td>The amount of RAM is not adequate for running [ProductName].</td><td>0</td><td/><td>-1054655985</td></row>
 		<row><td>IDS__TargetReq_DESC_RESOLUTION</td><td>1033</td><td>The screen resolution is not adequate for running [ProductName].</td><td>0</td><td/><td>-1054655985</td></row>
 		<row><td>ID_STRING1</td><td>1033</td><td/><td>0</td><td/><td>-1054655985</td></row>
-		<row><td>ID_STRING2</td><td>1033</td><td>http://www.tus-wa.com/forums/files/great-snooper-3rd-chapter-25137/</td><td>0</td><td/><td>-1054662001</td></row>
-		<row><td>ID_STRING3</td><td>1033</td><td>ToOMiToO</td><td>0</td><td/><td>-1054659985</td></row>
+		<row><td>ID_STRING2</td><td>1033</td><td>http://www.Tomi.com</td><td>0</td><td/><td>446914123</td></row>
+		<row><td>ID_STRING3</td><td>1033</td><td>Tomi</td><td>0</td><td/><td>446914123</td></row>
 		<row><td>ID_STRING4</td><td>1033</td><td>LAUNCH~1.EXE|Launch Great Snooper.exe</td><td>0</td><td/><td>-1054616849</td></row>
 		<row><td>ID_STRING5</td><td>1033</td><td>Tomi</td><td>0</td><td/><td>-1054665873</td></row>
-		<row><td>ID_STRING6</td><td>1033</td><td>http://www.tus-wa.com/forums/files/great-snooper-3rd-chapter-25137/</td><td>0</td><td/><td>-1054657681</td></row>
+		<row><td>ID_STRING6</td><td>1033</td><td>http://www.Tomi.com</td><td>0</td><td/><td>446914123</td></row>
 		<row><td>IIDS_UITEXT_FeatureUninstalled</td><td>1033</td><td>This feature will remain uninstalled.</td><td>0</td><td/><td>-1054655985</td></row>
 	</table>
 
@@ -3904,7 +3900,6 @@
 		<row><td>ARPPRODUCTICON.exe</td><td/><td>&lt;VSSolutionFolder&gt;\Images\icon.ico</td><td>0</td></row>
 		<row><td>Great_Snooper.exe1_3DD80C28B56E4567B15AE6ABF5CE98FB.exe</td><td/><td>C:\VS\Great-Snooper\MySnooper\bin\Release\Great Snooper.exe</td><td>0</td></row>
 		<row><td>Great_Snooper.exe_CEF6E5FD20B0486B82D38A3EC27E6F1B.exe</td><td/><td>C:\VS\Great-Snooper\MySnooper\bin\Release\Great Snooper.exe</td><td>0</td></row>
-		<row><td>Updater2.exe_82321F26E0974AF3A34929D425C3DA70.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\GenericExe.ico</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -4496,7 +4491,6 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>FileKey3</td><td>Updater2.exe</td><td/><td>tomi</td><td>2</td></row>
 		<row><td>FileKey4</td><td>Updater2.exe</td><td/><td>greats_1_great_snooper1</td><td>2</td></row>
 		<row><td>Great_Snooper.exe</td><td>Great_Snooper.exe</td><td/><td>greats_1_great_snooper</td><td>2</td></row>
-		<row><td>Updater2.exe</td><td>Updater2.exe</td><td/><td>greats_1_great_snooper1</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4584,7 +4578,6 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="I4">ISAttributes</col>
 		<row><td>Great_Snooper.exe</td><td>greats_1_great_snooper</td><td>##IDS_SHORTCUT_DISPLAY_NAME1##</td><td>Great_Snooper.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Great_Snooper.exe_CEF6E5FD20B0486B82D38A3EC27E6F1B.exe</td><td>1</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
 		<row><td>Great_Snooper.exe1</td><td>DesktopFolder</td><td>##IDS_SHORTCUT_DISPLAY_NAME1##</td><td>Great_Snooper.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Great_Snooper.exe1_3DD80C28B56E4567B15AE6ABF5CE98FB.exe</td><td>1</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>Updater2.exe</td><td>greats_1_great_snooper1</td><td>##IDS_SHORTCUT_DISPLAY_NAME4##</td><td>Updater2.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Updater2.exe_82321F26E0974AF3A34929D425C3DA70.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">

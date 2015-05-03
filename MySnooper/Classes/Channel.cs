@@ -240,7 +240,6 @@ namespace MySnooper
                         {
                             c = new Client(clientName);
                             c.IsBanned = mw.IsBanned(c.LowerName);
-                            c.IsBuddy = mw.IsBuddy(c.LowerName);
                             c.OnlineStatus = 2;
                             this.Server.Clients.Add(c.LowerName, c);
                         }
@@ -467,18 +466,7 @@ namespace MySnooper
                 this.Clients.CollectionChanged += Clients_CollectionChanged;
                 this.TheDataGrid.ItemsSource = this.Clients;
                 mw.SetDefaultViewForChannel(this);
-
-                if (Server.IsWormNet)
-                {
-                    string[] order = Properties.Settings.Default.ColumnOrder.Split(new char[] { '|' });
-                    if (order.Length == 2)
-                    {
-                        ListSortDirection dir = order[1] == "D" ? ListSortDirection.Descending : ListSortDirection.Ascending;
-                        mw.SetOrderForDataGrid(this, order[0], dir);
-                    }
-                    else
-                        mw.SetOrderForDataGrid(this, "Nick", ListSortDirection.Ascending);
-                }
+                mw.SetDefaultOrderForChannel(this);
             }
 
             if (this.Messages == null)
