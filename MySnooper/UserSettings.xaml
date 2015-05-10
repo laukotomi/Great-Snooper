@@ -106,13 +106,25 @@
 
         <TabItem Header="Sounds">
             <ScrollViewer>
-                <Grid HorizontalAlignment="Center" Name="SoundsGrid" Margin="0,20">
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="280"></ColumnDefinition>
-                        <ColumnDefinition Width="300"></ColumnDefinition>
-                        <ColumnDefinition Width="80"></ColumnDefinition>
-                    </Grid.ColumnDefinitions>
-                </Grid>
+                <StackPanel Orientation="Vertical" Margin="0,20">
+                    <Grid HorizontalAlignment="Center" Name="SoundsGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="280"></ColumnDefinition>
+                            <ColumnDefinition Width="300"></ColumnDefinition>
+                            <ColumnDefinition Width="80"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                    
+                    <TextBlock Text="Group sounds" FontWeight="Bold" FontSize="14" Margin="20,5,0,10"></TextBlock>
+
+                    <Grid HorizontalAlignment="Center" Name="GroupSoundsGrid">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="280"></ColumnDefinition>
+                            <ColumnDefinition Width="300"></ColumnDefinition>
+                            <ColumnDefinition Width="80"></ColumnDefinition>
+                        </Grid.ColumnDefinitions>
+                    </Grid>
+                </StackPanel>
             </ScrollViewer>
         </TabItem>
 

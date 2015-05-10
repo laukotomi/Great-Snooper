@@ -138,11 +138,18 @@ namespace MySnooper
                 switch (e.Type)
                 {
                     case SettingChangedType.Sound:
-                        string value = (string)(Properties.Settings.Default.GetType().GetProperty(e.SettingName).GetValue(Properties.Settings.Default, null));
-                        if (soundPlayers.ContainsKey(e.SettingName))
-                            soundPlayers[e.SettingName] = new SoundPlayer(new FileInfo(value).FullName);
+                        if (e.SettingName.StartsWith("Group"))
+                        {
+                            UserGroups.Groups[e.SettingName.Substring(0, e.SettingName.Length - 5)].ReloadSound(); // SettingName - "Sound"
+                        }
                         else
-                            soundPlayers.Add(e.SettingName, new SoundPlayer(new FileInfo(value).FullName));
+                        {
+                            string value = (string)(Properties.Settings.Default.GetType().GetProperty(e.SettingName).GetValue(Properties.Settings.Default, null));
+                            if (soundPlayers.ContainsKey(e.SettingName))
+                                soundPlayers[e.SettingName] = new SoundPlayer(new FileInfo(value).FullName);
+                            else
+                                soundPlayers.Add(e.SettingName, new SoundPlayer(new FileInfo(value).FullName));
+                        }
                         break;
 
                     case SettingChangedType.Style:
@@ -205,6 +212,12 @@ namespace MySnooper
                         break;
 
                     default:
+                        if (e.SettingName.StartsWith("Group") && e.SettingName.EndsWith("SoundEnabled"))
+                        {
+                            UserGroups.Groups[e.SettingName.Substring(0, e.SettingName.Length - 12)].ReloadSoundEnabled(); // SettingName - "SoundEnabled"
+                            return;
+                        }
+
                         switch (e.SettingName)
                         {
                             case "ShowWormsChannel":

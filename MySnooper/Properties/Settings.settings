@@ -50,16 +50,10 @@
     <Setting Name="HBeep" Type="System.String" Scope="User">
       <Value Profile="(Default)">Sounds\pmbeep.wav</Value>
     </Setting>
-    <Setting Name="BJBeep" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Sounds\buddyjoined.wav</Value>
-    </Setting>
     <Setting Name="PMBeepEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="HBeepEnabled" Type="System.Boolean" Scope="User">
-      <Value Profile="(Default)">True</Value>
-    </Setting>
-    <Setting Name="BJBeepEnabled" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="MessageJoinedGame" Type="System.Boolean" Scope="User">
@@ -227,7 +221,7 @@
     <Setting Name="ActionMessageWithGT" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
-    <Setting Name="EnergySaveMode" Type="System.Boolean" Scope="User">
+    <Setting Name="EnergySaveMode2" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="MuteState" Type="System.Boolean" Scope="User">
@@ -274,6 +268,48 @@
     </Setting>
     <Setting Name="Group6List" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
+    </Setting>
+    <Setting Name="Group0Sound" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Sounds\buddyjoined.wav</Value>
+    </Setting>
+    <Setting Name="Group0SoundEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Group1Sound" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Sounds\buddyjoined.wav</Value>
+    </Setting>
+    <Setting Name="Group1SoundEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="Group2Sound" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Sounds\buddyjoined.wav</Value>
+    </Setting>
+    <Setting Name="Group2SoundEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Group3Sound" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Sounds\buddyjoined.wav</Value>
+    </Setting>
+    <Setting Name="Group3SoundEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Group4Sound" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Sounds\buddyjoined.wav</Value>
+    </Setting>
+    <Setting Name="Group4SoundEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Group5Sound" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Sounds\buddyjoined.wav</Value>
+    </Setting>
+    <Setting Name="Group5SoundEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="Group6Sound" Type="System.String" Scope="User">
+      <Value Profile="(Default)">Sounds\buddyjoined.wav</Value>
+    </Setting>
+    <Setting Name="Group6SoundEnabled" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">False</Value>
     </Setting>
   </Settings>
 </SettingsFile>

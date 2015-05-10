@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
+using System.Media;
 using System.Windows.Media;
 
 namespace MySnooper
@@ -8,12 +10,14 @@ namespace MySnooper
     public class UserGroup : INotifyPropertyChanged
     {
         private SolidColorBrush _groupColor;
+        private SoundPlayer soundPlayer;
 
         public int ID { get; private set; }
         public string SettingName { get; private set; }
         public string Name { get; set; }
         public Dictionary<string, string> Users { get; private set; }
         public SolidColorBrush TextColor { get; private set; }
+        public bool SoundEnabled { get; private set; }
 
         public SolidColorBrush GroupColor
         {
@@ -56,6 +60,13 @@ namespace MySnooper
                 string[] temp = value.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string user in temp)
                     this.Users.Add(user.ToLower(), user);
+
+                string soundFile = (string)(Properties.Settings.Default.GetType().GetProperty(this.SettingName + "Sound").GetValue(Properties.Settings.Default, null));
+                if (File.Exists(soundFile))
+                {
+                    soundPlayer = new SoundPlayer(new FileInfo(soundFile).FullName);
+                    SoundEnabled = (bool)(Properties.Settings.Default.GetType().GetProperty(this.SettingName + "SoundEnabled").GetValue(Properties.Settings.Default, null));
+                }
             }
         }
 
@@ -75,6 +86,37 @@ namespace MySnooper
                 temp.Add(item.Value);
             Properties.Settings.Default.GetType().GetProperty(this.SettingName + "List").SetValue(Properties.Settings.Default, String.Join(",", temp), null);
             Properties.Settings.Default.Save();
+        }
+
+        public void PlaySound()
+        {
+            if (soundPlayer != null)
+            {
+                try
+                {
+                    soundPlayer.Play();
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex);
+                }
+            }
+        }
+
+        public void ReloadSound()
+        {
+            if (soundPlayer != null)
+                soundPlayer.Dispose();
+
+            string soundFile = (string)(Properties.Settings.Default.GetType().GetProperty(this.SettingName + "Sound").GetValue(Properties.Settings.Default, null));
+            if (File.Exists(soundFile))
+                soundPlayer = new SoundPlayer(new FileInfo(soundFile).FullName);
+            else soundPlayer = null;
+        }
+
+        public void ReloadSoundEnabled()
+        {
+            SoundEnabled = (bool)(Properties.Settings.Default.GetType().GetProperty(this.SettingName + "SoundEnabled").GetValue(Properties.Settings.Default, null));
         }
     }
 }

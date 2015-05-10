@@ -47,7 +47,7 @@ namespace MySnooper
             AddBoolSetting(WindowGrid, "ShowBannedMessages", "Show messages of banned users in the channels:");
             AddBoolSetting(WindowGrid, "ShowInfoColumn", "Show information column in user list:");
             AddBoolSetting(WindowGrid, "CloseToTray", "Exit button minimizes the snooper to tray:");
-            AddBoolSetting(WindowGrid, "EnergySaveMode", "Energy save mode:");
+            AddBoolSetting(WindowGrid, "EnergySaveMode2", "Energy save mode:");
 
             // Notifications
             AddBoolSetting(NotificationsGrid, "AskNotificatorOff", "Ask if I would like to turn off notificator when I host or join a game:");
@@ -79,13 +79,26 @@ namespace MySnooper
             // Sounds
             AddSoundSetting(SoundsGrid, "PMBeep", "PMBeepEnabled", "Private message arrived:");
             AddSoundSetting(SoundsGrid, "HBeep", "HBeepEnabled", "When your name appears in chat:");
-            AddSoundSetting(SoundsGrid, "BJBeep", "BJBeepEnabled", "When a buddy comes online:");
             AddSoundSetting(SoundsGrid, "LeagueFoundBeep", "LeagueFoundBeepEnabled", "When the snooper finds a league game:");
             AddSoundSetting(SoundsGrid, "LeagueFailBeep", "LeagueFailBeepEnabled", "When the snooper stops searching league game:");
             AddSoundSetting(SoundsGrid, "NotificatorSound", "NotificatorSoundEnabled", "When the notificator finds something:");
 
+            GenerateGroupSounds();
+
             // About
             Version.Text = "Version: " + App.GetVersion();
+
+            this.UpdateLayout();
+        }
+
+        private void GenerateGroupSounds()
+        {
+            GroupSoundsGrid.Children.Clear();
+            GroupSoundsGrid.RowDefinitions.Clear();
+            foreach (var item in UserGroups.Groups)
+            {
+                AddSoundSetting(GroupSoundsGrid, item.Value.SettingName + "Sound", item.Value.SettingName + "SoundEnabled", "A player from " + item.Value.Name + " comes online:");
+            }
         }
 
         private void AddBoolSetting(Grid grid, string name, string text)
@@ -430,6 +443,7 @@ namespace MySnooper
 
             group.Name = text;
             group.SaveSettings();
+            GenerateGroupSounds();
 
             if (SettingChanged != null)
                 SettingChanged(this, new SettingChangedEventArgs(group.SettingName, SettingChangedType.UserGroup));

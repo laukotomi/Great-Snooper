@@ -368,22 +368,33 @@ namespace MySnooper
                 else
                     inline.FontWeight = FontWeights.Normal;
 
+                if (this.ChannelTabItem.IsSelected)
+                    inline.FontStyle = FontStyles.Italic;
+                else
+                    inline.FontStyle = FontStyles.Normal;
+
                 switch (this.Clients[j].OnlineStatus)
                 {
                     case 0:
-                        if (isMouseOver || this.ChannelTabItem.IsSelected)
+                        if (this.ChannelTabItem.IsSelected)
                             inline.Foreground = Brushes.Red;
+                        else if (isMouseOver)
+                            inline.Foreground = Brushes.Firebrick;
                         else
                             inline.Foreground = Brushes.DarkRed;
                         break;
                     case 1:
-                        if (isMouseOver || this.ChannelTabItem.IsSelected)
+                        if (this.ChannelTabItem.IsSelected)
+                            inline.Foreground = Brushes.GreenYellow;
+                        else if (isMouseOver)
                             inline.Foreground = Brushes.YellowGreen;
                         else
                             inline.Foreground = Brushes.Green;
                         break;
                     case 2:
-                        if (isMouseOver || this.ChannelTabItem.IsSelected)
+                        if (this.ChannelTabItem.IsSelected)
+                            inline.Foreground = Brushes.Gold;
+                        else if (isMouseOver)
                             inline.Foreground = Brushes.LightYellow;
                         else
                             inline.Foreground = Brushes.Yellow;

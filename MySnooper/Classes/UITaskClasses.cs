@@ -51,8 +51,11 @@ namespace MySnooper
                 // Send quit message to the channels where the user was active
                 for (int i = 0; i < c.Channels.Count; i++)
                 {
-                    c.Channels[i].AddMessage(c, msg, MessageSettings.QuitMessage);
-                    c.Channels[i].Clients.Remove(c);
+                    if (c.Channels[i].Joined)
+                    {
+                        c.Channels[i].AddMessage(c, msg, MessageSettings.QuitMessage);
+                        c.Channels[i].Clients.Remove(c);
+                    }
                 }
                 c.Channels.Clear();
 
@@ -249,7 +252,12 @@ namespace MySnooper
                 Client c;
                 if (Sender.Clients.TryGetValue(ClientNameL, out c))
                 {
-                    ch.Clients.Remove(c);
+                    if (ch.Joined)
+                    {
+                        ch.Clients.Remove(c);
+                        ch.AddMessage(c, "has left the channel.", MessageSettings.PartMessage);
+                    }
+
                     c.Channels.Remove(ch);
                     if (c.Channels.Count == 0)
                     {
@@ -258,7 +266,6 @@ namespace MySnooper
                         else
                             Sender.Clients.Remove(ClientNameL);
                     }
-                    ch.AddMessage(c, "has left the channel.", MessageSettings.PartMessage);
                 }
             }
         }
@@ -285,7 +292,6 @@ namespace MySnooper
                 return;
 
             string lowerName = ClientName.ToLower();
-            bool userJoined = false;
 
             if (lowerName != Sender.User.LowerName)
             {
@@ -319,12 +325,12 @@ namespace MySnooper
 
                     ch.AddMessage(c, "joined the channel.", MessageSettings.JoinMessage);
 
-                    if (c.Group.ID == UserGroups.BuddiesGroupID)
+                    if (c.Group.ID != int.MaxValue)
                     {
                         if (Properties.Settings.Default.TrayNotifications)
                             mw.NotifyIcon.ShowBalloonTip(null, c.Name + " is online.", Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
-                        if (Properties.Settings.Default.BJBeepEnabled)
-                            mw.PlaySound("BJBeep");
+                        if (c.Group.SoundEnabled)
+                            c.Group.PlaySound();
                     }
 
                     if (mw.Notifications.Count > 0)
@@ -347,7 +353,6 @@ namespace MySnooper
                 ch.Join(mw.WormWebC);
                 ch.Server.GetChannelClients(ch.Name); // get the users in the channel
 
-                userJoined = true;
                 ch.AddMessage(Sender.User, "joined the channel.", MessageSettings.JoinMessage);
 
                 if (mw.Channels.SelectedItem != null)
@@ -358,17 +363,9 @@ namespace MySnooper
                         if (ch.CanHost)
                             mw.GameListForce = true;
                         mw.TusForce = true;
+                        ch.ChannelTabItem.UpdateLayout();
+                        ch.TheTextBox.Focus();
                     }
-                }
-            }
-
-            if (userJoined && mw.Channels.SelectedItem != null)
-            {
-                Channel selectedCH = (Channel)((TabItem)mw.Channels.SelectedItem).DataContext;
-                if (ch == selectedCH)
-                {
-                    ch.ChannelTabItem.UpdateLayout();
-                    ch.TheTextBox.Focus();
                 }
             }
         }
@@ -498,9 +495,7 @@ namespace MySnooper
             {
                 c.OnlineStatus = 0;
                 foreach (Channel ch in c.PMChannels)
-                {
                     ch.AddMessage(GlobalManager.SystemClient, ClientName + " is currently offline.", MessageSettings.OfflineMessage);
-                }
             }
         }
     }
@@ -543,7 +538,10 @@ namespace MySnooper
 
                 // To keep SortedDictionary sorted, first client will be removed..
                 foreach (Channel ch in c.Channels)
-                    ch.Clients.Remove(c);
+                {
+                    if (ch.Joined)
+                        ch.Clients.Remove(c);
+                }
                 foreach (Channel ch in c.PMChannels)
                     ch.RemoveClientFromConversation(c, false, false);
 
@@ -554,8 +552,11 @@ namespace MySnooper
                 // then later it will be readded with new Name
                 foreach (Channel ch in c.Channels)
                 {
-                    ch.Clients.Add(c);
-                    ch.AddMessage(GlobalManager.SystemClient, OldClientName + " is now known as " + NewClientName + ".", MessageSettings.OfflineMessage);
+                    if (ch.Joined)
+                    {
+                        ch.Clients.Add(c);
+                        ch.AddMessage(GlobalManager.SystemClient, OldClientName + " is now known as " + NewClientName + ".", MessageSettings.OfflineMessage);
+                    }
                 }
                 foreach (Channel ch in c.PMChannels)
                 {

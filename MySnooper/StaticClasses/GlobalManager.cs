@@ -11,6 +11,7 @@ namespace MySnooper
         // This method ensures that the initialization will be made from the appropriate thread
         public static void Initialize()
         {
+            DefaultGroup = new UserGroup(int.MaxValue);
             MaxMessagesInMemory = 1000;
             MaxMessagesDisplayed = 100;
             NumOfOldMessagesToBeLoaded = 50;
@@ -18,7 +19,6 @@ namespace MySnooper
             DebugMode = false;
             SystemClient = new Client("System");
             UITasks = new ConcurrentQueue<UITask>();
-            DefaultGroup = new UserGroup(int.MaxValue);
         }
 
         public static Client User { get; set; }

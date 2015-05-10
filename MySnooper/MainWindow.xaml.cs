@@ -70,6 +70,7 @@ namespace MySnooper
         private bool snooperClosing = false;
         private bool spamAllowed = false;
         public bool EnergySaveModeOn = false;
+        private bool IsHidden = false;
 
         // Sounds
         private Dictionary<string, SoundPlayer> soundPlayers = new Dictionary<string,SoundPlayer>();
@@ -206,8 +207,6 @@ namespace MySnooper
             // Load sounds
             if (File.Exists(Properties.Settings.Default.PMBeep))
                 soundPlayers.Add("PMBeep", new SoundPlayer(new FileInfo(Properties.Settings.Default.PMBeep).FullName));
-            if (File.Exists(Properties.Settings.Default.BJBeep))
-                soundPlayers.Add("BJBeep", new SoundPlayer(new FileInfo(Properties.Settings.Default.BJBeep).FullName));
             if (File.Exists(Properties.Settings.Default.HBeep))
                 soundPlayers.Add("HBeep", new SoundPlayer(new FileInfo(Properties.Settings.Default.HBeep).FullName));
             if (File.Exists(Properties.Settings.Default.LeagueFoundBeep))
@@ -237,11 +236,17 @@ namespace MySnooper
             WormNetC.GetChannelList();
 
             this.StateChanged += MainWindow_StateChanged;
+            this.LocationChanged += MainWindow_LocationChanged;
+        }
+
+        void MainWindow_LocationChanged(object sender, EventArgs e)
+        {
+            snoopIsInOtherWindow = false;
         }
 
         void MainWindow_StateChanged(object sender, EventArgs e)
         {
-            if (Properties.Settings.Default.EnergySaveMode)
+            if (Properties.Settings.Default.EnergySaveMode2)
             {
                 if (this.WindowState == System.Windows.WindowState.Minimized && !EnergySaveModeOn)
                     EnterEnergySaveMode();
@@ -250,8 +255,19 @@ namespace MySnooper
             }
         }
 
-        private void EnterEnergySaveMode()
+        private bool snoopIsInOtherWindow = false;
+        private void EnterEnergySaveMode(bool checkOtherWindowThanGame = false)
         {
+            if (checkOtherWindowThanGame)
+            {
+                var gsScreen = System.Windows.Forms.Screen.FromHandle(new System.Windows.Interop.WindowInteropHelper(this).Handle);
+                var gameScreen = System.Windows.Forms.Screen.FromHandle(lobbyWindow);
+                if (gsScreen.DeviceName != gameScreen.DeviceName)
+                {
+                    snoopIsInOtherWindow = true;
+                    return;
+                }
+            }
             Debug.WriteLine("EnergySaveMode is ON", "EnergySaveMode");
 
             EnergySaveModeOn = true;
@@ -275,6 +291,8 @@ namespace MySnooper
 
         private void LeaveEnergySaveMode()
         {
+            if (this.IsHidden || this.WindowState == System.Windows.WindowState.Minimized)
+                return;
             Debug.WriteLine("EnergySaveMode is OFF", "EnergySaveMode");
 
             EnergySaveModeOn = false;
@@ -684,8 +702,12 @@ namespace MySnooper
                 UserList.SelectedIndex = Channels.SelectedIndex;
 
                 // Clear filter
-                if (gameListChannel != null)
-                    SetDefaultViewForChannel(gameListChannel);
+                if (Filter.Text != "Filter..")
+                {
+                    Filter.Text = "Filter..";
+                    if (gameListChannel != null)
+                        SetDefaultViewForChannel(gameListChannel);
+                }
 
                 gameListChannel = ch;
                 GameListForce = true;
@@ -704,7 +726,6 @@ namespace MySnooper
                 var view = CollectionViewSource.GetDefaultView(ch.TheDataGrid.ItemsSource);
                 if (view != null)
                 {
-                    Filter.Text = "Filter..";
                     if (!Properties.Settings.Default.ShowBannedUsers)
                     {
                         view.Filter = o =>
@@ -715,7 +736,7 @@ namespace MySnooper
                             return true;
                         };
                     }
-                    else
+                    else if (view.Filter != null)
                         view.Filter = null;
                 }
             }
@@ -1251,7 +1272,8 @@ namespace MySnooper
                         foreach (var item in server.ChannelList)
                         {
                             item.Value.Reconnecting(false);
-                            item.Value.AddMessage(GlobalManager.SystemClient, "Great Snooper has reconnected.", MessageSettings.OfflineMessage);
+                            if (item.Value.Joined)
+                                item.Value.AddMessage(GlobalManager.SystemClient, "Great Snooper has reconnected.", MessageSettings.OfflineMessage);
 
                             if (item.Value.Joined && !item.Value.IsPrivMsgChannel)
                             {
@@ -1437,23 +1459,25 @@ namespace MySnooper
 
         private void HideWindow()
         {
-            if (Properties.Settings.Default.EnergySaveMode && !EnergySaveModeOn)
+            if (Properties.Settings.Default.EnergySaveMode2 && !EnergySaveModeOn)
                 EnterEnergySaveMode();
 
             if (this.WindowState != System.Windows.WindowState.Minimized)
                 lastWindowState = this.WindowState;
             this.Hide();
+            this.IsHidden = true;
         }
 
         private void RestoreWindow()
         {
-            if (Properties.Settings.Default.EnergySaveMode && EnergySaveModeOn)
-                LeaveEnergySaveMode();
-
             this.Show();
             if (this.WindowState == System.Windows.WindowState.Minimized)
                 this.WindowState = lastWindowState;
             this.Activate();
+            this.IsHidden = false;
+
+            if (Properties.Settings.Default.EnergySaveMode2 && EnergySaveModeOn)
+                LeaveEnergySaveMode();
         }
 
         private void LayoutChanged(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)

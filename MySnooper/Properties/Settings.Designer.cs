@@ -217,18 +217,6 @@ namespace MySnooper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Sounds\\buddyjoined.wav")]
-        public string BJBeep {
-            get {
-                return ((string)(this["BJBeep"]));
-            }
-            set {
-                this["BJBeep"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
         public bool PMBeepEnabled {
             get {
@@ -248,18 +236,6 @@ namespace MySnooper.Properties {
             }
             set {
                 this["HBeepEnabled"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool BJBeepEnabled {
-            get {
-                return ((bool)(this["BJBeepEnabled"]));
-            }
-            set {
-                this["BJBeepEnabled"] = value;
             }
         }
         
@@ -926,12 +902,12 @@ namespace MySnooper.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool EnergySaveMode {
+        public bool EnergySaveMode2 {
             get {
-                return ((bool)(this["EnergySaveMode"]));
+                return ((bool)(this["EnergySaveMode2"]));
             }
             set {
-                this["EnergySaveMode"] = value;
+                this["EnergySaveMode2"] = value;
             }
         }
         
@@ -1112,6 +1088,174 @@ namespace MySnooper.Properties {
             }
             set {
                 this["Group6List"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Sounds\\buddyjoined.wav")]
+        public string Group0Sound {
+            get {
+                return ((string)(this["Group0Sound"]));
+            }
+            set {
+                this["Group0Sound"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Group0SoundEnabled {
+            get {
+                return ((bool)(this["Group0SoundEnabled"]));
+            }
+            set {
+                this["Group0SoundEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Sounds\\buddyjoined.wav")]
+        public string Group1Sound {
+            get {
+                return ((string)(this["Group1Sound"]));
+            }
+            set {
+                this["Group1Sound"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool Group1SoundEnabled {
+            get {
+                return ((bool)(this["Group1SoundEnabled"]));
+            }
+            set {
+                this["Group1SoundEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Sounds\\buddyjoined.wav")]
+        public string Group2Sound {
+            get {
+                return ((string)(this["Group2Sound"]));
+            }
+            set {
+                this["Group2Sound"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Group2SoundEnabled {
+            get {
+                return ((bool)(this["Group2SoundEnabled"]));
+            }
+            set {
+                this["Group2SoundEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Sounds\\buddyjoined.wav")]
+        public string Group3Sound {
+            get {
+                return ((string)(this["Group3Sound"]));
+            }
+            set {
+                this["Group3Sound"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Group3SoundEnabled {
+            get {
+                return ((bool)(this["Group3SoundEnabled"]));
+            }
+            set {
+                this["Group3SoundEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Sounds\\buddyjoined.wav")]
+        public string Group4Sound {
+            get {
+                return ((string)(this["Group4Sound"]));
+            }
+            set {
+                this["Group4Sound"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Group4SoundEnabled {
+            get {
+                return ((bool)(this["Group4SoundEnabled"]));
+            }
+            set {
+                this["Group4SoundEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Sounds\\buddyjoined.wav")]
+        public string Group5Sound {
+            get {
+                return ((string)(this["Group5Sound"]));
+            }
+            set {
+                this["Group5Sound"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Group5SoundEnabled {
+            get {
+                return ((bool)(this["Group5SoundEnabled"]));
+            }
+            set {
+                this["Group5SoundEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("Sounds\\buddyjoined.wav")]
+        public string Group6Sound {
+            get {
+                return ((string)(this["Group6Sound"]));
+            }
+            set {
+                this["Group6Sound"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool Group6SoundEnabled {
+            get {
+                return ((bool)(this["Group6SoundEnabled"]));
+            }
+            set {
+                this["Group6SoundEnabled"] = value;
             }
         }
     }

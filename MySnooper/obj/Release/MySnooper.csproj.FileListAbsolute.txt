@@ -232,4 +232,3 @@ C:\VS\Great-Snooper\MySnooper\obj\Release\Notificator.g.cs
 C:\VS\Great-Snooper\MySnooper\obj\Release\GeneratedInternalTypeHelper.g.cs
 C:\VS\Great-Snooper\MySnooper\obj\Release\Notificator.baml
 C:\VS\Great-Snooper\MySnooper\obj\Release\Great Snooper.TrustInfo.xml
-C:\VS\Great-Snooper\MySnooper\obj\Release\MySnooper.csprojResolveAssemblyReference.cache
