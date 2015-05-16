@@ -47,7 +47,8 @@ namespace MySnooper
             AddBoolSetting(WindowGrid, "ShowBannedMessages", "Show messages of banned users in the channels:");
             AddBoolSetting(WindowGrid, "ShowInfoColumn", "Show information column in user list:");
             AddBoolSetting(WindowGrid, "CloseToTray", "Exit button minimizes the snooper to tray:");
-            AddBoolSetting(WindowGrid, "EnergySaveMode2", "Energy save mode:");
+            AddBoolSetting(WindowGrid, "EnergySaveModeGame", "Energy save mode while playing:");
+            AddBoolSetting(WindowGrid, "EnergySaveModeWin", "Energy save mode when snooper is hidden:");
 
             // Notifications
             AddBoolSetting(NotificationsGrid, "AskNotificatorOff", "Ask if I would like to turn off notificator when I host or join a game:");

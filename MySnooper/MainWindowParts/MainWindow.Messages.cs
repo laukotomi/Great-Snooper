@@ -365,21 +365,22 @@ namespace MySnooper
                 if (Properties.Settings.Default.MessageTime)
                 {
                     Run word = new Run(message.Time.ToString("T") + " ");
-                    MessageSettings.LoadSettingsFor(word, MessageSettings.MessageTimeStyle);
+                    //MessageSettings.LoadSettingsFor(word, MessageSettings.MessageTimeStyle);
                     p.Inlines.Add(word);
                 }
 
                 // Sender of the message
-                if (message.Style.Type == MessageTypes.Action)
-                {
-                    Bold nick = new Bold(new Run(message.Sender.Name + " "));
-                    p.Inlines.Add(nick);
-                }
+                Run nick = (message.Style.Type == MessageTypes.Action) ? new Run(message.Sender.Name + " ") : new Run(message.Sender.Name + ": ");
+                nick.FontWeight = FontWeights.Bold;
+                p.Inlines.Add(nick);
+
+                if (insert)
+                    ch.TheFlowDocument.Blocks.InsertBefore(ch.TheFlowDocument.Blocks.FirstBlock, p);
                 else
-                {
-                    Bold nick = new Bold(new Run(message.Sender.Name + ": "));
-                    p.Inlines.Add(nick);
-                }
+                    ch.TheFlowDocument.Blocks.Add(p);
+
+                p = new Paragraph();
+                p.Margin = new Thickness(20, 2, 0, 2);
 
                 // Message content
                 string[] words = message.Message.Split(' ');
@@ -448,10 +449,7 @@ namespace MySnooper
                 }
 
                 // Insert the new paragraph
-                if (insert)
-                    ch.TheFlowDocument.Blocks.InsertBefore(ch.TheFlowDocument.Blocks.FirstBlock, p);
-                else
-                    ch.TheFlowDocument.Blocks.Add(p);
+                ch.TheFlowDocument.Blocks.Add(p);
 
                 while (ch.TheFlowDocument.Blocks.Count > GlobalManager.MaxMessagesInMemory)
                 {

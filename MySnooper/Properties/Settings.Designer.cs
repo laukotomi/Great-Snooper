@@ -901,18 +901,6 @@ namespace MySnooper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool EnergySaveMode2 {
-            get {
-                return ((bool)(this["EnergySaveMode2"]));
-            }
-            set {
-                this["EnergySaveMode2"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
         public bool MuteState {
             get {
@@ -1256,6 +1244,30 @@ namespace MySnooper.Properties {
             }
             set {
                 this["Group6SoundEnabled"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool EnergySaveModeGame {
+            get {
+                return ((bool)(this["EnergySaveModeGame"]));
+            }
+            set {
+                this["EnergySaveModeGame"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool EnergySaveModeWin {
+            get {
+                return ((bool)(this["EnergySaveModeWin"]));
+            }
+            set {
+                this["EnergySaveModeWin"] = value;
             }
         }
     }

@@ -13,6 +13,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Linq;
 
 namespace MySnooper
 {
@@ -54,16 +55,14 @@ namespace MySnooper
             if (firstStart)
             {
                 WormNetCharTable.Initialize();
-                MessageSettings.Initialize();
-                CountriesClass.Initialize();
-                GlobalManager.Initialize();
-                UserGroups.Initialize();
 
                 if (!Properties.Settings.Default.SettingsUpgraded)
                 {
                     try
                     {
                         Properties.Settings.Default.Upgrade();
+                        if (Properties.Settings.Default.Group0List.Length == 0)
+                            Properties.Settings.Default.Group0List = Properties.Settings.Default.BuddyList;
                     }
                     catch (Exception) { }
 
@@ -72,9 +71,13 @@ namespace MySnooper
                     if (Properties.Settings.Default.QuitMessagee == string.Empty || validator.Validate(ref quitMessage) != string.Empty)
                         Properties.Settings.Default.QuitMessagee = "Great Snooper v" + App.GetVersion();
                     Properties.Settings.Default.SettingsUpgraded = true;
-                    Properties.Settings.Default.Group0List = Properties.Settings.Default.BuddyList;
                     Properties.Settings.Default.Save();
                 }
+
+                MessageSettings.Initialize();
+                CountriesClass.Initialize();
+                GlobalManager.Initialize();
+                UserGroups.Initialize();
 
                 // Reducing Timeline frame rate
                 Timeline.DesiredFrameRateProperty.OverrideMetadata(

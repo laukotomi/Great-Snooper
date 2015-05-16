@@ -43,14 +43,14 @@
     </dependentAssembly>
   </dependency>
   <dependency>
-    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Great Snooper.exe" size="457728">
+    <dependentAssembly dependencyType="install" allowDelayedBinding="true" codebase="Great Snooper.exe" size="458240">
       <assemblyIdentity name="Great Snooper" version="1.4.8.0" language="neutral" processorArchitecture="msil" />
       <hash>
         <dsig:Transforms>
           <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
         </dsig:Transforms>
         <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-        <dsig:DigestValue>tNrTybNMLeU2DKIO/7wd/HPkI3g=</dsig:DigestValue>
+        <dsig:DigestValue>t2KAhOw1pE7Jyao8irgmydcEsqg=</dsig:DigestValue>
       </hash>
     </dependentAssembly>
   </dependency>
@@ -102,13 +102,13 @@
       </hash>
     </dependentAssembly>
   </dependency>
-  <file name="Great Snooper.exe.config" size="12227">
+  <file name="Great Snooper.exe.config" size="12341">
     <hash>
       <dsig:Transforms>
         <dsig:Transform Algorithm="urn:schemas-microsoft-com:HashTransforms.Identity" />
       </dsig:Transforms>
       <dsig:DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1" />
-      <dsig:DigestValue>SMPr0V3Zx4xOKIhtpt2f584N7xw=</dsig:DigestValue>
+      <dsig:DigestValue>ujQxqnAFXE4Ib857Kleu637s1R8=</dsig:DigestValue>
     </hash>
   </file>
   <file name="icon.ico" size="9662">

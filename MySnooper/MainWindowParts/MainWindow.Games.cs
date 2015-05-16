@@ -118,7 +118,7 @@ namespace MySnooper
                     SendMessageToChannel("/back", null);
                     gameProcess.Dispose();
                     gameProcess = null;
-                    if (Properties.Settings.Default.EnergySaveMode2 && EnergySaveModeOn)
+                    if (Properties.Settings.Default.EnergySaveModeGame && EnergySaveModeOn)
                         LeaveEnergySaveMode();
                     return;
                 }
@@ -137,13 +137,13 @@ namespace MySnooper
                     SendMessageToChannel("/back", null);
                     gameProcess.Dispose();
                     gameProcess = null;
-                    if (Properties.Settings.Default.EnergySaveMode2 && EnergySaveModeOn)
+                    if (Properties.Settings.Default.EnergySaveModeGame && EnergySaveModeOn)
                         LeaveEnergySaveMode();
                     return;
                 }
             }
 
-            if (Properties.Settings.Default.EnergySaveMode2 && lobbyWindow != IntPtr.Zero)
+            if (Properties.Settings.Default.EnergySaveModeGame && lobbyWindow != IntPtr.Zero)
             {
                 if (NativeMethods.GetPlacement(lobbyWindow).showCmd == ShowWindowCommands.Normal)
                 {

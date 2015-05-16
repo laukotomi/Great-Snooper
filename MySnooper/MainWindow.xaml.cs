@@ -246,7 +246,7 @@ namespace MySnooper
 
         void MainWindow_StateChanged(object sender, EventArgs e)
         {
-            if (Properties.Settings.Default.EnergySaveMode2)
+            if (Properties.Settings.Default.EnergySaveModeWin)
             {
                 if (this.WindowState == System.Windows.WindowState.Minimized && !EnergySaveModeOn)
                     EnterEnergySaveMode();
@@ -1459,7 +1459,7 @@ namespace MySnooper
 
         private void HideWindow()
         {
-            if (Properties.Settings.Default.EnergySaveMode2 && !EnergySaveModeOn)
+            if (Properties.Settings.Default.EnergySaveModeWin && !EnergySaveModeOn)
                 EnterEnergySaveMode();
 
             if (this.WindowState != System.Windows.WindowState.Minimized)
@@ -1476,7 +1476,7 @@ namespace MySnooper
             this.Activate();
             this.IsHidden = false;
 
-            if (Properties.Settings.Default.EnergySaveMode2 && EnergySaveModeOn)
+            if (Properties.Settings.Default.EnergySaveModeWin && EnergySaveModeOn)
                 LeaveEnergySaveMode();
         }
 
