@@ -1,4 +1,5 @@
 ﻿using System.Collections.Concurrent;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Markup;
 
@@ -6,19 +7,30 @@ namespace MySnooper
 {
     public class GlobalManager
     {
+        public const int MaxMessagesInMemory = 1000;
+        public const int MaxMessagesDisplayed = 100;
+        public const int NumOfOldMessagesToBeLoaded = 50;
+
+
         private static ParserContext _XamlContext;
 
         // This method ensures that the initialization will be made from the appropriate thread
         public static void Initialize()
         {
-            DefaultGroup = new UserGroup(int.MaxValue);
-            MaxMessagesInMemory = 1000;
-            MaxMessagesDisplayed = 100;
-            NumOfOldMessagesToBeLoaded = 50;
+            DefaultGroup = new UserGroup(UserGroups.SystemGroupID);
             SettingsPath = Directory.GetParent(Directory.GetParent(System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath).FullName).FullName;
             DebugMode = false;
-            SystemClient = new Client("System");
             UITasks = new ConcurrentQueue<UITask>();
+            SpamAllowed = false;
+            SystemClient = new Client("System", null);
+        }
+
+        public static void MainWindowInit()
+        {
+            BanList = new Dictionary<string, string>();
+            BanList.DeSerialize(Properties.Settings.Default.BanList);
+            AutoJoinList = new Dictionary<string, string>();
+            AutoJoinList.DeSerialize(Properties.Settings.Default.AutoJoinChannels);
         }
 
         public static Client User { get; set; }
@@ -39,12 +51,6 @@ namespace MySnooper
             private set { _XamlContext = value; }
         }
 
-        public static int MaxMessagesInMemory { get; private set; }
-
-        public static int MaxMessagesDisplayed { get; private set; }
-
-        public static int NumOfOldMessagesToBeLoaded { get; private set; }
-
         public static Client SystemClient { get; private set; }
 
         public static bool DebugMode { get; set; }
@@ -54,5 +60,11 @@ namespace MySnooper
         public static ConcurrentQueue<UITask> UITasks { get; private set; }
 
         public static UserGroup DefaultGroup { get; private set; }
+
+        public static bool SpamAllowed { get; set; }
+
+        public static Dictionary<string, string> BanList { get; private set; }
+
+        public static Dictionary<string, string> AutoJoinList { get; private set; }
     }
 }

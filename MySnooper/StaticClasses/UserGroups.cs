@@ -4,6 +4,8 @@ namespace MySnooper
 {
     public static class UserGroups
     {
+        public const int SystemGroupID = int.MaxValue;
+
         public static Dictionary<string, UserGroup> Users = new Dictionary<string, UserGroup>();
         public static Dictionary<string, UserGroup> Groups = new Dictionary<string, UserGroup>();
         public const int BuddiesGroupID = 0;

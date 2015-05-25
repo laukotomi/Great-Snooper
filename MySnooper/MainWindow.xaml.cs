@@ -5,10 +5,9 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Media;
 using System.Net;
-using System.Runtime.InteropServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -16,6 +15,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Imaging;
 using System.Windows.Threading;
 using System.Xml;
 
@@ -28,31 +28,27 @@ namespace MySnooper
 
         // Lists
         private readonly Dictionary<string, string> leagues = new Dictionary<string,string>();
-        private readonly Dictionary<string, string> banList = new Dictionary<string, string>();
-        public readonly Dictionary<string, string> AutoJoinList = new Dictionary<string, string>();
-        public readonly List<IRCCommunicator> Servers = new List<IRCCommunicator>();
+        public readonly List<IRCCommunicator> Servers = new List<IRCCommunicator>(2);
         private readonly List<Dictionary<string, string>> newsList = new List<Dictionary<string,string>>();
         private readonly List<int> visitedChannels = new List<int>();
         private readonly Dictionary<string, bool> newsSeen = new Dictionary<string,bool>();
         public readonly Dictionary<string, List<string>> FoundUsers = new Dictionary<string, List<string>>();
         public readonly List<NotificatorClass> Notifications = new List<NotificatorClass>();
 
-        // Buffer things + communication
-        private readonly byte[] recvBuffer = new byte[10240]; // 10kB
-        private readonly StringBuilder recvHTML = new StringBuilder(10240); // 10kB
-        private readonly CancellationTokenSource TusCTS = new CancellationTokenSource();
-        private CancellationTokenSource loadSettingsCTS = new CancellationTokenSource();
+        // Tasks
         private Task tusTask;
-        private Task loadSettings;
-        private string latestVersion = string.Empty;
-
-        // WormNet Web Communicator
-        public readonly WormageddonWebComm WormWebC;
+        private Task loadSettingsTask;
+        private Task loadGamesTask;
+        private readonly CancellationTokenSource tusCTS = new CancellationTokenSource();
+        private readonly CancellationTokenSource loadSettingsCTS = new CancellationTokenSource();
+        private readonly CancellationTokenSource loadGamesCTS = new CancellationTokenSource();
 
         // Helpers
         private Channel gameListChannel;
+        private bool snooperClosing = false;
         public bool GameSurgeIsConnected = false;
-        public bool IsWindowFocused = true;
+        public bool EnergySaveModeOn = false;
+        private bool IsHidden = false;
         private WindowState lastWindowState = WindowState.Maximized;
         public TaskbarIcon NotifyIcon
         {
@@ -67,13 +63,6 @@ namespace MySnooper
         private int tusRequestCounter = 10;
         public bool GameListForce = false;
         public bool TusForce = false;
-        private bool snooperClosing = false;
-        private bool spamAllowed = false;
-        public bool EnergySaveModeOn = false;
-        private bool IsHidden = false;
-
-        // Sounds
-        private Dictionary<string, SoundPlayer> soundPlayers = new Dictionary<string,SoundPlayer>();
 
         // League Seacher things
         private Channel _searchHere;
@@ -118,6 +107,7 @@ namespace MySnooper
             private set
             {
                 _awayText = value;
+                // 
                 if (awayOnOffImage != null)
                 {
                     if (value == string.Empty)
@@ -173,14 +163,18 @@ namespace MySnooper
             }
         }
 
+        bool mute = true;
+
         // Constructor        
         public MainWindow() { } // Never used, but visual stdio throws an error if not exists
         public MainWindow(IRCCommunicator WormNetC, string serverAddress)
         {
             InitializeComponent();
+            GlobalManager.MainWindowInit();
+
             GameListGridRow.Height = new GridLength(Properties.Settings.Default.GameListGridRowStarts, GridUnitType.Star);
             RightColumn.Width = new GridLength(Properties.Settings.Default.RightColumnStars, GridUnitType.Star);
-            System.Diagnostics.Process.GetCurrentProcess().PriorityClass = System.Diagnostics.ProcessPriorityClass.BelowNormal;
+            //System.Diagnostics.Process.GetCurrentProcess().PriorityClass = System.Diagnostics.ProcessPriorityClass.BelowNormal;
             this.DataContext = this;
             this.ServerAddress = serverAddress;
             this.WelcomeText.Text = "Welcome " + GlobalManager.User.Name + "!";
@@ -193,32 +187,12 @@ namespace MySnooper
             gameSurge.ConnectionState += ConnectionState;
             Servers.Add(gameSurge);
 
-            // Wormageddonweb Communicator
-            WormWebC = new WormageddonWebComm(this, serverAddress);
-
             // Focustimer will focus to the textbox of a channel when we change channel
-            focusTimer.Interval = new TimeSpan(0, 0, 0, 0, 5);
+            focusTimer.Interval = new TimeSpan(0, 0, 0, 0, 50);
             focusTimer.Tick += SetFocusTextBox;
 
             filterTimer.Interval = new TimeSpan(0, 0, 0, 0, 300);
             filterTimer.Tick += filterTimer_Tick;
-
-
-            // Load sounds
-            if (File.Exists(Properties.Settings.Default.PMBeep))
-                soundPlayers.Add("PMBeep", new SoundPlayer(new FileInfo(Properties.Settings.Default.PMBeep).FullName));
-            if (File.Exists(Properties.Settings.Default.HBeep))
-                soundPlayers.Add("HBeep", new SoundPlayer(new FileInfo(Properties.Settings.Default.HBeep).FullName));
-            if (File.Exists(Properties.Settings.Default.LeagueFoundBeep))
-                soundPlayers.Add("LeagueFoundBeep", new SoundPlayer(new FileInfo(Properties.Settings.Default.LeagueFoundBeep).FullName));
-            if (File.Exists(Properties.Settings.Default.LeagueFailBeep))
-                soundPlayers.Add("LeagueFailBeep", new SoundPlayer(new FileInfo(Properties.Settings.Default.LeagueFailBeep).FullName));
-            if (File.Exists(Properties.Settings.Default.NotificatorSound))
-                soundPlayers.Add("NotificatorSound", new SoundPlayer(new FileInfo(Properties.Settings.Default.NotificatorSound).FullName));
-
-            // Deserialize lists
-            this.banList.DeSerialize(Properties.Settings.Default.BanList);
-            this.AutoJoinList.DeSerialize(Properties.Settings.Default.AutoJoinChannels);
 
             // Unserialize newsseen
             string[] list = Properties.Settings.Default.NewsSeen.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
@@ -237,6 +211,22 @@ namespace MySnooper
 
             this.StateChanged += MainWindow_StateChanged;
             this.LocationChanged += MainWindow_LocationChanged;
+
+            // Hehehe
+            if (GlobalManager.User.LowerName.Contains("guuuria") || GlobalManager.User.LowerName.Contains("guuria"))
+            {
+                var picture = new BitmapImage();
+                picture.DecodePixelWidth = 35;
+                picture.DecodePixelHeight = 35;
+                picture.CacheOption = BitmapCacheOption.OnLoad;
+                picture.BeginInit();
+                picture.UriSource = new Uri("pack://application:,,,/Resources/batlogo.ico");
+                picture.EndInit();
+                picture.Freeze();
+
+                HeaderIcon.Width = 35;
+                HeaderIcon.Source = picture;
+            }
         }
 
         void MainWindow_LocationChanged(object sender, EventArgs e)
@@ -324,7 +314,7 @@ namespace MySnooper
 
         private void MainWindow_Loaded(object sender, EventArgs e)
         {
-            soundEnabled = !Properties.Settings.Default.MuteState;
+            mute = false;
 
             // Download news and league list
             LoadSettings();
@@ -332,26 +322,28 @@ namespace MySnooper
 
         private void LoadSettings()
         {
-            loadSettings = Task.Factory.StartNew(() =>
+            string latestVersion = string.Empty;
+
+            loadSettingsTask = Task.Factory.StartNew(() =>
             {
-                string SettingsXML = GlobalManager.SettingsPath + @"\Settings.xml";
+                string settingsXMLPath = GlobalManager.SettingsPath + @"\Settings.xml";
 
                 try
                 {
-                    string SettingsXMLTemp = GlobalManager.SettingsPath + @"\SettingsTemp.xml";
+                    string settingsXMLPathTemp = GlobalManager.SettingsPath + @"\SettingsTemp.xml";
 
                     using (WebDownload webClient = new WebDownload() { Proxy = null })
                     {
-                        webClient.DownloadFile("http://mediacreator.hu/SnooperSettings.xml", SettingsXMLTemp);
+                        webClient.DownloadFile("http://mediacreator.hu/SnooperSettings.xml", settingsXMLPathTemp);
                     }
 
                     // If downloading will fail then leagues won't be loaded. If they would, it could be hacked easily.
-                    spamAllowed = true;
+                    GlobalManager.SpamAllowed = true;
 
-                    if (File.Exists(SettingsXML))
-                        File.Delete(SettingsXML);
+                    if (File.Exists(settingsXMLPath))
+                        File.Delete(settingsXMLPath);
 
-                    File.Move(SettingsXMLTemp, SettingsXML);
+                    File.Move(settingsXMLPathTemp, settingsXMLPath);
                 }
                 catch (Exception ex)
                 {
@@ -360,13 +352,13 @@ namespace MySnooper
 
                 loadSettingsCTS.Token.ThrowIfCancellationRequested();
 
-                if (File.Exists(SettingsXML))
+                if (File.Exists(settingsXMLPath))
                 {
                     Dictionary<string, string> serverList = new Dictionary<string, string>();
                     serverList.DeSerialize(Properties.Settings.Default.ServerAddresses);
                     bool update = false;
 
-                    using (XmlReader xml = XmlReader.Create(SettingsXML))
+                    using (XmlReader xml = XmlReader.Create(settingsXMLPath))
                     {
                         xml.ReadToFollowing("servers");
                         using (XmlReader inner = xml.ReadSubtree())
@@ -426,20 +418,21 @@ namespace MySnooper
             }, loadSettingsCTS.Token)
             .ContinueWith((t) =>
             {
-                if (loadSettings.IsCanceled || loadSettingsCTS.Token.IsCancellationRequested)
+                if (t.IsCanceled || loadSettingsCTS.Token.IsCancellationRequested)
                 {
                     this.Close();
                     return;
                 }
 
-                if (!spamAllowed)
+                if (!GlobalManager.SpamAllowed)
                 {
-                    ErrorLog.Log(loadSettings.Exception);
+                    if (t.IsFaulted)
+                        ErrorLog.Log(t.Exception);
                     MessageBox.Show(this, "Failed to load the common settings!" + Environment.NewLine + "You will not be able to spam for league games (but you can still look for them). If this problem doesn't get away then the snooper may need to be updated.", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                else if (loadSettings.IsFaulted)
+                else if (t.IsFaulted)
                 {
-                    ErrorLog.Log(loadSettings.Exception);
+                    ErrorLog.Log(t.Exception);
                     return;
                 }
                 else if (Math.Sign(App.GetVersion().CompareTo(latestVersion)) == -1) // we need update only if it is newer than this version
@@ -449,7 +442,7 @@ namespace MySnooper
                     {
                         try
                         {
-                            System.Diagnostics.Process p = new System.Diagnostics.Process();
+                            Process p = new Process();
                             if (Environment.OSVersion.Version.Major >= 6) // Vista or higher (to get admin rights).. on xp this causes fail!
                             {
                                 p.StartInfo.UseShellExecute = true;
@@ -573,9 +566,9 @@ namespace MySnooper
             {
                 gameListCounter++;
 
-                if (!snooperClosing && (GameListForce || gameListCounter >= 10) && DateTime.Now >= gameListChannel.GameListUpdatedTime.AddSeconds(3) && (WormWebC.LoadGamesTask == null || WormWebC.LoadGamesTask.IsCompleted))
+                if (!snooperClosing && (GameListForce || gameListCounter >= 10) && DateTime.Now >= gameListChannel.GameListUpdatedTime.AddSeconds(3) && (loadGamesTask == null || loadGamesTask.IsCompleted))
                 {
-                    WormWebC.GetGamesOfChannel(gameListChannel);
+                    GetGamesOfChannel(gameListChannel);
 
                     GameListForce = false;
                     gameListCounter = 0;
@@ -590,7 +583,7 @@ namespace MySnooper
                 tusRequestCounter++;
                 if (!snooperClosing && (TusForce || tusRequestCounter >= 20) && (tusTask == null || tusTask.IsCompleted))
                 {
-                    tusTask = StartTusCommunication().ContinueWith((t) => TUSLoaded(t.Result), TaskScheduler.FromCurrentSynchronizationContext());
+                    tusTask = StartTusCommunication().ContinueWith(TUSLoaded, TaskScheduler.FromCurrentSynchronizationContext());
                     tusRequestCounter = 0;
                     TusForce = false;
                 }
@@ -620,7 +613,7 @@ namespace MySnooper
                             ClearSpamming();
 
                             if (Properties.Settings.Default.LeagueFailBeepEnabled)
-                                this.PlaySound("LeagueFailBeep");
+                                Sounds.PlaySound("LeagueFailBeep");
                         }
                     }
                 }
@@ -656,7 +649,6 @@ namespace MySnooper
         #endregion
 
         #region Channel things
-
 
         // Leave a channel
         private void LeaveChannel(object sender, RoutedEventArgs e)
@@ -695,7 +687,6 @@ namespace MySnooper
             visitedChannels.Remove(Channels.SelectedIndex);
             visitedChannels.Add(Channels.SelectedIndex);
 
-
             if (!ch.IsPrivMsgChannel)
             {
                 GameList.SelectedIndex = Channels.SelectedIndex;
@@ -712,11 +703,11 @@ namespace MySnooper
                 gameListChannel = ch;
                 GameListForce = true;
             }
+            else
+                ch.GenerateHeader();
 
             if (ch.Joined)
-            {
                 focusTimer.Start();
-            }
         }
 
         public void SetDefaultViewForChannel(Channel ch)
@@ -811,92 +802,94 @@ namespace MySnooper
         public void ContextMenuBuilding(object sender, ContextMenuEventArgs e)
         {
             var obj = sender as DataGrid;
-            if (obj.SelectedItem != null)
+
+            if (obj.SelectedItem == null || Channels.SelectedItem == null)
             {
-                var client = obj.SelectedItem as Client;
-                Channel ch = (Channel)((TabItem)Channels.SelectedItem).DataContext;
+                e.Handled = true;
+                return;
+            }
 
-                MenuItem chat = (MenuItem)obj.ContextMenu.Items[0];
-                if (client.LowerName != ch.Server.User.LowerName)
-                {
-                    chat.Tag = client;
-                    chat.IsEnabled = true;
-                }
-                else
-                    chat.IsEnabled = false;
+            var client = obj.SelectedItem as Client;
+            Channel ch = (Channel)((TabItem)Channels.SelectedItem).DataContext;
 
-                MenuItem conversation = (MenuItem)obj.ContextMenu.Items[1];
-                conversation.Header = "Add to conversation";
-                if (client.CanConversation() && client.LowerName != ch.Server.User.LowerName)
+            MenuItem chat = (MenuItem)obj.ContextMenu.Items[0];
+            if (client.LowerName != ch.Server.User.LowerName)
+            {
+                chat.Tag = client;
+                chat.IsEnabled = true;
+            }
+            else
+                chat.IsEnabled = false;
+
+            MenuItem conversation = (MenuItem)obj.ContextMenu.Items[1];
+            conversation.Header = "Add to conversation";
+            if (client.CanConversation() && client.LowerName != ch.Server.User.LowerName)
+            {
+                if (ch.IsPrivMsgChannel && ch.Clients.Count > 0 && ch.Clients[0].CanConversation())
                 {
-                    if (ch.IsPrivMsgChannel && ch.Clients[0].CanConversation())
+                    conversation.Tag = new object[] { client, ch };
+                    if (ch.IsInConversation(client))
                     {
-                        conversation.Tag = new object[] { client, ch };
-                        if (ch.IsInConversation(client))
-                        {
-                            conversation.Header = "Remove from conversation";
-                            if (ch.Clients.Count == 1 && ch.Clients[0] == client)
-                                conversation.IsEnabled = false;
-                            else
-                                conversation.IsEnabled = true;
-                        }
+                        conversation.Header = "Remove from conversation";
+                        if (ch.Clients.Count == 1 && ch.Clients[0] == client)
+                            conversation.IsEnabled = false;
                         else
-                        {
                             conversation.IsEnabled = true;
-                        }
                     }
                     else
-                        conversation.IsEnabled = false;
+                        conversation.IsEnabled = true;
                 }
                 else
                     conversation.IsEnabled = false;
-
-                MenuItem buddy = (MenuItem)obj.ContextMenu.Items[2];
-                if (!groupsGenerated)
-                {
-                    buddy.Items.Clear();
-                    var defItem = new MenuItem() { Header = "No group" };
-                    defItem.Click += RemoveUserFromGroup;
-                    buddy.Items.Add(defItem);
-
-                    foreach (var item in UserGroups.Groups)
-                    {
-                        var menuItem = new MenuItem() { Header = item.Value.Name, Foreground = item.Value.TextColor, Tag = item.Value };
-                        menuItem.Click += AddUserToGroup;
-                        buddy.Items.Add(menuItem);
-                    }
-                    groupsGenerated = true;
-                }
-
-                foreach (MenuItem item in buddy.Items)
-                {
-                    item.FontWeight = FontWeights.Normal;
-                }
-
-                if (client.Group.ID == int.MaxValue)
-                    ((MenuItem)buddy.Items[0]).FontWeight = FontWeights.Bold;
-                else
-                    ((MenuItem)buddy.Items[client.Group.ID + 1]).FontWeight = FontWeights.Bold;
-
-                MenuItem ignore = (MenuItem)obj.ContextMenu.Items[3];
-                if (client.IsBanned)
-                    ignore.Header = "Remove from ignore list";
-                else
-                    ignore.Header = "Add to ignore list";
-
-                MenuItem tusInfo = (MenuItem)obj.ContextMenu.Items[4];
-                if (client.TusActive)
-                {
-                    tusInfo.Tag = client;
-                    tusInfo.Header = "View " + client.TusNick + "'s profile";
-                    tusInfo.Visibility = System.Windows.Visibility.Visible;
-                }
-                else
-                    tusInfo.Visibility = System.Windows.Visibility.Collapsed;
-
-                MenuItem appinfo = (MenuItem)obj.ContextMenu.Items[5];
-                appinfo.Header = "Info: " + client.ClientApp;
             }
+            else
+                conversation.IsEnabled = false;
+
+            MenuItem group = (MenuItem)obj.ContextMenu.Items[2];
+            if (!groupsGenerated)
+            {
+                group.Items.Clear();
+                var defItem = new MenuItem() { Header = "No group" };
+                defItem.Click += RemoveUserFromGroup;
+                group.Items.Add(defItem);
+
+                foreach (var item in UserGroups.Groups)
+                {
+                    var menuItem = new MenuItem() { Header = item.Value.Name, Foreground = item.Value.TextColor, Tag = item.Value };
+                    menuItem.Click += AddUserToGroup;
+                    group.Items.Add(menuItem);
+                }
+                groupsGenerated = true;
+            }
+
+            foreach (MenuItem item in group.Items)
+            {
+                item.FontWeight = FontWeights.Normal;
+            }
+
+            if (client.Group.ID == UserGroups.SystemGroupID)
+                ((MenuItem)group.Items[0]).FontWeight = FontWeights.Bold;
+            else
+                ((MenuItem)group.Items[client.Group.ID + 1]).FontWeight = FontWeights.Bold;
+
+            MenuItem ignore = (MenuItem)obj.ContextMenu.Items[3];
+            if (client.IsBanned)
+                ignore.Header = "Remove from ignore list";
+            else
+                ignore.Header = "Add to ignore list";
+
+            MenuItem tusInfo = (MenuItem)obj.ContextMenu.Items[4];
+            if (client.TusActive)
+            {
+                tusInfo.Tag = client;
+                tusInfo.Header = "View " + client.TusNick + "'s profile";
+                tusInfo.Visibility = System.Windows.Visibility.Visible;
+            }
+            else
+                tusInfo.Visibility = System.Windows.Visibility.Collapsed;
+
+            MenuItem appinfo = (MenuItem)obj.ContextMenu.Items[5];
+            appinfo.Header = "Info: " + client.ClientApp;
         }
 
         private void RemoveUserFromGroup(object sender, RoutedEventArgs e)
@@ -938,7 +931,10 @@ namespace MySnooper
                 Channel temp = (Channel)((TabItem)Channels.Items[i]).DataContext;
                 if (temp.HashName == client.Name && temp.Server == server)
                 {
-                    Channels.SelectedIndex = i;
+                    if (Channels.SelectedIndex != i)
+                        Channels.SelectedIndex = i;
+                    else
+                        temp.TheTextBox.Focus();
                     return;
                 }
             }
@@ -1055,59 +1051,44 @@ namespace MySnooper
         void filterTimer_Tick(object sender, EventArgs e)
         {
             filterTimer.Stop();
-            if (gameListChannel != null && gameListChannel.Joined)
+
+            if (gameListChannel == null || !gameListChannel.Joined)
+                return;
+
+            string[] filtersTemp = Filter.Text.Trim().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            List<string> filters = new List<string>();
+            for (int i = 0; i < filtersTemp.Length; i++)
+            {
+                string temp = filtersTemp[i].Trim();
+                if (temp.Length >= 2)
+                    filters.Add(temp.ToLower());
+            }
+
+            if (filters.Count == 0)
+                SetDefaultViewForChannel(gameListChannel);
+            else if (gameListChannel.TheDataGrid != null)
             {
                 var view = CollectionViewSource.GetDefaultView(gameListChannel.TheDataGrid.ItemsSource);
-                if (view != null)
+                view.Filter = o =>
                 {
-                    string[] filtersTemp = Filter.Text.Trim().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                    List<string> filters = new List<string>();
-                    for (int i = 0; i < filtersTemp.Length; i++)
-                    {
-                        string temp = filtersTemp[i].Trim();
-                        if (temp.Length >= 2)
-                            filters.Add(temp.ToLower());
-                    }
+                    Client c = o as Client;
+                    if (!Properties.Settings.Default.ShowBannedUsers && c.IsBanned)
+                        return false;
 
-                    if (filters.Count == 0)
+                    for (int i = 0; i < filters.Count; i++)
                     {
-                        if (!Properties.Settings.Default.ShowBannedUsers)
-                        {
-                            view.Filter = o =>
-                            {
-                                Client c = o as Client;
-                                if (c.IsBanned)
-                                    return false;
-                                return true;
-                            };
-                        }
-                        else
-                            view.Filter = null;
+                        if (
+                            c.LowerName.Contains(filters[i])
+                            || c.TusActive && c.TusLowerNick.Contains(filters[i])
+                            || c.Clan.Length >= filters[i].Length && c.Clan.Substring(0, filters[i].Length).ToLower() == filters[i]
+                            || c.Country != null && c.Country.LowerName.Length >= filters[i].Length && c.Country.LowerName.Substring(0, filters[i].Length) == filters[i]
+                            || c.Rank != null && c.Rank.LowerName.Length >= filters[i].Length && c.Rank.LowerName.Substring(0, filters[i].Length) == filters[i]
+                            || Properties.Settings.Default.ShowInfoColumn && c.ClientAppL.Contains(filters[i])
+                        )
+                            return true;
                     }
-                    else
-                    {
-                        view.Filter = o =>
-                        {
-                            Client c = o as Client;
-                            if (!Properties.Settings.Default.ShowBannedUsers && c.IsBanned)
-                                return false;
-
-                            for (int i = 0; i < filters.Count; i++)
-                            {
-                                if (
-                                    c.LowerName.Contains(filters[i])
-                                    || c.TusActive && c.TusLowerNick.Contains(filters[i])
-                                    || c.Clan.Length >= filters[i].Length && c.Clan.Substring(0, filters[i].Length).ToLower() == filters[i]
-                                    || c.Country != null && c.Country.LowerName.Length >= filters[i].Length && c.Country.LowerName.Substring(0, filters[i].Length) == filters[i]
-                                    || c.Rank != null && c.Rank.LowerName.Length >= filters[i].Length && c.Rank.LowerName.Substring(0, filters[i].Length) == filters[i]
-                                    || Properties.Settings.Default.ShowInfoColumn && c.ClientAppL.Contains(filters[i])
-                                )
-                                    return true;
-                            }
-                            return false;
-                        };
-                    }
-                }
+                    return false;
+                };
             }
         }
         #endregion
@@ -1116,7 +1097,6 @@ namespace MySnooper
         // Need to know that if the window is activated to play beep sounds
         private void WindowActivated(object sender, EventArgs e)
         {
-            IsWindowFocused = true;
             if (Channels.SelectedItem != null)
             {
                 Channel ch = (Channel)((TabItem)Channels.SelectedItem).DataContext;
@@ -1130,12 +1110,6 @@ namespace MySnooper
 
             if (Properties.Settings.Default.TrayFlashing)
                 this.StopFlashingWindow();
-        }
-
-        // Need to know that if the window is activated to play beep sounds
-        private void WindowDeactivated(object sender, EventArgs e)
-        {
-            IsWindowFocused = false;
         }
 
         private void GameList_LostFocus(object sender, RoutedEventArgs e)
@@ -1167,9 +1141,21 @@ namespace MySnooper
             // Stop the clock
             timer.Stop();
 
-            if (loadSettings.Status == TaskStatus.WaitingForActivation)
+            if (loadSettingsTask != null && loadSettingsTask.Status == TaskStatus.WaitingForActivation)
             {
                 loadSettingsCTS.Cancel();
+                taskRunning = true;
+            }
+
+            if (tusTask != null && tusTask.Status == TaskStatus.WaitingForActivation)
+            {
+                tusCTS.Cancel();
+                taskRunning = true;
+            }
+
+            if (loadGamesTask != null && loadGamesTask.Status == TaskStatus.WaitingForActivation)
+            {
+                loadGamesCTS.Cancel();
                 taskRunning = true;
             }
 
@@ -1177,18 +1163,6 @@ namespace MySnooper
             {
                 gameProcess.Dispose();
                 gameProcess = null;
-            }
-
-            if (tusTask != null && tusTask.Status == TaskStatus.WaitingForActivation)
-            {
-                TusCTS.Cancel();
-                taskRunning = true;
-            }
-
-            if (WormWebC.LoadGamesTask != null && WormWebC.LoadGamesTask.Status == TaskStatus.WaitingForActivation)
-            {
-                WormWebC.LoadGamesCTS.Cancel();
-                taskRunning = true;
             }
 
             // Stop servers
@@ -1212,7 +1186,7 @@ namespace MySnooper
             {
                 foreach (var item in Servers[i].ChannelList)
                 {
-                    if (item.Value.Joined)
+                    if (item.Value.Joined && item.Value.Messages.Count > 0)
                     {
                         if (Servers[i].IsWormNet)
                         {
@@ -1234,7 +1208,7 @@ namespace MySnooper
             }
 
             // Serialize buddy list and ban list and save them
-            Properties.Settings.Default.BanList = this.banList.Serialize();
+            Properties.Settings.Default.BanList = GlobalManager.BanList.Serialize();
             Properties.Settings.Default.Save();
 
             myNotifyIcon.Dispose();
@@ -1258,12 +1232,15 @@ namespace MySnooper
                 else if (e.State == IRCCommunicator.ConnectionStates.Connected)
                 {
                     bool reconnecting = false;
-                    foreach (var item in server.ChannelList)
+                    if (!server.IsWormNet)
                     {
-                        if (item.Value.IsReconnecting)
+                        foreach (var item in server.ChannelList)
                         {
-                            reconnecting = true;
-                            break;
+                            if (item.Value.IsReconnecting)
+                            {
+                                reconnecting = true;
+                                break;
+                            }
                         }
                     }
 
@@ -1273,12 +1250,14 @@ namespace MySnooper
                         {
                             item.Value.Reconnecting(false);
                             if (item.Value.Joined)
+                            {
                                 item.Value.AddMessage(GlobalManager.SystemClient, "Great Snooper has reconnected.", MessageSettings.OfflineMessage);
 
-                            if (item.Value.Joined && !item.Value.IsPrivMsgChannel)
-                            {
-                                server.JoinChannel(item.Value.Name);
-                                server.GetChannelClients(item.Value.Name);
+                                if (!item.Value.IsPrivMsgChannel)
+                                {
+                                    server.JoinChannel(item.Value.Name);
+                                    server.GetChannelClients(item.Value.Name);
+                                }
                             }
                         }
                     }
@@ -1348,7 +1327,7 @@ namespace MySnooper
             try
             {
                 var obj = (MenuItem)sender;
-                System.Diagnostics.Process.Start((string)obj.Tag);
+                Process.Start(new ProcessStartInfo((string)obj.Tag));
             }
             catch (Exception ex)
             {
@@ -1363,7 +1342,7 @@ namespace MySnooper
 
             try
             {
-                System.Diagnostics.Process.Start(client.TusLink);
+                Process.Start(new ProcessStartInfo(client.TusLink));
             }
             catch (Exception ex)
             {
@@ -1374,10 +1353,10 @@ namespace MySnooper
 
         // Ban list things
         #region Ban list
-        public void AddBan(string name)
+        private void AddBan(string name)
         {
             string lowerName = name.ToLower();
-            banList.Add(lowerName, name);
+            GlobalManager.BanList.Add(lowerName, name);
 
             for (int i = 0; i < Servers.Count; i++)
             {
@@ -1389,7 +1368,9 @@ namespace MySnooper
                         c.IsBanned = true;
 
                         // Refresh sorting
-                        foreach (Channel ch in c.Channels)
+                        var temp = new List<Channel>(c.Channels);
+
+                        foreach (Channel ch in temp)
                         {
                             ch.Clients.Remove(c);
                             ch.Clients.Add(c);
@@ -1399,10 +1380,10 @@ namespace MySnooper
             }
         }
 
-        public void RemoveBan(string name)
+        private void RemoveBan(string name)
         {
             string lowerName = name.ToLower();
-            banList.Remove(lowerName);
+            GlobalManager.BanList.Remove(lowerName);
 
             for (int i = 0; i < Servers.Count; i++)
             {
@@ -1414,7 +1395,9 @@ namespace MySnooper
                         c.IsBanned = false;
 
                         // Refresh sorting
-                        foreach (Channel ch in c.Channels)
+                        var temp = new List<Channel>(c.Channels);
+
+                        foreach (Channel ch in temp)
                         {
                             ch.Clients.Remove(c);
                             ch.Clients.Add(c);
@@ -1422,11 +1405,6 @@ namespace MySnooper
                     }
                 }
             }
-        }
-
-        public bool IsBanned(string name)
-        {
-            return banList.ContainsKey(name);
         }
         #endregion
 
@@ -1534,20 +1512,216 @@ namespace MySnooper
             }
         }
 
-        public void PlaySound(string index)
+        // <SCHEME=Pf,Be>
+        private readonly Regex SchemeRegex = new Regex(@"^<SCHEME=([^>]+)>$", RegexOptions.IgnoreCase);
+        private readonly byte[] schemeRecvBuffer = new byte[100];
+        private readonly StringBuilder schemeRecvSB = new StringBuilder();
+
+        public string SetChannelScheme(Channel channel)
         {
-            SoundPlayer sp;
-            if (soundEnabled && soundPlayers.TryGetValue(index, out sp))
+            try
             {
+                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://" + ServerAddress + "/wormageddonweb/RequestChannelScheme.asp?Channel=" + channel.Name.Substring(1));
+                myHttpWebRequest.UserAgent = "T17Client/1.2";
+                myHttpWebRequest.Proxy = null;
+                myHttpWebRequest.AllowAutoRedirect = false;
+                using (WebResponse myHttpWebResponse = myHttpWebRequest.GetResponse())
+                using (System.IO.Stream stream = myHttpWebResponse.GetResponseStream())
+                {
+                    int bytes;
+                    schemeRecvSB.Clear();
+                    while ((bytes = stream.Read(schemeRecvBuffer, 0, schemeRecvBuffer.Length)) > 0)
+                    {
+                        for (int j = 0; j < bytes; j++)
+                        {
+                            schemeRecvSB.Append(WormNetCharTable.Decode[schemeRecvBuffer[j]]);
+                        }
+                    }
+
+                    // <SCHEME=Pf,Be>
+                    Match m = SchemeRegex.Match(schemeRecvSB.ToString());
+                    if (m.Success)
+                        return m.Groups[1].Value;
+                }
+            }
+            catch (Exception e)
+            {
+                ErrorLog.Log(e);
+            }
+
+            MessageBox.Show("Failed to load the scheme of the channel!", "Fail", MessageBoxButton.OK, MessageBoxImage.Error);
+            return string.Empty;
+        }
+
+        private readonly Regex GameRegex = new Regex(@"^<GAME\s(\S*)\s(\S+)\s(\S+)\s(\S+)\s1\s(\S+)\s(\S+)\s([^>]+)>$", RegexOptions.IgnoreCase);
+        private readonly byte[] gameRecvBuffer = new byte[10240];
+        private readonly StringBuilder gameRecvSB = new StringBuilder(10240);
+
+        private void GetGamesOfChannel(Channel channel)
+        {
+            loadGamesTask = Task.Factory.StartNew(() =>
+            {
+                HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://" + ServerAddress + ":80/wormageddonweb/GameList.asp?Channel=" + channel.Name.Substring(1));
+                myHttpWebRequest.UserAgent = "T17Client/1.2";
+                myHttpWebRequest.Proxy = null;
+                myHttpWebRequest.AllowAutoRedirect = false;
+                using (WebResponse myHttpWebResponse = myHttpWebRequest.GetResponse())
+                using (System.IO.Stream stream = myHttpWebResponse.GetResponseStream())
+                {
+                    int bytes;
+                    gameRecvSB.Clear();
+                    while ((bytes = stream.Read(gameRecvBuffer, 0, gameRecvBuffer.Length)) > 0)
+                    {
+                        for (int j = 0; j < bytes; j++)
+                        {
+                            gameRecvSB.Append(WormNetCharTable.Decode[gameRecvBuffer[j]]);
+                        }
+                    }
+
+                    gameRecvSB.Replace("\n", "");
+                }
+
+                loadGamesCTS.Token.ThrowIfCancellationRequested();
+            }, loadGamesCTS.Token)
+            .ContinueWith((t) =>
+            {
+                if (t.IsCanceled || loadGamesCTS.Token.IsCancellationRequested)
+                {
+                    this.Close();
+                    return;
+                }
+
+                if (t.IsFaulted)
+                    return;
+
+                if (!channel.Joined) // we already left the channel
+                    return;
+
                 try
                 {
-                    sp.Play();
+                    // <GAMELISTSTART><GAME GameName Hoster HosterAddress CountryID 1 PasswordNeeded GameID HEXCC><BR><GAME GameName Hoster HosterAddress CountryID 1 PasswordNeeded GameID HEXCC><BR><GAMELISTEND>
+                    //string start = "<GAMELISTSTART>"; 15 chars
+                    //string end = "<GAMELISTEND>"; 13 chars
+                    if (gameRecvSB.Length > 28)
+                    {
+                        string[] games = gameRecvSB.ToString(15, gameRecvSB.Length - 28).Split(new string[] { "<BR>" }, StringSplitOptions.RemoveEmptyEntries);
+
+                        // Set all the games we have in !isAlive state (we will know if the game is not active anymore)
+                        for (int i = 0; i < channel.GameList.Count; i++)
+                            channel.GameList[i].IsAlive = false;
+
+                        for (int i = 0; i < games.Length; i++)
+                        {
+                            // <GAME GameName Hoster HosterAddress CountryID 1 PasswordNeeded GameID HEXCC><BR>
+                            Match m = GameRegex.Match(games[i].Trim());
+                            if (m.Success)
+                            {
+                                string name = m.Groups[1].Value.Replace('\b', ' ').Replace("#039", "\x12");
+
+                                // Encode the name to decode it with GameDecode
+                                int bytes = 0;
+                                byte b;
+                                for (int j = 0; j < name.Length; j++)
+                                {
+                                    if (WormNetCharTable.Encode.TryGetValue(name[j], out b))
+                                    {
+                                        gameRecvBuffer[bytes++] = b;
+                                    }
+                                }
+                                gameRecvSB.Clear();
+                                for (int j = 0; j < bytes; j++)
+                                    gameRecvSB.Append(WormNetCharTable.DecodeGame[gameRecvBuffer[j]]);
+                                name = gameRecvSB.ToString();
+
+                                string hoster = m.Groups[2].Value;
+                                string address = m.Groups[3].Value;
+
+                                int countryID;
+                                if (!int.TryParse(m.Groups[4].Value, out countryID))
+                                    continue;
+
+                                bool password = m.Groups[5].Value == "1";
+
+                                uint gameID;
+                                if (!uint.TryParse(m.Groups[6].Value, out gameID))
+                                    continue;
+
+                                string hexcc = m.Groups[7].Value;
+
+
+                                // Get the country of the hoster
+                                CountryClass country;
+                                if (hexcc.Length < 9)
+                                {
+                                    country = CountriesClass.GetCountryByID(countryID);
+                                }
+                                else
+                                {
+                                    string hexstr = uint.Parse(hexcc).ToString("X");
+                                    if (hexstr.Length == 8 && hexstr.Substring(0, 4) == "6487")
+                                    {
+                                        char c1 = WormNetCharTable.Decode[byte.Parse(hexstr.Substring(6), System.Globalization.NumberStyles.HexNumber)];
+                                        char c2 = WormNetCharTable.Decode[byte.Parse(hexstr.Substring(4, 2), System.Globalization.NumberStyles.HexNumber)];
+                                        country = CountriesClass.GetCountryByCC(c1.ToString() + c2.ToString());
+                                    }
+                                    else
+                                    {
+                                        country = CountriesClass.DefaultCountry;
+                                    }
+                                }
+
+                                // Add the game to the list or set its isAlive state true if it is already in the list
+                                Game game = null;
+                                for (int j = 0; j < channel.GameList.Count; j++)
+                                {
+                                    if (channel.GameList[j].ID == gameID)
+                                    {
+                                        game = channel.GameList[j];
+                                        game.IsAlive = true;
+                                        break;
+                                    }
+                                }
+                                if (game == null)
+                                {
+                                    channel.GameList.Add(new Game(gameID, name, address, country, hoster, password));
+                                    if (Notifications.Count > 0)
+                                    {
+                                        foreach (NotificatorClass nc in Notifications)
+                                        {
+                                            if (nc.InGameNames && nc.TryMatch(name.ToLower()))
+                                            {
+                                                NotificatorFound(hoster + " is hosting a game: " + name, channel);
+                                                break;
+                                            }
+                                            if (nc.InHosterNames && nc.TryMatch(hoster.ToLower()))
+                                            {
+                                                NotificatorFound(hoster + " is hosting a game: " + name, channel);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        // Delete inactive games from the list
+                        for (int i = 0; i < channel.GameList.Count; i++)
+                        {
+                            if (!channel.GameList[i].IsAlive)
+                            {
+                                channel.GameList.RemoveAt(i);
+                                i--;
+                            }
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
                     ErrorLog.Log(ex);
                 }
-            }
+
+                channel.GameListUpdatedTime = DateTime.Now;
+            }, TaskScheduler.FromCurrentSynchronizationContext());
         }
     }
 }

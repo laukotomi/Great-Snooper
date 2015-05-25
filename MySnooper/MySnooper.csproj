@@ -136,6 +136,7 @@
     <Compile Include="StaticClasses\RanksClass.cs" />
     <Compile Include="Classes\UITaskClasses.cs" />
     <Compile Include="Classes\UserGroup.cs" />
+    <Compile Include="StaticClasses\Sounds.cs" />
     <Compile Include="StaticClasses\UserGroups.cs" />
     <Compile Include="Classes\WebDownload.cs">
       <SubType>Component</SubType>
@@ -165,7 +166,6 @@
     <Compile Include="MainWindowParts\MainWindow.TUS.cs" />
     <Compile Include="MainWindowParts\MainWindow.Windows.cs" />
     <Compile Include="MainWindowParts\MainWindow.WormNetC.cs" />
-    <Compile Include="MainWindowParts\MainWindow.WormnetM.cs" />
     <Compile Include="Classes\MessageClass.cs" />
     <Compile Include="StaticClasses\MessageSettings.cs" />
     <Compile Include="CustomUIThings\TrayFlash.cs" />
@@ -498,6 +498,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\newsIcon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\batlogo.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

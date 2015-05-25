@@ -22,7 +22,7 @@ namespace MySnooper
         public event LookForThese LuckyLuke;
 
         public LeagueSearcher() { } // Never used, but visual stdio throws an error if not exists
-        public LeagueSearcher(Dictionary<string, string> Leagues, bool searching, bool spamAllowed)
+        public LeagueSearcher(Dictionary<string, string> Leagues, bool searching)
         {
             InitializeComponent();
 
@@ -38,16 +38,17 @@ namespace MySnooper
                 TheList.IsEnabled = false;
                 this.Spam.IsEnabled = false;
             }
+            else
+                this.Spam.IsEnabled = GlobalManager.SpamAllowed;
 
-            this.Spam.IsEnabled = spamAllowed;
-            if (spamAllowed)
+            if (GlobalManager.SpamAllowed)
                 this.Spam.IsChecked = Properties.Settings.Default.SpammingChecked;
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            this.Close();
             e.Handled = true;
+            this.Close();
         }
 
 
@@ -59,7 +60,7 @@ namespace MySnooper
                 LuckyLuke(this, null);
                 searching = false;
                 TheList.IsEnabled = true;
-                this.Spam.IsEnabled = true;
+                this.Spam.IsEnabled = GlobalManager.SpamAllowed;
             }
             else if (leaguesToSearch.Count != 0) // Start!
             {

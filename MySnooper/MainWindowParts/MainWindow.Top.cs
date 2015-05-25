@@ -16,7 +16,6 @@ namespace MySnooper
         /*
          * Sound On / Off variables
          */
-        private bool soundEnabled = false;
         private Image soundOnOffImage;
         private ImageSource soundEnabledImage;
         private BitmapImage soundDisabledImage;
@@ -94,16 +93,15 @@ namespace MySnooper
          */
         private void SoundOnOffClick(object sender, RoutedEventArgs e)
         {
-            if (soundEnabled)
+            e.Handled = true;
+            
+            if (Properties.Settings.Default.MuteState == false)
                 soundOnOffImage.Source = soundDisabledImage;
             else
                 soundOnOffImage.Source = soundEnabledImage;
 
-            soundEnabled = !soundEnabled;
             Properties.Settings.Default.MuteState = !Properties.Settings.Default.MuteState;
             Properties.Settings.Default.Save();
-
-            e.Handled = true;
         }
 
         /*
@@ -219,31 +217,28 @@ namespace MySnooper
         }
 
         private bool SliderThumb = false;
-        private bool CanChangeVolume = false;
 
         private void VolumeSliderLoaded(object sender, RoutedEventArgs e)
         {
-            CanChangeVolume = true;
             Slider slider = (Slider)sender;
             slider.Value = Properties.Settings.Default.Volume;
         }
 
         private void VolumeChanged(object sender, System.Windows.Controls.Primitives.DragCompletedEventArgs e)
         {
-            Slider slider = (Slider)sender;
-            ChangeVolume(slider.Value);
+            ChangeVolume((Slider)sender);
         }
 
-        private void ChangeVolume(double value)
+        private void ChangeVolume(Slider slider)
         {
-            if (!CanChangeVolume) // To prevent that the default value in the xaml code overwrite the value stored in settings
+            if (mute) // To prevent that the default value in the xaml code overwrite the value stored in settings
                 return;
 
-            Properties.Settings.Default.Volume = Convert.ToInt32(value);
+            Properties.Settings.Default.Volume = Convert.ToInt32(slider.Value);
             Properties.Settings.Default.Save();
 
             // Calculate the volume that's being set. BTW: this is a trackbar!
-            uint NewVolume = (uint)((ushort.MaxValue / 100) * value);
+            uint NewVolume = (uint)((ushort.MaxValue / 100) * slider.Value);
             // Set the same volume for both the left and the right channels
             uint NewVolumeAllChannels = ((NewVolume & 0x0000ffff) | ((uint)NewVolume << 16));
             // Set the volume
@@ -251,7 +246,7 @@ namespace MySnooper
 
             SliderThumb = false;
 
-            this.PlaySound("PMBeep");
+            Sounds.PlaySound("PMBeep");
         }
 
         private void SliderChangeWithThumb(object sender, System.Windows.Controls.Primitives.DragStartedEventArgs e)
@@ -263,8 +258,7 @@ namespace MySnooper
         {
             if (!SliderThumb)
             {
-                Slider slider = (Slider)sender;
-                ChangeVolume(slider.Value);
+                ChangeVolume((Slider)sender);
             }
         }
 

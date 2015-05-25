@@ -15,28 +15,28 @@
       <Value Profile="(Default)">-1</Value>
     </Setting>
     <Setting Name="ChannelMessageStyle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">F0FFFF|13|0|0|0|0|Tahoma</Value>
+      <Value Profile="(Default)">15AB93|F0F8FF|13|0|0|0|0|Tahoma</Value>
     </Setting>
     <Setting Name="JoinMessageStyle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">808000|12|0|0|0|0|Tahoma</Value>
+      <Value Profile="(Default)">4D9C00|548C00|12|0|0|0|0|Tahoma</Value>
     </Setting>
     <Setting Name="PartMessageStyle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">808000|12|0|0|0|0|Tahoma</Value>
+      <Value Profile="(Default)">B27C00|916000|12|0|0|0|0|Tahoma</Value>
     </Setting>
     <Setting Name="QuitMessageStyle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">808000|12|0|0|0|0|Tahoma</Value>
+      <Value Profile="(Default)">B21600|8C2613|12|0|0|0|0|Tahoma</Value>
     </Setting>
     <Setting Name="OfflineMessageStyle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">FF0000|13|0|0|0|0|Tahoma</Value>
+      <Value Profile="(Default)">FF0000|FF0000|13|0|0|0|0|Tahoma</Value>
     </Setting>
     <Setting Name="ActionMessageStyle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">FFFF00|13|0|0|0|0|Tahoma</Value>
+      <Value Profile="(Default)">C9C900|C2C200|13|0|0|0|0|Tahoma</Value>
     </Setting>
     <Setting Name="UserMessageStyle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">E9967A|13|0|0|0|0|Tahoma</Value>
+      <Value Profile="(Default)">00FFFF|EBDDA8|13|0|0|0|0|Tahoma</Value>
     </Setting>
     <Setting Name="NoticeMessageStyle" Type="System.String" Scope="User">
-      <Value Profile="(Default)">FF0000|13|0|0|0|0|Tahoma</Value>
+      <Value Profile="(Default)">FF0000|FF0000|13|0|0|0|0|Tahoma</Value>
     </Setting>
     <Setting Name="BuddyList" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
@@ -313,6 +313,9 @@
     </Setting>
     <Setting Name="EnergySaveModeWin" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
+    </Setting>
+    <Setting Name="WAHighPriority" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

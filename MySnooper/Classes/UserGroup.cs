@@ -40,7 +40,7 @@ namespace MySnooper
         public UserGroup(int id)
         {
             this.ID = id;
-            if (id != int.MaxValue)
+            if (id != UserGroups.SystemGroupID)
             {
                 this.SettingName = "Group" + id.ToString();
                 string value = (string)(Properties.Settings.Default.GetType().GetProperty(this.SettingName).GetValue(Properties.Settings.Default, null));

@@ -139,8 +139,9 @@ namespace MySnooper
 
             if (e != null)
                 e.Handled = true;
-
-            GameHostedEventArgs args = new GameHostedEventArgs(ServerAddress + " \"" + Properties.Settings.Default.WaExe + "\" " + GlobalManager.User.Name + " \"" + sb.ToString() + "\" \"" + GamePassword.Text + "\" " + ChannelName + " " + ChannelScheme + " " + GlobalManager.User.Country.ID.ToString() + " " + CC + " " + WN, ExitSnooper.IsChecked.Value);
+            
+            string highPriority = Properties.Settings.Default.WAHighPriority ? "1" : "0";
+            GameHostedEventArgs args = new GameHostedEventArgs(ServerAddress + " \"" + Properties.Settings.Default.WaExe + "\" " + GlobalManager.User.Name + " \"" + sb.ToString() + "\" \"" + GamePassword.Text + "\" " + ChannelName + " " + ChannelScheme + " " + GlobalManager.User.Country.ID.ToString() + " " + CC + " " + WN + " " + highPriority, ExitSnooper.IsChecked.Value);
             GameHosted.BeginInvoke(this, args, null, null);
         }
 

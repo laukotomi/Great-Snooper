@@ -81,7 +81,7 @@ namespace MySnooper
                 "                 </RichTextBox>" +
                 "             </ScrollViewer>" +
                 "         </Border>" +
-                "         <TextBox Grid.Row=\"1\" Margin=\"0,8,0,2\" MaxLength=\"495\" Background=\"Transparent\" />" +
+                "         <TextBox Grid.Row=\"1\" Margin=\"0,8,0,2\" MaxLength=\"495\" Background=\"Transparent\" FontStyle=\"Normal\" />" +
                 "     </Grid>" +
                 " </Border>"
             , GlobalManager.XamlContext);
@@ -134,6 +134,9 @@ namespace MySnooper
                 "                                 <Style.Triggers>" +
                 "                                    <DataTrigger Binding=\"{Binding Path=TusActive}\" Value=\"true\">" +
                 "                                        <Setter Property=\"TextDecorations\" Value=\"Underline\" />" +
+                "                                    </DataTrigger>" +
+                "                                    <DataTrigger Binding=\"{Binding Path=GreatSnooper}\" Value=\"true\">" +
+                "                                        <Setter Property=\"FontStyle\" Value=\"Italic\" />" +
                 "                                    </DataTrigger>" +
                 "                                 </Style.Triggers>" +
                 "                             </Style>" +

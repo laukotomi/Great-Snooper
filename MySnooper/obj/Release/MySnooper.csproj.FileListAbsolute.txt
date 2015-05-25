@@ -159,7 +159,6 @@ d:\VS\Great-Snooper\MySnooper\bin\Release\MahApps.Metro.dll
 d:\VS\Great-Snooper\MySnooper\bin\Release\System.Windows.Interactivity.dll
 d:\VS\Great-Snooper\MySnooper\bin\Release\Xceed.Wpf.Toolkit.dll
 d:\VS\Great-Snooper\MySnooper\bin\Release\MahApps.Metro.xml
-d:\VS\Great-Snooper\MySnooper\obj\Release\MySnooper.csprojResolveAssemblyReference.cache
 d:\VS\Great-Snooper\MySnooper\obj\Release\AwayManager.baml
 d:\VS\Great-Snooper\MySnooper\obj\Release\FontChooser.baml
 d:\VS\Great-Snooper\MySnooper\obj\Release\Hosting.baml
@@ -233,3 +232,102 @@ C:\VS\Great-Snooper\MySnooper\obj\Release\GeneratedInternalTypeHelper.g.cs
 C:\VS\Great-Snooper\MySnooper\obj\Release\Notificator.baml
 C:\VS\Great-Snooper\MySnooper\obj\Release\Great Snooper.TrustInfo.xml
 C:\VS\Great-Snooper\MySnooper\obj\Release\MySnooper.csprojResolveAssemblyReference.cache
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\MySnooper.csprojResolveAssemblyReference.cache
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\AwayManager.baml
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\FontChooser.baml
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\Hosting.baml
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\LeagueSearcher.baml
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\ListEditor.baml
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\UserSettings.baml
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\AwayManager.g.cs
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\FontChooser.g.cs
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\Hosting.g.cs
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\LeagueSearcher.g.cs
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\ListEditor.g.cs
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\Login.g.cs
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\MainWindow.g.cs
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\News.g.cs
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\Notificator.g.cs
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\UserSettings.g.cs
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\App.g.cs
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\GeneratedInternalTypeHelper.g.cs
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper_MarkupCompile.cache
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper_MarkupCompile.lref
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper.exe
+D:\VS\Great-Snooper-master\MySnooper\bin\Release\Great Snooper.exe.config
+D:\VS\Great-Snooper-master\MySnooper\bin\Release\Great Snooper.exe.manifest
+D:\VS\Great-Snooper-master\MySnooper\bin\Release\Great Snooper.application
+D:\VS\Great-Snooper-master\MySnooper\bin\Release\Great Snooper.exe
+D:\VS\Great-Snooper-master\MySnooper\bin\Release\Great Snooper.pdb
+D:\VS\Great-Snooper-master\MySnooper\bin\Release\Hardcodet.Wpf.TaskbarNotification.dll
+D:\VS\Great-Snooper-master\MySnooper\bin\Release\MahApps.Metro.dll
+D:\VS\Great-Snooper-master\MySnooper\bin\Release\System.Windows.Interactivity.dll
+D:\VS\Great-Snooper-master\MySnooper\bin\Release\Xceed.Wpf.Toolkit.dll
+D:\VS\Great-Snooper-master\MySnooper\bin\Release\Hardcodet.Wpf.TaskbarNotification.pdb
+D:\VS\Great-Snooper-master\MySnooper\bin\Release\Hardcodet.Wpf.TaskbarNotification.xml
+D:\VS\Great-Snooper-master\MySnooper\bin\Release\MahApps.Metro.xml
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\App.baml
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\Login.baml
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\MainWindow.baml
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\News.baml
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\Notificator.baml
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper.g.resources
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\MySnooper.Properties.Resources.resources
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\MySnooper.csproj.GenerateResource.Cache
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper.TrustInfo.xml
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper.exe.manifest
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper.application
+D:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper.pdb
+c:\VS\Great-Snooper-master\MySnooper\bin\Release\Great Snooper.exe.config
+c:\VS\Great-Snooper-master\MySnooper\bin\Release\Great Snooper.exe.manifest
+c:\VS\Great-Snooper-master\MySnooper\bin\Release\Great Snooper.application
+c:\VS\Great-Snooper-master\MySnooper\bin\Release\Great Snooper.exe
+c:\VS\Great-Snooper-master\MySnooper\bin\Release\Great Snooper.pdb
+c:\VS\Great-Snooper-master\MySnooper\bin\Release\Hardcodet.Wpf.TaskbarNotification.dll
+c:\VS\Great-Snooper-master\MySnooper\bin\Release\MahApps.Metro.dll
+c:\VS\Great-Snooper-master\MySnooper\bin\Release\System.Windows.Interactivity.dll
+c:\VS\Great-Snooper-master\MySnooper\bin\Release\Xceed.Wpf.Toolkit.dll
+c:\VS\Great-Snooper-master\MySnooper\bin\Release\Hardcodet.Wpf.TaskbarNotification.pdb
+c:\VS\Great-Snooper-master\MySnooper\bin\Release\Hardcodet.Wpf.TaskbarNotification.xml
+c:\VS\Great-Snooper-master\MySnooper\bin\Release\MahApps.Metro.xml
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\AwayManager.baml
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\FontChooser.baml
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\Hosting.baml
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\LeagueSearcher.baml
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\ListEditor.baml
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\UserSettings.baml
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\AwayManager.g.cs
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\FontChooser.g.cs
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\Hosting.g.cs
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\LeagueSearcher.g.cs
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\ListEditor.g.cs
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\Login.g.cs
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\MainWindow.g.cs
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\News.g.cs
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\Notificator.g.cs
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\UserSettings.g.cs
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\App.g.cs
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\GeneratedInternalTypeHelper.g.cs
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper_MarkupCompile.cache
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper_MarkupCompile.lref
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\App.baml
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\Login.baml
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\MainWindow.baml
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\News.baml
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\Notificator.baml
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper.g.resources
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\MySnooper.Properties.Resources.resources
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\MySnooper.csproj.GenerateResource.Cache
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper.TrustInfo.xml
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper.exe.manifest
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper.application
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper.exe
+c:\VS\Great-Snooper-master\MySnooper\obj\Release\Great Snooper.pdb
+C:\VS\Great-Snooper-master\MySnooper\obj\Release\MySnooper.csprojResolveAssemblyReference.cache
+d:\VS\Great-Snooper\MySnooper\bin\Release\Hardcodet.Wpf.TaskbarNotification.dll
+d:\VS\Great-Snooper\MySnooper\bin\Release\Hardcodet.Wpf.TaskbarNotification.pdb
+d:\VS\Great-Snooper\MySnooper\bin\Release\Hardcodet.Wpf.TaskbarNotification.xml
+d:\VS\Great-Snooper\MySnooper\obj\Release\Notificator.g.cs
+d:\VS\Great-Snooper\MySnooper\obj\Release\GeneratedInternalTypeHelper.g.cs
+d:\VS\Great-Snooper\MySnooper\obj\Release\Notificator.baml
+d:\VS\Great-Snooper\MySnooper\obj\Release\Great Snooper.TrustInfo.xml

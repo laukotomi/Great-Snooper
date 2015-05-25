@@ -89,14 +89,14 @@
                 <StackPanel Orientation="Vertical" Margin="0,20">
                     <Grid Name="MessagesGrid" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="410"></ColumnDefinition>
+                            <ColumnDefinition Width="460"></ColumnDefinition>
                             <ColumnDefinition Width="50"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                     </Grid>
                     <Grid HorizontalAlignment="Center" Name="MessageStylesGrid">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="300"></ColumnDefinition>
-                            <ColumnDefinition Width="80"></ColumnDefinition>
+                            <ColumnDefinition Width="130"></ColumnDefinition>
                             <ColumnDefinition Width="80"></ColumnDefinition>
                         </Grid.ColumnDefinitions>
                     </Grid>

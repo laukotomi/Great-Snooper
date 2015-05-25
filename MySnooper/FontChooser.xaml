@@ -14,7 +14,7 @@
     </controls:MetroWindow.Resources>
     <DockPanel Grid.Row="1">
         <Border DockPanel.Dock="Top" Height="50" Background="#33373f">
-            <TextBlock Name="Example" Text="Example text" VerticalAlignment="Center" HorizontalAlignment="Center"></TextBlock>
+            <StackPanel Name="ExampleSP" Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center"></StackPanel>
         </Border>
 
         <Grid>
@@ -55,25 +55,29 @@
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
                     <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
                 </Grid.RowDefinitions>
 
                 <TextBlock Grid.Row="0" Grid.Column="0" Text="Size:" />
                 <ComboBox Grid.Row="0" Grid.Column="1" Name="TheSize" SelectionChanged="FontSizeChanged"></ComboBox>
 
-                <TextBlock Grid.Row="1" Grid.Column="0" Text="Color:"></TextBlock>
-                <xctk:ColorPicker Grid.Row="1" Grid.Column="1" Name="TheColor" UsingAlphaChannel="False" ShowDropDownButton="False" ShowStandardColors="False" SelectedColorChanged="ColorChanged"></xctk:ColorPicker>
+                <TextBlock Grid.Row="1" Grid.Column="0" Text="Nick Color:"></TextBlock>
+                <xctk:ColorPicker Grid.Row="1" Grid.Column="1" Name="NickColor" UsingAlphaChannel="False" ShowDropDownButton="False" ShowStandardColors="False" SelectedColorChanged="NickColorChanged"></xctk:ColorPicker>
 
-                <TextBlock Grid.Row="2" Grid.Column="0" Text="Bold:" />
-                <CheckBox Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" Name="TheBold" HorizontalAlignment="Center" Click="BoldChanged"></CheckBox>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Message Color:"></TextBlock>
+                <xctk:ColorPicker Grid.Row="2" Grid.Column="1" Name="MessageColor" UsingAlphaChannel="False" ShowDropDownButton="False" ShowStandardColors="False" SelectedColorChanged="MessageColorChanged"></xctk:ColorPicker>
 
-                <TextBlock Grid.Row="3" Grid.Column="0" Text="Italic:" />
-                <CheckBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Name="TheItalic" HorizontalAlignment="Center" Click="ItalicChanged"></CheckBox>
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="Bold:" />
+                <CheckBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" Name="TheBold" HorizontalAlignment="Center" Click="BoldChanged"></CheckBox>
 
-                <TextBlock Grid.Row="4" Grid.Column="0" Text="Strikethrough:" />
-                <CheckBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Name="TheStrikethrough" HorizontalAlignment="Center" Click="StrikethroughChanged"></CheckBox>
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="Italic:" />
+                <CheckBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Name="TheItalic" HorizontalAlignment="Center" Click="ItalicChanged"></CheckBox>
 
-                <TextBlock Grid.Row="5" Grid.Column="0" Text="Underline:" />
-                <CheckBox Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Name="TheUnderline" HorizontalAlignment="Center" Click="UnderlineChanged"></CheckBox>
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Strikethrough:" />
+                <CheckBox Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Name="TheStrikethrough" HorizontalAlignment="Center" Click="StrikethroughChanged"></CheckBox>
+
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="Underline:" />
+                <CheckBox Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" Name="TheUnderline" HorizontalAlignment="Center" Click="UnderlineChanged"></CheckBox>
             </Grid>
 
             <StackPanel Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">

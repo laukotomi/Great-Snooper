@@ -6,7 +6,7 @@
         xmlns:tb="http://www.hardcodet.net/taskbar"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         Title="Great Snooper" Height="600" Width="1024" WindowStartupLocation="CenterScreen"
-        Closing="My_WormNet_Closing" Activated="WindowActivated" Deactivated="WindowDeactivated"
+        Closing="My_WormNet_Closing" Activated="WindowActivated"
         WindowState="Maximized" TitlebarHeight="40" ContentRendered="MainWindow_Loaded" WindowTransitionsEnabled="False"
         BorderBrush="{DynamicResource AccentColorBrush}" BorderThickness="1" ShowIconOnTitleBar="False" Background="#111111">
     <!-- Shortcut keys -->
@@ -42,7 +42,7 @@
             <Menu Background="Transparent" Height="40">
                 <MenuItem Style="{StaticResource MenuItemStyle}">
                     <MenuItem.Icon>
-                        <Image Source="Resources/icon.png" Width="25" Margin="5,0,0,0" />
+                        <Image Name="HeaderIcon" Source="Resources/icon.png" Width="25" Margin="5,0,0,0" />
                     </MenuItem.Icon>
                     <MenuItem.Header>
                         <StackPanel Orientation="Horizontal">
@@ -502,7 +502,6 @@
                                         </Trigger>
                                         <Trigger Property="IsSelected" Value="true">
                                             <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}"></Setter>
-                                            <Setter Property="FontStyle" Value="Italic"></Setter>
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>

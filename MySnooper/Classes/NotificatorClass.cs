@@ -22,7 +22,7 @@ namespace MySnooper
             id = idCounter;
             IsEnabled = true;
             MatchType = MatchTypes.Equal;
-            Words = new Dictionary<string, string>();
+            Words = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase);
         }
 
         public bool IsEnabled { get; set; }
@@ -70,7 +70,7 @@ namespace MySnooper
                 case MatchTypes.StartsWith:
                     foreach (var item in Words)
                     {
-                        if (str.StartsWith(item.Key))
+                        if (str.StartsWith(item.Key, StringComparison.OrdinalIgnoreCase))
                             return true;
                     }
                     break;
@@ -78,7 +78,7 @@ namespace MySnooper
                 case MatchTypes.EndsWith:
                     foreach (var item in Words)
                     {
-                        if (str.EndsWith(item.Key))
+                        if (str.EndsWith(item.Key, StringComparison.OrdinalIgnoreCase))
                             return true;
                     }
                     break;
@@ -86,7 +86,7 @@ namespace MySnooper
                 case MatchTypes.Contains:
                     foreach (var item in Words)
                     {
-                        if (str.Contains(item.Key))
+                        if (str.IndexOf(item.Key, StringComparison.OrdinalIgnoreCase) != -1)
                             return true;
                     }
                     break;

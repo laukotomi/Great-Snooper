@@ -42,7 +42,6 @@ namespace MySnooper
             try
             {
                 Picture = new BitmapImage();
-                RenderOptions.SetBitmapScalingMode(Picture, BitmapScalingMode.LowQuality);
                 Picture.DecodePixelWidth = 48;
                 Picture.DecodePixelHeight = 17;
                 Picture.CacheOption = BitmapCacheOption.OnLoad;

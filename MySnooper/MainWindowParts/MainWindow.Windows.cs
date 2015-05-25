@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Media;
 using System.Windows;
@@ -85,36 +86,38 @@ namespace MySnooper
                     startedGameType = StartedGameTypes.Host;
                     lobbyWindow = IntPtr.Zero;
                     gameWindow = IntPtr.Zero;
-                    gameProcess = new System.Diagnostics.Process();
+                    gameProcess = new Process();
                     gameProcess.StartInfo.UseShellExecute = false;
                     gameProcess.StartInfo.CreateNoWindow = true;
                     gameProcess.StartInfo.RedirectStandardOutput = true;
-                    gameProcess.StartInfo.FileName = System.IO.Path.GetFullPath("Hoster.exe");
+                    gameProcess.StartInfo.FileName = Path.GetFullPath("Hoster.exe");
                     gameProcess.StartInfo.Arguments = e.Parameters;
-                    gameProcess.Start();
-                    string success = gameProcess.StandardOutput.ReadLine();
-
-                    if (success == "1")
+                    if (gameProcess.Start())
                     {
-                        HostingWindow.Close();
+                        string success = gameProcess.StandardOutput.ReadLine();
 
-                        if (Properties.Settings.Default.HostInfoToChannel) // GameListChannel is ok, coz it can't be changed since the Hosting window is opened
-                            SendMessageToChannel("/me is hosting a game: " + Properties.Settings.Default.HostGameName, gameListChannel);
-
-                        if (ExitSnooper)
+                        if (success == "1")
                         {
-                            snooperClosing = true;
-                            this.Close();
-                            return;
-                        }
+                            HostingWindow.Close();
 
-                        if (Properties.Settings.Default.MarkAway)
-                            SendMessageToChannel("/away", null);
-                    }
-                    else
-                    {
-                        HostingWindow.RestoreHostButton();
-                        MessageBox.Show(this, "Failed to host a game. You may host too many games recently. Please wait some minutes!", "Failed to host a game", MessageBoxButton.OK, MessageBoxImage.Error);
+                            if (Properties.Settings.Default.HostInfoToChannel) // GameListChannel is ok, coz it can't be changed since the Hosting window is opened
+                                SendMessageToChannel("/me is hosting a game: " + Properties.Settings.Default.HostGameName, gameListChannel);
+
+                            if (ExitSnooper)
+                            {
+                                snooperClosing = true;
+                                this.Close();
+                                return;
+                            }
+
+                            if (Properties.Settings.Default.MarkAway)
+                                SendMessageToChannel("/away", null);
+                        }
+                        else
+                        {
+                            HostingWindow.RestoreHostButton();
+                            MessageBox.Show(this, "Failed to host a game. You may host too many games recently. Please wait some minutes!", "Failed to host a game", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                     }
                 }
             }
@@ -144,11 +147,7 @@ namespace MySnooper
                         }
                         else
                         {
-                            string value = (string)(Properties.Settings.Default.GetType().GetProperty(e.SettingName).GetValue(Properties.Settings.Default, null));
-                            if (soundPlayers.ContainsKey(e.SettingName))
-                                soundPlayers[e.SettingName] = new SoundPlayer(new FileInfo(value).FullName);
-                            else
-                                soundPlayers.Add(e.SettingName, new SoundPlayer(new FileInfo(value).FullName));
+                            Sounds.ReloadSound(e.SettingName);
                         }
                         break;
 
@@ -292,7 +291,7 @@ namespace MySnooper
         {
             e.Handled = true;
             SortedObservableCollection<string> List2 = new SortedObservableCollection<string>();
-            foreach (var item in banList)
+            foreach (var item in GlobalManager.BanList)
                 List2.Add(item.Value);
 
             ListEditor window = new ListEditor(List2, "Your ignore list");
@@ -336,7 +335,7 @@ namespace MySnooper
                 return;
             }
 
-            LeagueSearcher window = new LeagueSearcher(leagues, SearchHere != null, spamAllowed);
+            LeagueSearcher window = new LeagueSearcher(leagues, SearchHere != null);
             window.LuckyLuke += LuckyLuke;
             window.Owner = this;
             window.ShowDialog();

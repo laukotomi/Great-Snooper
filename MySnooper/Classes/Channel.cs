@@ -4,22 +4,21 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup;
 using System.Windows.Media;
 
 namespace MySnooper
 {
     public class Channel : IComparable, INotifyPropertyChanged
     {
-        private static System.Text.RegularExpressions.Regex DateRegex = new System.Text.RegularExpressions.Regex(@"[^0-9]");
+        private static Regex DateRegex = new Regex(@"[^0-9]");
 
         private readonly MainWindow mw;
-        private StringBuilder sb;
+        private readonly StringBuilder sb = new StringBuilder();
 
         public IRCCommunicator Server { get; private set; }
 
@@ -41,38 +40,41 @@ namespace MySnooper
         public string Description { get; private set; }
         public bool IsLoading { get; private set; }
 
-        // Messages
+        // Lists
         public List<MessageClass> Messages { get; private set; }
+        public SortedObservableCollection<Client> Clients { get; private set; }
+        public SortedObservableCollection<Game> GameList { get; private set; }
+
+        // Away things
         public bool BeepSoundPlay { get; set; }
         public bool SendAway { get; set; }
         public bool SendBack { get; set; }
-        public int MessagesLoadedFrom { get; set; }
-
-        // Clients
-        public SortedObservableCollection<Client> Clients { get; private set; }
 
         // GameList
-        public SortedObservableCollection<Game> GameList { get; private set; }
         public DateTime GameListUpdatedTime { get; set; }
 
         // Up & Down keys
         private List<string> userMessages;
+        public int MessagesLoadedFrom { get; set; }
         public int UserMessageLoadedIdx { get; set; }
         public string TempMessage { get; set; } // We store the user message here when the user presses up or down keys to make it possible to restore the message
 
         // View variables
         public TabItem ChannelTabItem { get; private set; }
-        public Border DisconnectedLayout { get; private set; }
-        private Border connectedLayout;
-        private TextBlock header;
         public RichTextBox TheRichTextBox { get; private set; }
         public FlowDocument TheFlowDocument { get; private set; }
         public ListBox GameListBox { get; private set; }
         public TextBox TheTextBox { get; private set; }
         public DataGrid TheDataGrid { get; private set; }
+        public Border disconnectedLayout;
+        private Border connectedLayout;
+        private TextBlock header;
 
+        // Reconnecting
         public bool IsReconnecting { get; private set; }
-        public bool MessageReloadNeeded { get; set; } // When a message arrives while the snooper is minimized
+        
+        // EnergySaveMode
+        public bool MessageReloadNeeded { get; set; } // When a message arrives while the snooper is in EnerySave mode
 
         // These properties may change and then they may notify the UI thread about that
         public string Name
@@ -122,9 +124,12 @@ namespace MySnooper
             }
             set
             {
-                _newMessages = value;
-                if (this.IsPrivMsgChannel)
-                    GenerateHeader();
+                if (_newMessages != value)
+                {
+                    _newMessages = value;
+                    if (this.IsPrivMsgChannel)
+                        GenerateHeader();
+                }
             }
         }
 
@@ -170,23 +175,24 @@ namespace MySnooper
             }
         }
 
-        public Visibility CanHostVisibility
-        {
-            get { return _canHostVisibility; }
-            private set
-            {
-                _canHostVisibility = value;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("CanHostVisibility"));
-            }
-        }
-
         public bool Joined
         {
             get { return _joined; }
             private set
             {
                 _joined = value;
+                if (value)
+                {
+                    this.BeepSoundPlay = true;
+                    this.GameListUpdatedTime = new DateTime(1999, 5, 31);
+                    this.MessageReloadNeeded = false;
+                    this.MessagesLoadedFrom = 0;
+                    this.NewMessages = false;
+                    this.SendAway = mw.AwayText != string.Empty;
+                    this.SendBack = false;
+                    this.UserMessageLoadedIdx = -1;
+                }
+
                 if (value && !IsPrivMsgChannel)
                 {
                     if (CanHost)
@@ -198,6 +204,17 @@ namespace MySnooper
                     CanHostVisibility = Visibility.Collapsed;
                     LeaveChannelVisibility = Visibility.Collapsed;
                 }
+            }
+        }
+
+        public Visibility CanHostVisibility
+        {
+            get { return _canHostVisibility; }
+            private set
+            {
+                _canHostVisibility = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("CanHostVisibility"));
             }
         }
 
@@ -219,8 +236,6 @@ namespace MySnooper
             this.Server = server;
             this.Name = name;
             this.Description = description;
-            this.MessagesLoadedFrom = 0;
-            this.MessageReloadNeeded = false;
 
             // Make channel layout
             this.ChannelTabItem = new TabItem();
@@ -228,39 +243,29 @@ namespace MySnooper
 
             if (theClient != null)
             {
-                this.IsPrivMsgChannel = true;
                 this.Clients = new SortedObservableCollection<Client>();
-                if (this.Name.Contains(","))
-                {
-                    string[] helper = this.Name.Split(new char[] { ',' });
-                    foreach (string clientName in helper)
-                    {
-                        Client c = null;
-                        if (!this.Server.Clients.TryGetValue(clientName.ToLower(), out c))
-                        {
-                            c = new Client(clientName);
-                            c.IsBanned = mw.IsBanned(c.LowerName);
-                            c.OnlineStatus = 2;
-                            this.Server.Clients.Add(c.LowerName, c);
-                        }
-                        
-                        this.Clients.Add(c);
-                        c.PMChannels.Add(this);
-                        c.PropertyChanged += TheClient_PropertyChanged;
-                    }
-                }
-                else
-                {
-                    this.Clients.Add(theClient);
-                    theClient.PMChannels.Add(this);
-                    theClient.PropertyChanged += TheClient_PropertyChanged;
-                }
-
-
+                this.Clients.CollectionChanged += Clients_CollectionChanged;
                 this.ChannelTabItem.Style = (Style)mw.Channels.FindResource("PrivMsgTabItem");
                 this.ChannelTabItem.ApplyTemplate();
                 this.header = (TextBlock)this.ChannelTabItem.Template.FindName("ContentSite", this.ChannelTabItem);
                 this.LoadConnectedLayout();
+                this.IsPrivMsgChannel = true;
+
+                if (this.Name.Contains(","))
+                {
+                    string[] helper = this.Name.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string clientName in helper)
+                    {
+                        Client c = null;
+                        if (!this.Server.Clients.TryGetValue(clientName.ToLower(), out c))
+                            c = new Client(clientName, Server);
+                        
+                        this.Clients.Add(c);
+                    }
+                }
+                else
+                    this.Clients.Add(theClient);
+
                 this.HashName = GetNewHashName();
                 this.GenerateHeader();
 
@@ -296,12 +301,6 @@ namespace MySnooper
                 mw.GameList.Items.Add(gameListTabItem);
             }
 
-            this.GameListUpdatedTime = new DateTime(1999, 5, 31);
-            this.BeepSoundPlay = true;
-            this.SendAway = mw.AwayText != string.Empty;
-            this.SendBack = false;
-            this.IsLoading = false;
-            this.UserMessageLoadedIdx = -1;
             this.Server.ChannelList.Add(this.HashName, this);
         }
 
@@ -368,14 +367,9 @@ namespace MySnooper
                 else
                     inline.FontWeight = FontWeights.Normal;
 
-                if (this.ChannelTabItem.IsSelected)
-                    inline.FontStyle = FontStyles.Italic;
-                else
-                    inline.FontStyle = FontStyles.Normal;
-
                 switch (this.Clients[j].OnlineStatus)
                 {
-                    case 0:
+                    case Client.Status.Offline:
                         if (this.ChannelTabItem.IsSelected)
                             inline.Foreground = Brushes.Red;
                         else if (isMouseOver)
@@ -383,7 +377,7 @@ namespace MySnooper
                         else
                             inline.Foreground = Brushes.DarkRed;
                         break;
-                    case 1:
+                    case Client.Status.Online:
                         if (this.ChannelTabItem.IsSelected)
                             inline.Foreground = Brushes.GreenYellow;
                         else if (isMouseOver)
@@ -391,9 +385,9 @@ namespace MySnooper
                         else
                             inline.Foreground = Brushes.Green;
                         break;
-                    case 2:
+                    case Client.Status.Unknown:
                         if (this.ChannelTabItem.IsSelected)
-                            inline.Foreground = Brushes.Gold;
+                            inline.Foreground = Brushes.Goldenrod;
                         else if (isMouseOver)
                             inline.Foreground = Brushes.LightYellow;
                         else
@@ -407,25 +401,27 @@ namespace MySnooper
 
         private void TheClient_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == "OnlineStatus" || e.PropertyName == "Name")
+            switch (e.PropertyName)
             {
-                GenerateHeader();
-            }
-            else if (this.Clients.Count == 1)
-            {
-                if (e.PropertyName == "IsBanned")
-                {
-                    Client c = (Client)sender;
-                    if (c.IsBanned)
+                case "OnlineStatus":
+                case "Name":
+                    GenerateHeader();
+                    break;
+
+                case "IsBanned":
+                    if (this.Clients.Count == 1)
                     {
-                        mw.CloseChannelTab(this, true);
+                        Client c = (Client)sender;
+                        if (c.IsBanned)
+                            mw.CloseChannelTab(this, true);
+                        else
+                            mw.Channels.Items.Add(this.ChannelTabItem);
                     }
                     else
-                    {
-                        mw.Channels.Items.Add(this.ChannelTabItem);
-                    }
-                }
+                        GenerateHeader();
+                    break;
             }
+
         }
 
         private void LoadConnectedLayout()
@@ -446,23 +442,23 @@ namespace MySnooper
 
         private void LoadDisconnectedLayout()
         {
-            if (this.DisconnectedLayout != null)
+            if (this.disconnectedLayout != null)
             {
-                this.ChannelTabItem.Content = this.DisconnectedLayout;
+                this.ChannelTabItem.Content = this.disconnectedLayout;
                 return;
             }
 
             Border border = mw.MakeDisConnectedLayout(this);
-            this.DisconnectedLayout = border;
-            this.DisconnectedLayout.DataContext = this;
-            this.ChannelTabItem.Content = this.DisconnectedLayout;
+            this.disconnectedLayout = border;
+            this.disconnectedLayout.DataContext = this;
+            this.ChannelTabItem.Content = this.disconnectedLayout;
         }
 
-        public void Join(WormageddonWebComm wormWebC)
+        public void Join()
         {
             if (Server.IsWormNet && Scheme == string.Empty)
             {
-                this.Scheme = wormWebC.SetChannelScheme(this);
+                this.Scheme = mw.SetChannelScheme(this);
                 if (this.CanHost && this.GameList == null)
                 {
                     this.GameList = new SortedObservableCollection<Game>();
@@ -502,70 +498,115 @@ namespace MySnooper
 
         void Clients_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            if (_clientCount != Clients.Count)
+            if (IsPrivMsgChannel)
             {
-                _clientCount = Clients.Count;
-                if (PropertyChanged != null)
-                    PropertyChanged(this, new PropertyChangedEventArgs("ClientCount"));
+                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+                {
+                    Client c = (Client)e.NewItems[0];
+                    c.PMChannels.Add(this);
+                    c.PropertyChanged += TheClient_PropertyChanged;
+                }
+                else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+                {
+                    Client c = (Client)e.OldItems[0];
+                    c.PMChannels.Remove(this);
+                    c.PropertyChanged -= TheClient_PropertyChanged;
+                }
+            }
+            else
+            {
+                if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+                {
+                    Client c = (Client)e.NewItems[0];
+                    c.Channels.Add(this);
+                }
+                else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+                {
+                    Client c = (Client)e.OldItems[0];
+                    c.Channels.Remove(this);
+                }
+
+                if (_clientCount != Clients.Count)
+                {
+                    _clientCount = Clients.Count;
+                    if (PropertyChanged != null)
+                        PropertyChanged(this, new PropertyChangedEventArgs("ClientCount"));
+                }
             }
         }
 
-
         // Add a message
-        public void AddMessage(Client sender, string message, MessageSetting style, string highlightWord = "")
+        public void AddMessage(Client sender, string message, MessageSetting style)
         {
             if (Messages.Count + 1 > GlobalManager.MaxMessagesInMemory)
             {
                 Log(GlobalManager.NumOfOldMessagesToBeLoaded);
             }
 
-            MessageClass msg = new MessageClass(sender, message, style, highlightWord);
+            MessageClass msg = new MessageClass(sender, message, style);
             Messages.Add(msg);
 
-            if (mw.EnergySaveModeOn)
-                this.MessageReloadNeeded = true;
-            else if (!sender.IsBanned || !IsPrivMsgChannel && Properties.Settings.Default.ShowBannedMessages)
-                mw.AddNewMessage(this, msg, false);
+            if (!sender.IsBanned || !IsPrivMsgChannel && Properties.Settings.Default.ShowBannedMessages)
+            {
+                if (mw.EnergySaveModeOn)
+                    this.MessageReloadNeeded = true;
+                else
+                    mw.AddNewMessage(this, msg, false);
+            }
         }
 
-        public void ClearClients()
+        public void AddMessage(MessageClass msg)
         {
-            if (this.Clients != null)
+            if (Messages.Count + 1 > GlobalManager.MaxMessagesInMemory)
             {
-                for (int i = 0; i < this.Clients.Count; i++)
-                {
-                    Client c = this.Clients[i];
-                    if (IsPrivMsgChannel)
-                    {
-                        c.PMChannels.Remove(this);
-                        c.PropertyChanged -= TheClient_PropertyChanged;
-
-                        if (!this._disabled && this.Clients.Count > 1 && c.OnlineStatus != 0 && this.Messages.Count > 0)
-                            this.Server.SendCTCPMessage(c.Name, "CLEAVING", this.HashName);
-                    }
-                    else
-                    {
-                        c.Channels.Remove(this);
-                    }
-
-                    if (c.Channels.Count == 0)
-                    {
-                        if (c.PMChannels.Count > 0)
-                            c.OnlineStatus = 2;
-                        else
-                            this.Server.Clients.Remove(c.LowerName);
-                    }
-                }
-
-                Clients.Clear();
+                Log(GlobalManager.NumOfOldMessagesToBeLoaded);
             }
+
+            Messages.Add(msg);
+
+            if (!msg.Sender.IsBanned || !IsPrivMsgChannel && Properties.Settings.Default.ShowBannedMessages)
+            {
+                if (mw.EnergySaveModeOn)
+                    this.MessageReloadNeeded = true;
+                else
+                    mw.AddNewMessage(this, msg, false);
+            }
+        }
+
+        private void ClearClients()
+        {
+            for (int i = 0; i < this.Clients.Count; i++)
+            {
+                Client c = this.Clients[i];
+                if (IsPrivMsgChannel)
+                {
+                    c.PMChannels.Remove(this);
+                    c.PropertyChanged -= TheClient_PropertyChanged;
+
+                    if (!this._disabled && this.Clients.Count > 1 && c.OnlineStatus != Client.Status.Offline && this.Messages.Count > 0)
+                        this.Server.SendCTCPMessage(c.Name, "CLEAVING", this.HashName);
+                }
+                else
+                    c.Channels.Remove(this);
+
+                if (c.Channels.Count == 0)
+                {
+                    if (c.PMChannels.Count > 0)
+                        c.OnlineStatus = Client.Status.Unknown;
+                    else
+                        this.Server.Clients.Remove(c.LowerName);
+                }
+            }
+
+            Clients.Clear();
         }
 
         public void Part()
         {
-            ClearClients();
+            if (this.Clients != null)
+                ClearClients();
 
-            if (this.Messages != null)
+            if (this.Messages != null && this.Messages.Count > 0)
             {
                 this.AddMessage(this.Server.User, "has left the channel.", MessageSettings.PartMessage);
                 Log(Messages.Count, true);
@@ -585,7 +626,9 @@ namespace MySnooper
                 Joined = false;
             }
 
-            if (this.IsLoading)
+            if (this.IsReconnecting)
+                this.Reconnecting(false);
+            else if (this.IsLoading)
                 this.Loading(false);
 
             if (this.Server.IsWormNet)
@@ -707,7 +750,14 @@ namespace MySnooper
 
         public override int GetHashCode()
         {
-            return HashName.GetHashCode();
+            unchecked // Overflow is fine, just wrap
+            {
+                int hash = (int)2166136261;
+                // Suitable nullity checks etc, of course :)
+                hash = hash * 16777619 ^ HashName.GetHashCode();
+                hash = hash * 16777619 ^ Server.IsWormNet.GetHashCode();
+                return hash;
+            }
         }
 
         public static bool operator ==(Channel a, Channel b)
@@ -740,14 +790,14 @@ namespace MySnooper
             this.IsLoading = loading;
             if (loading)
             {
-                StackPanel sp = (StackPanel)this.DisconnectedLayout.Child;
+                StackPanel sp = (StackPanel)this.disconnectedLayout.Child;
                 sp.Children[0].Visibility = System.Windows.Visibility.Hidden;
                 sp.Children[1].Visibility = System.Windows.Visibility.Hidden;
                 ((ProgressRing)sp.Children[2]).IsActive = true;
             }
             else
             {
-                StackPanel sp = (StackPanel)this.DisconnectedLayout.Child;
+                StackPanel sp = (StackPanel)this.disconnectedLayout.Child;
                 sp.Children[0].Visibility = System.Windows.Visibility.Visible;
                 sp.Children[1].Visibility = System.Windows.Visibility.Visible;
                 ((ProgressRing)sp.Children[2]).IsActive = false;
@@ -761,9 +811,10 @@ namespace MySnooper
             {
                 if (this.Joined)
                 {
-                    if (!IsPrivMsgChannel)
+                    if (!IsPrivMsgChannel && this.Clients != null)
                         this.ClearClients();
                     this.LoadDisconnectedLayout();
+                    this.LeaveChannelVisibility = Visibility.Collapsed;
                 }
                 this.Loading(true);
             }
@@ -771,7 +822,10 @@ namespace MySnooper
             {
                 this.Loading(false);
                 if (this.Joined)
+                {
                     this.LoadConnectedLayout();
+                    this.LeaveChannelVisibility = Visibility.Visible;
+                }
             }
         }
 
@@ -798,20 +852,21 @@ namespace MySnooper
                     Channel temp = (Channel)((TabItem)mw.Channels.Items[i]).DataContext;
                     if (temp.HashName == newHashName && temp.Server == this.Server)
                     {
-                        mw.Channels.SelectedIndex = i;
+                        if (mw.Channels.SelectedIndex != i)
+                            mw.Channels.SelectedIndex = i;
+                        else
+                            temp.TheTextBox.Focus();
                         this.Clients.Remove(c); // Undo modifications
                         return;
                     }
                 }
-
-                c.PMChannels.Add(this);
             }
 
             if (broadcast && this.Messages.Count > 0)
             {
                 foreach (Client client in this.Clients)
                 {
-                    if (client.OnlineStatus != 0 && client != c)
+                    if (client.OnlineStatus != Client.Status.Offline && client != c)
                         this.Server.SendCTCPMessage(client.Name, "CLIENTADD", this.HashName + "|" + c.Name);
                 }
             }
@@ -839,13 +894,14 @@ namespace MySnooper
                     Channel temp = (Channel)((TabItem)mw.Channels.Items[i]).DataContext;
                     if (temp.HashName == newHashName && temp.Server == this.Server)
                     {
-                        mw.Channels.SelectedIndex = i;
+                        if (mw.Channels.SelectedIndex != i)
+                            mw.Channels.SelectedIndex = i;
+                        else
+                            temp.TheTextBox.Focus();
                         this.Clients.Add(c); // Undo
                         return;
                     }
                 }
-
-                c.PMChannels.Remove(this);
 
                 if (c.Channels.Count == 0 && c.PMChannels.Count == 0)
                     this.Server.Clients.Remove(c.LowerName);
@@ -855,11 +911,11 @@ namespace MySnooper
             {
                 foreach (Client client in this.Clients)
                 {
-                    if (client.OnlineStatus != 0)
+                    if (client.OnlineStatus != Client.Status.Offline)
                         this.Server.SendCTCPMessage(client.Name, "CLIENTREM", this.HashName + "|" + c.Name);
                 }
 
-                if (c.OnlineStatus != 0)
+                if (c.OnlineStatus != Client.Status.Offline)
                     this.Server.SendCTCPMessage(c.Name, "CLIENTREM", this.HashName + "|" + c.Name);
             }
 
@@ -872,10 +928,7 @@ namespace MySnooper
 
         private string GetNewHashName()
         {
-            if (sb == null)
-                sb = new StringBuilder();
-            else
-                sb.Clear();
+            sb.Clear();
 
             for (int i = 0; i < this.Clients.Count; i++)
             {

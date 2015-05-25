@@ -49,6 +49,7 @@ namespace MySnooper
             AddBoolSetting(WindowGrid, "CloseToTray", "Exit button minimizes the snooper to tray:");
             AddBoolSetting(WindowGrid, "EnergySaveModeGame", "Energy save mode while playing:");
             AddBoolSetting(WindowGrid, "EnergySaveModeWin", "Energy save mode when snooper is hidden:");
+            AddBoolSetting(WindowGrid, "WAHighPriority", "Set W:A task priority to high:");
 
             // Notifications
             AddBoolSetting(NotificationsGrid, "AskNotificatorOff", "Ask if I would like to turn off notificator when I host or join a game:");
@@ -204,11 +205,28 @@ namespace MySnooper
             Grid.SetColumn(tb, 0);
             grid.Children.Add(tb);
 
+            Run run, run2 = null;
             TextBlock tb2 = new TextBlock();
             tb2.VerticalAlignment = System.Windows.VerticalAlignment.Center;
-            Run run = new Run("Example");
-            MessageSettings.LoadSettingsFor(run, setting);
-            tb2.Inlines.Add(run);
+            if (setting.OneColorOnly)
+            {
+                run = new Run("Example");
+                MessageSettings.LoadSettingsFor(run, setting);
+                run.Foreground = setting.NickColor;
+                tb2.Inlines.Add(run);
+            }
+            else
+            {
+                run = new Run("Player: ");
+                MessageSettings.LoadSettingsFor(run, setting);
+                run.FontWeight = FontWeights.Bold;
+                run.Foreground = setting.NickColor;
+                tb2.Inlines.Add(run);
+                run2 = new Run("message");
+                MessageSettings.LoadSettingsFor(run2, setting);
+                run2.Foreground = setting.MessageColor;
+                tb2.Inlines.Add(run2);
+            }
             Grid.SetRow(tb2, row);
             Grid.SetColumn(tb2, 1);
             grid.Children.Add(tb2);
@@ -216,7 +234,7 @@ namespace MySnooper
             // <Button Grid.Row="1" Grid.Column="1" Content="Change" Click="FontChange" Name="UserMessage"></Button>
             Button b = new Button();
             b.Focusable = false;
-            b.Tag = new object[] { name, text, setting, run };
+            b.Tag = new object[] { name, text, setting, run, run2 };
             b.Content = "Change";
             b.Click += StyleHandler;
             Grid.SetRow(b, row);
@@ -241,9 +259,17 @@ namespace MySnooper
             this.Dispatcher.Invoke(new Action(delegate()
             {
                 object[] tag = (object[])helper.Tag;
-                Run run = (Run)tag[3];
                 MessageSetting setting = (MessageSetting)tag[2];
+                Run run = (Run)tag[3];
                 MessageSettings.LoadSettingsFor(run, setting);
+                run.Foreground = setting.NickColor;
+
+                if (setting.OneColorOnly == false)
+                {
+                    Run run2 = (Run)tag[4];
+                    MessageSettings.LoadSettingsFor(run2, setting);
+                    run2.Foreground = setting.MessageColor;
+                }
 
                 if (SettingChanged != null)
                     SettingChanged(this, new SettingChangedEventArgs((string)tag[0], SettingChangedType.Style));

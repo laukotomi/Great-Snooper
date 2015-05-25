@@ -6,9 +6,9 @@ namespace WormNat2
     {
         static void Main(string[] args)
         {
-            if (args.Length != 10)
+            if (args.Length != 11)
                 return;
-            WormNat prg = new WormNat(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9]);
+            WormNat prg = new WormNat(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10]);
             prg.Start();
         }
     }

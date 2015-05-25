@@ -73,7 +73,7 @@ namespace MySnooper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("F0FFFF|13|0|0|0|0|Tahoma")]
+        [global::System.Configuration.DefaultSettingValueAttribute("15AB93|F0F8FF|13|0|0|0|0|Tahoma")]
         public string ChannelMessageStyle {
             get {
                 return ((string)(this["ChannelMessageStyle"]));
@@ -85,7 +85,7 @@ namespace MySnooper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("808000|12|0|0|0|0|Tahoma")]
+        [global::System.Configuration.DefaultSettingValueAttribute("4D9C00|548C00|12|0|0|0|0|Tahoma")]
         public string JoinMessageStyle {
             get {
                 return ((string)(this["JoinMessageStyle"]));
@@ -97,7 +97,7 @@ namespace MySnooper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("808000|12|0|0|0|0|Tahoma")]
+        [global::System.Configuration.DefaultSettingValueAttribute("B27C00|916000|12|0|0|0|0|Tahoma")]
         public string PartMessageStyle {
             get {
                 return ((string)(this["PartMessageStyle"]));
@@ -109,7 +109,7 @@ namespace MySnooper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("808000|12|0|0|0|0|Tahoma")]
+        [global::System.Configuration.DefaultSettingValueAttribute("B21600|8C2613|12|0|0|0|0|Tahoma")]
         public string QuitMessageStyle {
             get {
                 return ((string)(this["QuitMessageStyle"]));
@@ -121,7 +121,7 @@ namespace MySnooper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("FF0000|13|0|0|0|0|Tahoma")]
+        [global::System.Configuration.DefaultSettingValueAttribute("FF0000|FF0000|13|0|0|0|0|Tahoma")]
         public string OfflineMessageStyle {
             get {
                 return ((string)(this["OfflineMessageStyle"]));
@@ -133,7 +133,7 @@ namespace MySnooper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("FFFF00|13|0|0|0|0|Tahoma")]
+        [global::System.Configuration.DefaultSettingValueAttribute("C9C900|C2C200|13|0|0|0|0|Tahoma")]
         public string ActionMessageStyle {
             get {
                 return ((string)(this["ActionMessageStyle"]));
@@ -145,7 +145,7 @@ namespace MySnooper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("E9967A|13|0|0|0|0|Tahoma")]
+        [global::System.Configuration.DefaultSettingValueAttribute("00FFFF|EBDDA8|13|0|0|0|0|Tahoma")]
         public string UserMessageStyle {
             get {
                 return ((string)(this["UserMessageStyle"]));
@@ -157,7 +157,7 @@ namespace MySnooper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("FF0000|13|0|0|0|0|Tahoma")]
+        [global::System.Configuration.DefaultSettingValueAttribute("FF0000|FF0000|13|0|0|0|0|Tahoma")]
         public string NoticeMessageStyle {
             get {
                 return ((string)(this["NoticeMessageStyle"]));
@@ -1268,6 +1268,18 @@ namespace MySnooper.Properties {
             }
             set {
                 this["EnergySaveModeWin"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool WAHighPriority {
+            get {
+                return ((bool)(this["WAHighPriority"]));
+            }
+            set {
+                this["WAHighPriority"] = value;
             }
         }
     }

@@ -37,8 +37,9 @@ namespace WormNat2
         private readonly string Location;
         private readonly string CC;
         private readonly bool UseWormNat;
+        private readonly bool HighPriority;
 
-        public WormNat(string ServerAddress, string GameExePath, string NickName, string HostName, string PassWord, string ChannelName, string ChannelScheme, string Location, string CC, string UseWormNat)
+        public WormNat(string ServerAddress, string GameExePath, string NickName, string HostName, string PassWord, string ChannelName, string ChannelScheme, string Location, string CC, string UseWormNat, string highPriority)
         {
             this.ServerAddress = ServerAddress;
             this.GameExePath = GameExePath;
@@ -50,6 +51,7 @@ namespace WormNat2
             this.Location = Location;
             this.CC = CC;
             this.UseWormNat = (UseWormNat == "1");
+            this.HighPriority = (highPriority == "1");
         }
 
 
@@ -303,6 +305,8 @@ namespace WormNat2
                 p.StartInfo.Arguments = @"wa://?gameid=" + GameID + "&scheme=" + ChannelScheme + "&pass=" + PassWord;
                 if (p.Start())
                 {
+                    if (HighPriority)
+                        p.PriorityClass = ProcessPriorityClass.High;
                     while (true)
                     {
                         if (p.HasExited)

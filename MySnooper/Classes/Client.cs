@@ -6,19 +6,19 @@ namespace MySnooper
 {
     public class Client : IComparable, INotifyPropertyChanged
     {
+        public enum Status { Online, Offline, Unknown }
+
         // Private variables to make properties work well
         private RankClass _rank;
         private CountryClass _country = null;
         private bool _isBanned = false;
         private bool _tusActive = false;
         private string _tusNick = string.Empty;
-        private int _onlineStatus = 0; // 0 = offline, 1 = online, 2 = not known (client is not in the channel where we are)
+        private Status _onlineStatus = Status.Unknown;
         private string _name;
         private string _clientApp;
         private UserGroup _group = GlobalManager.DefaultGroup;
-
-        // Variables
-        public bool ClientGreatSnooper { get; set; }
+        private bool _greatSnooper = false;
 
         // Properties
         public string LowerName { get; private set; }
@@ -79,7 +79,7 @@ namespace MySnooper
                 TusLowerNick = value.ToLower();
             }
         }
-        public int OnlineStatus
+        public Status OnlineStatus
         {
             get
             {
@@ -153,7 +153,9 @@ namespace MySnooper
                     _group = GlobalManager.DefaultGroup;
 
                 // Refresh sorting
-                foreach (Channel ch in Channels)
+                var temp = new List<Channel>(Channels);
+
+                foreach (Channel ch in temp)
                 {
                     ch.Clients.Remove(this);
                     ch.Clients.Add(this);
@@ -165,8 +167,22 @@ namespace MySnooper
             }
         }
 
+        public bool GreatSnooper {
+            get
+            {
+                return _greatSnooper;
+            }
+            set
+            {
+                _greatSnooper = value;
+                if (PropertyChanged != null)
+                    PropertyChanged(this, new PropertyChangedEventArgs("GreatSnooper"));
+            }
+        }
+
+
         // Constructor
-        public Client(string name, string clan = "")
+        public Client(string name, IRCCommunicator server, string clan = "")
         {
             this.Name = name;
             this.LowerName = name.ToLower();
@@ -178,6 +194,11 @@ namespace MySnooper
             UserGroup group = null;
             if (UserGroups.Users.TryGetValue(this.LowerName, out group))
                 Group = group;
+            if (server != null)
+            {
+                this.IsBanned = GlobalManager.BanList.ContainsKey(this.LowerName);
+                server.Clients.Add(this.LowerName, this);
+            }
         }
 
         // IComparable interface
@@ -248,7 +269,7 @@ namespace MySnooper
 
         public bool CanConversation()
         {
-            if (!ClientGreatSnooper)
+            if (!GreatSnooper)
                 return false;
 
             // Great snooper v1.4

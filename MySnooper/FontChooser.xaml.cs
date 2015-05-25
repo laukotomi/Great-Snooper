@@ -3,8 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Media;
 using Xceed.Wpf.Toolkit;
 
@@ -15,8 +13,10 @@ namespace MySnooper
 
     public partial class FontChooser : MetroWindow
     {
-        private string styleName;
-        private MessageSetting actSetting;
+        private readonly string styleName;
+        private readonly MessageSetting actSetting;
+        private readonly TextBlock tb1;
+        private readonly TextBlock tb2;
 
         public event SaveSettingsDelegate SaveSetting;
 
@@ -40,58 +40,93 @@ namespace MySnooper
                 TheSize.Items.Add(i);
 
             actSetting = setting;
+            if (actSetting.OneColorOnly)
+            {
+                tb1 = new TextBlock() { Text = "Example" };
+                ExampleSP.Children.Add(tb1);
+            }
+            else
+            {
+                tb1 = new TextBlock() { Text = "Player: ", FontWeight = FontWeights.Bold };
+                tb2 = new TextBlock() { Text = "message" };
+                ExampleSP.Children.Add(tb1);
+                ExampleSP.Children.Add(tb2);
+            }
 
             TheFontfamily.SelectedItem = new KeyValuePair<string, FontFamily>(setting.Fontfamily.ToString(), setting.Fontfamily);
             TheFontfamily.ScrollIntoView(TheFontfamily.SelectedItem);
             TheSize.SelectedItem = setting.Size;
-            TheColor.SelectedColor = setting.Color.Color;
+            NickColor.SelectedColor = setting.NickColor.Color;
+            if (setting.OneColorOnly == false)
+                MessageColor.SelectedColor = setting.MessageColor.Color;
+            else
+                MessageColor.Visibility = System.Windows.Visibility.Collapsed;
             TheBold.IsChecked = setting.Bold == FontWeights.Bold;
+            BoldChanged(null, null);
             TheItalic.IsChecked = setting.Italic == FontStyles.Italic;
+            ItalicChanged(null, null);
             TheStrikethrough.IsChecked = setting.Strikethrough;
+            StrikethroughChanged(null, null);
             TheUnderline.IsChecked = setting.Underline;
+            UnderlineChanged(null, null);
         }
 
         private void FontFamilyChanged(object sender, SelectionChangedEventArgs e)
         {
             var obj = sender as ListView;
             var data = (KeyValuePair<string, FontFamily>)obj.SelectedItem;
-            Example.FontFamily = data.Value;
+            tb1.FontFamily = data.Value;
+            if (actSetting.OneColorOnly == false)
+                tb2.FontFamily = data.Value;
         }
 
         private void FontSizeChanged(object sender, SelectionChangedEventArgs e)
         {
             var obj = sender as ComboBox;
-            Example.FontSize = double.Parse(obj.SelectedItem.ToString());
+            tb1.FontSize = double.Parse(obj.SelectedItem.ToString());
+            if (actSetting.OneColorOnly == false)
+                tb2.FontSize = double.Parse(obj.SelectedItem.ToString());
         }
 
-        private void ColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
+        private void NickColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
         {
             var obj = sender as ColorPicker;
-            Example.Foreground = new SolidColorBrush(obj.SelectedColor);
+            tb1.Foreground = new SolidColorBrush(obj.SelectedColor);
+        }
+
+        private void MessageColorChanged(object sender, RoutedPropertyChangedEventArgs<Color> e)
+        {
+            var obj = sender as ColorPicker;
+            tb2.Foreground = new SolidColorBrush(obj.SelectedColor);
         }
 
         private void BoldChanged(object sender, RoutedEventArgs e)
         {
-            var obj = sender as CheckBox;
-            Example.FontWeight = obj.IsChecked.Value ? FontWeights.Bold : FontWeights.Normal;
+            if (actSetting.OneColorOnly)
+                tb1.FontWeight = TheBold.IsChecked.Value ? FontWeights.Bold : FontWeights.Normal;
+            else
+                tb2.FontWeight = TheBold.IsChecked.Value ? FontWeights.Bold : FontWeights.Normal;
         }
 
         private void ItalicChanged(object sender, RoutedEventArgs e)
         {
-            var obj = sender as CheckBox;
-            Example.FontStyle = obj.IsChecked.Value ? FontStyles.Italic : FontStyles.Normal;
+            tb1.FontStyle = TheItalic.IsChecked.Value ? FontStyles.Italic : FontStyles.Normal;
+            if (actSetting.OneColorOnly == false)
+                tb2.FontStyle = TheItalic.IsChecked.Value ? FontStyles.Italic : FontStyles.Normal;
         }
 
         private void StrikethroughChanged(object sender, RoutedEventArgs e)
         {
-            var obj = sender as CheckBox;
-            Example.TextDecorations = GetTextDecorations();
+            tb1.TextDecorations = GetTextDecorations();
+            if (actSetting.OneColorOnly == false)
+                tb2.TextDecorations = GetTextDecorations();
         }
 
         private void UnderlineChanged(object sender, RoutedEventArgs e)
         {
-            var obj = sender as CheckBox;
-            Example.TextDecorations = GetTextDecorations();
+            tb1.TextDecorations = GetTextDecorations();
+            if (actSetting.OneColorOnly == false)
+                tb2.TextDecorations = GetTextDecorations();
         }
 
         private TextDecorationCollection GetTextDecorations()
@@ -106,9 +141,13 @@ namespace MySnooper
 
         private void SaveClick(object sender, RoutedEventArgs e)
         {
-            actSetting.Fontfamily = new FontFamily(Example.FontFamily.ToString()); 
-            actSetting.Color = new SolidColorBrush(TheColor.SelectedColor);
-            actSetting.Size = Example.FontSize;
+            actSetting.Fontfamily = new FontFamily(tb1.FontFamily.ToString()); 
+            actSetting.NickColor = new SolidColorBrush(NickColor.SelectedColor);
+            if (actSetting.OneColorOnly)
+                actSetting.MessageColor = new SolidColorBrush(NickColor.SelectedColor);
+            else
+                actSetting.MessageColor = new SolidColorBrush(MessageColor.SelectedColor);
+            actSetting.Size = tb1.FontSize;
             actSetting.Bold = TheBold.IsChecked.Value ? FontWeights.Bold : FontWeights.Normal;
             actSetting.Italic = TheItalic.IsChecked.Value ? FontStyles.Italic : FontStyles.Normal;
             actSetting.Strikethrough = TheStrikethrough.IsChecked.Value;

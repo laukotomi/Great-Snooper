@@ -2,6 +2,7 @@
 using Microsoft.Win32;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Net;
@@ -13,7 +14,6 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Linq;
 
 namespace MySnooper
 {
@@ -63,6 +63,24 @@ namespace MySnooper
                         Properties.Settings.Default.Upgrade();
                         if (Properties.Settings.Default.Group0List.Length == 0)
                             Properties.Settings.Default.Group0List = Properties.Settings.Default.BuddyList;
+
+                        // new colors
+                        if (Properties.Settings.Default.ChannelMessageStyle == "F0FFFF|13|0|0|0|0|Tahoma")
+                            Properties.Settings.Default.ChannelMessageStyle = (string)Properties.Settings.Default.Properties["ChannelMessageStyle"].DefaultValue;
+                        if (Properties.Settings.Default.JoinMessageStyle == "808000|12|0|0|0|0|Tahoma")
+                            Properties.Settings.Default.JoinMessageStyle = (string)Properties.Settings.Default.Properties["JoinMessageStyle"].DefaultValue;
+                        if (Properties.Settings.Default.PartMessageStyle == "808000|12|0|0|0|0|Tahoma")
+                            Properties.Settings.Default.PartMessageStyle = (string)Properties.Settings.Default.Properties["PartMessageStyle"].DefaultValue;
+                        if (Properties.Settings.Default.QuitMessageStyle == "808000|12|0|0|0|0|Tahoma")
+                            Properties.Settings.Default.QuitMessageStyle = (string)Properties.Settings.Default.Properties["QuitMessageStyle"].DefaultValue;
+                        if (Properties.Settings.Default.OfflineMessageStyle == "FF0000|13|0|0|0|0|Tahoma")
+                            Properties.Settings.Default.OfflineMessageStyle = (string)Properties.Settings.Default.Properties["OfflineMessageStyle"].DefaultValue;
+                        if (Properties.Settings.Default.ActionMessageStyle == "FFFF00|13|0|0|0|0|Tahoma")
+                            Properties.Settings.Default.ActionMessageStyle = (string)Properties.Settings.Default.Properties["ActionMessageStyle"].DefaultValue;
+                        if (Properties.Settings.Default.UserMessageStyle == "E9967A|13|0|0|0|0|Tahoma")
+                            Properties.Settings.Default.UserMessageStyle = (string)Properties.Settings.Default.Properties["UserMessageStyle"].DefaultValue;
+                        if (Properties.Settings.Default.NoticeMessageStyle == "E9967A|13|0|0|0|0|Tahoma")
+                            Properties.Settings.Default.NoticeMessageStyle = (string)Properties.Settings.Default.Properties["NoticeMessageStyle"].DefaultValue;
                     }
                     catch (Exception) { }
 
@@ -78,6 +96,7 @@ namespace MySnooper
                 CountriesClass.Initialize();
                 GlobalManager.Initialize();
                 UserGroups.Initialize();
+                Sounds.Initialize();
 
                 // Reducing Timeline frame rate
                 Timeline.DesiredFrameRateProperty.OverrideMetadata(
@@ -294,7 +313,7 @@ namespace MySnooper
                             Properties.Settings.Default.WormsNick = nickName;
                         Properties.Settings.Default.Save();
 
-                        GlobalManager.User = new Client(nickName, nickClan);
+                        GlobalManager.User = new Client(nickName, null, nickClan);
                         GlobalManager.User.Country = nickCountry;
                         GlobalManager.User.Rank = RanksClass.GetRankByInt(nickRank);
 
@@ -463,10 +482,10 @@ namespace MySnooper
                     break;
 
                 case TUSStates.OK:
-                    GlobalManager.User = new Client(nickName, nickClan);
+                    GlobalManager.User = new Client(nickName, null, nickClan);
                     GlobalManager.User.Country = nickCountry;
                     GlobalManager.User.Rank = RanksClass.GetRankByInt(nickRank);
-                    GlobalManager.User.ClientGreatSnooper = true;
+                    GlobalManager.User.GreatSnooper = true;
                     GlobalManager.User.TusNick = tusNickStr;
 
                     if (Properties.Settings.Default.ChangeWormsNick)
@@ -722,7 +741,7 @@ namespace MySnooper
             if (!Directory.Exists(logpath))
                 Directory.CreateDirectory(logpath);
 
-            System.Diagnostics.Process.Start(logpath);
+            Process.Start(new ProcessStartInfo(logpath));
         }
     }
 }

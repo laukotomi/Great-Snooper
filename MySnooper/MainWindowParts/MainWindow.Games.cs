@@ -14,7 +14,7 @@ namespace MySnooper
     public partial class MainWindow : MetroWindow
     {
         private enum StartedGameTypes { Join, Host };
-        private System.Diagnostics.Process gameProcess;
+        private Process gameProcess;
         private StartedGameTypes startedGameType = StartedGameTypes.Join;
 
         // Joining a game
@@ -81,12 +81,14 @@ namespace MySnooper
                 startedGameType = StartedGameTypes.Join;
                 lobbyWindow = IntPtr.Zero;
                 gameWindow = IntPtr.Zero;
-                gameProcess = new System.Diagnostics.Process();
+                gameProcess = new Process();
                 gameProcess.StartInfo.UseShellExecute = false;
                 gameProcess.StartInfo.FileName = Properties.Settings.Default.WaExe;
                 gameProcess.StartInfo.Arguments = "wa://" + game.Address + "?gameid=" + game.ID + "&scheme=" + gameListChannel.Scheme;
                 if (gameProcess.Start())
                 {
+                    if (Properties.Settings.Default.WAHighPriority)
+                        gameProcess.PriorityClass = ProcessPriorityClass.High;
                     if (Properties.Settings.Default.MessageJoinedGame && !SilentJoined)
                         SendMessageToChannel("/me is joining a game: " + game.Name, gameListChannel);
                     if (Properties.Settings.Default.MarkAway)
@@ -224,13 +226,12 @@ namespace MySnooper
 
         public void NotificatorFound(string str, Channel ch)
         {
-            if (Properties.Settings.Default.TrayFlashing && !IsWindowFocused)
+            if (Properties.Settings.Default.TrayFlashing && !IsActive)
                 this.FlashWindow();
             if (Properties.Settings.Default.TrayNotifications)
                 myNotifyIcon.ShowBalloonTip(null, str, Hardcodet.Wpf.TaskbarNotification.BalloonIcon.Info);
-
             if (Properties.Settings.Default.NotificatorSoundEnabled)
-                this.PlaySound("NotificatorSound");
+                Sounds.PlaySound("NotificatorSound");
         }
     }
 }

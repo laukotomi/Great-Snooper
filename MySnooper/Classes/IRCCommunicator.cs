@@ -93,9 +93,7 @@ namespace MySnooper
 
             string message;
             while (messages.TryDequeue(out message));
-
             recvMessage.Clear();
-            this.Clients.Clear();
 
             reconnectTimer = new Timer(ReconnectNow, null, 500, Timeout.Infinite);
         }
@@ -127,9 +125,9 @@ namespace MySnooper
             else
             {
                 if (Properties.Settings.Default.WormsNick.Length > 0)
-                    this.User = new Client(Properties.Settings.Default.WormsNick, GlobalManager.User.Clan);
+                    this.User = new Client(Properties.Settings.Default.WormsNick, null, GlobalManager.User.Clan);
                 else
-                    this.User = new Client(GlobalManager.User.Name, GlobalManager.User.Clan);
+                    this.User = new Client(GlobalManager.User.Name, null, GlobalManager.User.Clan);
                 this.User.Country = GlobalManager.User.Country;
                 this.User.Rank = GlobalManager.User.Rank;
             }
