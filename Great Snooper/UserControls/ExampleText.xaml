@@ -1,0 +1,42 @@
+﻿<TextBlock x:Class="GreatSnooper.UserControls.ExampleText"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+           xmlns:l="clr-namespace:GreatSnooper.Localizations">
+    <Run FontFamily="{Binding Path=FontFamily, Mode=OneWay}"
+         Foreground="{Binding Path=NickColor, Mode=OneWay}"
+         FontSize="{Binding Path=Size, Mode=OneWay}"
+         FontStyle="{Binding Path=Italic, Mode=OneWay}"
+         TextDecorations="{Binding Path=Textdecorations, Mode=OneWay}">
+        <Run.Style>
+            <Style TargetType="Run">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=OneColorOnly, Mode=OneTime}" Value="True">
+                        <Setter Property="FontWeight" Value="{Binding Path=Bold, Mode=OneWay}" />
+                        <Setter Property="Text" Value="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ExampleLabel, Mode=OneWay}" />
+                    </DataTrigger>
+                    <DataTrigger Binding="{Binding Path=OneColorOnly, Mode=OneTime}" Value="False">
+                        <Setter Property="FontWeight" Value="Bold" />
+                        <Setter Property="Text" Value="{Binding Source={x:Static l:GSLocalization.Instance}, Path=PlayerLabel, Mode=OneWay, StringFormat={}{0} }" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Run.Style>
+    </Run>
+    <Run>
+        <Run.Style>
+            <Style TargetType="Run">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=OneColorOnly}" Value="False">
+                        <Setter Property="Text" Value="{Binding Source={x:Static l:GSLocalization.Instance}, Path=MessageLabel, Mode=OneWay}" />
+                        <Setter Property="FontFamily" Value="{Binding Path=FontFamily, Mode=OneWay}" />
+                        <Setter Property="Foreground" Value="{Binding Path=MessageColor, Mode=OneWay}" />
+                        <Setter Property="FontSize" Value="{Binding Path=Size, Mode=OneWay}" />
+                        <Setter Property="FontWeight" Value="{Binding Path=Bold, Mode=OneWay}" />
+                        <Setter Property="FontStyle" Value="{Binding Path=Italic, Mode=OneWay}" />
+                        <Setter Property="TextDecorations" Value="{Binding Path=Textdecorations, Mode=OneWay}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </Run.Style>
+    </Run>
+</TextBlock>

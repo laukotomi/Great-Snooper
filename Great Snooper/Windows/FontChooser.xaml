@@ -1,0 +1,117 @@
+﻿<controls:MetroWindow x:Class="GreatSnooper.Windows.FontChooser"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:l="clr-namespace:GreatSnooper.Localizations"
+        xmlns:u="clr-namespace:GreatSnooper.UserControls"
+        xmlns:c="clr-namespace:GreatSnooper.Converters"
+        Title="{Binding Source={x:Static l:GSLocalization.Instance}, Path=FontChooserTitle, Mode=OneWay}"
+        Style="{StaticResource MyDialogWindow}" Height="420" Width="500" WindowStartupLocation="CenterScreen">
+    <controls:MetroWindow.Resources>
+        <Style TargetType="TextBlock">
+            <Setter Property="VerticalAlignment" Value="Center" />
+            <Setter Property="Margin" Value="5" />
+        </Style>
+
+        <c:InvertBoolToVisibilityConverter x:Key="invertBoolToVisibilityConverter" />
+        <c:SolidColorBrushConverter x:Key="solidColorBrushConverter" />
+        <c:BoolToBoldConverter x:Key="boolToBoldConverter" />
+        <c:BoolToItalicConverter x:Key="boolToItalicConverter" />
+    </controls:MetroWindow.Resources>
+    <DockPanel Grid.Row="1">
+        <Border DockPanel.Dock="Top" Background="#33373f">
+            <u:ExampleText DataContext="{Binding Path=MessageSetting, Mode=OneTime}"
+                           HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" />
+        </Border>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="180" />
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="4*" />
+                <RowDefinition Height="50" />
+            </Grid.RowDefinitions>
+
+            <ListBox Name="FontFamilyListBox" VirtualizingStackPanel.VirtualizationMode="Recycling" Grid.Column="0" Grid.Row="0" Background="Transparent"
+                     IsTextSearchEnabled="True" TextSearch.TextPath="Key" SelectedItem="{Binding Path=SelectedFontFamily, Mode=TwoWay}"
+                     SelectionChanged="FontFamilyListBox_SelectionChanged" IsEnabled="False">
+                <ListBox.ItemsSource>
+                    <PriorityBinding>
+                        <Binding Path="FontFamilies" IsAsync="True" Mode="OneTime" />
+                        <Binding Path="FallBackList" Mode="OneTime" />
+                    </PriorityBinding>
+                </ListBox.ItemsSource>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <TextBlock Text="{Binding Path=Key, Mode=OneTime}" FontFamily="{Binding Path=Value, Mode=OneTime}" />
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+            <Grid Grid.Column="1" Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                    <RowDefinition Height="Auto"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=SizeLabel, Mode=OneWay}" />
+                <ComboBox Grid.Row="0" Grid.Column="1" ItemsSource="{Binding Path=FontSizes, Mode=OneTime}" SelectedItem="{Binding Path=MessageSetting.Size}" />
+
+                <TextBlock Grid.Row="1" Grid.Column="0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                            <Setter Property="Margin" Value="5" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=MessageSetting.OneColorOnly, Mode=OneTime}" Value="True">
+                                    <Setter Property="Text" Value="Color:" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding Path=MessageSetting.OneColorOnly, Mode=OneTime}" Value="False">
+                                    <Setter Property="Text" Value="{Binding Source={x:Static l:GSLocalization.Instance}, Path=NickColorLabel, Mode=OneWay}" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <xctk:ColorPicker Grid.Row="1" Grid.Column="1" UsingAlphaChannel="False" ShowDropDownButton="False" ShowStandardColors="False"
+                                  SelectedColor="{Binding Path=MessageSetting.NickColor, Mode=TwoWay, Converter={StaticResource solidColorBrushConverter}}" />
+
+                <TextBlock Grid.Row="2" Grid.Column="0" Visibility="{Binding Path=MessageSetting.OneColorOnly, Mode=OneTime, Converter={StaticResource invertBoolToVisibilityConverter}}"
+                           Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=MessageColorLabel, Mode=OneWay}" />
+                <xctk:ColorPicker Grid.Row="2" Grid.Column="1" UsingAlphaChannel="False" ShowDropDownButton="False" Visibility="{Binding Path=MessageSetting.OneColorOnly, Mode=OneTime, Converter={StaticResource invertBoolToVisibilityConverter}}"
+                                  ShowStandardColors="False" SelectedColor="{Binding Path=MessageSetting.MessageColor, Mode=TwoWay, Converter={StaticResource solidColorBrushConverter}}" />
+
+                <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=BoldLabel, Mode=OneWay}" />
+                <CheckBox Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=MessageSetting.Bold, Mode=TwoWay, Converter={StaticResource boolToBoldConverter}}" />
+
+                <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ItalicLabel, Mode=OneWay}" />
+                <CheckBox Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=MessageSetting.Italic, Mode=TwoWay, Converter={StaticResource boolToItalicConverter}}" />
+
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=StrikethroughLabel, Mode=OneWay}" />
+                <CheckBox Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=MessageSetting.Strikethrough, Mode=TwoWay}" />
+
+                <TextBlock Grid.Row="6" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=UnderlineLabel, Mode=OneWay}" />
+                <CheckBox Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding Path=MessageSetting.Underline, Mode=TwoWay}" />
+            </Grid>
+
+            <StackPanel Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
+                <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=SaveText, Mode=OneWay}"
+                        Width="100" Margin="10" Command="{Binding Path=SaveCommand, Mode=OneTime}" />
+                <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CloseText, Mode=OneWay}"
+                        Width="100" Margin="10" Command="{Binding Path=CloseCommand, Mode=OneTime}" IsCancel="True" />
+            </StackPanel>
+        </Grid>
+    </DockPanel>
+</controls:MetroWindow>

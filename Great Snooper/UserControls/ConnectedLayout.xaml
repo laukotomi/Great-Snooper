@@ -1,0 +1,45 @@
+﻿<Border x:Class="GreatSnooper.UserControls.ConnectedLayout"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
+        xmlns:ui="clr-namespace:GreatSnooper.CustomUI"
+        xmlns:c="clr-namespace:GreatSnooper.Converters">
+    <Border.Resources>
+        <c:InvertBoolConverter x:Key="invertBoolConverter" />
+    </Border.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Border Grid.Row="0" BorderThickness="0,1" BorderBrush="Gray">
+            <ScrollViewer Margin="0,5">
+                <RichTextBox IsUndoEnabled="False" IsReadOnly="True" BorderThickness="0" IsDocumentEnabled="True" Background="Transparent">
+                    <RichTextBox.Resources>
+                        <Style TargetType="Paragraph">
+                            <Setter Property="Margin" Value="0" />
+                        </Style>
+                    </RichTextBox.Resources>
+                    <FlowDocument LineStackingStrategy="MaxHeight" />
+                </RichTextBox>
+            </ScrollViewer>
+        </Border>
+
+        <TextBox Grid.Row="1" Margin="0,8,0,2" MaxLength="495"
+                 ui:FocusExtension.IsFocused="{Binding Path=IsTBFocused, Mode=OneWay}"
+                 IsEnabled="{Binding Path=Disabled, Mode=OneWay, Converter={StaticResource invertBoolConverter}}"
+                 Text="{Binding Path=MessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="KeyDown">
+                    <cmd:EventToCommand Command="{Binding Path=MsgKeyDownCommand, Mode=OneTime}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+                <i:EventTrigger EventName="PreviewKeyDown">
+                    <cmd:EventToCommand Command="{Binding Path=MsgPreviewKeyDownCommand, Mode=OneTime}" PassEventArgsToCommand="True" />
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
+        </TextBox>
+    </Grid>
+</Border>

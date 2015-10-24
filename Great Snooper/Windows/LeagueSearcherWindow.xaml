@@ -1,0 +1,51 @@
+﻿<controls:MetroWindow x:Class="GreatSnooper.Windows.LeagueSearcherWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:GreatSnooper.Converters"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:l="clr-namespace:GreatSnooper.Localizations"
+        Title="{Binding Source={x:Static l:GSLocalization.Instance}, Path=LeagueGameTitle, Mode=OneWay}"
+        Style="{StaticResource MyDialogWindow}" Height="360" Width="360" WindowStartupLocation="CenterScreen">
+    <controls:MetroWindow.Resources>
+        <c:InvertBoolConverter x:Key="invertBoolConverter" />
+    </controls:MetroWindow.Resources>
+    <Grid HorizontalAlignment="Center">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="25" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="25" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <ListBox Grid.Row="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" Background="Transparent"
+                 VerticalAlignment="Center" BorderThickness="0"
+                 ItemsSource="{Binding Path=LeaguesToSearch, Mode=OneTime}"
+                 IsEnabled="{Binding Path=IsSpamAllowed, Mode=OneWay}">
+            <ListBox.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox Content="{Binding Path=League.Name, Mode=OneTime}" Margin="5,2"
+                              IsChecked="{Binding Path=IsSearching, Mode=TwoWay}"/>
+                </DataTemplate>
+            </ListBox.ItemTemplate>
+        </ListBox>
+
+        <CheckBox Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                  IsChecked="{Binding Path=IsSpamming, Mode=TwoWay}"
+                  Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=SpamChannelText, Mode=OneWay}"
+                  IsEnabled="{Binding Path=IsSearching, Mode=OneWay, Converter={StaticResource invertBoolConverter}}" />
+
+        <Button Content="{Binding Path=StartStopButtonText, Mode=OneWay}"
+                Width="120" Margin="0,0,10,0" Grid.Row="4" Grid.Column="0"
+                Command="{Binding Path=StartStopCommand, Mode=OneTime}" IsDefault="True" />
+
+        <Button Grid.Row="4" Grid.Column="1" Width="120" Margin="10,0,0,0"
+                Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CloseText, Mode=OneWay}"
+                Command="{Binding Path=CloseCommand, Mode=OneTime}" IsCancel="True" />
+    </Grid>
+</controls:MetroWindow>

@@ -1,0 +1,526 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{935D780B-C3F1-447A-ABB0-6AECC63E8218}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>GreatSnooper</RootNamespace>
+    <AssemblyName>Great Snooper</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>
+    </TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <RunCodeAnalysis>true</RunCodeAnalysis>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>icon.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="GalaSoft.MvvmLight, Version=5.2.0.37223, Culture=neutral, PublicKeyToken=0e453835af4ee6ce, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.2.0.0\lib\net40\GalaSoft.MvvmLight.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="GalaSoft.MvvmLight.Extras, Version=5.2.0.37224, Culture=neutral, PublicKeyToken=f46ff315b1088208, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.2.0.0\lib\net40\GalaSoft.MvvmLight.Extras.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Hardcodet.Wpf.TaskbarNotification, Version=1.0.5.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\Hardcodet.NotifyIcon.Wpf.1.0.5\lib\net40\Hardcodet.Wpf.TaskbarNotification.dll</HintPath>
+    </Reference>
+    <Reference Include="MahApps.Metro, Version=1.1.2.0, Culture=neutral, PublicKeyToken=f4fb5a3c4d1e5b4f, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\MahApps.Metro.1.1.2.0\lib\net40\MahApps.Metro.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.Practices.ServiceLocation, Version=1.3.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\CommonServiceLocator.1.3\lib\portable-net4+sl5+netcore45+wpa81+wp8\Microsoft.Practices.ServiceLocation.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Windows.Interactivity, Version=4.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\MvvmLightLibs.5.2.0.0\lib\net40\System.Windows.Interactivity.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+    <Reference Include="Xceed.Wpf.AvalonDock, Version=2.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.5\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Aero, Version=2.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.5\lib\net40\Xceed.Wpf.AvalonDock.Themes.Aero.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.Metro, Version=2.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.5\lib\net40\Xceed.Wpf.AvalonDock.Themes.Metro.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.AvalonDock.Themes.VS2010, Version=2.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.5\lib\net40\Xceed.Wpf.AvalonDock.Themes.VS2010.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.DataGrid, Version=2.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.5\lib\net40\Xceed.Wpf.DataGrid.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Xceed.Wpf.Toolkit, Version=2.5.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
+      <HintPath>..\packages\Extended.Wpf.Toolkit.2.5\lib\net40\Xceed.Wpf.Toolkit.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <ApplicationDefinition Include="App.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </ApplicationDefinition>
+    <Compile Include="Classes\AbstractCommunicator.cs" />
+    <Compile Include="Classes\AccentColorMenuData.cs" />
+    <Compile Include="Classes\BBParser.cs" />
+    <Compile Include="Classes\GameSurgeCommunicator.cs" />
+    <Compile Include="Classes\LeagueSearcher.cs" />
+    <Compile Include="Classes\Notificator.cs" />
+    <Compile Include="Classes\TusResult.cs" />
+    <Compile Include="Classes\WebDownload.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Classes\WormNetCommunicator.cs" />
+    <Compile Include="Converters\BoolToBoldConverter.cs" />
+    <Compile Include="Converters\BoolToItalicConverter.cs" />
+    <Compile Include="Converters\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\InvertBoolToVisibilityConverter.cs" />
+    <Compile Include="Converters\HalfValueConverter.cs" />
+    <Compile Include="Converters\NullToBoolConverter.cs" />
+    <Compile Include="Converters\SolidColorBrushConverter.cs" />
+    <Compile Include="CustomUI\CustomSlider.cs" />
+    <Compile Include="EventArguments\ConnectionStateEventArgs.cs" />
+    <Compile Include="Helpers\ExtensionMethods.cs" />
+    <Compile Include="Helpers\NativeMethods.cs" />
+    <Compile Include="Helpers\SettingsHelper.cs" />
+    <Compile Include="Helpers\TusAccounts.cs" />
+    <Compile Include="Helpers\Users.cs" />
+    <Compile Include="IRCTasks\ChannelListTask.cs" />
+    <Compile Include="IRCTasks\ClientAddTask.cs" />
+    <Compile Include="IRCTasks\ClientLeftTask.cs" />
+    <Compile Include="IRCTasks\ClientRemoveTask.cs" />
+    <Compile Include="IRCTasks\JoinedTask.cs" />
+    <Compile Include="IRCTasks\MessageTask.cs" />
+    <Compile Include="IRCTasks\NickChangeTask.cs" />
+    <Compile Include="IRCTasks\NickNameInUseTask.cs" />
+    <Compile Include="IRCTasks\OfflineTask.cs" />
+    <Compile Include="IRCTasks\PartedTask.cs" />
+    <Compile Include="IRCTasks\UserInfoTask.cs" />
+    <Compile Include="Model\Game.cs" />
+    <Compile Include="Model\League.cs" />
+    <Compile Include="Model\LeagueToSearch.cs" />
+    <Compile Include="Model\TusAccount.cs" />
+    <Compile Include="Settings\AbstractSetting.cs" />
+    <Compile Include="Settings\BoolSetting.cs" />
+    <Compile Include="Settings\ComboboxSetting.cs" />
+    <Compile Include="CustomUI\SettingTemplateSelector.cs" />
+    <Compile Include="Settings\SoundSetting.cs" />
+    <Compile Include="Settings\StringSetting.cs" />
+    <Compile Include="Settings\StyleSetting.cs" />
+    <Compile Include="Settings\TextListSetting.cs" />
+    <Compile Include="Settings\UserGroupSetting.cs" />
+    <Compile Include="Settings\WAExeSetting.cs" />
+    <Compile Include="IRCTasks\QuitTask.cs" />
+    <Compile Include="UserControls\ConnectedLayout.xaml.cs">
+      <DependentUpon>ConnectedLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\DisconnectedLayout.xaml.cs">
+      <DependentUpon>DisconnectedLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\ExampleText.xaml.cs">
+      <DependentUpon>ExampleText.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GameListLayout.xaml.cs">
+      <DependentUpon>GameListLayout.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\GSBalloon.xaml.cs">
+      <DependentUpon>GSBalloon.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\NewsBody.xaml.cs">
+      <DependentUpon>NewsBody.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UserControls\UserListGrid.xaml.cs">
+      <DependentUpon>UserListGrid.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Validators\Validator.cs" />
+    <Compile Include="Validators\WormNetTextValidator.cs" />
+    <Compile Include="CustomUI\FocusExtension.cs" />
+    <Compile Include="Converters\InvertBoolConverter.cs" />
+    <Compile Include="Helpers\MessageSettings.cs" />
+    <Compile Include="CustomUI\PasswordBoxAssistant.cs" />
+    <Compile Include="Helpers\Ranks.cs" />
+    <Compile Include="Helpers\Sounds.cs" />
+    <Compile Include="Helpers\WormNetCharTable.cs" />
+    <Compile Include="Model\Country.cs" />
+    <Compile Include="Classes\LanguageData.cs" />
+    <Compile Include="Classes\MySortedList.cs" />
+    <Compile Include="Model\Message.cs" />
+    <Compile Include="Model\MessageSetting.cs" />
+    <Compile Include="Model\Rank.cs" />
+    <Compile Include="Classes\SortedObservableCollection.cs" />
+    <Compile Include="Model\User.cs" />
+    <Compile Include="Model\UserGroup.cs" />
+    <Compile Include="Helpers\Countries.cs" />
+    <Compile Include="Helpers\ErrorLog.cs" />
+    <Compile Include="Helpers\GlobalManager.cs" />
+    <Compile Include="Helpers\UserGroups.cs" />
+    <Compile Include="Localizations\GSLocalization.cs" />
+    <Compile Include="Localizations\Localization.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Localization.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Validators\NotEmptyValidator.cs" />
+    <Compile Include="ViewModel\AbstractChannelViewModel.cs" />
+    <Compile Include="ViewModel\AwayViewModel.cs" />
+    <Compile Include="ViewModel\ChannelViewModel.cs" />
+    <Compile Include="ViewModel\FontChooserViewModel.cs" />
+    <Compile Include="ViewModel\HostingViewModel.cs" />
+    <Compile Include="ViewModel\LeagueSearcherViewModel.cs" />
+    <Compile Include="ViewModel\ListEditorViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\NewsViewModel.cs" />
+    <Compile Include="ViewModel\NotificatorViewModel.cs" />
+    <Compile Include="ViewModel\PMChannelViewModel.cs" />
+    <Compile Include="ViewModel\SettingsViewModel.cs" />
+    <Compile Include="Windows\AwayManager.xaml.cs">
+      <DependentUpon>AwayManager.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\FontChooser.xaml.cs">
+      <DependentUpon>FontChooser.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\HostingWindow.xaml.cs">
+      <DependentUpon>HostingWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\LeagueSearcherWindow.xaml.cs">
+      <DependentUpon>LeagueSearcherWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\ListEditor.xaml.cs">
+      <DependentUpon>ListEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\LoginWindow.xaml.cs">
+      <DependentUpon>LoginWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Services\IMetroDialogService.cs" />
+    <Compile Include="Services\ITaskbarIconService.cs" />
+    <Compile Include="Services\MetroDialogService.cs" />
+    <Compile Include="Services\TaskbarIconService.cs" />
+    <Compile Include="IRCTasks\IRCTask.cs" />
+    <Compile Include="Validators\AbstractValidator.cs" />
+    <Compile Include="Validators\ClanValidator.cs" />
+    <Compile Include="Validators\GSVersionValidator.cs" />
+    <Compile Include="Validators\NickNameValidator.cs" />
+    <Compile Include="ViewModel\LoginViewModel.cs" />
+    <Compile Include="ViewModel\ViewModelLocator.cs" />
+    <Compile Include="Windows\MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\NewsWindow.xaml.cs">
+      <DependentUpon>NewsWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\NotificatorWindow.xaml.cs">
+      <DependentUpon>NotificatorWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\SettingsWindow.xaml.cs">
+      <DependentUpon>SettingsWindow.xaml</DependentUpon>
+    </Compile>
+    <Page Include="UserControls\ConnectedLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\DisconnectedLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\ExampleText.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\GameListLayout.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\GSBalloon.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\NewsBody.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UserControls\UserListGrid.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\AwayManager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\FontChooser.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\HostingWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\LeagueSearcherWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\ListEditor.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\LoginWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="App.xaml.cs">
+      <DependentUpon>App.xaml</DependentUpon>
+      <SubType>Code</SubType>
+    </Compile>
+    <Page Include="Windows\MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\NewsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\NotificatorWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\SettingsWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Localizations\Localization.hu-HU.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Localizations\Localization.resx">
+      <Generator>PublicResXFileCodeGenerator</Generator>
+      <LastGenOutput>Localization.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <None Include="app.config" />
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\away.png" />
+    <Resource Include="Resources\banned.png" />
+    <Resource Include="Resources\batlogo.ico" />
+    <Resource Include="Resources\chatmodeoff.png" />
+    <Resource Include="Resources\chatmodeon.png" />
+    <Resource Include="Resources\close.png" />
+    <Resource Include="Resources\down.png" />
+    <Resource Include="Resources\flags\flag000.PNG" />
+    <Resource Include="Resources\flags\flag001.PNG" />
+    <Resource Include="Resources\flags\flag002.PNG" />
+    <Resource Include="Resources\flags\flag003.PNG" />
+    <Resource Include="Resources\flags\flag004.PNG" />
+    <Resource Include="Resources\flags\flag005.PNG" />
+    <Resource Include="Resources\flags\flag006.PNG" />
+    <Resource Include="Resources\flags\flag007.PNG" />
+    <Resource Include="Resources\flags\flag008.PNG" />
+    <Resource Include="Resources\flags\flag009.PNG" />
+    <Resource Include="Resources\flags\flag010.PNG" />
+    <Resource Include="Resources\flags\flag011.PNG" />
+    <Resource Include="Resources\flags\flag012.PNG" />
+    <Resource Include="Resources\flags\flag013.PNG" />
+    <Resource Include="Resources\flags\flag014.PNG" />
+    <Resource Include="Resources\flags\flag015.PNG" />
+    <Resource Include="Resources\flags\flag016.PNG" />
+    <Resource Include="Resources\flags\flag017.PNG" />
+    <Resource Include="Resources\flags\flag018.PNG" />
+    <Resource Include="Resources\flags\flag019.PNG" />
+    <Resource Include="Resources\flags\flag020.PNG" />
+    <Resource Include="Resources\flags\flag021.PNG" />
+    <Resource Include="Resources\flags\flag022.PNG" />
+    <Resource Include="Resources\flags\flag023.PNG" />
+    <Resource Include="Resources\flags\flag024.PNG" />
+    <Resource Include="Resources\flags\flag025.PNG" />
+    <Resource Include="Resources\flags\flag026.PNG" />
+    <Resource Include="Resources\flags\flag027.PNG" />
+    <Resource Include="Resources\flags\flag028.PNG" />
+    <Resource Include="Resources\flags\flag029.PNG" />
+    <Resource Include="Resources\flags\flag030.PNG" />
+    <Resource Include="Resources\flags\flag031.PNG" />
+    <Resource Include="Resources\flags\flag032.PNG" />
+    <Resource Include="Resources\flags\flag033.PNG" />
+    <Resource Include="Resources\flags\flag034.PNG" />
+    <Resource Include="Resources\flags\flag035.PNG" />
+    <Resource Include="Resources\flags\flag036.PNG" />
+    <Resource Include="Resources\flags\flag037.PNG" />
+    <Resource Include="Resources\flags\flag038.PNG" />
+    <Resource Include="Resources\flags\flag039.PNG" />
+    <Resource Include="Resources\flags\flag040.PNG" />
+    <Resource Include="Resources\flags\flag041.PNG" />
+    <Resource Include="Resources\flags\flag042.PNG" />
+    <Resource Include="Resources\flags\flag043.PNG" />
+    <Resource Include="Resources\flags\flag044.PNG" />
+    <Resource Include="Resources\flags\flag045.PNG" />
+    <Resource Include="Resources\flags\flag046.PNG" />
+    <Resource Include="Resources\flags\flag047.PNG" />
+    <Resource Include="Resources\flags\flag048.PNG" />
+    <Resource Include="Resources\flags\flag049.PNG" />
+    <Resource Include="Resources\flags\flag050.PNG" />
+    <Resource Include="Resources\flags\flag051.PNG" />
+    <Resource Include="Resources\flags\flag052.PNG" />
+    <Resource Include="Resources\flags\flag053.PNG" />
+    <Resource Include="Resources\flags\flag054.PNG" />
+    <Resource Include="Resources\flags\flag055.PNG" />
+    <Resource Include="Resources\flags\flag056.PNG" />
+    <Resource Include="Resources\flags\flag057.PNG" />
+    <Resource Include="Resources\flags\flag058.PNG" />
+    <Resource Include="Resources\flags\flag059.PNG" />
+    <Resource Include="Resources\flags\flag060.PNG" />
+    <Resource Include="Resources\flags\flag061.PNG" />
+    <Resource Include="Resources\flags\flag062.PNG" />
+    <Resource Include="Resources\flags\flag063.PNG" />
+    <Resource Include="Resources\flags\flag064.PNG" />
+    <Resource Include="Resources\flags\flag065.PNG" />
+    <Resource Include="Resources\flags\flag066.PNG" />
+    <Resource Include="Resources\flags\flag067.PNG" />
+    <Resource Include="Resources\flags\flag068.PNG" />
+    <Resource Include="Resources\flags\flag069.PNG" />
+    <Resource Include="Resources\flags\flag070.PNG" />
+    <Resource Include="Resources\flags\flag071.PNG" />
+    <Resource Include="Resources\flags\flag072.PNG" />
+    <Resource Include="Resources\flags\flag073.PNG" />
+    <Resource Include="Resources\flags\flag074.PNG" />
+    <Resource Include="Resources\flags\flag075.PNG" />
+    <Resource Include="Resources\flags\flag076.PNG" />
+    <Resource Include="Resources\flags\flag077.PNG" />
+    <Resource Include="Resources\flags\flag078.PNG" />
+    <Resource Include="Resources\flags\flag079.PNG" />
+    <Resource Include="Resources\flags\flag080.PNG" />
+    <Resource Include="Resources\flags\flag081.PNG" />
+    <Resource Include="Resources\flags\flag082.PNG" />
+    <Resource Include="Resources\flags\flag083.PNG" />
+    <Resource Include="Resources\gstopic.png" />
+    <Resource Include="Resources\help.png" />
+    <Resource Include="Resources\icon.ico" />
+    <Resource Include="Resources\icon.png" />
+    <Resource Include="Resources\list.png" />
+    <Resource Include="Resources\locked.png" />
+    <Resource Include="Resources\log.png" />
+    <Resource Include="Resources\logout.png" />
+    <Resource Include="Resources\newsIcon.png" />
+    <Resource Include="Resources\next.png" />
+    <Resource Include="Resources\nolock.png" />
+    <Resource Include="Resources\notificator.png" />
+    <Resource Include="Resources\notificatoron.png" />
+    <Resource Include="Resources\online.png" />
+    <Resource Include="Resources\prev.png" />
+    <Resource Include="Resources\ranks\rank0.png" />
+    <Resource Include="Resources\ranks\rank1.png" />
+    <Resource Include="Resources\ranks\rank10.png" />
+    <Resource Include="Resources\ranks\rank11.png" />
+    <Resource Include="Resources\ranks\rank12.png" />
+    <Resource Include="Resources\ranks\rank13.png" />
+    <Resource Include="Resources\ranks\rank2.png" />
+    <Resource Include="Resources\ranks\rank3.png" />
+    <Resource Include="Resources\ranks\rank4.png" />
+    <Resource Include="Resources\ranks\rank5.png" />
+    <Resource Include="Resources\ranks\rank6.png" />
+    <Resource Include="Resources\ranks\rank7.png" />
+    <Resource Include="Resources\ranks\rank8.png" />
+    <Resource Include="Resources\ranks\rank9.png" />
+    <Resource Include="Resources\search.png" />
+    <Resource Include="Resources\searching.png" />
+    <Resource Include="Resources\settings.png" />
+    <Resource Include="Resources\sound.png" />
+    <Resource Include="Resources\soundoff.png" />
+    <Resource Include="Resources\tusanalizer.png" />
+    <Resource Include="Resources\tuscomplaints.png" />
+    <Resource Include="Resources\tuscup.png" />
+    <Resource Include="Resources\tushome.png" />
+    <Resource Include="Resources\tuslogo.png" />
+    <Resource Include="Resources\tuspm.png" />
+    <Resource Include="Resources\tusrecent.png" />
+    <Resource Include="Resources\tusreport.png" />
+    <Resource Include="Resources\tusstandings.png" />
+    <Resource Include="Resources\tustournaments.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="icon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\BalloonClose.png" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

@@ -1,0 +1,69 @@
+﻿<controls:MetroWindow x:Class="GreatSnooper.Windows.HostingWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:GreatSnooper.Converters"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:l="clr-namespace:GreatSnooper.Localizations"
+        xmlns:Dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
+        Title="{Binding Source={x:Static l:GSLocalization.Instance}, Path=HostingTitle, Mode=OneWay}"
+        Style="{StaticResource MyDialogWindow}" Height="340" Width="440" WindowStartupLocation="CenterScreen">
+    <controls:MetroWindow.Resources>
+        <Style TargetType="Hyperlink">
+            <Setter Property="Foreground" Value="#5DB0FF" />
+            <Setter Property="IsEnabled" Value="{Binding IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type FrameworkElement}}}" />
+            <!-- Hyperlinks won't be enabled after it's parent were disabled without this line -->
+            <Setter Property="Focusable" Value="False" />
+        </Style>
+        <c:InvertBoolConverter x:Key="invertBoolConverter" />
+        <Style TargetType="{x:Type Dialogs:MessageDialog}" BasedOn="{StaticResource NewCustomDialogStyle}" />
+    </controls:MetroWindow.Resources>
+    <Grid Width="380" HorizontalAlignment="Center" VerticalAlignment="Center"
+          IsEnabled="{Binding Path=Loading, Mode=OneWay, Converter={StaticResource invertBoolConverter}}">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="15" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=GameNameLabel, Mode=OneWay}" />
+        <TextBox Grid.Row="0" Grid.Column="1" MaxLength="29" Text="{Binding Path=GameName, Mode=TwoWay}" />
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=HostingPasswordLabel, Mode=OneWay}" />
+        <TextBox Grid.Row="2" Grid.Column="1" MaxLength="16" Text="{Binding Path=GamePassword, Mode=TwoWay}" />
+        <Label Grid.Row="4" Grid.Column="0" Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=UsingWormNat2, Mode=OneWay}" />
+        <Grid Grid.Row="4" Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="20" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <CheckBox Grid.Column="0" VerticalAlignment="Center" IsChecked="{Binding Path=UsingWormNat2, Mode=TwoWay}" />
+            <TextBlock Grid.Column="1" VerticalAlignment="Center" Margin="4,0,0,0">
+                <Hyperlink Click="WormNatHelp">
+                    <Run Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=UsingWormNat2, Mode=OneWay}" />
+                </Hyperlink>
+            </TextBlock>
+        </Grid>
+        <TextBlock Grid.Row="6" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=HostingAction, Mode=OneWay}" />
+        <CheckBox Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding Path=InfoToChannel, Mode=TwoWay}" />
+        <TextBlock Grid.Row="8" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ExitAfterHosting, Mode=OneWay}" />
+        <CheckBox Grid.Row="8" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding Path=ExitSnooper, Mode=TwoWay}" />
+
+        <Button Grid.Row="10" Grid.Column="0" Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CreateGameText, Mode=OneWay}"
+                Command="{Binding Path=CreateGameCommand, Mode=OneTime}" Width="140" IsDefault="True" />
+        <Button Grid.Row="10" Grid.Column="1" Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CloseText, Mode=OneWay}"
+                Command="{Binding Path=CloseCommand, Mode=OneTime}" Width="140" IsCancel="True" />
+
+        <controls:ProgressRing IsActive="{Binding Path=Loading, Mode=OneWay}" Grid.RowSpan="11" Grid.ColumnSpan="2" />
+    </Grid>
+</controls:MetroWindow>

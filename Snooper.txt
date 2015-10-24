@@ -1,0 +1,52 @@
+XanKriegor3113@gmail.com
+
+
+Issuek:
+	string.Format nem fog propertychangedelni nyelv választásnál
+	Localization osztály használatait átírni GSLocalization.Instance-re
+	VoK bejelentkezés
+	About-ba beírni a fordítók neveit
+	gomb amivel el lehet indítani a játékot
+	GSLocalizations osztály újragenerálása, mivel 1-2 opció már ki lett törölve (titlek pl.)
+	Nuget package updates!
+	EnergySaveMode-ban user count és games count leválasztása
+	Bekapcsolhatóvá tenni az összes szerver üzenetet
+	System üzenetek ne legyenek logolva
+	Szerver üzenetek bevezetése (#AnythingGoes: válasz commandra) -> messagesLoadedFrom kezelése és channel left esetén rtb blokkok törlése!
+	Taskok listába, hogy könnyebben lehessen kezelni õket?
+	More info (help), esetleg link a worms2d.info oldalra
+	Export / Import settings
+	Fine tuning timeouts
+	Away message ctcp-ként és akkor le lehet fordítani?
+	ProgressRingek átnézése
+	Enterrel játék indítása / Esc close window tesztelése
+	WormNat2 more info
+	Host with alternative WA
+	Focusok ellenõrzése dialog windowok nyitásánál
+	A mûködéshez nem szükséges kommunikációk tiltásának lehetõsége (news, tus accounts, WHO üzik)
+
+Kész:
+	Sending notice messages?
+	Away messagebél jelezni, hogy away message!
+	Bat logo :D
+	string Nev { get; set; } null textboxnál (twoway bindingnél a stringeket inicializálni string.Empty-re)
+	Kommentekbõl ip címem kivétele?
+
+Elvetve:
+	Settings save ablak zárásnál (?)
+
+Új szövegek:
+	Loading FontChoosernél új szó!
+	Color: új szó!
+	Fontchooser bezárás szöveg
+	General sounds
+	VolumeTooltip
+	Autojointext
+	új szövegek: StartWAExeTooltip1 és 2.
+	Kick message
+	Topic message
+	Notificator
+	More info link wormnat2-nél nem kell.
+
+Tesztelni:
+	Invite command

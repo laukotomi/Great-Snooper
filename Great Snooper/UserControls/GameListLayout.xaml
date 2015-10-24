@@ -1,0 +1,171 @@
+﻿<Grid x:Class="GreatSnooper.UserControls.GameListLayout"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:c="clr-namespace:GreatSnooper.Converters"
+      xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+      xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
+      xmlns:l="clr-namespace:GreatSnooper.Localizations">
+    <Grid.Resources>
+        <c:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
+        <BitmapImage x:Key="lockedImage" UriSource="pack://application:,,,/Resources/locked.png" CacheOption="OnLoad" DecodePixelHeight="16" DecodePixelWidth="16" />
+        <BitmapImage x:Key="freeImage" UriSource="pack://application:,,,/Resources/nolock.png" CacheOption="OnLoad" DecodePixelHeight="16" DecodePixelWidth="16" />
+    </Grid.Resources>
+    <Grid.RowDefinitions>
+        <RowDefinition Height="34" />
+        <RowDefinition Height="3" />
+        <RowDefinition Height="*" />
+    </Grid.RowDefinitions>
+
+    <Border Grid.Row="0" BorderThickness="1,0,1,1" BorderBrush="Gray" Background="{DynamicResource AccentColorBrush4}">
+        <DockPanel>
+            <Canvas DockPanel.Dock="Left" Visibility="{Binding Path=CanHostJoined, Mode=OneWay, Converter={StaticResource boolToVisibilityConverter}}">
+                <StackPanel Canvas.Left="0" Orientation="Horizontal">
+                    <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=HostAGameText, Mode=OneWay}"
+                            Focusable="False" Height="33" Background="Black" BorderThickness="0,0,1,0" Padding="15,0"
+                            Command="{Binding Path=HostGameCommand, Mode=OneTime}" />
+                    <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=RefrestGameListText, Mode=OneWay}"
+                            Focusable="False" Height="33" Background="Black" BorderThickness="0,0,1,0" Padding="15,0"
+                            Command="{Binding Path=MainViewModel.RefreshGameListCommand, Mode=OneTime}" />
+                </StackPanel>
+            </Canvas>
+            <Canvas DockPanel.Dock="Right" Visibility="{Binding Path=Joined, Mode=OneWay, Converter={StaticResource boolToVisibilityConverter}}">
+                <Button Canvas.Right="0" Height="33" Background="Black" BorderThickness="1,0,0,0"
+                        Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=LeaveChannelText, Mode=OneWay}"
+                        Focusable="False" Padding="15,0" Command="{Binding Path=LeaveChannelCommand, Mode=OneTime}" />
+            </Canvas>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <TextBlock Text="{Binding Path=Name, Mode=OneTime}" />
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"
+                            Visibility="{Binding Path=Joined, Mode=OneWay, Converter={StaticResource boolToVisibilityConverter}}">
+                    <TextBlock Text=" | " />
+                    <TextBlock Text="{Binding Path=Users.Count, Mode=OneWay}">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=MainViewModel.IsEnergySaveMode, Mode=OneWay}" Value="True">
+                                        <Setter Property="Text" Value="0" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock Text=" " />
+                    <TextBlock Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=UsersText, Mode=OneWay}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"
+                            Visibility="{Binding Path=CanHostJoined, Mode=OneWay, Converter={StaticResource boolToVisibilityConverter}}">
+                    <TextBlock Text=" | " />
+                    <TextBlock Text="{Binding Path=Games.Count, Mode=OneWay}">
+                        <TextBlock.Style>
+                            <Style TargetType="TextBlock">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=MainViewModel.IsEnergySaveMode, Mode=OneWay}" Value="True">
+                                        <Setter Property="Text" Value="0" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </TextBlock.Style>
+                    </TextBlock>
+                    <TextBlock Text=" " />
+                    <TextBlock Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=GamesText, Mode=OneWay}" />
+                </StackPanel>
+            </StackPanel>
+        </DockPanel>
+    </Border>
+    <ListBox HorizontalContentAlignment="Stretch" Background="Transparent" ItemsSource="{Binding Path=Games, Mode=OneTime}"
+        SelectedItem="{Binding Path=SelectedGame, Mode=OneWayToSource}" Grid.Row="2" BorderThickness="0"
+        LostFocus="ListBox_LostFocus" SelectionChanged="ListBox_SelectionChanged">
+        <ListBox.Style>
+            <Style TargetType="ListBox">
+                <Style.Triggers>
+                    <DataTrigger Binding="{Binding Path=MainViewModel.IsEnergySaveMode, Mode=OneWay}" Value="True">
+                        <Setter Property="ItemsSource" Value="{x:Null}" />
+                    </DataTrigger>
+                </Style.Triggers>
+            </Style>
+        </ListBox.Style>
+        <ListBox.ItemTemplate>
+            <DataTemplate>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="22" />
+                        <ColumnDefinition Width="28" />
+                        <ColumnDefinition Width="240" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0" VerticalAlignment="Center" Width="16" Height="16" HorizontalAlignment="Left">
+                        <Image.Style>
+                            <Style TargetType="Image">
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding Path=Locked, Mode=OneTime}" Value="True">
+                                        <Setter Property="Source" Value="{StaticResource lockedImage}" />
+                                    </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=Locked, Mode=OneTime}" Value="False">
+                                        <Setter Property="Source" Value="{StaticResource freeImage}" />
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </Image.Style>
+                    </Image>
+                    <Image Grid.Column="1" Source="{Binding Path=Country.Flag, Mode=OneTime}"
+                            ToolTip="{Binding Path=Country.Name, Mode=OneTime}"
+                            Width="22" Height="18" HorizontalAlignment="Left" />
+                    <TextBlock Grid.Column="2" FontSize="13" HorizontalAlignment="Left"
+                                VerticalAlignment="Center" Text="{Binding Path=Name, Mode=OneTime}" />
+                    <TextBlock Grid.Column="3" FontSize="13" HorizontalAlignment="Left"
+                                VerticalAlignment="Center" Text="{Binding Path=Hoster, Mode=OneTime}" />
+                </Grid>
+            </DataTemplate>
+        </ListBox.ItemTemplate>
+        <i:Interaction.Triggers>
+            <i:EventTrigger EventName="MouseDoubleClick">
+                <cmd:EventToCommand Command="{Binding Path=JoinGameCommand, Mode=OneTime}" PassEventArgsToCommand="False" CommandParameter="1" />
+            </i:EventTrigger>
+        </i:Interaction.Triggers>
+        <ListBox.ContextMenu>
+            <ContextMenu>
+                <ContextMenu.Resources>
+                    <Style x:Key="Wa1Style" TargetType="MenuItem">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=MainViewModel.ShowWAExe1, Mode=OneWay}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                    <Style x:Key="Wa2Style" TargetType="MenuItem">
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding Path=MainViewModel.ShowWAExe2, Mode=OneWay}" Value="False">
+                                <Setter Property="Visibility" Value="Collapsed" />
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </ContextMenu.Resources>
+                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=JoinGameText, Mode=OneWay}"
+                            Command="{Binding Path=JoinGameCommand, Mode=OneTime}"
+                            CommandParameter="1" Style="{StaticResource Wa1Style}" />
+                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=SilentJoinText, Mode=OneWay}"
+                            Command="{Binding Path=SilentJoinCommand, Mode=OneTime}"
+                            CommandParameter="1" Style="{StaticResource Wa1Style}" />
+                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=JoinCloseText, Mode=OneWay}"
+                            Command="{Binding Path=JoinCloseCommand, Mode=OneTime}"
+                            CommandParameter="1" Style="{StaticResource Wa1Style}" />
+                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=SilentJoinCloseText, Mode=OneWay}"
+                            Command="{Binding Path=SilentJoinCloseCommand, Mode=OneTime}"
+                            CommandParameter="1" Style="{StaticResource Wa1Style}" />
+
+                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=JoinGameText2, Mode=OneWay}"
+                            Command="{Binding Path=JoinGameCommand, Mode=OneTime}"
+                            CommandParameter="2" Style="{StaticResource Wa2Style}" />
+                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=SilentJoinText2, Mode=OneWay}"
+                            Command="{Binding Path=SilentJoinCommand, Mode=OneTime}"
+                            CommandParameter="2" Style="{StaticResource Wa2Style}" />
+                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=JoinCloseText2, Mode=OneWay}"
+                            Command="{Binding Path=JoinCloseCommand, Mode=OneTime}"
+                            CommandParameter="2" Style="{StaticResource Wa2Style}" />
+                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=SilentJoinCloseText2, Mode=OneWay}"
+                            Command="{Binding Path=SilentJoinCloseCommand, Mode=OneTime}"
+                            CommandParameter="2" Style="{StaticResource Wa2Style}" />
+            </ContextMenu>
+        </ListBox.ContextMenu>
+    </ListBox>
+</Grid>

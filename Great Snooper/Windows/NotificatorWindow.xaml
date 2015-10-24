@@ -1,0 +1,66 @@
+﻿<controls:MetroWindow x:Class="GreatSnooper.Windows.NotificatorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:c="clr-namespace:GreatSnooper.Classes"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:l="clr-namespace:GreatSnooper.Localizations"
+        Title="{Binding Source={x:Static l:GSLocalization.Instance}, Path=NotificatorTooltip, Mode=OneWay}"
+        Style="{StaticResource MyDialogWindow}" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+    <Grid>
+        <Grid.Resources>
+            <Style TargetType="TextBlock">
+                <Setter Property="HorizontalAlignment" Value="Center" />
+                <Setter Property="FontWeight" Value="Bold" />
+            </Style>
+        </Grid.Resources>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="5" />
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="25" />
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="10" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+        <TextBlock Grid.Column="0" Grid.Row="1" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=InMessagesLabel, Mode=OneWay}" />
+        <TextBlock Grid.Column="2" Grid.Row="1" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=InSenderNamesLabel, Mode=OneWay}" />
+        <TextBlock Grid.Column="4" Grid.Row="1" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=InGameNamesLabel, Mode=OneWay}" />
+        <TextBlock Grid.Column="6" Grid.Row="1" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=InHosterNamesLabel, Mode=OneWay}" />
+        <TextBlock Grid.Column="8" Grid.Row="1" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=InJoinMessagesLabel, Mode=OneWay}" />
+
+        <TextBox AcceptsReturn="True" Grid.Column="0" Grid.Row="3" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 Text="{Binding Path=InMessages, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+        <TextBox AcceptsReturn="True" Grid.Column="2" Grid.Row="3" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 Text="{Binding Path=InSenderNames, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+        <TextBox AcceptsReturn="True" Grid.Column="4" Grid.Row="3" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 Text="{Binding Path=InGameNames, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+        <TextBox AcceptsReturn="True" Grid.Column="6" Grid.Row="3" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 Text="{Binding Path=InHosterNames, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+        <TextBox AcceptsReturn="True" Grid.Column="8" Grid.Row="3" ScrollViewer.VerticalScrollBarVisibility="Auto"
+                 Text="{Binding Path=InJoinMessages, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+
+        <CheckBox Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center"
+                  Margin="0,5" IsChecked="{Binding Path=AutoStart, Mode=TwoWay}"
+                  Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=StartNotifWithSnooper, Mode=OneWay}" />
+        
+        <Button Grid.Row="5" Grid.Column="0" Width="120" HorizontalAlignment="Right" Margin="0,0,10,0"
+                Content="{Binding Path=StartStopButtonText, Mode=OneWay}"
+                Command="{Binding Path=StartStopCommand, Mode=OneTime}" IsDefault="True" />
+
+        <Button Grid.Row="5" Grid.Column="1" Width="120" Margin="10,0,0,0" HorizontalAlignment="Left"
+                Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CloseText, Mode=OneWay}" IsCancel="True"
+                Command="{Binding Path=CloseCommand, Mode=OneTime}" />
+    </Grid>
+</controls:MetroWindow>
