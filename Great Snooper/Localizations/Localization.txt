@@ -886,3 +886,9 @@ StartNotifWithSnooper=Start notificator with snooper
 
 # Away message format
 AwayMessageFormat=is away: {0}
+
+# Hide channel text
+HideChannelText=Hide channel
+
+# Hiden channels text in settings
+HiddenChannelsText=Hidden channels

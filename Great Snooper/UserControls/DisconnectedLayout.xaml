@@ -1,16 +1,22 @@
 ﻿<Border x:Class="GreatSnooper.UserControls.DisconnectedLayout"
-         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
-         xmlns:l="clr-namespace:GreatSnooper.Localizations"
-         BorderThickness="0,1,0,0" BorderBrush="Gray">
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:l="clr-namespace:GreatSnooper.Localizations"
+        xmlns:c="clr-namespace:GreatSnooper.Converters"
+        BorderThickness="0,1,0,0" BorderBrush="Gray">
+    <Border.Resources>
+        <c:InvertBoolConverter x:Key="invertBoolConverter" />
+    </Border.Resources>
     <StackPanel Margin="0, 20, 0, 0" Orientation="Vertical">
         <TextBlock Text="{Binding Path=Description, Mode=OneTime}" FontSize="14" Padding="0,3"
                    HorizontalAlignment="Center" TextWrapping="Wrap" TextAlignment="Center" />
         <CheckBox IsChecked="{Binding Path=AutoJoin, Mode=TwoWay}" Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=AutoJoinText, Mode=OneWay}"
-                  HorizontalAlignment="Center" Focusable="False" Margin="0,3"/>
+                  HorizontalAlignment="Center" Focusable="False" Margin="0,3"
+                  IsEnabled="{Binding Path=Loading, Mode=OneWay, Converter={StaticResource invertBoolConverter}}" />
         <Button Command="{Binding Path=JoinCommand, Mode=OneTime}" HorizontalAlignment="Center" Focusable="False" Padding="25,5" Margin="0,3"
-                Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=EnterChannelText, Mode=OneWay}" />
+                Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=EnterChannelText, Mode=OneWay}"
+                IsEnabled="{Binding Path=Loading, Mode=OneWay, Converter={StaticResource invertBoolConverter}}" />
         <controls:ProgressRing IsActive="{Binding Path=Loading, Mode=OneWay}" Style="{StaticResource ProgressRingStyle}"
                                Tag="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ConnectingText, Mode=OneWay}" />
     </StackPanel>

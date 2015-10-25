@@ -49,7 +49,7 @@ namespace GreatSnooper.IRCTasks
             {
                 foreach (var channel in u.AddToChannel)
                 {
-                    if (!u.Channels.Contains(chvm))
+                    if (channel.Joined && !u.Channels.Contains(chvm))
                     {
                         channel.AddUser(u);
                         channel.AddMessage(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage);

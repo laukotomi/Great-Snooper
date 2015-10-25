@@ -23,7 +23,7 @@ namespace GreatSnooper.IRCTasks
         public override void DoTask(MainViewModel mvm)
         {
             AbstractChannelViewModel temp;
-            if (!Sender.Channels.TryGetValue(ChannelHash, out temp) || temp.GetType() != typeof(ChannelViewModel))
+            if (!Sender.Channels.TryGetValue(ChannelHash, out temp))
             {
                 if (Sender.HandleJoinRequest)
                     temp = new ChannelViewModel(mvm, this.Sender, ChannelHash, "");

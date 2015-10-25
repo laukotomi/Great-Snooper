@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GreatSnooper.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,8 +20,9 @@ namespace GreatSnooper.UserControls
     /// </summary>
     public partial class DisconnectedLayout : Border
     {
-        public DisconnectedLayout()
+        public DisconnectedLayout(ChannelViewModel chvm)
         {
+            this.DataContext = chvm;
             InitializeComponent();
         }
     }

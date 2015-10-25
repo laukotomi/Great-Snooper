@@ -596,6 +596,13 @@
                                               RecognizesAccessKey="True"
                                               DockPanel.Dock="Top"/>
                                         </DockPanel>
+                                        <Border.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=HideChannelText, Mode=OneWay}"
+                                                          Command="{Binding Path=MainViewModel.HideChannelCommand, Mode=OneTime}"
+                                                          CommandParameter="{Binding}" />
+                                            </ContextMenu>
+                                        </Border.ContextMenu>
                                     </Border>
                                     <ControlTemplate.Triggers>
                                         <DataTrigger Binding="{Binding IsHighlighted}" Value="True">

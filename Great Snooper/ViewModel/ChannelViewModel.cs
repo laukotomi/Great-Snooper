@@ -70,7 +70,7 @@ namespace GreatSnooper.ViewModel
             get
             {
                 if (_disconnectedLayout == null)
-                    _disconnectedLayout = new DisconnectedLayout();
+                    _disconnectedLayout = new DisconnectedLayout(this);
 
                 return _disconnectedLayout;
             }
@@ -86,8 +86,7 @@ namespace GreatSnooper.ViewModel
                     if (value.HasValue && value.Value == false && GlobalManager.AutoJoinList.Contains(this.Name))
                     {
                         GlobalManager.AutoJoinList.Remove(this.Name);
-                        Properties.Settings.Default.AutoJoinChannels = string.Join(",", GlobalManager.AutoJoinList);
-                        Properties.Settings.Default.Save();
+                        SettingsHelper.Save("AutoJoinChannels", GlobalManager.AutoJoinList);
                     }
                 }
             }
@@ -127,8 +126,7 @@ namespace GreatSnooper.ViewModel
             if (AutoJoin.HasValue && AutoJoin.Value && GlobalManager.AutoJoinList.Contains(this.Name) == false)
             {
                 GlobalManager.AutoJoinList.Add(this.Name);
-                Properties.Settings.Default.AutoJoinChannels = string.Join(",", GlobalManager.AutoJoinList);
-                Properties.Settings.Default.Save();
+                SettingsHelper.Save("AutoJoinChannels", GlobalManager.AutoJoinList);
             }
 
             if (this.Server is WormNetCommunicator || Server.State == AbstractCommunicator.ConnectionStates.Connected)
@@ -592,23 +590,12 @@ namespace GreatSnooper.ViewModel
             }
         }
 
-        public override void Reconnect(bool reconnecting = true)
+        public override void SetLoading(bool loading = true)
         {
-            this.IsReconnecting = reconnecting;
-            if (reconnecting)
-            {
-                if (this.Joined)
-                {
-                    this.Disabled = true;
-                    ClearUsers();
-                }
-                this.Loading = true;
-            }
-            else
-            {
-                this.Loading = false;
-                this.Disabled = false;
-            }
+            this.Loading = loading;
+            this.Disabled = loading;
+            if (loading && this.Joined)
+                ClearUsers();
         }
 
         public override void ClearUsers()

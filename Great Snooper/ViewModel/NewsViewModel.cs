@@ -32,9 +32,7 @@ namespace GreatSnooper.ViewModel
                         if (data.TryGetValue("id", out id) && !newsSeen.ContainsKey(id))
                         {
                             newsSeen.Add(id, true);
-
-                            Properties.Settings.Default.NewsSeen = string.Join(",", newsSeen.Keys);
-                            Properties.Settings.Default.Save();
+                            SettingsHelper.Save("NewsSeen", newsSeen.Keys);
                         }
                     }
                 }

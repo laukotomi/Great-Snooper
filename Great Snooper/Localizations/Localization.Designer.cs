@@ -835,6 +835,24 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Hidden channels.
+        /// </summary>
+        public static string HiddenChannelsText {
+            get {
+                return ResourceManager.GetString("HiddenChannelsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Hide channel.
+        /// </summary>
+        public static string HideChannelText {
+            get {
+                return ResourceManager.GetString("HideChannelText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to When your name appears in chat:.
         /// </summary>
         public static string HighlightSettingText {

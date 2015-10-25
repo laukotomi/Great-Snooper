@@ -92,10 +92,9 @@ namespace GreatSnooper.ViewModel
                     return;
                 }
 
-                Properties.Settings.Default.SearchForThese = string.Join(",", selectedLeagues);
                 if (GlobalManager.SpamAllowed)
                     Properties.Settings.Default.SpammingChecked = IsSpamming.HasValue && IsSpamming.Value;
-                Properties.Settings.Default.Save();
+                SettingsHelper.Save("SearchForThese", selectedLeagues);
 
                 this.dispatcher.BeginInvoke(new Action(() =>
                 {

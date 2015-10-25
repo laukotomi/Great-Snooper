@@ -156,8 +156,11 @@ namespace GreatSnooper.Model
                     // Refresh sorting
                     foreach (var chvm in Channels)
                     {
-                        chvm.Users.Remove(this);
-                        chvm.Users.Add(this);
+                        if (chvm.Joined)
+                        {
+                            chvm.Users.Remove(this);
+                            chvm.Users.Add(this);
+                        }
                     }
 
                     RaisePropertyChanged("Group");

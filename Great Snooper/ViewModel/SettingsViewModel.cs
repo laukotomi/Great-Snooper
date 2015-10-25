@@ -134,6 +134,7 @@ namespace GreatSnooper.ViewModel
             this.GeneralSettings.Add(new BoolSetting("MarkAway", Localizations.GSLocalization.Instance.MarkAwayText));
             this.GeneralSettings.Add(new StringSetting("AwayText", Localizations.GSLocalization.Instance.AwayMessageText, Validator.WormNetTextValidator, this.DialogService));
             this.GeneralSettings.Add(new BoolSetting("DeleteLogs", Localizations.GSLocalization.Instance.DeleteLogsText));
+            this.GeneralSettings.Add(new TextListSetting("HiddenChannels", Localizations.GSLocalization.Instance.HiddenChannelsText, Localizations.GSLocalization.Instance.HiddenChannelsText, this.DialogService, Validator.NotEmptyValidator));
             this.GeneralSettings.Add(new StringSetting("QuitMessagee", Localizations.GSLocalization.Instance.QuitMessageText, Validator.GSVersionValidator, this.DialogService));
             this.GeneralSettings.Add(new WAExeSetting("WaExe", Localizations.GSLocalization.Instance.WAExeText));
             this.GeneralSettings.Add(new WAExeSetting("WaExe2", Localizations.GSLocalization.Instance.WAExeText2));

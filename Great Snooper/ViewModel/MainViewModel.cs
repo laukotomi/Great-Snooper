@@ -433,6 +433,11 @@ namespace GreatSnooper.ViewModel
             filterTimer.Interval = new TimeSpan(0, 0, 0, 0, 300);
             filterTimer.Tick += filterTimer_Tick;
 
+            // Unserialize newsseen
+            string[] list = Properties.Settings.Default.NewsSeen.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+            for (int i = 0; i < list.Length; i++)
+                newsSeen.Add(list[i], false);
+
             wormNetC.GetChannelList(this);
         }
         #endregion
@@ -782,10 +787,7 @@ namespace GreatSnooper.ViewModel
                     }
 
                     if (updateServers)
-                    {
-                        Properties.Settings.Default.ServerAddresses = string.Join(",", serverList);
-                        Properties.Settings.Default.Save();
-                    }
+                        SettingsHelper.Save("ServerAddresses", serverList);
                 }
 
                 if (this.closing)
@@ -905,7 +907,13 @@ namespace GreatSnooper.ViewModel
             else
             {
                 var mw = (MainWindow)this.DialogService.GetView();
+                var chvm = (AbstractChannelViewModel)e.OldItems[0];
                 mw.ChannelsTabControl.Items.RemoveAt(e.OldStartingIndex);
+                if (chvm is ChannelViewModel)
+                {
+                    mw.GameList.Items.RemoveAt(e.OldStartingIndex);
+                    mw.UserList.Items.RemoveAt(e.OldStartingIndex);
+                }
             }
         }
         #endregion
@@ -918,6 +926,20 @@ namespace GreatSnooper.ViewModel
 
         private void CloseChannel(PMChannelViewModel chvm)
         {
+            this.CloseChannelTab(chvm);
+        }
+        #endregion
+
+        #region HideChannelCommand (right click)
+        public RelayCommand<ChannelViewModel> HideChannelCommand
+        {
+            get { return new RelayCommand<ChannelViewModel>(HideChannel); }
+        }
+
+        private void HideChannel(ChannelViewModel chvm)
+        {
+            GlobalManager.HiddenChannels.Add(chvm.Name);
+            SettingsHelper.Save("HiddenChannels", GlobalManager.HiddenChannels);
             this.CloseChannelTab(chvm);
         }
         #endregion
@@ -999,7 +1021,7 @@ namespace GreatSnooper.ViewModel
                 ? this.SelectedChannelIndex
                 : this.Channels.IndexOf(chvm);
 
-            if (this.SelectedChannel == chvm) // Channel was selected
+            if (this.SelectedChannel == chvm && visitedChannels.Count > 2) // Channel was selected
             {
                 int lastindex = visitedChannels[visitedChannels.Count - 2];
                 this.SelectChannel(lastindex);
@@ -1014,10 +1036,13 @@ namespace GreatSnooper.ViewModel
 
             if (!hideOnly)
             {
-                chvm.ClearUsers();
+                if (chvm is ChannelViewModel && chvm.Joined)
+                    ((ChannelViewModel)chvm).LeaveChannelCommand.Execute(null);
+                else
+                    chvm.ClearUsers();
                 chvm.Server.Channels.Remove(chvm.Name);
 
-                if (chvm.Server is GameSurgeCommunicator && chvm.Server.Channels.Any(x => x.Value.Joined == true) == false)
+                if (chvm.Server is GameSurgeCommunicator && chvm.Server.Channels.Any(x => x.Value.Joined) == false)
                     chvm.Server.CancelAsync();
             }
 
@@ -1040,19 +1065,26 @@ namespace GreatSnooper.ViewModel
         #endregion
 
         #region Settings changed
+        private Regex groupSoundRegex = new Regex(@"^Group(\d+)Sound$");
         private void SettingsChanged(object sender, PropertyChangedEventArgs e)
         {
+            Match m = groupSoundRegex.Match(e.PropertyName);
+            if (m.Success)
+            {
+                UserGroups.Groups["Group" + m.Groups[1].Value].Sound = null;
+                return;
+            }
             switch (e.PropertyName)
             {
                 case "ShowWormsChannel":
-                    var chvm = (ChannelViewModel)this.GameSurge.Channels["#worms"];
                     if (Properties.Settings.Default.ShowWormsChannel)
-                        this.Channels.Add(chvm);
+                        new ChannelViewModel(this, this.GameSurge, "#worms", "A place for hardcore wormers");
                     else
                     {
+                        var chvm = (ChannelViewModel)this.GameSurge.Channels["#worms"];
                         if (chvm.Joined)
                             chvm.LeaveChannelCommand.Execute(null);
-                        CloseChannelTab(chvm, true);
+                        CloseChannelTab(chvm);
                     }
                     break;
 
@@ -1205,7 +1237,7 @@ namespace GreatSnooper.ViewModel
         #endregion
 
         #region ConnectionState
-        private void ConnectionState(object sender)
+        private void ConnectionState(object sender, AbstractCommunicator.ConnectionStates oldState)
         {
             this.Dispatcher.Invoke(new Action(delegate()
             {
@@ -1220,13 +1252,11 @@ namespace GreatSnooper.ViewModel
                 }
                 else if (server.State == AbstractCommunicator.ConnectionStates.Connected)
                 {
-                    bool reconnecting = server.Channels.Any(x => x.Value.IsReconnecting);
-
-                    if (reconnecting || server is WormNetCommunicator)
+                    if (oldState == AbstractCommunicator.ConnectionStates.ReConnecting || server is WormNetCommunicator)
                     {
                         foreach (var chvm in server.Channels)
                         {
-                            chvm.Value.Reconnect(false);
+                            chvm.Value.SetLoading(false);
                             if (chvm.Value.Joined)
                             {
                                 chvm.Value.AddMessage(GlobalManager.SystemUser, Localizations.GSLocalization.Instance.ReconnectMessage, MessageSettings.SystemMessage);
@@ -1276,13 +1306,8 @@ namespace GreatSnooper.ViewModel
                     {
                         if (server.ErrorState == AbstractCommunicator.ErrorStates.UsernameInUse)
                         {
-                            bool reconnecting = server.Channels.Any(x => x.Value.IsReconnecting);
-                            if (!reconnecting)
-                            {
-                                foreach (var channel in server.Channels)
-                                    channel.Value.Loading = false;
+                            if (oldState != AbstractCommunicator.ConnectionStates.ReConnecting)
                                 this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.GSNickInUseText);
-                            }
                         }
                         else if (server.ErrorState == AbstractCommunicator.ErrorStates.None)
                         {
@@ -1294,13 +1319,16 @@ namespace GreatSnooper.ViewModel
                                     item.Value.Disabled = true;
                             }
                         }
+                        else
+                            server.Reconnect();
                     }
                     else
-                    {
-                        foreach (var chvm in server.Channels)
-                            chvm.Value.Reconnect();
                         server.Reconnect();
-                    }
+                }
+                else if (server.State == AbstractCommunicator.ConnectionStates.Connecting || server.State == AbstractCommunicator.ConnectionStates.Disconnecting || server.State == AbstractCommunicator.ConnectionStates.ReConnecting)
+                {
+                    foreach (var chvm in server.Channels)
+                        chvm.Value.SetLoading();
                 }
             }
             ));
@@ -1868,8 +1896,7 @@ namespace GreatSnooper.ViewModel
                             GlobalManager.BanList.Add(u.Name);
                         else
                             GlobalManager.BanList.Remove(u.Name);
-                        Properties.Settings.Default.BanList = string.Join(",", GlobalManager.BanList);
-                        Properties.Settings.Default.Save();
+                        SettingsHelper.Save("BanList", GlobalManager.BanList);
 
                         // Reload channel messages where this user was active
                         if (!Properties.Settings.Default.ShowBannedMessages)
@@ -1877,7 +1904,24 @@ namespace GreatSnooper.ViewModel
                             foreach (var chvm in u.Channels)
                             {
                                 if (chvm.Joined)
+                                {
                                     chvm.LoadMessages(GlobalManager.MaxMessagesDisplayed, true);
+
+                                    // Refresh sorting
+                                    chvm.Users.Remove(u);
+                                    chvm.Users.Add(u);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            foreach (var chvm in u.Channels)
+                            {
+                                if (chvm.Joined)
+                                {
+                                    chvm.Users.Remove(u);
+                                    chvm.Users.Add(u);
+                                }
                             }
                         }
                     }

@@ -113,8 +113,7 @@ namespace GreatSnooper.ViewModel
             {
                 if (_connectedLayout == null)
                 {
-                    _connectedLayout = new ConnectedLayout();
-                    _connectedLayout.DataContext = this;
+                    _connectedLayout = new ConnectedLayout(this);
                     var sw = (ScrollViewer)((Border)((Grid)_connectedLayout.Child).Children[0]).Child;
                     sw.ScrollChanged += MessageScrollChanged;
                     rtb = (RichTextBox)sw.Content;
@@ -123,7 +122,6 @@ namespace GreatSnooper.ViewModel
                 return _connectedLayout;
             }
         }
-        public bool IsReconnecting { get; set; }
         public int NewMessagesCount { get; private set; }
         public bool Joined
         {
@@ -141,7 +139,6 @@ namespace GreatSnooper.ViewModel
                         this.messagesLoadedFrom = null;
                         this.Disabled = false;
                         this.Loading = false;
-                        this.IsReconnecting = false;
                         this.IsHighlighted = false;
                         this.lastMessageIterator = null;
                         this.lastMessageLoaded = null;
@@ -167,7 +164,7 @@ namespace GreatSnooper.ViewModel
         public abstract void ProcessMessage(MessageTask msgTask);
         protected virtual void JoinedChanged() { }
         public abstract TabItem GetLayout();
-        public abstract void Reconnect(bool reconnecting = true);
+        public abstract void SetLoading(bool loading = true);
         #endregion
 
         protected AbstractChannelViewModel(MainViewModel mainViewModel, AbstractCommunicator server)
@@ -445,7 +442,7 @@ namespace GreatSnooper.ViewModel
 
         protected void AddMessage(Message msg)
         {
-            if (this.Messages.Count == GlobalManager.MaxMessagesInMemory)
+            if (this.MainViewModel.IsEnergySaveMode == false && this.Messages.Count == GlobalManager.MaxMessagesInMemory)
                 Log(GlobalManager.NumOfOldMessagesToBeLoaded);
 
             this.Messages.AddLast(msg);

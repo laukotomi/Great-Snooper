@@ -21,27 +21,28 @@ namespace GreatSnooper.IRCTasks
         {
             foreach (var item in ChannelList)
             {
+                if (GlobalManager.HiddenChannels.Contains(item.Key))
+                    continue;
+
                 var chvm = new ChannelViewModel(mvm, this.Sender, item.Key, item.Value);
 
                 if (GlobalManager.AutoJoinList.Contains(item.Key))
                     chvm.JoinCommand.Execute(null);
             }
 
-            /*
+            // Join GameSurge channels automatically
             foreach (string channel in GlobalManager.AutoJoinList)
             {
                 if (ChannelList.ContainsKey(channel) == false && channel.StartsWith("#") && channel.Equals("#worms", StringComparison.OrdinalIgnoreCase) == false)
                 {
-                    mvm.Channels.Add(new ChannelViewModel(mvm, mvm.GameSurge, channel, ""));
+                    new ChannelViewModel(mvm, mvm.GameSurge, channel, "");
                     mvm.GameSurge.JoinChannelList.Add(channel);
                 }
             }
-            */
 
-            var worms = new ChannelViewModel(mvm, mvm.GameSurge, "#worms", "A place for hardcore wormers");
             if (Properties.Settings.Default.ShowWormsChannel)
             {
-                mvm.Channels.Add(worms);
+                var worms = new ChannelViewModel(mvm, mvm.GameSurge, "#worms", "A place for hardcore wormers");
                 if (GlobalManager.AutoJoinList.Contains(worms.Name))
                     mvm.GameSurge.JoinChannelList.Add(worms.Name);
             }

@@ -453,13 +453,11 @@ namespace GreatSnooper.ViewModel
             ListEditor window = new ListEditor(this.ServerList, Localizations.GSLocalization.Instance.ServerListEditorTitle, (str) =>
             {
                 this.ServerList.Add(str);
-                Properties.Settings.Default.ServerAddresses = string.Join(",", ServerList);
-                Properties.Settings.Default.Save();
+                SettingsHelper.Save("ServerAddresses", ServerList);
             }, (str) =>
             {
                 this.ServerList.Remove(str);
-                Properties.Settings.Default.ServerAddresses = string.Join(",", ServerList);
-                Properties.Settings.Default.Save();
+                SettingsHelper.Save("ServerAddresses", ServerList);
             });
             window.Owner = DialogService.GetView();
             window.ShowDialog();
@@ -720,7 +718,7 @@ namespace GreatSnooper.ViewModel
             }
         }
 
-        private void ConnectionState(object sender)
+        private void ConnectionState(object sender, AbstractCommunicator.ConnectionStates oldState)
         {
             this.dispatcher.Invoke(new Action(delegate()
             {

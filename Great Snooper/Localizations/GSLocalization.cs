@@ -851,6 +851,27 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Font Chooser.
+        /// </summary>
+        public string HideChannelText
+        {
+            get
+            {
+                return _rm.GetString("HideChannelText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Font Chooser.
+        /// </summary>
+        public string HiddenChannelsText
+        {
+            get
+            {
+                return _rm.GetString("HiddenChannelsText");
+            }
+        }
+        /// <summary>
         ///   Looks up a localized string similar to Found text style:.
         /// </summary>
         public string FoundStyleText

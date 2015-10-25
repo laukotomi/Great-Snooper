@@ -62,6 +62,10 @@ namespace GreatSnooper.Helpers
             AutoJoinList = new HashSet<string>(
                 Properties.Settings.Default.AutoJoinChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
                 StringComparer.OrdinalIgnoreCase);
+            HiddenChannels = new HashSet<string>(
+                Properties.Settings.Default.HiddenChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
+                StringComparer.OrdinalIgnoreCase); 
+            
             if (TusAccounts == null)
                 TusAccounts = new Dictionary<string, TusAccount>(StringComparer.OrdinalIgnoreCase);
         }
@@ -81,6 +85,8 @@ namespace GreatSnooper.Helpers
         public static HashSet<string> BanList { get; private set; }
 
         public static HashSet<string> AutoJoinList { get; private set; }
+
+        public static HashSet<string> HiddenChannels { get; private set; }
 
         public static MetroDialogSettings OKDialogSetting { get; private set; }
 

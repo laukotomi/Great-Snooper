@@ -96,7 +96,7 @@ namespace GreatSnooper.ViewModel
                 this.List.Remove(text);
 
                 if (this.settingName != string.Empty)
-                    SettingsHelper.Save(this.settingName, string.Join(",", this.List));
+                    SettingsHelper.Save(this.settingName, this.List);
                 else if (this.removeAction != null)
                     this.dispatcher.Invoke(removeAction, text);
             }
@@ -127,7 +127,7 @@ namespace GreatSnooper.ViewModel
                 this.List.Add(text);
 
                 if (this.settingName != string.Empty)
-                    SettingsHelper.Save(this.settingName, string.Join(",", this.List));
+                    SettingsHelper.Save(this.settingName, this.List);
                 else if (this.addAction != null)
                     this.dispatcher.Invoke(addAction, text);
             }

@@ -411,19 +411,10 @@ namespace GreatSnooper.ViewModel
             return false;
         }
 
-        public override void Reconnect(bool reconnecting = true)
+        public override void SetLoading(bool loading = true)
         {
-            this.IsReconnecting = reconnecting;
-            if (reconnecting)
-            {
-                this.Loading = false;
-                this.Disabled = false;
-            }
-            else
-            {
-                this.Loading = false;
-                this.Disabled = false;
-            }
+            this.Loading = loading;
+            this.Disabled = loading;
         }
 
         public override void ClearUsers()

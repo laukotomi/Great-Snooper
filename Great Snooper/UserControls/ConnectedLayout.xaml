@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
+        xmlns:l="clr-namespace:GreatSnooper.Localizations"
         xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
         xmlns:ui="clr-namespace:GreatSnooper.CustomUI"
         xmlns:c="clr-namespace:GreatSnooper.Converters">
@@ -41,5 +42,8 @@
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </TextBox>
+
+        <controls:ProgressRing IsActive="{Binding Path=Loading, Mode=OneWay}" Style="{StaticResource ProgressRingStyle}"
+                               Tag="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ConnectingText, Mode=OneWay}" />
     </Grid>
 </Border>

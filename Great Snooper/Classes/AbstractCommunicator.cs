@@ -1,4 +1,5 @@
-﻿using GreatSnooper.EventArguments;
+﻿using GalaSoft.MvvmLight;
+using GreatSnooper.EventArguments;
 using GreatSnooper.Helpers;
 using GreatSnooper.IRCTasks;
 using GreatSnooper.Model;
@@ -15,12 +16,12 @@ using System.Threading.Tasks;
 
 namespace GreatSnooper.Classes
 {
-    public delegate void ConnectionStateDelegate(object sender);
+    public delegate void ConnectionStateDelegate(object sender, AbstractCommunicator.ConnectionStates oldState);
 
-    public abstract class AbstractCommunicator : IDisposable
+    public abstract class AbstractCommunicator : ObservableObject, IDisposable
     {
         #region Enums
-        public enum ConnectionStates { Disconnected, Connecting, Connected, Disconnecting }
+        public enum ConnectionStates { Disconnected, Connecting, Connected, Disconnecting, ReConnecting }
         public enum ErrorStates { None, UsernameInUse, Error, /*,AuthOK, AuthBad*/TimeOut }
         #endregion
 
@@ -69,9 +70,10 @@ namespace GreatSnooper.Classes
             {
                 if (_connectionState != value)
                 {
+                    var oldValue = _connectionState;
                     _connectionState = value;
                     if (ConnectionState != null)
-                        ConnectionState.BeginInvoke(this, null, null);
+                        ConnectionState.BeginInvoke(this, oldValue, null, null);
                 }
             }
         }
@@ -111,13 +113,14 @@ namespace GreatSnooper.Classes
 
         public void CancelAsync()
         {
-            this.State = ConnectionStates.Disconnecting;
+            if (this.State != ConnectionStates.Disconnected)
+                this.State = ConnectionStates.Disconnecting;
         }
 
         public void Reconnect()
         {
             // Reset things
-            this.State = ConnectionStates.Connecting;
+            this.State = ConnectionStates.ReConnecting;
             reconnectCounter = 0;
 
             if (reconnectTimer == null)
@@ -146,7 +149,8 @@ namespace GreatSnooper.Classes
 
         public void Connect(bool reconnect = false)
         {
-            this.State = ConnectionStates.Connecting;
+            if (!reconnect)
+                this.State = ConnectionStates.Connecting;
             this.SetUser();
 
             if (connectionTask != null)

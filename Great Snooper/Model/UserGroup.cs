@@ -181,8 +181,7 @@ namespace GreatSnooper.Model
 
         internal void SaveUsers()
         {
-            Properties.Settings.Default.GetType().GetProperty(this.SettingName + "List").SetValue(Properties.Settings.Default, String.Join(",", Users), null);
-            Properties.Settings.Default.Save();
+            SettingsHelper.Save(this.SettingName, this.Users);
         }
     }
 }

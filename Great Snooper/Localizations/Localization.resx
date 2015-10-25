@@ -1193,4 +1193,12 @@
     <value>is away: {0}</value>
     <comment>Away message format</comment>
   </data>
+  <data name="HideChannelText" xml:space="preserve">
+    <value>Hide channel</value>
+    <comment>Hide channel text</comment>
+  </data>
+  <data name="HiddenChannelsText" xml:space="preserve">
+    <value>Hidden channels</value>
+    <comment>Hiden channels text in settings</comment>
+  </data>
 </root>

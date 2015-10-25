@@ -24,6 +24,7 @@ Issuek:
 	Host with alternative WA
 	Focusok ellenõrzése dialog windowok nyitásánál
 	A mûködéshez nem szükséges kommunikációk tiltásának lehetõsége (news, tus accounts, WHO üzik)
+	Csatorna elrejtése?
 
 Kész:
 	Sending notice messages?

@@ -1402,5 +1402,17 @@ namespace GreatSnooper.Properties {
                 this["AwayMessage"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string HiddenChannels {
+            get {
+                return ((string)(this["HiddenChannels"]));
+            }
+            set {
+                this["HiddenChannels"] = value;
+            }
+        }
     }
 }
