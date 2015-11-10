@@ -86,7 +86,7 @@ namespace GreatSnooper.Helpers
 
         public static HashSet<string> AutoJoinList { get; private set; }
 
-        public static HashSet<string> HiddenChannels { get; private set; }
+        public static HashSet<string> HiddenChannels { get; set; }
 
         public static MetroDialogSettings OKDialogSetting { get; private set; }
 

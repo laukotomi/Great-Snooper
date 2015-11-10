@@ -1414,5 +1414,29 @@ namespace GreatSnooper.Properties {
                 this["HiddenChannels"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool UseSnooperRank {
+            get {
+                return ((bool)(this["UseSnooperRank"]));
+            }
+            set {
+                this["UseSnooperRank"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int SelectedWaExe {
+            get {
+                return ((int)(this["SelectedWaExe"]));
+            }
+            set {
+                this["SelectedWaExe"] = value;
+            }
+        }
     }
 }

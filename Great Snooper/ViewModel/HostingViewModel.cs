@@ -24,6 +24,10 @@ namespace GreatSnooper.ViewModel
         private static Regex PassRegex = new Regex(@"^[a-z]*$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         #endregion
 
+        #region Enums
+        private enum HosterErrors { NoError, WormNatError, WormNatInitError, FailedToGetLocalIP, CreateGameFailed, NoGameID, FailedToStartTheGame, Unkown, WormNatClientError }
+        #endregion
+
         #region Members
         private bool _loading;
 
@@ -32,11 +36,11 @@ namespace GreatSnooper.ViewModel
         private string cc;
 
         private Dispatcher dispatcher;
-        private MainViewModel mvm;
         private Process gameProcess;
         #endregion
 
         #region Properties
+        public MainViewModel MVM { get; private set; }
         public IMetroDialogService DialogService { get; set; }
         public string GameName { get; set; }
         public string GamePassword { get; set; }
@@ -55,6 +59,8 @@ namespace GreatSnooper.ViewModel
                 }
             }
         }
+
+        public int SelectedWaExe { get; set; }
         #endregion
 
         public HostingViewModel(MainViewModel mvm, string serverAddress, ChannelViewModel channel, string cc)
@@ -62,11 +68,12 @@ namespace GreatSnooper.ViewModel
             this.serverAddress = serverAddress;
             this.channel = channel;
             this.cc = cc;
-            this.mvm = mvm;
+            this.MVM = mvm;
 
             this.GameName = Properties.Settings.Default.HostGameName;
             this.UsingWormNat2 = Properties.Settings.Default.HostUseWormnat;
             this.InfoToChannel = Properties.Settings.Default.HostInfoToChannel;
+            this.SelectedWaExe = Properties.Settings.Default.SelectedWaExe;
             this.GamePassword = string.Empty;
             this.ExitSnooper = false;
 
@@ -128,6 +135,7 @@ namespace GreatSnooper.ViewModel
                 Properties.Settings.Default.HostGameName = tmp;
                 Properties.Settings.Default.HostUseWormnat = UsingWormNat2.HasValue && UsingWormNat2.Value;
                 Properties.Settings.Default.HostInfoToChannel = InfoToChannel.HasValue && InfoToChannel.Value;
+                Properties.Settings.Default.SelectedWaExe = this.SelectedWaExe;
                 Properties.Settings.Default.Save();
 
                 // Encode the Game name text
@@ -161,10 +169,11 @@ namespace GreatSnooper.ViewModel
                 }
 
                 string highPriority = Properties.Settings.Default.WAHighPriority ? "1" : "0";
+                string waExe = (this.SelectedWaExe == 0) ? Properties.Settings.Default.WaExe : Properties.Settings.Default.WaExe2;
 
                 string arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" \"{8}\" \"{9}\" \"{10}\"",
                     serverAddress,
-                    Properties.Settings.Default.WaExe,
+                    waExe,
                     channel.Server.User.Name,
                     sb.ToString(),
                     GamePassword,
@@ -177,13 +186,14 @@ namespace GreatSnooper.ViewModel
                 );
 
                 string success = TryHostGame(arguments);
-                if (success == "0")
+                HosterErrors result;
+                if (Enum.TryParse(success, out result) && result == HosterErrors.NoError)
                 {
                     this.dispatcher.Invoke(new Action(() =>
                     {
-                        if (this.mvm.DialogService.GetView().WindowState != WindowState.Minimized)
-                            this.mvm.TempWindowState = this.DialogService.GetView().WindowState;
-                        this.mvm.DialogService.GetView().WindowState = WindowState.Minimized;
+                        if (this.MVM.DialogService.GetView().WindowState != WindowState.Minimized)
+                            this.MVM.TempWindowState = this.DialogService.GetView().WindowState;
+                        this.MVM.DialogService.GetView().WindowState = WindowState.Minimized;
                     }));
                 }
 
@@ -197,8 +207,9 @@ namespace GreatSnooper.ViewModel
             .ContinueWith((t) =>
             {
                 this.Loading = false;
+                HosterErrors result;
 
-                if (t.IsFaulted || t.Result != "0")
+                if (t.IsFaulted || Enum.TryParse(t.Result, out result) == false)
                 {
                     this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HostFailText);
                     return;
@@ -212,15 +223,15 @@ namespace GreatSnooper.ViewModel
                     if (this.ExitSnooper.HasValue && this.ExitSnooper.Value)
                     {
                         this.gameProcess.Dispose();
-                        this.mvm.CloseCommand.Execute(null);
+                        this.MVM.CloseCommand.Execute(null);
                         return;
                     }
 
-                    this.mvm.GameProcess = this.gameProcess;
-                    this.mvm.StartedGameType = MainViewModel.StartedGameTypes.Host;
+                    this.MVM.GameProcess = this.gameProcess;
+                    this.MVM.StartedGameType = MainViewModel.StartedGameTypes.Host;
 
                     if (Properties.Settings.Default.MarkAway)
-                        this.mvm.SetAway();
+                        this.MVM.SetAway();
                 }));
 
                 this.CloseCommand.Execute(null);
@@ -233,6 +244,7 @@ namespace GreatSnooper.ViewModel
             gameProcess.StartInfo.UseShellExecute = false;
             gameProcess.StartInfo.CreateNoWindow = true;
             gameProcess.StartInfo.RedirectStandardOutput = true;
+            gameProcess.StartInfo.RedirectStandardInput = true;
             gameProcess.StartInfo.FileName = Path.GetFullPath("Hoster.exe");
             gameProcess.StartInfo.Arguments = arguments;
             if (gameProcess.Start())
@@ -243,7 +255,7 @@ namespace GreatSnooper.ViewModel
                 }
             }
             else
-                this.mvm.FreeGameProcess();
+                this.MVM.FreeGameProcess();
             return string.Empty;
         }
         #endregion

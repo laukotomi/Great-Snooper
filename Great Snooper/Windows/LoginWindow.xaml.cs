@@ -59,6 +59,12 @@ namespace GreatSnooper.Windows
             this.ShowMessageAsync(Localizations.GSLocalization.Instance.InformationText, Localizations.GSLocalization.Instance.ClanInfoText, MessageDialogStyle.Affirmative, GlobalManager.OKDialogSetting);
         }
 
+        private void SnooperRankHelp(object sender, RoutedEventArgs e)
+        {
+            e.Handled = true;
+            this.ShowMessageAsync(Localizations.GSLocalization.Instance.InformationText, Localizations.GSLocalization.Instance.UseSnooperRankHelp, MessageDialogStyle.Affirmative, GlobalManager.OKDialogSetting);
+        }
+
         #region IDisposable
         bool disposed = false;
 
@@ -91,6 +97,5 @@ namespace GreatSnooper.Windows
         }
 
         #endregion
-
     }
 }

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Runtime.InteropServices;
 
-namespace WormNat2
+namespace Hoster
 {
     internal static class NativeMethods
     {

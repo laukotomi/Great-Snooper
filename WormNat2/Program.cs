@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace WormNat2
+namespace Hoster
 {
     class Program
     {

@@ -129,6 +129,7 @@ namespace GreatSnooper.ViewModel
         public int SelectedRank { get; set; }
         public string TusNick { get; set; }
         public string TusPass { get; set; }
+        public bool? UseSnooperRank { get; set; }
         public bool Loading
         {
             get { return _loading; }
@@ -320,6 +321,7 @@ namespace GreatSnooper.ViewModel
 
             TusNick = Properties.Settings.Default.TusNick;
             TusPass = Properties.Settings.Default.TusPass;
+            this.UseSnooperRank = Properties.Settings.Default.UseSnooperRank;
         }
 
         internal void ContentRendered(object sender, EventArgs e)
@@ -600,6 +602,7 @@ namespace GreatSnooper.ViewModel
                 Properties.Settings.Default.LoginType = "tus";
                 Properties.Settings.Default.TusNick = TusNick;
                 Properties.Settings.Default.TusPass = TusPass;
+                Properties.Settings.Default.UseSnooperRank = this.UseSnooperRank.HasValue && this.UseSnooperRank.Value;
                 Properties.Settings.Default.Save();
 
                 if (GlobalManager.TusAccounts == null)
@@ -623,6 +626,8 @@ namespace GreatSnooper.ViewModel
                         case TusResult.TusStates.OK:
                             TusAccounts.SetTusAccounts(t.Result.Rows, null);
                             var tusAccount = GlobalManager.TusAccounts[t.Result.Nickname];
+                            if (this.UseSnooperRank.HasValue && this.UseSnooperRank.Value)
+                                tusAccount.Rank = Ranks.Snooper;
 
                             var clanRegexTUS = new Regex(@"[^a-z0-9]", RegexOptions.IgnoreCase);
                             var clan = clanRegexTUS.Replace(tusAccount.Clan, ""); // Remove bad characters

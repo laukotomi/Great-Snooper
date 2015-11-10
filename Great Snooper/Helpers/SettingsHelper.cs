@@ -1,5 +1,5 @@
 ﻿
-using System.Collections;
+using System.Collections.Generic;
 namespace GreatSnooper.Helpers
 {
     public static class SettingsHelper
@@ -10,7 +10,7 @@ namespace GreatSnooper.Helpers
             Properties.Settings.Default.Save();
         }
 
-        public static void Save(string settingName, IEnumerable collection)
+        public static void Save(string settingName, IEnumerable<string> collection)
         {
             Properties.Settings.Default.GetType().GetProperty(settingName).SetValue(Properties.Settings.Default, string.Join(",", collection), null);
             Properties.Settings.Default.Save();

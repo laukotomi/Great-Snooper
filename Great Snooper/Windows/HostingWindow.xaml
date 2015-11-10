@@ -15,6 +15,7 @@
             <Setter Property="Focusable" Value="False" />
         </Style>
         <c:InvertBoolConverter x:Key="invertBoolConverter" />
+        <c:BoolToVisibilityConverter x:Key="boolToVisibilityConverter" />
         <Style TargetType="{x:Type Dialogs:MessageDialog}" BasedOn="{StaticResource NewCustomDialogStyle}" />
     </controls:MetroWindow.Resources>
     <Grid Width="380" HorizontalAlignment="Center" VerticalAlignment="Center"
@@ -33,16 +34,23 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="10" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="10" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="15" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBlock Grid.Row="0" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=GameNameLabel, Mode=OneWay}" />
-        <TextBox Grid.Row="0" Grid.Column="1" MaxLength="29" Text="{Binding Path=GameName, Mode=TwoWay}" />
-        <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=HostingPasswordLabel, Mode=OneWay}" />
-        <TextBox Grid.Row="2" Grid.Column="1" MaxLength="16" Text="{Binding Path=GamePassword, Mode=TwoWay}" />
-        <Label Grid.Row="4" Grid.Column="0" Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=UsingWormNat2, Mode=OneWay}" />
-        <Grid Grid.Row="4" Grid.Column="1">
+        <TextBlock Text="WA.exe:" Grid.Column="0" Grid.Row="0" />
+        <ComboBox Grid.Row="0" Grid.Column="1" SelectedIndex="{Binding Path=SelectedWaExe, Mode=TwoWay}">
+            <ComboBoxItem Content="WA.exe" Visibility="{Binding Path=MVM.ShowWAExe1, Mode=OneTime, Converter={StaticResource boolToVisibilityConverter}}" />
+            <ComboBoxItem Content="Alternative WA.exe" Visibility="{Binding Path=MVM.ShowWAExe2, Mode=OneTime, Converter={StaticResource boolToVisibilityConverter}}" />
+        </ComboBox>
+        <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=GameNameLabel, Mode=OneWay}" />
+        <TextBox Grid.Row="2" Grid.Column="1" MaxLength="29" Text="{Binding Path=GameName, Mode=TwoWay}" />
+        <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=HostingPasswordLabel, Mode=OneWay}" />
+        <TextBox Grid.Row="4" Grid.Column="1" MaxLength="16" Text="{Binding Path=GamePassword, Mode=TwoWay}" />
+        <Label Grid.Row="6" Grid.Column="0" Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=UsingWormNat2, Mode=OneWay}" />
+        <Grid Grid.Row="6" Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="20" />
                 <ColumnDefinition Width="*" />
@@ -54,16 +62,16 @@
                 </Hyperlink>
             </TextBlock>
         </Grid>
-        <TextBlock Grid.Row="6" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=HostingAction, Mode=OneWay}" />
-        <CheckBox Grid.Row="6" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding Path=InfoToChannel, Mode=TwoWay}" />
-        <TextBlock Grid.Row="8" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ExitAfterHosting, Mode=OneWay}" />
-        <CheckBox Grid.Row="8" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding Path=ExitSnooper, Mode=TwoWay}" />
+        <TextBlock Grid.Row="8" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=HostingAction, Mode=OneWay}" />
+        <CheckBox Grid.Row="8" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding Path=InfoToChannel, Mode=TwoWay}" />
+        <TextBlock Grid.Row="10" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ExitAfterHosting, Mode=OneWay}" />
+        <CheckBox Grid.Row="10" Grid.Column="1" VerticalAlignment="Center" IsChecked="{Binding Path=ExitSnooper, Mode=TwoWay}" />
 
-        <Button Grid.Row="10" Grid.Column="0" Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CreateGameText, Mode=OneWay}"
+        <Button Grid.Row="12" Grid.Column="0" Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CreateGameText, Mode=OneWay}"
                 Command="{Binding Path=CreateGameCommand, Mode=OneTime}" Width="140" IsDefault="True" />
-        <Button Grid.Row="10" Grid.Column="1" Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CloseText, Mode=OneWay}"
+        <Button Grid.Row="12" Grid.Column="1" Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CloseText, Mode=OneWay}"
                 Command="{Binding Path=CloseCommand, Mode=OneTime}" Width="140" IsCancel="True" />
 
-        <controls:ProgressRing IsActive="{Binding Path=Loading, Mode=OneWay}" Grid.RowSpan="11" Grid.ColumnSpan="2" />
+        <controls:ProgressRing IsActive="{Binding Path=Loading, Mode=OneWay}" Grid.RowSpan="13" Grid.ColumnSpan="2" />
     </Grid>
 </controls:MetroWindow>

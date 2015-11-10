@@ -1201,4 +1201,12 @@
     <value>Hidden channels</value>
     <comment>Hiden channels text in settings</comment>
   </data>
+  <data name="UseSnooperRank" xml:space="preserve">
+    <value>Use snooper rank:</value>
+    <comment>Use snooper rank text</comment>
+  </data>
+  <data name="UseSnooperRankHelp" xml:space="preserve">
+    <value>This option is required for TUS login if you would like to use HostingBuddy to host games with the snooper.</value>
+    <comment>Use snooper rank help</comment>
+  </data>
 </root>

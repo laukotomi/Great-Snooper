@@ -21,9 +21,6 @@ namespace GreatSnooper.IRCTasks
         {
             foreach (var item in ChannelList)
             {
-                if (GlobalManager.HiddenChannels.Contains(item.Key))
-                    continue;
-
                 var chvm = new ChannelViewModel(mvm, this.Sender, item.Key, item.Value);
 
                 if (GlobalManager.AutoJoinList.Contains(item.Key))

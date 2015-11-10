@@ -8,7 +8,7 @@ namespace GreatSnooper.Model
         public string TusNick { get; private set; }
         public string TusLink { get; private set; }
         public string Clan { get; private set; }
-        public Rank Rank { get; private set; }
+        public Rank Rank { get; set; }
         public Country Country { get; private set; }
         public bool Active { get; set; }
         public User User { get; set; }
@@ -21,7 +21,7 @@ namespace GreatSnooper.Model
             if (int.TryParse(data[2].Substring(1), out rank))
                 this.Rank = Ranks.GetRankByInt(rank - 1);
             else
-                this.Rank = Ranks.DefaultRank;
+                this.Rank = Ranks.Unknown;
             Country = Countries.GetCountryByCC(data[3].ToUpper());
             TusLink = data[4];
             Clan = data[5];

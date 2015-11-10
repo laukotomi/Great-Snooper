@@ -6,7 +6,8 @@ namespace GreatSnooper.Helpers
     class Ranks
     {
         public static List<Rank> RankList { get; private set; }
-        public static Rank DefaultRank { get; private set; }
+        public static Rank Unknown { get; private set; }
+        public static Rank Snooper { get; private set; }
 
         public static void Initialize()
         {
@@ -26,14 +27,15 @@ namespace GreatSnooper.Helpers
             RankList.Add(new Rank("Unknown"));
             RankList.Add(new Rank("Snooper"));
 
-            DefaultRank = RankList[12];
+            Unknown = RankList[12];
+            Snooper = RankList[13];
         }
 
         public static Rank GetRankByInt(int rank)
         {
             if (rank >= 0 && rank <= 13)
                 return RankList[rank];
-            return DefaultRank;
+            return Unknown;
         }
     }
 }

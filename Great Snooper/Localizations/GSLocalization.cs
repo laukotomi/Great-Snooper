@@ -49,6 +49,28 @@ namespace GreatSnooper.Localizations
         /// <summary>
         ///   Looks up a localized string similar to About.
         /// </summary>
+        public string UseSnooperRank
+        {
+            get
+            {
+                return _rm.GetString("UseSnooperRank");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
+        public string UseSnooperRankHelp
+        {
+            get
+            {
+                return _rm.GetString("UseSnooperRankHelp");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to About.
+        /// </summary>
         public string AboutText
         {
             get

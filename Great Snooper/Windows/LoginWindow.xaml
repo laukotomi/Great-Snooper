@@ -93,10 +93,10 @@
             <RowDefinition Height="40" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" Margin="20,0">
+        <Grid Grid.Row="0" Margin="10,0">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="180" />
+                <ColumnDefinition Width="190" />
             </Grid.ColumnDefinitions>
 
             <Grid.RowDefinitions>
@@ -162,7 +162,7 @@
 
                     <Style TargetType="TabItem">
                         <Setter Property="Foreground" Value="White" />
-                        <Setter Property="Width" Value="150" />
+                        <Setter Property="Width" Value="160" />
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type TabItem}">
@@ -185,7 +185,7 @@
 
                 <!-- Simple login -->
                 <TabItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=SimpleLoginText, Mode=OneWay}">
-                    <Grid Width="290" HorizontalAlignment="Center">
+                    <Grid Width="300" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="180" />
@@ -250,12 +250,14 @@
 
                 <!-- Tus login -->
                 <TabItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=TusLoginText, Mode=OneWay}">
-                    <Grid Width="290" HorizontalAlignment="Center">
+                    <Grid Width="300" HorizontalAlignment="Center">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="*" />
                             <ColumnDefinition Width="180" />
                         </Grid.ColumnDefinitions>
                         <Grid.RowDefinitions>
+                            <RowDefinition Height="15" />
+                            <RowDefinition Height="Auto" />
                             <RowDefinition Height="15" />
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="15" />
@@ -268,7 +270,14 @@
                                    Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=TusNicknameText, Mode=OneWay}" />
                         <TextBlock Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"
                                    Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=TusPasswordText, Mode=OneWay}" />
-                        <TextBlock Grid.Row="5" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+                        <StackPanel Grid.Column="0" Grid.Row="5" Orientation="Horizontal">
+                            <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
+                                       Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=UseSnooperRank, Mode=OneWay}" />
+                            <TextBlock VerticalAlignment="Center" Margin="5,0,0,0">
+                                <Hyperlink Click="SnooperRankHelp"><Run Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=QuestionMark, Mode=OneWay}" /></Hyperlink>
+                            </TextBlock>
+                        </StackPanel>
+                        <TextBlock Grid.Row="7" Grid.ColumnSpan="2" HorizontalAlignment="Center">
                             <Hyperlink Click="TusLoginHelp">
                                 <Run Name="WhatIsTusLoginLabel" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=WhatIsTusLoginLabel, Mode=OneWay}" />
                             </Hyperlink>
@@ -280,6 +289,7 @@
                         <PasswordBox Grid.Column="1" Grid.Row="3" ui:PasswordBoxAssistant.BindPassword="True"
                                      ui:PasswordBoxAssistant.BoundPassword="{Binding Path=TusPass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      ui:FocusExtension.IsFocused="{Binding Path=IsTusPassFocused, Mode=OneWay}" />
+                        <CheckBox Grid.Row="5" Grid.Column="1" IsChecked="{Binding Path=UseSnooperRank, Mode=TwoWay}" />
                     </Grid>
                 </TabItem>
             </TabControl>

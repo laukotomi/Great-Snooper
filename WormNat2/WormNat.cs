@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Threading;
 
-namespace WormNat2
+namespace Hoster
 {
     class WormNat
     {
@@ -289,7 +289,7 @@ namespace WormNat2
                             }
 
                             Debug.WriteLine("Game id: " + gameID);
-                            Console.WriteLine("1");
+                            Console.WriteLine(((int)Errors.NoError).ToString());
                         }
                     }
                 }

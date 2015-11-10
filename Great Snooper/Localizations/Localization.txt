@@ -892,3 +892,9 @@ HideChannelText=Hide channel
 
 # Hiden channels text in settings
 HiddenChannelsText=Hidden channels
+
+# Use snooper rank text
+UseSnooperRank=Use snooper rank:
+
+# Use snooper rank help
+UseSnooperRankHelp=This option is required for TUS login if you would like to use HostingBuddy to host games with the snooper.

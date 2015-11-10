@@ -110,7 +110,8 @@ namespace GreatSnooper.ViewModel
             this.Games = new SortedObservableCollection<Game>();
 
             server.Channels.Add(this.Name, this);
-            mainViewModel.Channels.Add(this);
+            if (GlobalManager.HiddenChannels.Contains(channelName) == false)
+                mainViewModel.Channels.Add(this);
         }
 
         #region JoinCommand

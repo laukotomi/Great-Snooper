@@ -45,6 +45,7 @@ namespace GreatSnooper.ViewModel
         {
             this.newsSeen = newsSeen;
             this.News = new List<NewsBody>();
+            bool first = true;
 
             foreach (Dictionary<string, string> item in news)
             {
@@ -54,6 +55,15 @@ namespace GreatSnooper.ViewModel
                         continue;
 
                     News.Add(new NewsBody(item));
+                    if (first)
+                    {
+                        first = false;
+                        if (!this.newsSeen.ContainsKey(item["id"]))
+                        {
+                            this.newsSeen.Add(item["id"], true);
+                            SettingsHelper.Save("NewsSeen", string.Join(",", this.newsSeen.Keys));
+                        }
+                    }
                 }
                 catch (Exception) { }
             }

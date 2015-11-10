@@ -2302,6 +2302,24 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use snooper rank:.
+        /// </summary>
+        public static string UseSnooperRank {
+            get {
+                return ResourceManager.GetString("UseSnooperRank", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to This option is required for TUS login if you would like to use HostingBuddy to host games with the snooper..
+        /// </summary>
+        public static string UseSnooperRankHelp {
+            get {
+                return ResourceManager.GetString("UseSnooperRankHelp", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Using WormNat2?.
         /// </summary>
         public static string UsingWormNat2 {

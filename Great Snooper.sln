@@ -1,11 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
-VisualStudioVersion = 12.0.21005.1
+VisualStudioVersion = 12.0.40629.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Great Snooper", "Great Snooper\Great Snooper.csproj", "{935D780B-C3F1-447A-ABB0-6AECC63E8218}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WormNat2", "WormNat2\WormNat2.csproj", "{F9241F48-2768-47CC-9B88-D47EBD77B3D2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hoster", "WormNat2\Hoster.csproj", "{F9241F48-2768-47CC-9B88-D47EBD77B3D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

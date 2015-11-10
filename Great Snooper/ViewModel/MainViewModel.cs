@@ -938,9 +938,9 @@ namespace GreatSnooper.ViewModel
 
         private void HideChannel(ChannelViewModel chvm)
         {
+            this.CloseChannelTab(chvm);
             GlobalManager.HiddenChannels.Add(chvm.Name);
             SettingsHelper.Save("HiddenChannels", GlobalManager.HiddenChannels);
-            this.CloseChannelTab(chvm);
         }
         #endregion
 
@@ -1015,7 +1015,7 @@ namespace GreatSnooper.ViewModel
             }
         }
 
-        public void CloseChannelTab(AbstractChannelViewModel chvm, bool hideOnly = false)
+        public void CloseChannelTab(AbstractChannelViewModel chvm)
         {
             int index = (this.SelectedChannel == chvm)
                 ? this.SelectedChannelIndex
@@ -1034,17 +1034,19 @@ namespace GreatSnooper.ViewModel
                     visitedChannels[i]--;
             }
 
-            if (!hideOnly)
+            if (chvm is ChannelViewModel)
             {
-                if (chvm is ChannelViewModel && chvm.Joined)
+                if (chvm.Joined)
                     ((ChannelViewModel)chvm).LeaveChannelCommand.Execute(null);
-                else
-                    chvm.ClearUsers();
-                chvm.Server.Channels.Remove(chvm.Name);
-
-                if (chvm.Server is GameSurgeCommunicator && chvm.Server.Channels.Any(x => x.Value.Joined) == false)
-                    chvm.Server.CancelAsync();
             }
+            else
+            {
+                chvm.ClearUsers();
+                chvm.Server.Channels.Remove(chvm.Name);
+            }
+
+            if (chvm.Server is GameSurgeCommunicator && chvm.Server.Channels.Any(x => x.Value.Joined) == false)
+                chvm.Server.CancelAsync();
 
             this.Channels.Remove(chvm);
         }
@@ -1082,8 +1084,6 @@ namespace GreatSnooper.ViewModel
                     else
                     {
                         var chvm = (ChannelViewModel)this.GameSurge.Channels["#worms"];
-                        if (chvm.Joined)
-                            chvm.LeaveChannelCommand.Execute(null);
                         CloseChannelTab(chvm);
                     }
                     break;
@@ -1098,6 +1098,23 @@ namespace GreatSnooper.ViewModel
 
                 case "BatLogo":
                     RaisePropertyChanged("BatLogo");
+                    break;
+
+                case "HiddenChannels":
+                    GlobalManager.HiddenChannels = new HashSet<string>(
+                        Properties.Settings.Default.HiddenChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
+                        StringComparer.OrdinalIgnoreCase); 
+                    foreach (var server in this.servers)
+                    {
+                        if (server.State == AbstractCommunicator.ConnectionStates.Connected)
+                        {
+                            foreach (var chvm in server.Channels)
+                            {
+                                if (this.Channels.Any(x => x.Name.Equals(chvm.Key, StringComparison.OrdinalIgnoreCase)) == false && GlobalManager.HiddenChannels.Contains(chvm.Key) == false)
+                                    this.Channels.Add(chvm.Value);
+                            }
+                        }
+                    }
                     break;
             }
         }

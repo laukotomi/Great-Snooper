@@ -165,7 +165,7 @@ namespace GreatSnooper.ViewModel
                     {
                         var u = (User)sender;
                         if (u.IsBanned)
-                            this.MainViewModel.CloseChannelTab(this, true);
+                            this.MainViewModel.CloseChannelTab(this);
                         else
                             this.MainViewModel.Channels.Add(this);
                     }
