@@ -9,8 +9,10 @@ namespace Hoster
 {
     class WormNat
     {
-        private enum Errors { NoError, WormNatError, WormNatInitError, FailedToGetLocalIP, CreateGameFailed, NoGameID, FailedToStartTheGame, Unkown, WormNatClientError }
+        private enum Errors { NoError, WormNatError, WormNatInitError, CreateGameFailed, NoGameID, FailedToStartTheGame, Unkown, WormNatClientError }
         private volatile Errors error = Errors.NoError;
+        private Exception exception;
+        private object exceptionLocker = new object();
 
         private const string proxyAddress = "proxy.wormnet.net";
         private const int defProxyPort = 9301;
@@ -32,10 +34,12 @@ namespace Hoster
         private readonly string channelScheme;
         private readonly string location;
         private readonly string cc;
+        private readonly string snooperSettingsPath;
+        private readonly string localIP;
         private readonly bool useWormNat;
         private readonly bool highPriority;
 
-        public WormNat(string serverAddress, string gameExePath, string nickName, string hostName, string passWord, string channelName, string channelScheme, string location, string cc, string useWormNat, string highPriority)
+        public WormNat(string serverAddress, string gameExePath, string nickName, string hostName, string passWord, string channelName, string channelScheme, string location, string cc, string useWormNat, string highPriority, string settingsPath, string localIP)
         {
             this.serverAddress = serverAddress;
             this.gameExePath = gameExePath;
@@ -48,6 +52,8 @@ namespace Hoster
             this.cc = cc;
             this.useWormNat = (useWormNat == "1");
             this.highPriority = (highPriority == "1");
+            this.snooperSettingsPath = settingsPath;
+            this.localIP = localIP;
         }
 
         private void ConnectionThread(int proxyPort)
@@ -67,7 +73,7 @@ namespace Hoster
                     bool ok = false;
                     while (!ok)
                     {
-                        if (stopping)
+                        if (this.stopping)
                             break;
 
                         try
@@ -75,7 +81,7 @@ namespace Hoster
                             gameSocket.Connect("127.0.0.1", gamePort);
                             ok = true;
                         }
-                        catch (Exception)
+                        catch
                         {
                             Debug.WriteLine("Failed to join the game.");
                             Thread.Sleep(500);
@@ -110,9 +116,14 @@ namespace Hoster
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                error = Errors.WormNatClientError;
+                this.error = Errors.WormNatClientError;
+                lock (this.exceptionLocker)
+                {
+                    if (this.exception == null)
+                        this.exception = ex;
+                }
             }
 
             Debug.WriteLine("Client released (" + proxyPort + ")");
@@ -126,20 +137,20 @@ namespace Hoster
             
             try
             {
-                using (controlSocket)
+                using (this.controlSocket)
                 {
                     byte[] buffer = new byte[2];
 
                     while (true)
                     {
-                        if (stopping)
+                        if (this.stopping)
                             break;
 
-                        if (controlSocket.Poll(5000, SelectMode.SelectRead) && controlSocket.Available == 0)
+                        if (this.controlSocket.Poll(5000, SelectMode.SelectRead) && this.controlSocket.Available == 0)
                             break;
-                        if (controlSocket.Available > 0)
+                        if (this.controlSocket.Available > 0)
                         {
-                            if (controlSocket.Receive(buffer) == 2)
+                            if (this.controlSocket.Receive(buffer) == 2)
                             {
                                 Thread t = new Thread(() => ConnectionThread(buffer[1] * 256 + buffer[0]));
                                 t.Start();
@@ -149,9 +160,14 @@ namespace Hoster
                 }
                 controlSocket = null;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                error = Errors.WormNatError;
+                this.error = Errors.WormNatError;
+                lock (this.exceptionLocker)
+                {
+                    if (this.exception == null)
+                        this.exception = ex;
+                }
             }
 
             Debug.WriteLine("ControlThread stopped.");
@@ -186,9 +202,14 @@ namespace Hoster
                 using (WebResponse response = wrGETURL.GetResponse()) { }
                 Debug.WriteLine("Game closed.");
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 Debug.WriteLine("Failed to close the game!");
+                lock (this.exceptionLocker)
+                {
+                    if (this.exception == null)
+                        this.exception = ex;
+                }
             }
 
             Interlocked.Decrement(ref threadCounter);
@@ -201,19 +222,19 @@ namespace Hoster
                 string hostIP;
 
                 // Join to the proxy server
-                if (useWormNat)
+                if (this.useWormNat)
                 {
                     try
                     {
-                        wormnatAddress = Dns.GetHostAddresses(proxyAddress);
-                        controlSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                        controlSocket.Connect(wormnatAddress, defProxyPort);
+                        this.wormnatAddress = Dns.GetHostAddresses(proxyAddress);
+                        this.controlSocket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                        this.controlSocket.Connect(this.wormnatAddress, defProxyPort);
 
                         byte[] buffer = new byte[2];
-                        if (controlSocket.Receive(buffer) != 2)
+                        if (this.controlSocket.Receive(buffer) != 2)
                         {
                             error = Errors.WormNatInitError;
-                            throw new Exception();
+                            throw new Exception("Failed to receive external port!");
                         }
 
                         int externalPort = buffer[1] * 256 + buffer[0];
@@ -222,10 +243,11 @@ namespace Hoster
                         // Since we got the port that we use on the proxy server, we can register the game to the game list with the address of the proxy and the given external port
                         hostIP = proxyAddress + ":" + externalPort.ToString();
                     }
-                    catch (Exception)
+                    catch (Exception ex)
                     {
-                        if (error != Errors.NoError)
-                            error = Errors.WormNatError;
+                        if (this.error != Errors.NoError)
+                            this.error = Errors.WormNatError;
+                        this.exception = ex;
                         if (controlSocket != null)
                         {
                             controlSocket.Dispose();
@@ -236,30 +258,7 @@ namespace Hoster
                 }
                 // Basic way to host
                 else
-                {
-                    // Get local IP
-                    try
-                    {
-                        HttpWebRequest wrGETURL = (HttpWebRequest)WebRequest.Create("http://bot.whatismyipaddress.com");
-                        wrGETURL.AllowAutoRedirect = false;
-                        wrGETURL.Proxy = null;
-                        using (WebResponse response = wrGETURL.GetResponse())
-                        using (StreamReader stream = new StreamReader(response.GetResponseStream()))
-                        {
-                            string localIP = stream.ReadToEnd();
-                            if (localIP.Contains("."))
-                                hostIP = localIP + ":" + gamePort.ToString(); // IPv4
-                            else
-                                hostIP = "[" + localIP + "]:" + gamePort.ToString(); // IPv6
-                        }
-                    }
-                    catch (Exception)
-                    {
-                        error = Errors.FailedToGetLocalIP;
-                        throw;
-                    }
-                }
-
+                    hostIP = localIP + ":" + gamePort.ToString();
 
                 try
                 {
@@ -272,31 +271,35 @@ namespace Hoster
                     // We need to set some headers in order to get the proper answer from Game.asp script
                     wrGETURL.UserAgent = "T17Client/1.2";
                     wrGETURL.Headers.Add("UserServerIdent", "2");
+                    wrGETURL.Timeout = 30000;
                     // We will get the GameID in a header
                     using (WebResponse response = wrGETURL.GetResponse())
                     {
-                        string[] SetGameId = response.Headers.GetValues("SetGameId");
-                        if (SetGameId.Length != 0)
+                        try
                         {
                             gameID = response.Headers["SetGameId"].Substring(2);
 
                             // If we hosted too many games too fast, then we may get banned for a while
                             if (gameID == string.Empty)
-                            {
-                                Debug.WriteLine("GameID is missing!");
-                                error = Errors.NoGameID;
                                 throw new Exception();
-                            }
 
                             Debug.WriteLine("Game id: " + gameID);
+
+                            // Report success to the snooper
                             Console.WriteLine(((int)Errors.NoError).ToString());
+                        }
+                        catch
+                        {
+                            Debug.WriteLine("GameID is missing!");
+                            this.error = Errors.NoGameID;
+                            throw;
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    if (error != Errors.NoError)
-                        error = Errors.CreateGameFailed;
+                    this.error = Errors.CreateGameFailed;
+                    this.exception = ex;
                     Debug.WriteLine("The Create-Game request failed!");
                     throw;
                 }
@@ -338,31 +341,64 @@ namespace Hoster
                         }
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    error = Errors.FailedToStartTheGame;
+                    if (this.error == Errors.NoError)
+                        this.error = Errors.FailedToStartTheGame;
+                    lock (this.exceptionLocker)
+                    {
+                        if (this.exception != null)
+                            this.exception = ex;
+                    }
                     throw;
                 }
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                if (error == Errors.NoError)
-                    error = Errors.Unkown;
+                if (this.error == Errors.NoError)
+                    this.error = Errors.Unkown;
+                lock (this.exceptionLocker)
+                {
+                    if (this.exception != null)
+                        this.exception = ex;
+                }
             }
             finally
             {
                 // Stopping threads
-                stopping = true;
-                while (threadCounter > 0)
+                this.stopping = true;
+                while (this.threadCounter > 0)
                     Thread.Sleep(50);
 
-                if (controlSocket != null)
-                    controlSocket.Dispose();
+                if (this.controlSocket != null)
+                    this.controlSocket.Dispose();
 
-                if (error != Errors.NoError)
+                if (this.error != Errors.NoError)
                 {
-                    Debug.WriteLine("Error: " + error.ToString());
-                    Console.WriteLine(((int)error).ToString());
+                    Debug.WriteLine("Error: " + this.error.ToString());
+                    Console.WriteLine(((int)this.error).ToString());
+                }
+                if (this.exception != null)
+                {
+                    try
+                    {
+                        string filename = this.snooperSettingsPath + @"\HosterLog.txt";
+                        // Delete log file if it is more than 10 Mb
+                        FileInfo logfile = new FileInfo(filename);
+                        if (logfile.Exists && logfile.Length > 10 * 1024 * 1024)
+                            logfile.Delete();
+
+                        using (StreamWriter w = new StreamWriter(filename, true))
+                        {
+                            w.WriteLine(DateTime.Now.ToString("U"));
+                            w.WriteLine(this.error.ToString());
+                            w.WriteLine(this.exception.GetType().FullName);
+                            w.WriteLine(this.exception.Message);
+                            w.WriteLine(this.exception.StackTrace);
+                            w.WriteLine(Environment.NewLine + Environment.NewLine + Environment.NewLine);
+                        }
+                    }
+                    catch { }
                 }
             }
         }

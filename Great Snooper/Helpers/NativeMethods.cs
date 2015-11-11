@@ -8,6 +8,9 @@ namespace GreatSnooper.Helpers
     {
         [DllImport("user32.dll")]
         internal static extern IntPtr GetForegroundWindow();
+
+        [DllImport("user32.dll")]
+        internal static extern int GetWindowThreadProcessId(IntPtr handle, out int processId);
         
         [DllImport("user32.dll", SetLastError = true, CharSet = CharSet.Unicode)]
         internal static extern IntPtr FindWindow(string lpClassName, string lpWindowName);

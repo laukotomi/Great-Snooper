@@ -25,7 +25,7 @@ namespace GreatSnooper.ViewModel
         #endregion
 
         #region Enums
-        private enum HosterErrors { NoError, WormNatError, WormNatInitError, FailedToGetLocalIP, CreateGameFailed, NoGameID, FailedToStartTheGame, Unkown, WormNatClientError }
+        private enum HosterErrors { NoError, WormNatError, WormNatInitError, CreateGameFailed, NoGameID, FailedToStartTheGame, Unkown, WormNatClientError }
         #endregion
 
         #region Members
@@ -171,7 +171,7 @@ namespace GreatSnooper.ViewModel
                 string highPriority = Properties.Settings.Default.WAHighPriority ? "1" : "0";
                 string waExe = (this.SelectedWaExe == 0) ? Properties.Settings.Default.WaExe : Properties.Settings.Default.WaExe2;
 
-                string arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" \"{8}\" \"{9}\" \"{10}\"",
+                string arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" \"{8}\" \"{9}\" \"{10}\" \"{11}\" \"{12}\"",
                     serverAddress,
                     waExe,
                     channel.Server.User.Name,
@@ -182,7 +182,9 @@ namespace GreatSnooper.ViewModel
                     channel.Server.User.Country.ID.ToString(),
                     cc,
                     wormnat,
-                    highPriority
+                    highPriority,
+                    GlobalManager.SettingsPath,
+                    this.MVM.WormNet.LocalIP
                 );
 
                 string success = TryHostGame(arguments);
@@ -209,10 +211,30 @@ namespace GreatSnooper.ViewModel
                 this.Loading = false;
                 HosterErrors result;
 
-                if (t.IsFaulted || Enum.TryParse(t.Result, out result) == false)
+                if (t.IsFaulted || Enum.TryParse(t.Result, out result) == false || result == HosterErrors.Unkown)
                 {
-                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HostFailText);
+                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterUnknownFail);
                     return;
+                }
+                switch (result)
+                {
+                    case HosterErrors.CreateGameFailed:
+                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterCreateGameFail);
+                        return;
+                        
+                    case HosterErrors.FailedToStartTheGame:
+                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterStartGameFail);
+                        return;
+
+                    case HosterErrors.NoGameID:
+                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterNoGameIDError);
+                        return;
+
+                    case HosterErrors.WormNatClientError:
+                    case HosterErrors.WormNatError:
+                    case HosterErrors.WormNatInitError:
+                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterWormNatError);
+                        return;
                 }
 
                 this.dispatcher.BeginInvoke(new Action(() =>

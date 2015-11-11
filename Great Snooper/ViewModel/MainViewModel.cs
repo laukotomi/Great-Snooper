@@ -59,7 +59,7 @@ namespace GreatSnooper.ViewModel
 
         private AbstractCommunicator[] servers;
         private volatile bool closing;
-        private IntPtr hwnd;
+        private int procId = Process.GetCurrentProcess().Id;
         private Timer tusTimer;
         private readonly List<int> visitedChannels = new List<int>();
         private readonly DispatcherTimer filterTimer = new DispatcherTimer();
@@ -330,7 +330,16 @@ namespace GreatSnooper.ViewModel
         public ChannelViewModel SelectedGLChannel { get; private set; }
         public bool IsWindowActive
         {
-            get { return NativeMethods.GetForegroundWindow() == this.hwnd; }
+            get
+            {
+                var activatedHandle = NativeMethods.GetForegroundWindow();
+                if (activatedHandle == IntPtr.Zero)
+                    return false;       // No window is currently activated
+
+                int activeProcId;
+                NativeMethods.GetWindowThreadProcessId(activatedHandle, out activeProcId);
+                return activeProcId == this.procId;
+            }
         }
         public bool GameListRefresh { get; set; }
         public bool TusRefresh { get; set; }
@@ -412,7 +421,6 @@ namespace GreatSnooper.ViewModel
             this.servers[1].ConnectionState += ConnectionState;
             this.servers[1].MVM = this;
 
-            this.hwnd = new WindowInteropHelper(this.DialogService.GetView()).Handle;
             this.Channels = new SortedObservableCollection<AbstractChannelViewModel>();
             this.Channels.CollectionChanged += Channels_CollectionChanged;
             this.InstantColors = new Dictionary<string, SolidColorBrush>(StringComparer.OrdinalIgnoreCase);

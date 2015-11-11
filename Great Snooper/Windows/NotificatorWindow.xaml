@@ -41,15 +41,15 @@
         <TextBlock Grid.Column="8" Grid.Row="1" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=InJoinMessagesLabel, Mode=OneWay}" />
 
         <TextBox AcceptsReturn="True" Grid.Column="0" Grid.Row="3" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 Text="{Binding Path=InMessages, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                 Text="{Binding Path=InMessages, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox AcceptsReturn="True" Grid.Column="2" Grid.Row="3" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 Text="{Binding Path=InSenderNames, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                 Text="{Binding Path=InSenderNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox AcceptsReturn="True" Grid.Column="4" Grid.Row="3" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 Text="{Binding Path=InGameNames, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                 Text="{Binding Path=InGameNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox AcceptsReturn="True" Grid.Column="6" Grid.Row="3" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 Text="{Binding Path=InHosterNames, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                 Text="{Binding Path=InHosterNames, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBox AcceptsReturn="True" Grid.Column="8" Grid.Row="3" ScrollViewer.VerticalScrollBarVisibility="Auto"
-                 Text="{Binding Path=InJoinMessages, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" />
+                 Text="{Binding Path=InJoinMessages, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
         <CheckBox Grid.Row="4" Grid.ColumnSpan="2" HorizontalAlignment="Center"
                   Margin="0,5" IsChecked="{Binding Path=AutoStart, Mode=TwoWay}"

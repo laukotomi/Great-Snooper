@@ -880,6 +880,15 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to create the game on WormNet..
+        /// </summary>
+        public static string HosterCreateGameFail {
+            get {
+                return ResourceManager.GetString("HosterCreateGameFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Hoster.exe does not exist! You can not host without that file!.
         /// </summary>
         public static string HosterExeText {
@@ -891,9 +900,36 @@ namespace GreatSnooper.Localizations {
         /// <summary>
         ///   Looks up a localized string similar to Failed to host a game. Probably you have hosted too many games recently. Please wait a while!.
         /// </summary>
-        public static string HostFailText {
+        public static string HosterNoGameIDError {
             get {
-                return ResourceManager.GetString("HostFailText", resourceCulture);
+                return ResourceManager.GetString("HosterNoGameIDError", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to start Worms: Armageddon..
+        /// </summary>
+        public static string HosterStartGameFail {
+            get {
+                return ResourceManager.GetString("HosterStartGameFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An unexpected error happened while trying to host a game..
+        /// </summary>
+        public static string HosterUnknownFail {
+            get {
+                return ResourceManager.GetString("HosterUnknownFail", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to The communication with WormNat server failed..
+        /// </summary>
+        public static string HosterWormNatError {
+            get {
+                return ResourceManager.GetString("HosterWormNatError", resourceCulture);
             }
         }
         

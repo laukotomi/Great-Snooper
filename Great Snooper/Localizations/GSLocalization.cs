@@ -46,27 +46,6 @@ namespace GreatSnooper.Localizations
         public ResourceManager RM { get { return _rm; } }
         #endregion
 
-        /// <summary>
-        ///   Looks up a localized string similar to About.
-        /// </summary>
-        public string UseSnooperRank
-        {
-            get
-            {
-                return _rm.GetString("UseSnooperRank");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to About.
-        /// </summary>
-        public string UseSnooperRankHelp
-        {
-            get
-            {
-                return _rm.GetString("UseSnooperRankHelp");
-            }
-        }
 
         /// <summary>
         ///   Looks up a localized string similar to About.
@@ -76,50 +55,6 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("AboutText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to TopicMessage.
-        /// </summary>
-        public string TopicMessage
-        {
-            get
-            {
-                return _rm.GetString("TopicMessage");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to NoLeaguesSelectedError.
-        /// </summary>
-        public string NoLeaguesSelectedError
-        {
-            get
-            {
-                return _rm.GetString("NoLeaguesSelectedError");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Kick message.
-        /// </summary>
-        public string KickMessage
-        {
-            get
-            {
-                return _rm.GetString("KickMessage");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to About WormNat2.
-        /// </summary>
-        public string AboutWormNat2
-        {
-            get
-            {
-                return _rm.GetString("AboutWormNat2");
             }
         }
 
@@ -179,17 +114,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to AwayMessageFormat.
-        /// </summary>
-        public string AwayMessageFormat
-        {
-            get
-            {
-                return _rm.GetString("AwayMessageFormat");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Add a new user to the list...
         /// </summary>
         public string AddUserToList
@@ -222,6 +146,16 @@ namespace GreatSnooper.Localizations
             }
         }
 
+        /// <summary>
+        ///   Looks up a localized string similar to Auto join this channel.
+        /// </summary>
+        public string AutoJoinText
+        {
+            get
+            {
+                return _rm.GetString("AutoJoinText");
+            }
+        }
 
         /// <summary>
         ///   Looks up a localized string similar to Auto login at startup:.
@@ -290,7 +224,7 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to You are away: {0}.
+        ///   Looks up a localized string similar to Away manager.
         /// </summary>
         public string AwayManagerTooltip
         {
@@ -308,6 +242,17 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("AwayManagerTooltipAway");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to is away: {0}.
+        /// </summary>
+        public string AwayMessageFormat
+        {
+            get
+            {
+                return _rm.GetString("AwayMessageFormat");
             }
         }
 
@@ -411,17 +356,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Fail.
-        /// </summary>
-        public string ChannelOfflineTitle
-        {
-            get
-            {
-                return _rm.GetString("ChannelOfflineTitle");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Failed to load the scheme of the channel. Try to rejoin the channel!.
         /// </summary>
         public string ChannelSchemeText
@@ -429,17 +363,6 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("ChannelSchemeText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Fail.
-        /// </summary>
-        public string ChannelSchemeTitle
-        {
-            get
-            {
-                return _rm.GetString("ChannelSchemeTitle");
             }
         }
 
@@ -565,17 +488,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Fail.
-        /// </summary>
-        public string CommonSettingFailTitle
-        {
-            get
-            {
-                return _rm.GetString("CommonSettingFailTitle");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Connecting.
         /// </summary>
         public string ConnectingText
@@ -587,7 +499,7 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to This program was written by Tomi.
+        ///   Looks up a localized string similar to You can contact me at http://www.tus-wa.com/profile/Tomi/ using private message.
         /// </summary>
         public string ContactText
         {
@@ -774,17 +686,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Auto join this channel.
-        /// </summary>
-        public string AutoJoinText
-        {
-            get
-            {
-                return _rm.GetString("AutoJoinText");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Enter this channel.
         /// </summary>
         public string EnterChannelText
@@ -873,27 +774,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Font Chooser.
-        /// </summary>
-        public string HideChannelText
-        {
-            get
-            {
-                return _rm.GetString("HideChannelText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Font Chooser.
-        /// </summary>
-        public string HiddenChannelsText
-        {
-            get
-            {
-                return _rm.GetString("HiddenChannelsText");
-            }
-        }
-        /// <summary>
         ///   Looks up a localized string similar to Found text style:.
         /// </summary>
         public string FoundStyleText
@@ -927,17 +807,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Bad characters.
-        /// </summary>
-        public string GamePassBadTitle
-        {
-            get
-            {
-                return _rm.GetString("GamePassBadTitle");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Games.
         /// </summary>
         public string GamesText
@@ -945,6 +814,17 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("GamesText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to General sounds.
+        /// </summary>
+        public string GeneralSoundsText
+        {
+            get
+            {
+                return _rm.GetString("GeneralSoundsText");
             }
         }
 
@@ -1037,17 +917,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Nickname is in use.
-        /// </summary>
-        public string GSNickInUseTitle
-        {
-            get
-            {
-                return _rm.GetString("GSNickInUseTitle");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to {0} is now known as {1}..
         /// </summary>
         public string GSNicknameChange
@@ -1125,6 +994,28 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Hidden channels.
+        /// </summary>
+        public string HiddenChannelsText
+        {
+            get
+            {
+                return _rm.GetString("HiddenChannelsText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hide channel.
+        /// </summary>
+        public string HideChannelText
+        {
+            get
+            {
+                return _rm.GetString("HideChannelText");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to When your name appears in chat:.
         /// </summary>
         public string HighlightSettingText
@@ -1158,7 +1049,18 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Hoster.exe doesn&apos;t exist! You can&apos;t host without that file!.
+        ///   Looks up a localized string similar to Failed to create the game on WormNet..
+        /// </summary>
+        public string HosterCreateGameFail
+        {
+            get
+            {
+                return _rm.GetString("HosterCreateGameFail");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Hoster.exe does not exist! You can not host without that file!.
         /// </summary>
         public string HosterExeText
         {
@@ -1169,35 +1071,46 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Hoster.exe is missing.
-        /// </summary>
-        public string HosterExeTitle
-        {
-            get
-            {
-                return _rm.GetString("HosterExeTitle");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Failed to host a game. Probably you have hosted too many games recently. Please wait a while!.
         /// </summary>
-        public string HostFailText
+        public string HosterNoGameIDError
         {
             get
             {
-                return _rm.GetString("HostFailText");
+                return _rm.GetString("HosterNoGameIDError");
             }
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Failed to host a game.
+        ///   Looks up a localized string similar to Failed to start Worms: Armageddon..
         /// </summary>
-        public string HostFailTitle
+        public string HosterStartGameFail
         {
             get
             {
-                return _rm.GetString("HostFailTitle");
+                return _rm.GetString("HosterStartGameFail");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to An unexpected error happened while trying to host a game..
+        /// </summary>
+        public string HosterUnknownFail
+        {
+            get
+            {
+                return _rm.GetString("HosterUnknownFail");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to The communication with WormNat server failed..
+        /// </summary>
+        public string HosterWormNatError
+        {
+            get
+            {
+                return _rm.GetString("HosterWormNatError");
             }
         }
 
@@ -1290,6 +1203,61 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to In game names.
+        /// </summary>
+        public string InGameNamesLabel
+        {
+            get
+            {
+                return _rm.GetString("InGameNamesLabel");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to In hoster names.
+        /// </summary>
+        public string InHosterNamesLabel
+        {
+            get
+            {
+                return _rm.GetString("InHosterNamesLabel");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to In join messages.
+        /// </summary>
+        public string InJoinMessagesLabel
+        {
+            get
+            {
+                return _rm.GetString("InJoinMessagesLabel");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to In messages.
+        /// </summary>
+        public string InMessagesLabel
+        {
+            get
+            {
+                return _rm.GetString("InMessagesLabel");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to In sender names.
+        /// </summary>
+        public string InSenderNamesLabel
+        {
+            get
+            {
+                return _rm.GetString("InSenderNamesLabel");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Invalid value.
         /// </summary>
         public string InvalidValueText
@@ -1356,6 +1324,28 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Kicked by {0}.
+        /// </summary>
+        public string KickMessage
+        {
+            get
+            {
+                return _rm.GetString("KickMessage");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Please restart Great Snooper to apply new language settings everywhere!.
+        /// </summary>
+        public string LanguageChangedText
+        {
+            get
+            {
+                return _rm.GetString("LanguageChangedText");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to English.
         /// </summary>
         public string LanguageEnName
@@ -1385,61 +1375,6 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("LanguageText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to In messages.
-        /// </summary>
-        public string InMessagesLabel
-        {
-            get
-            {
-                return _rm.GetString("InMessagesLabel");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to In sender names.
-        /// </summary>
-        public string InSenderNamesLabel
-        {
-            get
-            {
-                return _rm.GetString("InSenderNamesLabel");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to In game names.
-        /// </summary>
-        public string InGameNamesLabel
-        {
-            get
-            {
-                return _rm.GetString("InGameNamesLabel");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to In hoster names.
-        /// </summary>
-        public string InHosterNamesLabel
-        {
-            get
-            {
-                return _rm.GetString("InHosterNamesLabel");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to In join messages.
-        /// </summary>
-        public string InJoinMessagesLabel
-        {
-            get
-            {
-                return _rm.GetString("InJoinMessagesLabel");
             }
         }
 
@@ -1499,17 +1434,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to League searcher is on.
-        /// </summary>
-        public string LeagueSearcherRunningTitle
-        {
-            get
-            {
-                return _rm.GetString("LeagueSearcherRunningTitle");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Search for league game.
         /// </summary>
         public string LeagueSearcherTooltip
@@ -1528,17 +1452,6 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("LeaguesLoadingText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to No leagues available.
-        /// </summary>
-        public string LeaguesLoadingTitle
-        {
-            get
-            {
-                return _rm.GetString("LeaguesLoadingTitle");
             }
         }
 
@@ -1752,6 +1665,17 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to News.
+        /// </summary>
+        public string NewsWindowTitle
+        {
+            get
+            {
+                return _rm.GetString("NewsWindowTitle");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to There is a new update available for Great Snooper! Would you like to download it now?.
         /// </summary>
         public string NewVersionText
@@ -1759,17 +1683,6 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("NewVersionText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to New version available.
-        /// </summary>
-        public string NewVersionTitle
-        {
-            get
-            {
-                return _rm.GetString("NewVersionTitle");
             }
         }
 
@@ -1829,17 +1742,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Nickname is alredy in use.
-        /// </summary>
-        public string NicknameInUseTitle
-        {
-            get
-            {
-                return _rm.GetString("NicknameInUseTitle");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Nickname:.
         /// </summary>
         public string NicknameText
@@ -1851,7 +1753,7 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Your nickname should begin with a character of the English aplhabet or with ` character!.
+        ///   Looks up a localized string similar to Your nickname should begin with a character from the English aplhabet or with ` character!.
         /// </summary>
         public string NickStartsBad
         {
@@ -1869,6 +1771,17 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("NoGroupText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Please select the league(s) you are looking for!.
+        /// </summary>
+        public string NoLeaguesSelectedError
+        {
+            get
+            {
+                return _rm.GetString("NoLeaguesSelectedError");
             }
         }
 
@@ -1924,17 +1837,6 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("NotificatorRunningText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Notificator is on.
-        /// </summary>
-        public string NotificatorRunningTitle
-        {
-            get
-            {
-                return _rm.GetString("NotificatorRunningTitle");
             }
         }
 
@@ -2060,7 +1962,7 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to has left the channel..
+        ///   Looks up a localized string similar to has left the channel ({0})..
         /// </summary>
         public string PartMessage2
         {
@@ -2069,6 +1971,7 @@ namespace GreatSnooper.Localizations
                 return _rm.GetString("PartMessage2");
             }
         }
+
         /// <summary>
         ///   Looks up a localized string similar to Part message style:.
         /// </summary>
@@ -2147,7 +2050,7 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to ?.
+        ///   Looks up a localized string similar to Question.
         /// </summary>
         public string QuestionText
         {
@@ -2444,17 +2347,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Title of the news window.
-        /// </summary>
-        public string NewsWindowTitle
-        {
-            get
-            {
-                return _rm.GetString("NewsWindowTitle");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Silent join and close snooper.
         /// </summary>
         public string SilentJoinCloseText
@@ -2532,6 +2424,17 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Start notificator with snooper.
+        /// </summary>
+        public string StartNotifWithSnooper
+        {
+            get
+            {
+                return _rm.GetString("StartNotifWithSnooper");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Start searching.
         /// </summary>
         public string StartSearchingText
@@ -2539,6 +2442,28 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("StartSearchingText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Run WA.exe.
+        /// </summary>
+        public string StartWAExeTooltip1
+        {
+            get
+            {
+                return _rm.GetString("StartWAExeTooltip1");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Run alternative WA.exe.
+        /// </summary>
+        public string StartWAExeTooltip2
+        {
+            get
+            {
+                return _rm.GetString("StartWAExeTooltip2");
             }
         }
 
@@ -2587,7 +2512,7 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to License: This program would never exist without the help of:.
+        ///   Looks up a localized string similar to This program would never exist without the help of:.
         /// </summary>
         public string ThanksText
         {
@@ -2605,6 +2530,17 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("ThemeText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} has changed the topic of the channel to &quot;{1}&quot;..
+        /// </summary>
+        public string TopicMessage
+        {
+            get
+            {
+                return _rm.GetString("TopicMessage");
             }
         }
 
@@ -2653,17 +2589,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Wrong username or password.
-        /// </summary>
-        public string TusAuthFailTitle
-        {
-            get
-            {
-                return _rm.GetString("TusAuthFailTitle");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to The communication with tus-wa.com has failed. Please try again!.
         /// </summary>
         public string TusCommFailText
@@ -2671,17 +2596,6 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("TusCommFailText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Communication fail.
-        /// </summary>
-        public string TusCommFailTitle
-        {
-            get
-            {
-                return _rm.GetString("TusCommFailTitle");
             }
         }
 
@@ -2763,7 +2677,7 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Please enter TUS nickname!.
+        ///   Looks up a localized string similar to Please enter your TUS nickname!.
         /// </summary>
         public string TusNickEmptyText
         {
@@ -2884,17 +2798,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Fail.
-        /// </summary>
-        public string UpdaterFailTitle
-        {
-            get
-            {
-                return _rm.GetString("UpdaterFailTitle");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to User groups.
         /// </summary>
         public string UserGroupsText
@@ -2924,6 +2827,28 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("UsersText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Use snooper rank:.
+        /// </summary>
+        public string UseSnooperRank
+        {
+            get
+            {
+                return _rm.GetString("UseSnooperRank");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to This option is required for TUS login if you would like to use HostingBuddy to host games with the snooper..
+        /// </summary>
+        public string UseSnooperRankHelp
+        {
+            get
+            {
+                return _rm.GetString("UseSnooperRankHelp");
             }
         }
 
@@ -2961,7 +2886,18 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Please set your WA.exe in the Settings!.
+        ///   Looks up a localized string similar to Volume.
+        /// </summary>
+        public string VolumeTooltip
+        {
+            get
+            {
+                return _rm.GetString("VolumeTooltip");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to WA.exe is missing. Please set WA.exe in the Settings!.
         /// </summary>
         public string WAExeMissingText
         {
@@ -2972,35 +2908,13 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to WA.exe is missing.
-        /// </summary>
-        public string WAExeMissingTitle
-        {
-            get
-            {
-                return _rm.GetString("WAExeMissingTitle");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to WA.exe can not be found! Please set your WA.exe in the Settings!.
+        ///   Looks up a localized string similar to WA.exe can not be found! Please set WA.exe in the Settings!.
         /// </summary>
         public string WAExeNotExistsText
         {
             get
             {
                 return _rm.GetString("WAExeNotExistsText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to WA.exe is missing.
-        /// </summary>
-        public string WAExeNotExistsTitle
-        {
-            get
-            {
-                return _rm.GetString("WAExeNotExistsTitle");
             }
         }
 
@@ -3012,6 +2926,28 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("WAExeNotFoundText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to WA.exe:.
+        /// </summary>
+        public string WAExeText
+        {
+            get
+            {
+                return _rm.GetString("WAExeText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Alternative WA.exe:.
+        /// </summary>
+        public string WAExeText2
+        {
+            get
+            {
+                return _rm.GetString("WAExeText2");
             }
         }
 
@@ -3034,17 +2970,6 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("WAIsRunningText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Fail.
-        /// </summary>
-        public string WAIsRunningTitle
-        {
-            get
-            {
-                return _rm.GetString("WAIsRunningTitle");
             }
         }
 
@@ -3115,17 +3040,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Connection error.
-        /// </summary>
-        public string WNCommFailTitle
-        {
-            get
-            {
-                return _rm.GetString("WNCommFailTitle");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to has left WormNet ({0})..
         /// </summary>
         public string WNQuitWMessage
@@ -3159,17 +3073,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to A friendly reminder.
-        /// </summary>
-        public string WormNat2GreetingTitle
-        {
-            get
-            {
-                return _rm.GetString("WormNat2GreetingTitle");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to #worms channel nickname:.
         /// </summary>
         public string WormsNickLabel
@@ -3191,59 +3094,5 @@ namespace GreatSnooper.Localizations
             }
         }
 
-        /// <summary>
-        ///   Looks up a localized string similar to WA.exe:.
-        /// </summary>
-        public string WAExeText
-        {
-            get
-            {
-                return _rm.GetString("WAExeText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Alternative WA.exe:.
-        /// </summary>
-        public string WAExeText2
-        {
-            get
-            {
-                return _rm.GetString("WAExeText2");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to General sounds.
-        /// </summary>
-        public string GeneralSoundsText
-        {
-            get
-            {
-                return _rm.GetString("GeneralSoundsText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Please restart Great Snooper to apply new language settings everywhere!.
-        /// </summary>
-        public string LanguageChangedText
-        {
-            get
-            {
-                return _rm.GetString("LanguageChangedText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Volume.
-        /// </summary>
-        public string VolumeTooltip
-        {
-            get
-            {
-                return _rm.GetString("VolumeTooltip");
-            }
-        }
     }
 }

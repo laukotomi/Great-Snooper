@@ -155,6 +155,8 @@ namespace GreatSnooper.Classes
 
                 case "NotificatorInMessages":
                     LoadList(Properties.Settings.Default.NotificatorInMessages, ref this.searchInMessages, ref this._searchInHosterNamesEnabled);
+                    if (this.MessageRegexChange != null)
+                        this.MessageRegexChange(this);
                     break;
 
                 case "NotificatorInSenderNames":

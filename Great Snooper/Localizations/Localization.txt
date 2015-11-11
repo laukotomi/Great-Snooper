@@ -275,9 +275,6 @@ NotificatorRunningText=Would you like to turn off notificator?
 # The text of the popup message when the user wants to host a game but Hoster.exe doesn't exist
 HosterExeText=Hoster.exe does not exist! You can not host without that file!
 
-# The text of the popup message when hosting fails
-HostFailText=Failed to host a game. Probably you have hosted too many games recently. Please wait a while!
-
 
 &&&&&&&&&&&&&&&
 & Main window &
@@ -898,3 +895,18 @@ UseSnooperRank=Use snooper rank:
 
 # Use snooper rank help
 UseSnooperRankHelp=This option is required for TUS login if you would like to use HostingBuddy to host games with the snooper.
+
+# Hoster - WormNat error, WormNat init error, Wormnat client error
+HosterWormNatError=The communication with WormNat server failed.
+
+# Hoster - Create game request failed
+HosterCreateGameFail=Failed to create the game on WormNet.
+
+# Hoster - No game id
+HosterNoGameIDError=Failed to host a game. Probably you have hosted too many games recently. Please wait a while!
+
+# Hoster - Failed to start the game
+HosterStartGameFail=Failed to start Worms: Armageddon.
+
+# Hoster - Unknown fail
+HosterUnknownFail=An unexpected error happened while trying to host a game.

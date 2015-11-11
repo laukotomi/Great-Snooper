@@ -25,7 +25,7 @@
         <TextBlock Grid.Row="0" Grid.Column="0" Foreground="White" VerticalAlignment="Center"
                    Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=AwayLabel, Mode=OneWay}" />
         <TextBox Grid.Row="0" Grid.Column="1"
-                 Text="{Binding Path=AwayText, Mode=TwoWay, UpdateSourceTrigger=LostFocus}" MaxLength="100"
+                 Text="{Binding Path=AwayText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MaxLength="100"
                  IsEnabled="{Binding Path=IsAway, Mode=OneWay, Converter={StaticResource invertBoolConverter}}"/>
 
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">

@@ -442,8 +442,8 @@ namespace GreatSnooper.ViewModel
 
         protected void AddMessage(Message msg)
         {
-            if (this.MainViewModel.IsEnergySaveMode == false && this.Messages.Count == GlobalManager.MaxMessagesInMemory)
-                Log(GlobalManager.NumOfOldMessagesToBeLoaded);
+            if (this.MainViewModel.IsEnergySaveMode == false && this.Messages.Count >= GlobalManager.MaxMessagesInMemory)
+                Log(this.Messages.Count - GlobalManager.MaxMessagesInMemory + GlobalManager.NumOfOldMessagesToBeLoaded);
 
             this.Messages.AddLast(msg);
 
@@ -678,12 +678,13 @@ namespace GreatSnooper.ViewModel
 
         public void LoadNewMessages()
         {
-            if (this.lastMessageLoaded == null)
-                this.lastMessageLoaded = this.Messages.First;
-
             for (int i = 0; i < this.NewMessagesCount; i++)
             {
-                this.lastMessageLoaded = this.lastMessageLoaded.Next;
+                if (this.lastMessageLoaded == null)
+                    this.lastMessageLoaded = this.Messages.First;
+                else
+                    this.lastMessageLoaded = this.lastMessageLoaded.Next;
+                
                 var msg = lastMessageLoaded.Value;
                 if (!msg.Sender.IsBanned || Properties.Settings.Default.ShowBannedMessages)
                     AddMessageToUI(msg);
