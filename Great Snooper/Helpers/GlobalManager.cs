@@ -5,6 +5,7 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace GreatSnooper.Helpers
 {
@@ -59,9 +60,17 @@ namespace GreatSnooper.Helpers
                 Properties.Settings.Default.BanList.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
                 StringComparer.OrdinalIgnoreCase
                 );
-            AutoJoinList = new HashSet<string>(
-                Properties.Settings.Default.AutoJoinChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
-                StringComparer.OrdinalIgnoreCase);
+            // Backwards compatibility
+            if (Properties.Settings.Default.AutoJoinChannels.Contains(":") == false)
+            {
+                AutoJoinList = new Dictionary<string,string>();
+                string[] parts = Properties.Settings.Default.AutoJoinChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var part in parts)
+                    AutoJoinList.Add(part, null);
+            }
+            else
+                AutoJoinList = JsonConvert.DeserializeObject<Dictionary<string, string>>(Properties.Settings.Default.AutoJoinChannels);
+
             HiddenChannels = new HashSet<string>(
                 Properties.Settings.Default.HiddenChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
                 StringComparer.OrdinalIgnoreCase); 
@@ -84,7 +93,7 @@ namespace GreatSnooper.Helpers
 
         public static HashSet<string> BanList { get; private set; }
 
-        public static HashSet<string> AutoJoinList { get; private set; }
+        public static Dictionary<string, string> AutoJoinList { get; private set; }
 
         public static HashSet<string> HiddenChannels { get; set; }
 

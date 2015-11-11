@@ -13,11 +13,23 @@ namespace GreatSnooper.ViewModel
     class NotificatorViewModel : ViewModelBase
     {
         #region Members
-
         #endregion
 
         #region Properties
         public IMetroDialogService DialogService { get; set; }
+
+        public bool? AutoStart
+        {
+            get { return Properties.Settings.Default.NotificatorStartWithSnooper; }
+            set
+            {
+                if (value.HasValue && Properties.Settings.Default.NotificatorStartWithSnooper != value.Value)
+                {
+                    Properties.Settings.Default.NotificatorStartWithSnooper = value.Value;
+                    Properties.Settings.Default.Save();
+                }
+            }
+        }
 
         public string InMessages
         {
@@ -96,11 +108,20 @@ namespace GreatSnooper.ViewModel
                 }
             }
         }
+
+        public string StartStopButtonText
+        {
+            get
+            {
+                return (Notificator.Instance.IsEnabled)
+                    ? Localizations.GSLocalization.Instance.StopSearchingText
+                    : Localizations.GSLocalization.Instance.StartSearchingText;
+            }
+        }
         #endregion
 
         public NotificatorViewModel()
         {
-
         }
 
         #region StartStopCommand
@@ -112,6 +133,7 @@ namespace GreatSnooper.ViewModel
         private void StartStop()
         {
             Notificator.Instance.IsEnabled = !Notificator.Instance.IsEnabled;
+            RaisePropertyChanged("StartStopButtonText");
         }
         #endregion
 

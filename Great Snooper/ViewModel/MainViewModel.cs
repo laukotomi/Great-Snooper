@@ -47,7 +47,6 @@ namespace GreatSnooper.ViewModel
 
         #region Members
         private bool _isAway;
-        private bool _notificatorEnabled;
         private bool _volumeChanging;
         private bool _isWindowFlashing;
         public bool _isFilterFocused;
@@ -167,15 +166,7 @@ namespace GreatSnooper.ViewModel
         }
         public bool NotificatorEnabled
         {
-            get { return _notificatorEnabled; }
-            private set
-            {
-                if (_notificatorEnabled != value)
-                {
-                    _notificatorEnabled = value;
-                    RaisePropertyChanged("NotificatorEnabled");
-                }
-            }
+            get { return Notificator.Instance.IsEnabled; }
         }
         public bool SoundMuted
         {
@@ -425,6 +416,7 @@ namespace GreatSnooper.ViewModel
             this.Channels.CollectionChanged += Channels_CollectionChanged;
             this.InstantColors = new Dictionary<string, SolidColorBrush>(StringComparer.OrdinalIgnoreCase);
             this.notificator = Notificator.Instance;
+            this.notificator.IsEnabledChanged += notificator_IsEnabledChanged;
             this.LeagueSearcher = LeagueSearcher.Instance;
 
             secondTimer.Interval = new TimeSpan(0, 0, 1);
@@ -1634,6 +1626,7 @@ namespace GreatSnooper.ViewModel
                 }
 
                 Properties.Settings.Default.PropertyChanged -= SettingsChanged;
+                this.notificator.IsEnabledChanged -= notificator_IsEnabledChanged;
                 this.notificator.Dispose();
             }
         }
@@ -1970,6 +1963,7 @@ namespace GreatSnooper.ViewModel
         }
         #endregion
 
+        #region Notificator
         internal void NotificatorFound(Message msg, AbstractChannelViewModel chvm)
         {
             this.FlashWindow();
@@ -1987,5 +1981,11 @@ namespace GreatSnooper.ViewModel
             if (Properties.Settings.Default.NotificatorSoundEnabled)
                 Sounds.PlaySoundByName("NotificatorSound");
         }
+
+        void notificator_IsEnabledChanged()
+        {
+            RaisePropertyChanged("NotificatorEnabled");
+        }
+        #endregion
     }
 }

@@ -36,6 +36,7 @@ namespace GreatSnooper.ViewModel
 
         #region Properties
         public string Description { get; private set; }
+        public string Password { get; set; }
         public bool CanHost
         {
             get { return _canHost; }
@@ -83,7 +84,7 @@ namespace GreatSnooper.ViewModel
                 if (_autoJoin != value)
                 {
                     _autoJoin = value;
-                    if (value.HasValue && value.Value == false && GlobalManager.AutoJoinList.Contains(this.Name))
+                    if (value.HasValue && value.Value == false && GlobalManager.AutoJoinList.ContainsKey(this.Name))
                     {
                         GlobalManager.AutoJoinList.Remove(this.Name);
                         SettingsHelper.Save("AutoJoinChannels", GlobalManager.AutoJoinList);
@@ -97,14 +98,15 @@ namespace GreatSnooper.ViewModel
         public UserListGrid UserListDG { get; private set; }
         #endregion
 
-        public ChannelViewModel(MainViewModel mainViewModel, AbstractCommunicator server, string channelName, string description)
+        public ChannelViewModel(MainViewModel mainViewModel, AbstractCommunicator server, string channelName, string description, string password = null)
             : base(mainViewModel, server)
         {
             this.Name = channelName;
+            this.Password = password;
             this.Description = description;
             this.leagueSearcher = LeagueSearcher.Instance;
             this.notificator = Notificator.Instance;
-            this._autoJoin = GlobalManager.AutoJoinList.Contains(channelName);
+            this._autoJoin = GlobalManager.AutoJoinList.ContainsKey(channelName);
             this.GameListUpdatedTime = new DateTime(1999, 5, 31);
 
             this.Games = new SortedObservableCollection<Game>();
@@ -124,19 +126,19 @@ namespace GreatSnooper.ViewModel
         {
             this.Loading = true;
 
-            if (AutoJoin.HasValue && AutoJoin.Value && GlobalManager.AutoJoinList.Contains(this.Name) == false)
+            if (AutoJoin.HasValue && AutoJoin.Value && GlobalManager.AutoJoinList.ContainsKey(this.Name) == false)
             {
-                GlobalManager.AutoJoinList.Add(this.Name);
+                GlobalManager.AutoJoinList.Add(this.Name, this.Password);
                 SettingsHelper.Save("AutoJoinChannels", GlobalManager.AutoJoinList);
             }
 
             if (this.Server is WormNetCommunicator || Server.State == AbstractCommunicator.ConnectionStates.Connected)
-                this.Server.JoinChannel(this, this.Name);
+                this.Server.JoinChannel(this, this.Name, this.Password);
             else
             {
                 var gameSurge = (GameSurgeCommunicator)this.Server;
                 if (this.Server.State == AbstractCommunicator.ConnectionStates.Connected)
-                    gameSurge.JoinChannel(this, this.Name);
+                    gameSurge.JoinChannel(this, this.Name, this.Password);
                 else
                 {
                     gameSurge.JoinChannelList.Add(this.Name);

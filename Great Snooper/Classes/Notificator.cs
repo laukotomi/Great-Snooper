@@ -7,6 +7,8 @@ using System.Text.RegularExpressions;
 
 namespace GreatSnooper.Classes
 {
+    internal delegate void NotificatorIsEnabledChangedDelegate();
+
     class Notificator
     {
         #region Static
@@ -96,6 +98,10 @@ namespace GreatSnooper.Classes
                 if (_isEnabled != value)
                 {
                     _isEnabled = value;
+                    if (this.MessageRegexChange != null)
+                        this.MessageRegexChange(this);
+                    if (this.IsEnabledChanged != null)
+                        this.IsEnabledChanged();
                 }
             }
         }
@@ -123,6 +129,7 @@ namespace GreatSnooper.Classes
 
         #region Events
         public event MessageRegexChangedDelegate MessageRegexChange;
+        public event NotificatorIsEnabledChangedDelegate IsEnabledChanged;
         #endregion
 
         private Notificator()
@@ -154,7 +161,7 @@ namespace GreatSnooper.Classes
                     break;
 
                 case "NotificatorInMessages":
-                    LoadList(Properties.Settings.Default.NotificatorInMessages, ref this.searchInMessages, ref this._searchInHosterNamesEnabled);
+                    LoadList(Properties.Settings.Default.NotificatorInMessages, ref this.searchInMessages, ref this._searchInMessagesEnabled);
                     if (this.MessageRegexChange != null)
                         this.MessageRegexChange(this);
                     break;

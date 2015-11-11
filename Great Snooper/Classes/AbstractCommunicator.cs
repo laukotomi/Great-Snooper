@@ -891,9 +891,12 @@ namespace GreatSnooper.Classes
                 Send(sender, "PRIVMSG " + channelOrClientName + " :\x01" + command + " " + message + "\x01");
         }
 
-        public void JoinChannel(object sender, string channelName)
+        public void JoinChannel(object sender, string channelName, string password = null)
         {
-            Send(sender, "JOIN " + channelName);
+            if (password == null)
+                Send(sender, "JOIN " + channelName);
+            else
+                Send(sender, "JOIN " + channelName + " " + password);
         }
 
         public void JoinChannels(object sender, IEnumerable<string> channels)

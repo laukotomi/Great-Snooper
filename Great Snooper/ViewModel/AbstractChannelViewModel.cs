@@ -267,11 +267,20 @@ namespace GreatSnooper.ViewModel
                 {
                     if (Server.HandleJoinRequest && text.Length > 0 && (text.StartsWith("#") || text.StartsWith("&")))
                     {
-                        AbstractChannelViewModel chvm;
-                        if (Server.Channels.TryGetValue(text, out chvm) == false)
-                            new ChannelViewModel(this.MainViewModel, this.Server, text, "");
-                        else if (this.MainViewModel.SelectedChannel != chvm)
-                            this.MainViewModel.SelectChannel(chvm);
+                        string[] parts = text.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+                        if (parts.Length <= 2)
+                        {
+                            AbstractChannelViewModel chvm;
+                            if (Server.Channels.TryGetValue(parts[0], out chvm) == false)
+                            {
+                                if (parts.Length == 0)
+                                    new ChannelViewModel(this.MainViewModel, this.Server, parts[0], "");
+                                else
+                                    new ChannelViewModel(this.MainViewModel, this.Server, parts[0], "", parts[1]);
+                            }
+                            else if (this.MainViewModel.SelectedChannel != chvm)
+                                this.MainViewModel.SelectChannel(chvm);
+                        }
                     }
                 }
                 else if (command.Equals("pm", StringComparison.OrdinalIgnoreCase))

@@ -181,7 +181,7 @@ namespace GreatSnooper.Model
 
         internal void SaveUsers()
         {
-            SettingsHelper.Save(this.SettingName, this.Users);
+            SettingsHelper.Save(this.SettingName + "List", this.Users);
         }
     }
 }
