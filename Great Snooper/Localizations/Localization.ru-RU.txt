@@ -1,0 +1,865 @@
+﻿# Country code
+# Do not modify this!
+CountryCode=RU
+
+# Culture name for .net framework
+# Do not modify this!
+# https://msdn.microsoft.com/en-us/library/ee825488%28v=cs.20%29.aspx
+CultureName=ru-RU
+
+# Language name in English
+LanguageEnName=Russian
+
+# Language name in your language
+LanguageName=Русский
+
+# The name of the system user
+SystemUserName=Система
+
+
+
+&&&&&&&&&&&&&&&&&&
+& Popup messages &
+&&&&&&&&&&&&&&&&&&
+
+# The title of the popup message when an error occurs
+ErrorText=Ошибка
+
+# The title of the popup message when a value is missing
+MissingValueText=Значение не найдено
+
+# The title of the popup message when a value is invalid
+InvalidValueText=Неверное значение
+
+# The title of the popup message when an information message is displayed
+InformationText=Информация
+
+# The title of the popup message when a question is displayed
+# ex. Would you like to turn off league searcher, when the user wants to host/join a game
+QuestionText=Вопрос
+
+# The content of the OK button of the popup message
+OKText=OK
+
+# The content of the Yes button of the popup message
+YesText=Да
+
+# The content of the No button of the popup message
+NoText=Нет
+
+# More info button text of the popup message when What is TUS login? link is clicked
+MoreInfoText=Подробнее...
+
+
+
+&&&&&&&&&&&&&&&&
+& Login Window &
+&&&&&&&&&&&&&&&&
+
+# Message logs label in the dropdown menu
+MessageLogsText=Логи
+
+# Settings label in the dropdown menu
+SettingsText=Настройки
+
+# Exit label in the dropdown menu
+ExitText=Выход
+
+# Server label in the login window
+ServerText=Сервер:
+
+# Question mark after ServerText
+QuestionMark=?
+
+
+# The text of the popup message when you click the "?" after ServerText in the login window
+ServerInfoText=Oфициaльный cepвep - wormnet1.team17.com, обычно, все игроки подключаются к нему. Oднaкo, инoгдa oн нeдocтyпeн в cвязи c тexничecкими paбoтaми, в тaкoм cлyчae Bы мoжeтe иcпoльзoвaть aльтepнaтивный cepвep.
+
+# The title of the server list editor window when you click that little button near the server dropdown menu in the login window
+ServerListEditorTitle=Выберите сервер
+
+# Auto login label in the login window
+AutoLoginText=Автологин:
+
+# Simple login label in the login window
+SimpleLoginText=Простой логин
+
+# Nickname label in the login window
+NicknameText=Никнейм:
+
+# Country label in the login window
+CountryLabel=Страна:
+
+# Rank label in the login window
+RankText=Ранг:
+
+# Clan label in the login window
+ClanText=Клан:
+
+# The text of the popup message when you click the "?" after ClanText in the login window
+ClanInfoText=Оставьте это поле пустым, если Вы не состоите ни в одном из кланов.
+
+# TUS login label in the login window
+TusLoginText=TUS-логин
+
+# TUS nickname label in the login window when TUS login is selected
+TusNicknameText=Ваш никнейм на TUS:
+
+# TUS password label in the login window when TUS login is selected
+TusPasswordText=Ваш пароль на TUS:
+
+# What is TUS login? question in the login window when TUS login is selected
+WhatIsTusLoginLabel=Что такое TUS-логин?
+
+# The text of the popup message when What is TUS login? link is clicked
+WhatIsTusLoginText=TUS (The Ultimate Site) - вебсайт о Worms: Armageddon с большим количеством контента как для самой игры (например, новые карты и схемы), так и для сообщества (например, лиги, турниры и форум). Вы можете использовать логин и пароль от TUS-аккаунта для отображения своего ранга и названия клана на канале. Так же вы будете помечены на сайте как "Сейчас на канале".
+
+# The label of the login button in the login window
+LogInText=Подключиться
+
+# The text of the popup message when Great Snooper could not locate WA.exe
+#WAExeNotFoundText=Не удалось найти исполняемый файл игры (WA.exe). Пожалуйста, укажите путь к файлу WA.exe в Настройках. Указать путь к нему сейчас?
+
+# Login window title and the welcome message in taskbar notification when you start Great Snooper
+WelcomeMessage=Добро пожаловать!
+
+# The text of the popup message when server is not selected
+ServerMissingText=Пoжaлyйcтa, выберите сервер!
+
+# The text of the popup message when nickname is empty
+NickEmptyText=Пoжaлyйcтa, введите Ваш никнейм!
+
+# When nickname begins with wrong character (ex. 0Tomi)
+NickStartsBad=Никнейм может начинаться только с английской буквы или с символа [`].
+
+# When nickname contains any wrong character
+NickHasBadChar=Никнейм может содержать только английские буквы, цифры, а так же символы [-] и [`].
+
+# When clan name contains any wrong character
+ClanHasBadChar=Haзвaниe клaнa мoжeт coдepжaть тoлькo aнглийcкиe бyквы и цифpы.
+
+# The title of the popup message when TUS password is empty
+TusNickEmptyText=Пoжaлyйcтa, ввeдитe вaш TUS-никнeйм!
+
+# The text of the popup message when TUS password is empty
+TusPasswordEmptyText=Пoжaлyйcтa, ввeдитe вaш TUS-пароль!
+
+# The title of the popup message when TUS login fails due to caching that MonkeyIsland always forgets to correct
+TusLoginFailTitle=Ошибка авторизации
+
+# The text of the popup message when TUS login fails due to caching that MonkeyIsland always forgets to correct
+TusLoginFailText=Пpoизoшлa oшибкa при попытке авторизации. Пoжaлyйcтa, повторите попытку позже.
+
+# The text of the popup message when TUS nickname or password is incorrect
+TusAuthFailText=Неправильный логин или пароль.
+
+# The text of the popup message when communication with tus-wa.com fails
+TusCommFailText=He удалось coeдинитьcя c tus-wa.com. Пpoвepьтe интернет-coeдинeние и повторите попытку.
+
+# The text of the popup message when the nickname is already in use on WormNet
+NicknameInUseText=Этoт никнeйм yжe иcпoльзyeтcя, пoжaлyйcтa, выбepитe дpyгoй. Зaмeчaниe: ecли у вас произошел сбой доступа в Интepнeт, пoдoждите 3 минyты, пoкa cepвep нe ocвoбoдит этот никнeйм.
+
+# The text of the popup message when connecting to WormNet fails
+WNCommFailText=Не удалось подключиться к серверу. Пpoвepьтe, пpaвильно ли указан aдpec cepвepa или пoпpoбyйтe eщe paз пoзжe (возможно, проводятся работы по oбcлyживaнию).
+
+# Language label
+LanguageText=Язык:
+
+# Theme label
+ThemeText=Тема оформления:
+
+
+
+&&&&&&&&&&&&
+& Messages &
+&&&&&&&&&&&&
+
+# When a user joins a channel (the message will begin with the name of the user)
+JoinMessage=зашёл на канал.
+
+# When a user lefts a channel (the message will begin with the name of the user)
+PartMessage=покинул канал.
+
+# When a user lefts WormNet without message
+WNQuitWOMessage=отсоединился от WormNET.
+
+# When a user lefts WormNet with message
+# {0} will be the message
+WNQuitWMessage=отсоединился от WormNET ({0}).
+
+# When a user lefts Gamesurge server (where #worms channel can be found) without message
+GSQuitWOMessage=отсоединился от GameSurge.
+
+# When a user lefts Gamesurge server (where #worms channel can be found) with message
+# {0} will be the message
+GSQuitWMessage=отсоединился от GameSurge ({0}).
+
+# When the user tries to send a message to somebody who is offline
+# {0} will be the name of the user
+OfflineMessage={0} сейчас оффлайн.
+
+# Error message from WormNet (ex. You are banned, flooder!)
+# {0} will be the error message
+ServerErrorMessage=Ошибка: {0}
+
+# When WormNet sends quit message for the user (same as error message above, but this time the server will terminate the connection)
+# {0} will be the error message
+ServerQuitMessage=Ошибка: {0}
+
+# When you send private message(s) to a user who has lost his/her connection then the snooper will send this notification message for you when he/she will drop (Ping timeout: 180 seconds)
+PMPingTimeoutMessage=Из-за отсоединения этот игрок, возможно, не получил часть Ваших сообщений.
+
+# Highlight message in taskbar notification
+# {0} will be the name of the channel where the user was highlighted
+HightLightMessage=Вас упомянули на канале {0}.
+
+# Online message in private chat. When a player, who the user has private chat opened with, comes online (the message will begin with the name of the user, ex. "<nick> is online.")
+# The same message will be in taskbar notification too
+PMOnlineMessage=вернулся.
+
+# Online message in taskbar notification (when a buddy joins)
+# {0} will be the nick of the user
+OnlineMessage={0} появился в сети.
+
+# Online message for notificator (when you are looking for somebody)
+# {0} will be the nick of the user
+# {1} will be the name of the channel where the user joined
+NotifOnlineMessage={0} зашёл на канал {1}!
+
+# When the user tries to change his/her nickname in #worms channel on GameSurge with command "/nick <newnick>" but <newnick> is already in use
+GSNicknameInUse=Этот никнейм уже используется. Пожалуйста, выберите другой никнейм.
+
+# When a player changes his/her name in #worms channel on GameSurge
+# {0} will be the old nick of the player
+# {1} will be the new nick of the player
+GSNicknameChange={0} сменил никнейм на {1}.
+
+# When a player adds somebody to the conversation
+# {0} will be the nick of the player who adds somebody to the conversation
+# {1} will be the nick of the player who is being added to the conversation
+ConversationAdded={0} добавил {1} в конференцию.
+
+# When a player removes somebody from the conversation
+# {0} will be the nick of the player who removes somebody from the conversation
+# {1} will be the nick of the player who is being removed from the conversation
+ConversationRemoved={0} исключил {1} из конференции.
+
+# When the snooper user is removed from a conversation
+ConversationKick=Вы были исключены из конференции.
+
+# When somebody leaves the conversation
+# {0} will be the nick of the player who left the conversation
+ConversationLeave={0} вышел из конференции.
+
+
+
+&&&&&&&&&
+& Games &
+&&&&&&&&&
+
+
+# The text of the popup message when WA.exe is not set
+WAExeMissingText=Не указан путь к исполняемому файлу игры (WA.exe). Пожалуйста, укажите путь к WA.exe в настройках.
+
+# The text of the popup message when WA.exe doesn't exist
+WAExeNotExistsText=Не найден исполняемый файл игры (WA.exe). Пожалуйста, укажите путь к WA.exe в настройках.
+
+# The text of the popup message when the user tries to join a game, but he/she is already in an other game
+WAIsRunningText=Вы уже в игре!
+
+# The text of the popup message when the user tries to host or join a game and the league searcher is on
+LeagueSearcherRunningText=Выключить поиск игр?
+
+# The text of the popup message when the user tries to host or join a game and the notificator is on
+NotificatorRunningText=Выключить уведомитель?
+
+# The text of the popup message when the user wants to host a game but Hoster.exe doesn't exist
+HosterExeText=Файл Hoster.exe не найден. Без него Great Snooper не может хостить игры, однако, все остальные функции будут работать. Рекомендуется переустановить Great Snooper.
+
+# The text of the popup message when hosting fails
+HostFailText=Не удалось захостить игру. Возможно, в последние несколько минут Вы захостили слишком много игр — подождите и повторите попытку.
+
+
+
+&&&&&&&&&&&&&&&
+& Main window &
+&&&&&&&&&&&&&&&
+
+# Default in your language (when the user wants to remove instant color and set default)
+# When you right click on a user and then the first group in the groups menu
+# When you right click a message, then the name of the first option for instant colors
+DefaultText=По умолчанию
+
+# Ignore list label in the dropdown menu
+# Ignore list editor title
+IgnoreListTitle=Список игнорируемых
+
+# Show news label in the dropdown menu
+ShowNewsText=Новости...
+
+# Log out label in the dropdown menu
+LogOutText=Выход
+
+# Home page label in the TUS dropdown menu
+TusHomePageText=Главная страница
+
+# Analyzer label in the TUS dropdown menu
+TusAnalyzerText=Анализатор
+
+# Report page label in the TUS dropdown menu
+TusReportText=Отчёт об игре
+
+# Complaints forum label in the TUS dropdown menu
+TusComplaintsText=Форум жалоб
+
+# Recent games label in the TUS dropdown menu
+TusRecentGamesText=Недавние игры
+
+# Standings label in the TUS dropdown menu
+TusStandingsText=Рейтинги
+
+# Cups label in the TUS dropdown menu
+TusCupsText=Кубки
+
+# Tournaments label in the TUS dropdown menu
+TusTournamentsText=Турниры
+
+# Private messages label in the TUS dropdown menu
+TusPmsText=Личные сообщения
+
+# Great Snooper topic label in the TUS dropdown menu
+TusGSTopicText=Тема о Great Snooper
+
+# Tooltip text when you move the mouse over the icon of the away manager
+AwayManagerTooltip=Автоответчик
+
+# Tooltip text when you move the mouse over the icon of the chat mode
+ChatModeTooltip="Режим чата" вкл/выкл
+
+# Tooltip text when you move the mouse over the icon of the league searcher
+LeagueSearcherTooltip=Поиск TUS-игр
+
+# Tooltip text when you move the mouse over the icon of mute button
+MuteTooltip=Звуки вкл/выкл
+
+# Show snooper label when you right click the taskbar icon
+ShowSnooperText=Развернуть
+
+# Tooltip text when you move the mouse over the icon of the notificator
+NotificatorTooltip=Уведомитель
+
+# The text of the popup message when leagues are still loading
+LeaguesLoadingText=Возможно, TUS-игры ещё грузятся. Пожалуйста, подождите!
+
+# The text of the popup message when the user wants to look for league in a channel where he/she is not online
+ChannelOfflineText=Cнaчaлa зайдите на кaнaл.
+
+# Enter this channel text
+EnterChannelText=Зайти на этот канал
+
+# Connecting text
+ConnectingText=Идёт соединение...
+
+# Chat text (when you press right click on a player)
+ChatText=Начать чат
+
+# Group text (when you press right click on a player)
+GroupText=Группа
+
+# Country label in the header of the user list
+CountryHeaderLabel=С.
+
+# Rank label in the header of the user list
+RankHeaderLabel=Ранг
+
+# Nick label in the header of the user list
+NickHeaderLabel=Никнейм
+
+# Clan label in the header of the user list
+ClanHeaderLabel=Клан
+
+# Info label in the header of the user list (you must enable it in settings / window to see it)
+InfoHeaderLabel=Информация
+
+# Label of the "Host a game" button
+HostAGameText=Захостить
+
+# Label of the "Refresh game list" button
+RefrestGameListText=Обновить список игр
+
+# Label of the "Leave this channel" button
+LeaveChannelText=Покинуть этот канал
+
+# Users. (the text in the line "<channel_name> | <number> Users | <number> Games" at the top)
+UsersText=Пользователей
+
+# Games. (the text in the line "<channel_name> | <number> Users | <number> Games" at the top)
+GamesText=Игр
+
+# Join this game label when you right click on a game
+JoinGameText=Войти в эту игру
+
+# Silent join label when you right click on a game
+SilentJoinText=Тихий вход
+
+# Join and close snooper label when you right click on a game
+JoinCloseText=Войти и закрыть GS
+
+# Silent join and close snooper label when you right click on a game
+SilentJoinCloseText=Тихий вход с закрытием GS
+
+# Away message to display when you are away and you move your mouse over the away manager button
+# {0} will be the away message
+AwayManagerTooltip=Сообщение автоответчика: {0}
+
+
+# Welcome message in top left
+# {0} will be the name of the user
+WelcomeText=Привет, {0}!
+
+
+# The text of the popup message when loding common settings fails
+CommonSettingFailText=Не удалось загрузить некоторые настройки. Вы не сможете делать рассылку (но Вы сможете искать игры). Попробуйте перезапустить GS. Если эта проблема не решается, тогда GS, возможно, следует обновить.
+
+# The text of the popup message when there is new version of the snooper available
+NewVersionText=Найдено обновление для Great Snooper. Скачать его сейчас?
+
+#l10n-ru
+# The text of the popup message when starting of the updater fails
+UpdaterFailText=Не удалось начать обновление. Пожалуйста, попытайтесь запустить Updater.exe вручную из корневой папки Great Snooper.
+
+# The message when great snooper stops spamming
+SpamStopMessage=Great Snooper остановил рассылку и поиск игр!
+
+# Filter text in the filter textbox
+FilterText=Фильтр...
+
+# Add to conversation label when right clicking a user
+AddToConvText=Добавить в конференцию
+
+# Remove from conversation label when right clicking a user
+RemoveFromConvText=Удалить из конференции
+
+# No group text, the first "group" in the group list when right clicking a user. It means that the user doesn't belong to any group
+NoGroupText=(Нет)
+
+# Add to ignore list text when right clicking a user
+AddIgnoreText=Добавить в список игнорируемых
+
+# Remove from ignore list text when right clicking a user
+RemoveIgnoreText=Удалить из списка игнорируемых
+
+# View user's TUS profile when right clicking a user who is logged in with TUS account
+# {0} will be the name of the user
+ViewTusText=Показать TUS-профиль {0}
+
+# Info text when right clicking a user
+# {0} will be the information (usually snooper name or WA version)
+InfoText=Инфо: {0}
+
+# Great snooper is still running notification in taskbar
+GSRunningTaskbar=Great Snooper всё еще работает.
+
+# The system message when the snooper has reconnected
+ReconnectMessage=Great Snooper переподключился.
+
+# The title of the popup message when the user's nickname is already used on GameSurge
+GSNickInUseText=Ваш никнейм уже используется на этом сервере. Вы можете выбрать другой никнейм в Настройках. Замечание: если у Вас пропало соединение, то, возможно, Ваш никнейм «завис» на сервере, из-за чего вход под тем же никнеймом становится невозможным. В этом случае рекомендуется подождать 3 минуты и попробовать подключиться снова.
+
+# The title of the popup message when loading channel scheme fails
+ChannelSchemeText=Не удалось загрузить схему канала. Пожалуйста, перезайдите на канал.
+
+# When notificator founds match in a game name
+# {0} will be the name of the hoster
+# {1} will be the name of the game
+NotificatorGameText={0} захостил игру: {1}
+
+# Close chat label when closing a private chat with right click
+CloseChatText=Закрыть
+
+
+
+&&&&&&&&&&&&&&&&
+& Away manager &
+&&&&&&&&&&&&&&&&
+
+# Title of the away manager window
+AwayManagerTitle=Автоответчик
+
+# Away text label over the textbox
+AwayLabel=Текст
+
+# Awaybutton content to set away text
+AwayButtonAway=Включить
+
+# Awaybutton content to set back
+AwayButtonBack=Выключить
+
+# The content of close button (this will be the content of every close button!)
+CloseTest=Закрыть
+
+# Example label
+ExampleLabel=Образец
+
+# Player label (in the label "Player: message")
+PlayerLabel=Игрок:
+
+# Message label (in the label "Player: message")
+MessageLabel=сообщение
+
+
+
+&&&&&&&&&&&&&&&&&&
+& Hosting window &
+&&&&&&&&&&&&&&&&&&
+
+
+# Title of the hosting window
+HostingTitle=Захостить
+
+# Game name label
+GameNameLabel=Название игры:
+
+# Password label
+HostingPasswordLabel=Пароль (необязательно):
+
+# Using WormNAT2? question
+UsingWormNAT2=Использовать WormNAT2?
+
+# The text of the popup message when About WormNAT2 is clicked
+AboutWormNAT2Text=О WormNAT2: Если Вы хостите игру обычным способом (без использования сторонних программ), W:A создает сервер на Вашем компьютере и ожидает присоединения игроков на указанном порту (обычно 17011). Но большинство роутеров и брандмауэров по умолчанию не пропускают входящие соединения, таким образом, никдто не сможет присоединиться к Вашей игре. Вы должны будете разрешить перенаправление портов на Вашем роутере и/или настроить Ваш брандмауэр, если Вы его используете, чтобы игроки могли присоединиться к Вашей игре. Используя WormNAT2, Вы можете хостить игры без входящих соединений и Ваш хост будет работать должным образом. WormNAT2 использует выделенный прокси-сервер, который обрабатывает все соединения. Но в таком случае нет никакой поддержки для других прокси-серверов и будет лучше, если Вы настроете свою систему так, чтобы использовать нормальный способ хостинга игр и будете использовать WormNAT2 только если ничто иное не решает проблему. Вы можете найти руководство по хостингу игр на http://worms2d.info/Руководство_по_хостингу. Разрешения загрузки модулей WormKit не требуется, чтобы использовать способность снупера хостить игры).
+
+# The text of the WormNAT2 greeting popup window when somebody hosts a game using WormNAT2
+WormNAT2GreetingText=Приветствуем Вас - пользователь WormNAT2! Это - напоминающее сообщение, о том, что WormNAT2 - бесплатный сервис. Используя WormNAT2 все данные идут через прокси-сервер принятый сообществом, таким образом, занимая полосу пропускания и другие ресурсы. Поэтому, мы хотели бы попросить, чтобы Вы использовали WormNAT2 только когда Вы уже попробовали настроить хостинг должным образом, но ничего не вышло. Не забывайте, что Вы можете найти инструкции относительно того, как настроить хостинг здесь: http://worms2d.info/Руководство_по_хостингу
+
+# Send info to channel label (action message will be: "<player> is hosting a game: <gamename>")
+HostingAction=Сообщить о хостинге игры на канал?
+
+# Exit snooper after hosting label
+ExitAfterHosting=Выйти из GS после хостинга?
+
+# Create game button content
+CreateGameText=Захостить игру
+
+# The title of the popup message when game password contains bad character(s)
+GamePassBadTitle=Неверные символы
+
+# The text of the popup message when game password contains bad character(s)
+GamePassBadText=Пароль может содержать символы только из английского алфавита!
+
+
+&&&&&&&&&&&&&&&&
+& Font chooser &
+&&&&&&&&&&&&&&&&
+
+
+# Size label
+SizeLabel=Размер:
+
+# Nick color label
+NickColorLabel=Цвет никанейма:
+
+# Message color label
+MessageColorLabel=Цвет сообщений:
+
+# Bold label
+BoldLabel=Жирный шрифт:
+
+# Italic label
+ItalicLabel=Курсив:
+
+# Strikethrough label
+StrikethroughLabel=Перечёркивание:
+
+# Underline label
+UnderlineLabel=Подчёркивание:
+
+# Save label (this will be the content of every save button!)
+SaveText=Сохранить
+
+
+
+&&&&&&&&&&&&&&&&&&&&&&&&
+& League game searcher &
+&&&&&&&&&&&&&&&&&&&&&&&&
+
+# Title of the font chooser window
+LeagueGameTitle=Поиск TUS-игр
+
+
+# Spam the channel label
+SpamChannelText=Спамить канал?
+
+# Start searching button content
+StartSearchingText=Начать поиск
+
+# Start searching button content (when searching is active)
+StopSearchingText=Закончить поиск
+
+
+
+&&&&&&&&&&&&&&&
+& List editor &
+&&&&&&&&&&&&&&&
+
+# Remove text (when you right click on an item in the list editor, ex. in ignore list)
+RemoveText=Удалить
+
+# Add new user to the list text in the textbox
+AddUserToList=Добавить пользователя в список...
+
+# Enter text here text in the textbox when you are modifying server list in the login window
+EnterTextText=Введите текст здесь...
+
+# The title of the popup message when you click ? in the top right corner in the list editor
+ListEditorInfoTitle=Помощь
+
+# The text of the popup message when you click ? in the top right corner in the list editor
+ListEditorInfoText=Чтобы добавить элемент в список, введите текст в поле ввода и нажмите Enter. Чтобы удалить элемент из списка, щёлкните правой кнопкой мыши по элементу и выберите пункт "Удалить").
+
+
+
+&&&&&&&&&&&&
+& Settings &
+&&&&&&&&&&&&
+
+# The title of the settings window
+SettingsTitle=Настройки
+
+# General label for general settings
+GeneralText=Главные
+
+# The content of the browse button in the general settings
+BrowseButtonContent=Обзор
+
+# Window label for window settings
+WindowText=Окно
+
+# User groups label for user group settings
+UserGroupsText=Группы игроков
+
+# #worms label for GameSurge settings
+GSWormsText=#worms
+
+# Messages label for message settings
+MessagesText=Сообщения
+
+# Sounds label for sound settings
+SoundsText=Звуки
+
+# Group sounds label in the sound settings
+GroupSoundsText=Звуки групп
+
+# Notifications label for notifications settings
+NotificationsText=Уведомления
+
+# About label
+AboutText=О GS...
+
+# Version line in about section
+# {0} will be the version number
+VersionText=Версия: {0}
+
+# Next line: This program was written by Tomi
+MadeByText=Эта программа написана Tomi
+
+# Next line: You can contact me at http://www.tus-wa.com/profile/Tomi/ using private message
+ContactText=Вы можете связаться со мной на http://www.tus-wa.com/profile/Tomi/ через личные сообщения
+
+# Next line: License: GPLv2
+LicenseText=Лицензия: GPLv2
+
+# Next line: This program would never exist without the help of:
+ThanksText=Эта программа никогда бы не была создана без помощи:
+
+# Last line: .. and without this nice community ;)
+LastLineText=... и без этого замечательного сообщества ;)
+
+# When the user tries to replace the version number which is not the actual version of the snooper in the default quit message
+# So when you are using GS 1.4.9 and you try to set "Great Snooper v1.7.4" as quit message
+GSVersionTrolling=Врать нехорошо!
+
+# When the user tries to set empty text for something which can not be empty
+EmptyErrorMessage=Это поле не может быть пустым.
+
+# Auto login setting
+AutoLogInSettingText=Автоподключение при запуске:
+
+# Auto join setting
+AutoJoinSettingText=Автовход на эти каналы при подключении к серверу:
+
+# The content of the edit button
+EditText=Изменить
+
+# The title of the autojoin list editor window
+AutoJoinEditorTitle=Список каналов
+
+# Send a joining action message option (<nick> is joining a game: <game>)
+MessageJoinedGameText=Отсылать в канал сообщение-действие о присоединении к игре:
+
+# Mark away option
+MarkAwayText=Включить автоответчик при хостинге или присоединении к игре:
+
+# Away message label
+AwayMessageText=Сообщение автоответчика:
+
+# Send back message option
+SendBackText=Отсылать сообщение о возвращении (когда автоответчик отключился/был отключен):
+
+# Back message label
+BackMessageText=Сообщение о возвращении:
+
+# Delete old logs at startup option
+DeleteLogsText=Удалять логи старше 30 дней при запуске:
+
+# Quit message label
+QuitMessageText=Сообщение при отсоединении (quit):
+
+# Show banned users option
+ShowBannedUsersText=Показывать игнорируемых в списке игроков:
+
+# Show messages of banned users option
+ShowBannedMessagesText=Показывать сообщения игнорируемых игроков:
+
+# Show information column option
+ShowInfoColumnText=Показывать колонку «Доп. информация» в списке игроков:
+
+# Set exit button to minimize the snooper to tray option
+CloseToTrayText=Кнопка «Выход» сворачивает GS в трей:
+
+# Energy save mode while playing option
+EnergySaveModeGameText=Переводить GS в режим сбережения энергии во время игры:
+
+# Energy save mode when snooper is hidden option
+EnergySaveModeWinText=Переводить GS в режим сбережения энергии когда он свёрнут:
+
+# Set W:A task priority to high option
+WaHighPriorityText=Повысить приоритет игры (WA.exe):
+
+# Notify when notificator is on when hosting/joining a game
+AskNotificatorOffText=Спрашивать, выключить ли уведомитель при хостинге или входе в игру:
+
+# Notify when league searcher is on when hosting/joining a game
+AskLeagueSOffText=Спрашивать, выключить ли поиск TUS-игр при хостинге или входе в игру:
+
+# Enable tray balloon messages option
+TrayNotificationsText=Включить всплывающие сообщения GS в трее:
+
+# Enable tray flashing option
+TrayFlashingText=Включить возможность оповещения посредством мигания иконки GS в трее:
+
+# Show #worms channel option
+ShowWormsText=Показывать канал #worms:
+
+# #worms nickname label
+WormsNickLabel=Ник, используемый на канале #worms:
+
+# Update #worms nickname at startup option
+ChangeWormsNickText=При входе на #worms использовать никнейм, который использовался Вами на WormNet:
+
+# Show the time when message arrived option
+MessageTimeText=Показывать, когда появилось сообщение (timestamp):
+
+# Action message using > character option
+ActionMessageGTText=Использовать символ '>' в качестве синонима для команды '/me':
+
+# User message style label
+UserMessageStyleText=Стиль Ваших сообщений:
+
+# Style of other users' messages label
+ChannelMessageStyleText=Стиль сообщений остальных игроков:
+
+# Join message style label
+JoinMessageStyleText=Стиль сообщений о заходе на канал:
+
+# Part message style label
+PartMessageStyleText=Стиль сообщений о выходе с канала:
+
+# Quit message style label
+QuitMessageStyleText=Стиль сообщений об отключении от сервера:
+
+# Action message style label
+ActionMessageStyleText=Стиль действий (action):
+
+# Notice message style label
+NoticeMessageStyleText=Стиль оповещений (notice):
+
+# System message style label
+SystemMessageStyleText=Стиль системных сообщений GS:
+
+# Message arrived time style label
+MessageTimeStyleText=Стиль временных меток(timestamp):
+
+# Style of hyperlinks label
+HyperlinksStyleText=Стиль гиперссылок:
+
+# Found text style label
+FoundStyleText=Стиль текста, найденного через уведомитель:
+
+# The content of the change buttons for styles
+ChangeButtonText=Сменить
+
+# Private message arrived sound setting label
+PMBeepSettingText=Получено личное сообщение:
+
+# Highlight sound setting label
+HighlightSettingText=Когда кто-то произносит Ваш ник (highlight):
+
+# League searcher found sound setting label
+LeagueSoundSettingText=Когда поиск TUS-игр находит игру:
+
+# League searcher fails sound setting label
+LeagueFailSettingText=Когда поиск TUS-игр НЕ находит игру:
+
+# Notificator found sound setting label
+NotifSoundSettingText=Когда уведомитель что-либо находит:
+
+# Sound settings for a group label
+# {0} will be the name of the group
+GroupSoundSettingText=Игрок из группы {0} сейчас в сети:
+
+# The content of the players button for group settings to modify player list of a group
+PlayersText=Список игроков
+
+# The title of the player list editor window when modifying players of a group
+# {0} will be the name of the group
+GroupPlayersEditTitle={0} список
+
+# Enabled label for sound settings
+EnabledText=Разрешено
+
+# Buddies group name
+BuddiesGroupText=Друзья
+
+# The default name of clan mates group
+ClanMatesGroupText=Соклановцы
+
+# The default name of league players group
+LeaguePlayersGroupText=TUS-игроки
+
+# The default name of other 1 group
+Other1GroupText=Другая 1
+
+# The default name of other 2 group
+Other1GroupText=Другая 2
+
+# The default name of other 3 group
+Other1GroupText=Другая 3
+
+# The default name of other 4 group
+Other1GroupText=Другая 4
+
+
+
+&&&&&&&&&&
+& Others &
+&&&&&&&&&&
+
+
+# The title of the popup message when user types /gs in channel textbox to get how many people are using Great Snooper
+GSCheckTitle=Пользователи Great Snooper
+
+# The text of the popup message when user types /gs in channel textbox to get how many people are using Great Snooper
+# {0} will be the count of the Great Snooper users
+# {1} will be a comma separated list from the Great Snooper users
+GSCheckText={0} игроков используют Great Snooper: {1}

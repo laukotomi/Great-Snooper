@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GreatSnooper.Helpers;
+using System;
 using System.Text;
 using System.Windows;
 using System.Windows.Controls;
@@ -13,16 +14,19 @@ namespace GreatSnooper.Classes
         private static Paragraph tempP;
         private static FlowDocument fd;
 
-        public static FlowDocument Parse(string bbcode, FlowDocument thefd = null)
+        public static FlowDocument Parse(string bbcode)
         {
-            if (thefd == null)
-                fd = new FlowDocument();
-            else
-                fd = thefd;
+            fd = new FlowDocument();
             tempP = new Paragraph();
-            Parse(tempP, bbcode);
-            fd.Blocks.Add(tempP);
-
+            try
+            {
+                Parse(tempP, bbcode);
+                fd.Blocks.Add(tempP);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+            }
             return fd;
         }
 

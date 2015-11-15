@@ -734,7 +734,7 @@ namespace GreatSnooper.ViewModel
                     case AbstractCommunicator.ConnectionStates.Connected:
                         if (!closing)
                         {
-                            new MainWindow(wormNetC).Show();
+                            new MainWindow(wormNetC, TaskbarIconService).Show();
                             loggedIn = true;
                             this.CloseCommand.Execute(null);
                             return;
@@ -778,12 +778,6 @@ namespace GreatSnooper.ViewModel
 
             if (disposing)
             {
-                if (TaskbarIconService != null)
-                {
-                    TaskbarIconService.Dispose();
-                    TaskbarIconService = null;
-                }
-
                 if (tusLoginTask != null)
                 {
                     tusLoginTask.Dispose();
@@ -795,6 +789,11 @@ namespace GreatSnooper.ViewModel
                     wormNetC.ConnectionState -= ConnectionState;
                     if (!loggedIn)
                     {
+                        if (TaskbarIconService != null)
+                        {
+                            TaskbarIconService.Dispose();
+                            TaskbarIconService = null;
+                        } 
                         wormNetC.Dispose();
                         wormNetC = null;
                     }

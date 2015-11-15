@@ -1,8 +1,8 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GreatSnooper.Helpers;
+using GreatSnooper.Model;
 using GreatSnooper.UserControls;
-using System;
 using System.Collections.Generic;
 using System.Windows.Input;
 
@@ -11,64 +11,26 @@ namespace GreatSnooper.ViewModel
     class NewsViewModel : ViewModelBase
     {
         #region Members
-        private int _selectedNewsIndex = -1;
-        private Dictionary<string, bool> newsSeen;
         #endregion
 
         #region Properties
-        public int SelectedNewsIndex
-        {
-            get { return _selectedNewsIndex; }
-            set
-            {
-                if (_selectedNewsIndex != value)
-                {
-                    _selectedNewsIndex = value;
-
-                    if (_selectedNewsIndex != -1)
-                    {
-                        var data = (Dictionary<string, string>)News[value].Tag;
-                        string id;
-                        if (data.TryGetValue("id", out id) && !newsSeen.ContainsKey(id))
-                        {
-                            newsSeen.Add(id, true);
-                            SettingsHelper.Save("NewsSeen", newsSeen.Keys);
-                        }
-                    }
-                }
-            }
-        }
         public List<NewsBody> News { get; private set; }
+        public int SelectedNewsIndex { get; set; }
         #endregion
 
-        public NewsViewModel(List<Dictionary<string, string>> news, Dictionary<string, bool> newsSeen)
+        public NewsViewModel(List<News> news)
         {
-            this.newsSeen = newsSeen;
             this.News = new List<NewsBody>();
-            bool first = true;
 
-            foreach (Dictionary<string, string> item in news)
+            foreach (News item in news)
             {
-                try
-                {
-                    if (item["show"] != "1" && !GlobalManager.DebugMode)
-                        continue;
+                if (!item.Show && !GlobalManager.DebugMode)
+                    continue;
 
-                    News.Add(new NewsBody(item));
-                    if (first)
-                    {
-                        first = false;
-                        if (!this.newsSeen.ContainsKey(item["id"]))
-                        {
-                            this.newsSeen.Add(item["id"], true);
-                            SettingsHelper.Save("NewsSeen", string.Join(",", this.newsSeen.Keys));
-                        }
-                    }
-                }
-                catch (Exception) { }
+                News.Add(new NewsBody(item));
+                if (item.ID > Properties.Settings.Default.LastNewsID)
+                    SettingsHelper.Save("LastNewsID", item.ID);
             }
-
-            this.SelectedNewsIndex = 0; // To save newsSeen
         }
 
         #region NextNewsCommand
@@ -79,12 +41,10 @@ namespace GreatSnooper.ViewModel
 
         private void NextNews()
         {
-            if (News.Count > 0 && SelectedNewsIndex != -1)
+            if (News.Count > 0)
             {
                 if (SelectedNewsIndex + 1 < News.Count)
                     SelectedNewsIndex++;
-                else
-                    SelectedNewsIndex = 0;
                 RaisePropertyChanged("SelectedNewsIndex");
             }
         }
@@ -98,12 +58,10 @@ namespace GreatSnooper.ViewModel
 
         private void PrevNews()
         {
-            if (News.Count > 0 && SelectedNewsIndex != -1)
+            if (News.Count > 0)
             {
                 if (SelectedNewsIndex > 0)
                     SelectedNewsIndex--;
-                else
-                    SelectedNewsIndex = News.Count - 1;
                 RaisePropertyChanged("SelectedNewsIndex");
             }
         }

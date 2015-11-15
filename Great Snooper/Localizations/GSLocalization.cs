@@ -1818,6 +1818,29 @@ namespace GreatSnooper.Localizations
             }
         }
 
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is hosting a game: {1}.
+        /// </summary>
+        public string NotificatorHelpLabel
+        {
+            get
+            {
+                return _rm.GetString("NotificatorHelpLabel");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is hosting a game: {1}.
+        /// </summary>
+        public string NotificatorHelpText
+        {
+            get
+            {
+                return _rm.GetString("NotificatorHelpText");
+            }
+        }
+
         /// <summary>
         ///   Looks up a localized string similar to {0} is hosting a game: {1}.
         /// </summary>

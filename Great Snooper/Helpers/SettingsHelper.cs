@@ -1,6 +1,6 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System.Collections.Generic;
+
 namespace GreatSnooper.Helpers
 {
     public static class SettingsHelper
@@ -13,10 +13,13 @@ namespace GreatSnooper.Helpers
 
         public static void Save(string settingName, IEnumerable<string> collection)
         {
-            if (collection.GetType() == typeof(Dictionary<string, string>))
-                Properties.Settings.Default.GetType().GetProperty(settingName).SetValue(Properties.Settings.Default, JsonConvert.SerializeObject(collection), null);
-            else
-                Properties.Settings.Default.GetType().GetProperty(settingName).SetValue(Properties.Settings.Default, string.Join(",", collection), null);
+            Properties.Settings.Default.GetType().GetProperty(settingName).SetValue(Properties.Settings.Default, string.Join(",", collection), null);
+            Properties.Settings.Default.Save();
+        }
+
+        public static void Save(string settingName, Dictionary<string, string> collection)
+        {
+            Properties.Settings.Default.GetType().GetProperty(settingName).SetValue(Properties.Settings.Default, JsonConvert.SerializeObject(collection), null);
             Properties.Settings.Default.Save();
         }
 

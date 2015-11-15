@@ -1519,6 +1519,24 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to How to use notificator?.
+        /// </summary>
+        public static string NotificatorHelpLabel {
+            get {
+                return ResourceManager.GetString("NotificatorHelpLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Notificator can look for words in messages, sender names, hoster names, game names and join messages. By default it will look for whole words, but you can use special characters &apos;*&apos;, &apos;+&apos;, &apos;.&apos;. &apos;*&apos; matches any character, &apos;+&apos; matches at least 1 character and &apos;.&apos; matches only 1 character. So if you are looking for words similar to &quot;example&quot; then you can search for it as &quot;example&quot;, &quot;*ample&quot;, &quot;examp*&quot;, &quot;*amp*&quot;, &quot;e.ample&quot;, &quot;+amp+&quot;, etc..
+        /// </summary>
+        public static string NotificatorHelpText {
+            get {
+                return ResourceManager.GetString("NotificatorHelpText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Would you like to turn off notificator?.
         /// </summary>
         public static string NotificatorRunningText {

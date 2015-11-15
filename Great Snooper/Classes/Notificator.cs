@@ -16,6 +16,7 @@ namespace GreatSnooper.Classes
         #endregion
 
         #region Members
+        private Regex _inMessagesRegex;
         private Regex _senderNamesRegex;
         private Regex _gameNamesRegex;
         private Regex _hosterNamesRegex;
@@ -46,10 +47,17 @@ namespace GreatSnooper.Classes
             }
         }
 
-        public MySortedList<string> SearchInMessages
+
+        public Regex InMessagesRegex
         {
-            get { return searchInMessages; }
+            get
+            {
+                if (_inMessagesRegex == null)
+                    _inMessagesRegex = GenerateRegex(searchInMessages);
+                return _inMessagesRegex;
+            }
         }
+
         public Regex GameNamesRegex
         {
             get
@@ -98,8 +106,6 @@ namespace GreatSnooper.Classes
                 if (_isEnabled != value)
                 {
                     _isEnabled = value;
-                    if (this.MessageRegexChange != null)
-                        this.MessageRegexChange(this);
                     if (this.IsEnabledChanged != null)
                         this.IsEnabledChanged();
                 }
@@ -128,7 +134,6 @@ namespace GreatSnooper.Classes
         #endregion
 
         #region Events
-        public event MessageRegexChangedDelegate MessageRegexChange;
         public event NotificatorIsEnabledChangedDelegate IsEnabledChanged;
         #endregion
 
@@ -150,24 +155,27 @@ namespace GreatSnooper.Classes
             {
                 case "NotificatorInGameNames":
                     LoadList(Properties.Settings.Default.NotificatorInGameNames, ref this.searchInGameNames, ref this._searchInGameNamesEnabled);
+                    this._gameNamesRegex = null;
                     break;
 
                 case "NotificatorInHosterNames":
                     LoadList(Properties.Settings.Default.NotificatorInHosterNames, ref this.searchInHosterNames, ref this._searchInHosterNamesEnabled);
+                    this._hosterNamesRegex = null;
                     break;
 
                 case "NotificatorInJoinMessages":
                     LoadList(Properties.Settings.Default.NotificatorInJoinMessages, ref this.searchInJoinMessages, ref this._searchInJoinMessagesEnabled);
+                    this._joinMessagesRegex = null;
                     break;
 
                 case "NotificatorInMessages":
                     LoadList(Properties.Settings.Default.NotificatorInMessages, ref this.searchInMessages, ref this._searchInMessagesEnabled);
-                    if (this.MessageRegexChange != null)
-                        this.MessageRegexChange(this);
+                    this._inMessagesRegex = null;
                     break;
 
                 case "NotificatorInSenderNames":
                     LoadList(Properties.Settings.Default.NotificatorInSenderNames, ref this.searchInSenderNames, ref this._searchInSenderNamesEnabled);
+                    this._senderNamesRegex = null;
                     break;
             }
         }
@@ -202,8 +210,11 @@ namespace GreatSnooper.Classes
 
         private Regex GenerateRegex(IEnumerable<string> collection)
         {
-            var regex = string.Join("|", collection.Where(x => x.StartsWith("#") == false));
-            return new Regex(@"\b(" + GetRegexStr(regex) + @")\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            var words = collection.Where(x => x.StartsWith("#") == false).ToList();
+            for (int i = 0; i < words.Count; i++)
+                words[i] = GetRegexStr(words[i]);
+
+            return new Regex(@"\b(" + string.Join("|", words) + @")\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         }
 
         #region Dispose

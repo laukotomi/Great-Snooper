@@ -24,6 +24,39 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <controls:MetroWindow.Resources>
+        <ContextMenu x:Key="taskbarContextMenu">
+            <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ShowSnooperText, Mode=OneWay}"
+                              Command="{Binding Path=ActivationCommand, Mode=OneTime}">
+                <MenuItem.Icon>
+                    <Image Source="/Resources/tushome.png" Width="30" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=MessageLogsText, Mode=OneWay}"
+                              Command="{Binding Path=MessageLogsCommand, Mode=OneTime}">
+                <MenuItem.Icon>
+                    <Image Source="/Resources/log.png" Width="30" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=SettingsText, Mode=OneWay}"
+                              Command="{Binding Path=SettingsCommand, Mode=OneTime}">
+                <MenuItem.Icon>
+                    <Image Source="/Resources/settings.png" Width="30" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=LogOutText, Mode=OneWay}"
+                              Command="{Binding Path=LogoutCommand, Mode=OneTime}">
+                <MenuItem.Icon>
+                    <Image Source="/Resources/logout.png" Width="30" />
+                </MenuItem.Icon>
+            </MenuItem>
+            <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ExitText, Mode=OneWay}"
+                              Command="{Binding Path=CloseCommand, Mode=OneTime}">
+                <MenuItem.Icon>
+                    <Image Source="/Resources/close.png" Width="30" />
+                </MenuItem.Icon>
+            </MenuItem>
+        </ContextMenu>
+
         <Style TargetType="{x:Type controls:WindowCommands}">
             <Setter Property="Foreground"
                 Value="{DynamicResource BlackBrush}" />
@@ -244,11 +277,10 @@
             <Menu Height="40" Background="Transparent">
                 <MenuItem Style="{StaticResource MenuItemStyle}">
                     <MenuItem.Icon>
-                        <Image Source="/Resources/tuslogo.png" Width="25" Margin="8,0,0,0" />
+                        <Image Source="/Resources/tuslogo.png" Width="35" Margin="8,0,0,0" />
                     </MenuItem.Icon>
                     <MenuItem.Header>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="The Ultimate Site" VerticalAlignment="Center" FontSize="16" Foreground="AliceBlue" Margin="10,-2,0,0" />
                             <Image Source="/Resources/down.png" Width="25" Margin="3,0,5,0" />
                         </StackPanel>
                     </MenuItem.Header>
@@ -621,43 +653,5 @@
                 </i:Interaction.Triggers>
             </TextBox>
         </Grid>
-
-        <tb:TaskbarIcon x:Name="myNotifyIcon" ToolTipText="Great Snooper" IconSource="/Resources/icon.ico" TrayPopup="{StaticResource gsBalloon}"
-                        DoubleClickCommand="{Binding Path=ActivationCommand, Mode=OneTime}">
-            <tb:TaskbarIcon.ContextMenu>
-                <ContextMenu>
-                    <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ShowSnooperText, Mode=OneWay}"
-                              Command="{Binding Path=ActivationCommand, Mode=OneTime}">
-                        <MenuItem.Icon>
-                            <Image Source="/Resources/tushome.png" Width="30" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=MessageLogsText, Mode=OneWay}"
-                              Command="{Binding Path=MessageLogsCommand, Mode=OneTime}">
-                        <MenuItem.Icon>
-                            <Image Source="/Resources/log.png" Width="30" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=SettingsText, Mode=OneWay}"
-                              Command="{Binding Path=SettingsCommand, Mode=OneTime}">
-                        <MenuItem.Icon>
-                            <Image Source="/Resources/settings.png" Width="30" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=LogOutText, Mode=OneWay}"
-                              Command="{Binding Path=LogoutCommand, Mode=OneTime}">
-                        <MenuItem.Icon>
-                            <Image Source="/Resources/logout.png" Width="30" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                    <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ExitText, Mode=OneWay}"
-                              Command="{Binding Path=CloseCommand, Mode=OneTime}">
-                        <MenuItem.Icon>
-                            <Image Source="/Resources/close.png" Width="30" />
-                        </MenuItem.Icon>
-                    </MenuItem>
-                </ContextMenu>
-            </tb:TaskbarIcon.ContextMenu>
-        </tb:TaskbarIcon>
     </Grid>
 </controls:MetroWindow>

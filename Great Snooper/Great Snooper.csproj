@@ -133,6 +133,7 @@
     <Compile Include="Model\Game.cs" />
     <Compile Include="Model\League.cs" />
     <Compile Include="Model\LeagueToSearch.cs" />
+    <Compile Include="Model\News.cs" />
     <Compile Include="Model\TusAccount.cs" />
     <Compile Include="Settings\AbstractSetting.cs" />
     <Compile Include="Settings\BoolSetting.cs" />
@@ -338,11 +339,13 @@
     <EmbeddedResource Include="Localizations\Localization.hu-HU.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Localizations\Localization.pl-PL.resx" />
     <EmbeddedResource Include="Localizations\Localization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Localization.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <EmbeddedResource Include="Localizations\Localization.ru-RU.resx" />
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>

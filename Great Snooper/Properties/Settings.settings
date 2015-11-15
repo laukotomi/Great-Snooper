@@ -125,9 +125,6 @@
     <Setting Name="SearchForThese" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="NewsSeen" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
     <Setting Name="TimeLogsDeleted" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
@@ -354,6 +351,9 @@
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="SelectedWaExe" Type="System.Int32" Scope="User">
+      <Value Profile="(Default)">0</Value>
+    </Setting>
+    <Setting Name="LastNewsID" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">0</Value>
     </Setting>
   </Settings>

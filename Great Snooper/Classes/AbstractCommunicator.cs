@@ -151,6 +151,8 @@ namespace GreatSnooper.Classes
 
         public void Connect(bool reconnect = false)
         {
+            if (this.State != ConnectionStates.Disconnected)
+                return;
             if (!reconnect)
                 this.State = ConnectionStates.Connecting;
             this.SetUser();
@@ -848,7 +850,7 @@ namespace GreatSnooper.Classes
                     break;
 
                 default:
-                    if (number > 401)
+                    if (GlobalManager.DebugMode && number > 401)
                     {
                         string text = (line[spacePos + 1] == ':') ? line.Substring(spacePos + 2) : line.Substring(spacePos + 1);
                         if (MVM != null)

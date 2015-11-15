@@ -6,16 +6,16 @@ namespace GreatSnooper.Services
 {
     public class TaskbarIconService : ITaskbarIconService, IDisposable
     {
-        private TaskbarIcon icon;
+        public TaskbarIcon Icon { get; private set; }
 
         public TaskbarIconService(TaskbarIcon icon)
         {
-            this.icon = icon;
+            this.Icon = icon;
         }
 
         public void ShowMessage(string message)
         {
-            this.icon.ShowCustomBalloon(new GSBalloon() { BalloonText = message }, System.Windows.Controls.Primitives.PopupAnimation.None, 5000);
+            this.Icon.ShowCustomBalloon(new GSBalloon() { BalloonText = message }, System.Windows.Controls.Primitives.PopupAnimation.None, 5000);
         }
 
         #region IDisposable
@@ -36,10 +36,10 @@ namespace GreatSnooper.Services
 
             if (disposing)
             {
-                if (icon != null)
+                if (this.Icon != null)
                 {
-                    icon.Dispose();
-                    icon = null;
+                    this.Icon.Dispose();
+                    this.Icon = null;
                 }
             }
         }

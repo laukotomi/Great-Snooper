@@ -1,96 +1,76 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <root>
   <!-- 
-    Microsoft ResX Schema 
-    
-    Version 2.0
-    
-    The primary goals of this format is to allow a simple XML format 
-    that is mostly human readable. The generation and parsing of the 
-    various data types are done through the TypeConverter classes 
-    associated with the data types.
-    
-    Example:
-    
-    ... ado.net/XML headers & schema ...
-    <resheader name="resmimetype">text/microsoft-resx</resheader>
-    <resheader name="version">2.0</resheader>
-    <resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
-    <resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
-    <data name="Name1"><value>this is my long string</value><comment>this is a comment</comment></data>
-    <data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
-    <data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
-        <value>[base64 mime encoded serialized .NET Framework object]</value>
-    </data>
-    <data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
-        <value>[base64 mime encoded string representing a byte array form of the .NET Framework object]</value>
-        <comment>This is a comment</comment>
-    </data>
-                
-    There are any number of "resheader" rows that contain simple 
-    name/value pairs.
-    
-    Each data row contains a name, and value. The row also contains a 
-    type or mimetype. Type corresponds to a .NET class that support 
-    text/value conversion through the TypeConverter architecture. 
-    Classes that don't support this are serialized and stored with the 
-    mimetype set.
-    
-    The mimetype is used for serialized objects, and tells the 
-    ResXResourceReader how to depersist the object. This is currently not 
-    extensible. For a given mimetype the value must be set accordingly:
-    
-    Note - application/x-microsoft.net.object.binary.base64 is the format 
-    that the ResXResourceWriter will generate, however the reader can 
-    read any of the formats listed below.
-    
-    mimetype: application/x-microsoft.net.object.binary.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
-            : and then encoded with base64 encoding.
-    
-    mimetype: application/x-microsoft.net.object.soap.base64
-    value   : The object must be serialized with 
-            : System.Runtime.Serialization.Formatters.Soap.SoapFormatter
-            : and then encoded with base64 encoding.
+		Microsoft ResX Schema
 
-    mimetype: application/x-microsoft.net.object.bytearray.base64
-    value   : The object must be serialized into a byte array 
-            : using a System.ComponentModel.TypeConverter
-            : and then encoded with base64 encoding.
-    -->
+		Version 1.3
+
+		The primary goals of this format is to allow a simple XML format 
+		that is mostly human readable. The generation and parsing of the 
+		various data types are done through the TypeConverter classes 
+		associated with the data types.
+
+		Example:
+
+		... ado.net/XML headers & schema ...
+		<resheader name="resmimetype">text/microsoft-resx</resheader>
+		<resheader name="version">1.3</resheader>
+		<resheader name="reader">System.Resources.ResXResourceReader, System.Windows.Forms, ...</resheader>
+		<resheader name="writer">System.Resources.ResXResourceWriter, System.Windows.Forms, ...</resheader>
+		<data name="Name1">this is my long string</data>
+		<data name="Color1" type="System.Drawing.Color, System.Drawing">Blue</data>
+		<data name="Bitmap1" mimetype="application/x-microsoft.net.object.binary.base64">
+			[base64 mime encoded serialized .NET Framework object]
+		</data>
+		<data name="Icon1" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+			[base64 mime encoded string representing a byte array form of the .NET Framework object]
+		</data>
+
+		There are any number of "resheader" rows that contain simple 
+		name/value pairs.
+
+		Each data row contains a name, and value. The row also contains a 
+		type or mimetype. Type corresponds to a .NET class that support 
+		text/value conversion through the TypeConverter architecture. 
+		Classes that don't support this are serialized and stored with the 
+		mimetype set.
+
+		The mimetype is used for serialized objects, and tells the 
+		ResXResourceReader how to depersist the object. This is currently not 
+		extensible. For a given mimetype the value must be set accordingly:
+
+		Note - application/x-microsoft.net.object.binary.base64 is the format 
+		that the ResXResourceWriter will generate, however the reader can 
+		read any of the formats listed below.
+
+		mimetype: application/x-microsoft.net.object.binary.base64
+		value   : The object must be serialized with 
+			: System.Serialization.Formatters.Binary.BinaryFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.soap.base64
+		value   : The object must be serialized with 
+			: System.Runtime.Serialization.Formatters.Soap.SoapFormatter
+			: and then encoded with base64 encoding.
+
+		mimetype: application/x-microsoft.net.object.bytearray.base64
+		value   : The object must be serialized into a byte array 
+			: using a System.ComponentModel.TypeConverter
+			: and then encoded with base64 encoding.
+	-->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
-    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
-          <xsd:element name="metadata">
-            <xsd:complexType>
-              <xsd:sequence>
-                <xsd:element name="value" type="xsd:string" minOccurs="0" />
-              </xsd:sequence>
-              <xsd:attribute name="name" use="required" type="xsd:string" />
-              <xsd:attribute name="type" type="xsd:string" />
-              <xsd:attribute name="mimetype" type="xsd:string" />
-              <xsd:attribute ref="xml:space" />
-            </xsd:complexType>
-          </xsd:element>
-          <xsd:element name="assembly">
-            <xsd:complexType>
-              <xsd:attribute name="alias" type="xsd:string" />
-              <xsd:attribute name="name" type="xsd:string" />
-            </xsd:complexType>
-          </xsd:element>
           <xsd:element name="data">
             <xsd:complexType>
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
-              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,52 +89,52 @@
     <value>text/microsoft-resx</value>
   </resheader>
   <resheader name="version">
-    <value>2.0</value>
+    <value>1.3</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.3500.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="CountryCode" xml:space="preserve">
-    <value>GB</value>
+    <value>RU</value>
     <comment>Country code\nDo not modify this!</comment>
   </data>
   <data name="CultureName" xml:space="preserve">
-    <value>en-GB</value>
+    <value>ru-RU</value>
     <comment>Culture name for .net framework\nDo not modify this!\nhttps://msdn.microsoft.com/en-us/library/ee825488%28v=cs.20%29.aspx</comment>
   </data>
   <data name="LanguageEnName" xml:space="preserve">
-    <value>English</value>
+    <value>Russian</value>
     <comment>Language name in English</comment>
   </data>
   <data name="LanguageName" xml:space="preserve">
-    <value>English</value>
+    <value>Русский</value>
     <comment>Language name in your language</comment>
   </data>
   <data name="SystemUserName" xml:space="preserve">
-    <value>System</value>
+    <value>Система</value>
     <comment>The name of the system user</comment>
   </data>
   <data name="ErrorText" xml:space="preserve">
-    <value>Error</value>
+    <value>Ошибка</value>
     <comment>The title of the popup message when an error occurs</comment>
   </data>
   <data name="MissingValueText" xml:space="preserve">
-    <value>Missing value</value>
+    <value>Значение не найдено</value>
     <comment>The title of the popup message when a value is missing</comment>
   </data>
   <data name="InvalidValueText" xml:space="preserve">
-    <value>Invalid value</value>
+    <value>Неверное значение</value>
     <comment>The title of the popup message when a value is invalid</comment>
   </data>
   <data name="InformationText" xml:space="preserve">
-    <value>Information</value>
+    <value>Информация</value>
     <comment>The title of the popup message when an information message is displayed</comment>
   </data>
   <data name="QuestionText" xml:space="preserve">
-    <value>Question</value>
+    <value>Вопрос</value>
     <comment>The title of the popup message when a question is displayed\nex. Would you like to turn off league searcher, when the user wants to host/join a game</comment>
   </data>
   <data name="OKText" xml:space="preserve">
@@ -162,707 +142,671 @@
     <comment>The content of the OK button of the popup message</comment>
   </data>
   <data name="YesText" xml:space="preserve">
-    <value>Yes</value>
+    <value>Да</value>
     <comment>The content of the Yes button of the popup message</comment>
   </data>
   <data name="NoText" xml:space="preserve">
-    <value>No</value>
+    <value>Нет</value>
     <comment>The content of the No button of the popup message</comment>
   </data>
   <data name="MoreInfoText" xml:space="preserve">
-    <value>More info</value>
+    <value>Подробнее...</value>
     <comment>More info button text of the popup message when What is TUS login? link is clicked</comment>
   </data>
   <data name="MessageLogsText" xml:space="preserve">
-    <value>Message logs</value>
+    <value>Логи</value>
     <comment>Message logs label in the dropdown menu</comment>
   </data>
   <data name="SettingsText" xml:space="preserve">
-    <value>Settings</value>
+    <value>Настройки</value>
     <comment>Settings label in the dropdown menu</comment>
   </data>
   <data name="ExitText" xml:space="preserve">
-    <value>Exit</value>
+    <value>Выход</value>
     <comment>Exit label in the dropdown menu</comment>
   </data>
   <data name="ServerText" xml:space="preserve">
-    <value>Server:</value>
+    <value>Сервер:</value>
     <comment>Server label in the login window</comment>
   </data>
   <data name="QuestionMark" xml:space="preserve">
     <value>?</value>
     <comment>Question mark after ServerText</comment>
   </data>
-  <data name="ServerInfoTitle" xml:space="preserve">
-    <value>About servers</value>
-    <comment>The title of the popup message when you click the "?" after ServerText in the login window</comment>
-  </data>
   <data name="ServerInfoText" xml:space="preserve">
-    <value>The official server is: wormnet1.team17.com, you can find there all the players. But sometimes it is not accessable due to maintenance. Then you can use an alternative server to play for that short time.</value>
+    <value>Oфициaльный cepвep - wormnet1.team17.com, обычно, все игроки подключаются к нему. Oднaкo, инoгдa oн нeдocтyпeн в cвязи c тexничecкими paбoтaми, в тaкoм cлyчae Bы мoжeтe иcпoльзoвaть aльтepнaтивный cepвep.</value>
     <comment>The text of the popup message when you click the "?" after ServerText in the login window</comment>
   </data>
   <data name="ServerListEditorTitle" xml:space="preserve">
-    <value>Servers</value>
+    <value>Выберите сервер</value>
     <comment>The title of the server list editor window when you click that little button near the server dropdown menu in the login window</comment>
   </data>
   <data name="AutoLoginText" xml:space="preserve">
-    <value>Auto login:</value>
+    <value>Автологин:</value>
     <comment>Auto login label in the login window</comment>
   </data>
   <data name="SimpleLoginText" xml:space="preserve">
-    <value>Simple login</value>
+    <value>Простой логин</value>
     <comment>Simple login label in the login window</comment>
   </data>
   <data name="NicknameText" xml:space="preserve">
-    <value>Nickname:</value>
+    <value>Никнейм:</value>
     <comment>Nickname label in the login window</comment>
   </data>
   <data name="CountryLabel" xml:space="preserve">
-    <value>Country:</value>
+    <value>Страна:</value>
     <comment>Country label in the login window</comment>
   </data>
   <data name="RankText" xml:space="preserve">
-    <value>Rank:</value>
+    <value>Ранг:</value>
     <comment>Rank label in the login window</comment>
   </data>
   <data name="ClanText" xml:space="preserve">
-    <value>Clan:</value>
+    <value>Клан:</value>
     <comment>Clan label in the login window</comment>
   </data>
   <data name="ClanInfoText" xml:space="preserve">
-    <value>Optional. If you do not have clan you can leave this empty.</value>
+    <value>Оставьте это поле пустым, если Вы не состоите ни в одном из кланов.</value>
     <comment>The text of the popup message when you click the "?" after ClanText in the login window</comment>
   </data>
   <data name="TusLoginText" xml:space="preserve">
-    <value>TUS login</value>
+    <value>TUS-логин</value>
     <comment>TUS login label in the login window</comment>
   </data>
   <data name="TusNicknameText" xml:space="preserve">
-    <value>TUS nickname:</value>
+    <value>Ваш никнейм на TUS:</value>
     <comment>TUS nickname label in the login window when TUS login is selected</comment>
   </data>
   <data name="TusPasswordText" xml:space="preserve">
-    <value>TUS password:</value>
+    <value>Ваш пароль на TUS:</value>
     <comment>TUS password label in the login window when TUS login is selected</comment>
   </data>
   <data name="WhatIsTusLoginLabel" xml:space="preserve">
-    <value>What is TUS login?</value>
+    <value>Что такое TUS-логин?</value>
     <comment>What is TUS login? question in the login window when TUS login is selected</comment>
   </data>
   <data name="WhatIsTusLoginText" xml:space="preserve">
-    <value>TUS is The Ultimate Site. It is a website for Worms: Armageddon, which has a lot of things for the game, such as: leagues, cups, tournaments, schemes, maps, forum, etc. It also supports snoopers. If you login with your TUS account into the snooper, then your rank will be your TUS league rank, your clan will also be set and you will be marked online on the website. . You can also set a different nickname and a password for snooper login on TUS site in your Account Settings.</value>
+    <value>TUS (The Ultimate Site) - вебсайт о Worms: Armageddon с большим количеством контента как для самой игры (например, новые карты и схемы), так и для сообщества (например, лиги, турниры и форум). Вы можете использовать логин и пароль от TUS-аккаунта для отображения своего ранга и названия клана на канале. Так же вы будете помечены на сайте как "Сейчас на канале".</value>
     <comment>The text of the popup message when What is TUS login? link is clicked</comment>
   </data>
   <data name="LogInText" xml:space="preserve">
-    <value>Log in</value>
+    <value>Подключиться</value>
     <comment>The label of the login button in the login window</comment>
   </data>
-  <data name="WAExeNotFoundText" xml:space="preserve">
-    <value>Ooops, it seems like Great Snooper could not find your WA.exe! You can not host or join a game without that file. Would you like to locate your WA.exe now? You can do it later in the settings too.</value>
-    <comment>The text of the popup message when Great Snooper could not locate WA.exe</comment>
-  </data>
   <data name="WelcomeMessage" xml:space="preserve">
-    <value>Welcome to Great Snooper!</value>
-    <comment>Login window title and the welcome message in taskbar notification when you start Great Snooper</comment>
+    <value>Добро пожаловать!</value>
+    <comment>The text of the popup message when Great Snooper could not locate WA.exe\nWAExeNotFoundText=Не удалось найти исполняемый файл игры (WA.exe). Пожалуйста, укажите путь к файлу WA.exe в Настройках. Указать путь к нему сейчас?\nLogin window title and the welcome message in taskbar notification when you start Great Snooper</comment>
   </data>
   <data name="ServerMissingText" xml:space="preserve">
-    <value>Please choose a server!</value>
+    <value>Пoжaлyйcтa, выберите сервер!</value>
     <comment>The text of the popup message when server is not selected</comment>
   </data>
   <data name="NickEmptyText" xml:space="preserve">
-    <value>Please enter your nickname!</value>
+    <value>Пoжaлyйcтa, введите Ваш никнейм!</value>
     <comment>The text of the popup message when nickname is empty</comment>
   </data>
   <data name="NickStartsBad" xml:space="preserve">
-    <value>Your nickname should begin with a character from the English aplhabet or with ` character!</value>
+    <value>Никнейм может начинаться только с английской буквы или с символа [`].</value>
     <comment>When nickname begins with wrong character (ex. 0Tomi)</comment>
   </data>
   <data name="NickHasBadChar" xml:space="preserve">
-    <value>Your nickname contains one or more forbidden characters! Use characters from the English alphabet, numbers, - or `!</value>
+    <value>Никнейм может содержать только английские буквы, цифры, а так же символы [-] и [`].</value>
     <comment>When nickname contains any wrong character</comment>
   </data>
   <data name="ClanHasBadChar" xml:space="preserve">
-    <value>Your clan can contain only characters from the English alphabet and numbers.</value>
+    <value>Haзвaниe клaнa мoжeт coдepжaть тoлькo aнглийcкиe бyквы и цифpы.</value>
     <comment>When clan name contains any wrong character</comment>
   </data>
   <data name="TusNickEmptyText" xml:space="preserve">
-    <value>Please enter your TUS nickname!</value>
+    <value>Пoжaлyйcтa, ввeдитe вaш TUS-никнeйм!</value>
     <comment>The title of the popup message when TUS password is empty</comment>
   </data>
   <data name="TusPasswordEmptyText" xml:space="preserve">
-    <value>Please enter your TUS password!</value>
+    <value>Пoжaлyйcтa, ввeдитe вaш TUS-пароль!</value>
     <comment>The text of the popup message when TUS password is empty</comment>
   </data>
   <data name="TusLoginFailTitle" xml:space="preserve">
-    <value>Login failed</value>
+    <value>Ошибка авторизации</value>
     <comment>The title of the popup message when TUS login fails due to caching that MonkeyIsland always forgets to correct</comment>
   </data>
   <data name="TusLoginFailText" xml:space="preserve">
-    <value>An error occoured! Please try again!</value>
+    <value>Пpoизoшлa oшибкa при попытке авторизации. Пoжaлyйcтa, повторите попытку позже.</value>
     <comment>The text of the popup message when TUS login fails due to caching that MonkeyIsland always forgets to correct</comment>
   </data>
   <data name="TusAuthFailText" xml:space="preserve">
-    <value>The given username or password was incorrent!</value>
+    <value>Неправильный логин или пароль.</value>
     <comment>The text of the popup message when TUS nickname or password is incorrect</comment>
   </data>
   <data name="TusCommFailText" xml:space="preserve">
-    <value>The communication with tus-wa.com has failed. Please try again!</value>
+    <value>He удалось coeдинитьcя c tus-wa.com. Пpoвepьтe интернет-coeдинeние и повторите попытку.</value>
     <comment>The text of the popup message when communication with tus-wa.com fails</comment>
   </data>
   <data name="NicknameInUseText" xml:space="preserve">
-    <value>This nickname is already in use! Please choose an other one! Note: if you lost your internet connection, you may need to wait 1 or 2 minutes until the server releases your broken nickname.</value>
+    <value>Этoт никнeйм yжe иcпoльзyeтcя, пoжaлyйcтa, выбepитe дpyгoй. Зaмeчaниe: ecли у вас произошел сбой доступа в Интepнeт, пoдoждите 3 минyты, пoкa cepвep нe ocвoбoдит этот никнeйм.</value>
     <comment>The text of the popup message when the nickname is already in use on WormNet</comment>
   </data>
   <data name="WNCommFailText" xml:space="preserve">
-    <value>Could not connect to the server! Check if the server address is correct or try again later (probably maintenance time)!</value>
+    <value>Не удалось подключиться к серверу. Пpoвepьтe, пpaвильно ли указан aдpec cepвepa или пoпpoбyйтe eщe paз пoзжe (возможно, проводятся работы по oбcлyживaнию).</value>
     <comment>The text of the popup message when connecting to WormNet fails</comment>
   </data>
   <data name="LanguageText" xml:space="preserve">
-    <value>Language:</value>
+    <value>Язык:</value>
     <comment>Language label</comment>
   </data>
-  <data name="LanguageChangedText" xml:space="preserve">
-    <value>Please restart Great Snooper to apply new language settings everywhere!</value>
-    <comment>Notification message that the language data be updated after restart</comment>
-  </data>
   <data name="ThemeText" xml:space="preserve">
-    <value>Theme:</value>
+    <value>Тема оформления:</value>
     <comment>Theme label</comment>
   </data>
   <data name="JoinMessage" xml:space="preserve">
-    <value>joined the channel.</value>
+    <value>зашёл на канал.</value>
     <comment>When a user joins a channel (the message will begin with the name of the user)</comment>
   </data>
   <data name="PartMessage" xml:space="preserve">
-    <value>has left the channel.</value>
+    <value>покинул канал.</value>
     <comment>When a user lefts a channel (the message will begin with the name of the user)</comment>
   </data>
-  <data name="PartMessage2" xml:space="preserve">
-    <value>has left the channel ({0}).</value>
-    <comment>When a user lefts a channel (the message will begin with the name of the user) with message\n{0} will be the message</comment>
-  </data>
   <data name="WNQuitWOMessage" xml:space="preserve">
-    <value>has left WormNet.</value>
+    <value>отсоединился от WormNET.</value>
     <comment>When a user lefts WormNet without message</comment>
   </data>
   <data name="WNQuitWMessage" xml:space="preserve">
-    <value>has left WormNet ({0}).</value>
+    <value>отсоединился от WormNET ({0}).</value>
     <comment>When a user lefts WormNet with message\n{0} will be the message</comment>
   </data>
   <data name="GSQuitWOMessage" xml:space="preserve">
-    <value>has left the server.</value>
+    <value>отсоединился от GameSurge.</value>
     <comment>When a user lefts Gamesurge server (where #worms channel can be found) without message</comment>
   </data>
   <data name="GSQuitWMessage" xml:space="preserve">
-    <value>has left the server ({0}).</value>
+    <value>отсоединился от GameSurge ({0}).</value>
     <comment>When a user lefts Gamesurge server (where #worms channel can be found) with message\n{0} will be the message</comment>
   </data>
   <data name="OfflineMessage" xml:space="preserve">
-    <value>{0} is currently offline.</value>
+    <value>{0} сейчас оффлайн.</value>
     <comment>When the user tries to send a message to somebody who is offline\n{0} will be the name of the user</comment>
   </data>
   <data name="ServerErrorMessage" xml:space="preserve">
-    <value>An error occurred: {0}</value>
+    <value>Ошибка: {0}</value>
     <comment>Error message from WormNet (ex. You are banned, flooder!)\n{0} will be the error message</comment>
   </data>
   <data name="ServerQuitMessage" xml:space="preserve">
-    <value>Server disconnected: {0}</value>
+    <value>Ошибка: {0}</value>
     <comment>When WormNet sends quit message for the user (same as error message above, but this time the server will terminate the connection)\n{0} will be the error message</comment>
   </data>
   <data name="PMPingTimeoutMessage" xml:space="preserve">
-    <value>There may be messages that this user could not receive!</value>
+    <value>Из-за отсоединения этот игрок, возможно, не получил часть Ваших сообщений.</value>
     <comment>When you send private message(s) to a user who has lost his/her connection then the snooper will send this notification message for you when he/she will drop (Ping timeout: 180 seconds)</comment>
   </data>
   <data name="HightLightMessage" xml:space="preserve">
-    <value>You have been highlighted in {0}!</value>
+    <value>Вас упомянули на канале {0}.</value>
     <comment>Highlight message in taskbar notification\n{0} will be the name of the channel where the user was highlighted</comment>
   </data>
   <data name="PMOnlineMessage" xml:space="preserve">
-    <value>is online.</value>
+    <value>вернулся.</value>
     <comment>Online message in private chat. When a player, who the user has private chat opened with, comes online (the message will begin with the name of the user, ex. "&lt;nick&gt; is online.")\nThe same message will be in taskbar notification too</comment>
   </data>
   <data name="OnlineMessage" xml:space="preserve">
-    <value>{0} is online.</value>
+    <value>{0} появился в сети.</value>
     <comment>Online message in taskbar notification (when a buddy joins)\n{0} will be the nick of the user</comment>
   </data>
   <data name="NotifOnlineMessage" xml:space="preserve">
-    <value>{0} joined {1}!</value>
+    <value>{0} зашёл на канал {1}!</value>
     <comment>Online message for notificator (when you are looking for somebody)\n{0} will be the nick of the user\n{1} will be the name of the channel where the user joined</comment>
   </data>
   <data name="GSNicknameInUse" xml:space="preserve">
-    <value>The selected nickname is already in use!</value>
+    <value>Этот никнейм уже используется. Пожалуйста, выберите другой никнейм.</value>
     <comment>When the user tries to change his/her nickname in #worms channel on GameSurge with command "/nick &lt;newnick&gt;" but &lt;newnick&gt; is already in use</comment>
   </data>
   <data name="GSNicknameChange" xml:space="preserve">
-    <value>{0} is now known as {1}.</value>
+    <value>{0} сменил никнейм на {1}.</value>
     <comment>When a player changes his/her name in #worms channel on GameSurge\n{0} will be the old nick of the player\n{1} will be the new nick of the player</comment>
   </data>
   <data name="ConversationAdded" xml:space="preserve">
-    <value>{0} has added {1} to the conversation.</value>
+    <value>{0} добавил {1} в конференцию.</value>
     <comment>When a player adds somebody to the conversation\n{0} will be the nick of the player who adds somebody to the conversation\n{1} will be the nick of the player who is being added to the conversation</comment>
   </data>
   <data name="ConversationRemoved" xml:space="preserve">
-    <value>{0} has removed {1} from the conversation.</value>
+    <value>{0} исключил {1} из конференции.</value>
     <comment>When a player removes somebody from the conversation\n{0} will be the nick of the player who removes somebody from the conversation\n{1} will be the nick of the player who is being removed from the conversation</comment>
   </data>
   <data name="ConversationKick" xml:space="preserve">
-    <value>You have been removed from this conversation.</value>
+    <value>Вы были исключены из конференции.</value>
     <comment>When the snooper user is removed from a conversation</comment>
   </data>
   <data name="ConversationLeave" xml:space="preserve">
-    <value>{0} has left the conversation.</value>
+    <value>{0} вышел из конференции.</value>
     <comment>When somebody leaves the conversation\n{0} will be the nick of the player who left the conversation</comment>
   </data>
   <data name="WAExeMissingText" xml:space="preserve">
-    <value>WA.exe is missing. Please set WA.exe in the Settings!</value>
+    <value>Не указан путь к исполняемому файлу игры (WA.exe). Пожалуйста, укажите путь к WA.exe в настройках.</value>
     <comment>The text of the popup message when WA.exe is not set</comment>
   </data>
   <data name="WAExeNotExistsText" xml:space="preserve">
-    <value>WA.exe can not be found! Please set WA.exe in the Settings!</value>
+    <value>Не найден исполняемый файл игры (WA.exe). Пожалуйста, укажите путь к WA.exe в настройках.</value>
     <comment>The text of the popup message when WA.exe doesn't exist</comment>
   </data>
   <data name="WAIsRunningText" xml:space="preserve">
-    <value>You are already in a game!</value>
+    <value>Вы уже в игре!</value>
     <comment>The text of the popup message when the user tries to join a game, but he/she is already in an other game</comment>
   </data>
   <data name="LeagueSearcherRunningText" xml:space="preserve">
-    <value>Would you like to turn off league searcher?</value>
+    <value>Выключить поиск игр?</value>
     <comment>The text of the popup message when the user tries to host or join a game and the league searcher is on</comment>
   </data>
   <data name="NotificatorRunningText" xml:space="preserve">
-    <value>Would you like to turn off notificator?</value>
+    <value>Выключить уведомитель?</value>
     <comment>The text of the popup message when the user tries to host or join a game and the notificator is on</comment>
   </data>
   <data name="HosterExeText" xml:space="preserve">
-    <value>Hoster.exe does not exist! You can not host without that file!</value>
+    <value>Файл Hoster.exe не найден. Без него Great Snooper не может хостить игры, однако, все остальные функции будут работать. Рекомендуется переустановить Great Snooper.</value>
     <comment>The text of the popup message when the user wants to host a game but Hoster.exe doesn't exist</comment>
   </data>
+  <data name="HostFailText" xml:space="preserve">
+    <value>Не удалось захостить игру. Возможно, в последние несколько минут Вы захостили слишком много игр — подождите и повторите попытку.</value>
+    <comment>The text of the popup message when hosting fails</comment>
+  </data>
   <data name="DefaultText" xml:space="preserve">
-    <value>Default</value>
+    <value>По умолчанию</value>
     <comment>Default in your language (when the user wants to remove instant color and set default)\nWhen you right click on a user and then the first group in the groups menu\nWhen you right click a message, then the name of the first option for instant colors</comment>
   </data>
   <data name="IgnoreListTitle" xml:space="preserve">
-    <value>Ignore list</value>
+    <value>Список игнорируемых</value>
     <comment>Ignore list label in the dropdown menu\nIgnore list editor title</comment>
   </data>
   <data name="ShowNewsText" xml:space="preserve">
-    <value>Show news</value>
+    <value>Новости...</value>
     <comment>Show news label in the dropdown menu</comment>
   </data>
-  <data name="NewsWindowTitle" xml:space="preserve">
-    <value>News</value>
-    <comment>Title of the news window</comment>
-  </data>
   <data name="LogOutText" xml:space="preserve">
-    <value>Log out</value>
+    <value>Выход</value>
     <comment>Log out label in the dropdown menu</comment>
   </data>
   <data name="TusHomePageText" xml:space="preserve">
-    <value>Home page</value>
+    <value>Главная страница</value>
     <comment>Home page label in the TUS dropdown menu</comment>
   </data>
   <data name="TusAnalyzerText" xml:space="preserve">
-    <value>Analyzer</value>
+    <value>Анализатор</value>
     <comment>Analyzer label in the TUS dropdown menu</comment>
   </data>
   <data name="TusReportText" xml:space="preserve">
-    <value>Report page</value>
+    <value>Отчёт об игре</value>
     <comment>Report page label in the TUS dropdown menu</comment>
   </data>
   <data name="TusComplaintsText" xml:space="preserve">
-    <value>Complaints forum</value>
+    <value>Форум жалоб</value>
     <comment>Complaints forum label in the TUS dropdown menu</comment>
   </data>
   <data name="TusRecentGamesText" xml:space="preserve">
-    <value>Recent games</value>
+    <value>Недавние игры</value>
     <comment>Recent games label in the TUS dropdown menu</comment>
   </data>
   <data name="TusStandingsText" xml:space="preserve">
-    <value>Standings</value>
+    <value>Рейтинги</value>
     <comment>Standings label in the TUS dropdown menu</comment>
   </data>
   <data name="TusCupsText" xml:space="preserve">
-    <value>Cups</value>
+    <value>Кубки</value>
     <comment>Cups label in the TUS dropdown menu</comment>
   </data>
   <data name="TusTournamentsText" xml:space="preserve">
-    <value>Tournaments</value>
+    <value>Турниры</value>
     <comment>Tournaments label in the TUS dropdown menu</comment>
   </data>
   <data name="TusPmsText" xml:space="preserve">
-    <value>Private messages</value>
+    <value>Личные сообщения</value>
     <comment>Private messages label in the TUS dropdown menu</comment>
   </data>
   <data name="TusGSTopicText" xml:space="preserve">
-    <value>Great Snooper topic</value>
+    <value>Тема о Great Snooper</value>
     <comment>Great Snooper topic label in the TUS dropdown menu</comment>
   </data>
   <data name="AwayManagerTooltip" xml:space="preserve">
-    <value>Away manager</value>
+    <value>Автоответчик</value>
     <comment>Tooltip text when you move the mouse over the icon of the away manager</comment>
   </data>
   <data name="ChatModeTooltip" xml:space="preserve">
-    <value>Chat mode on / off</value>
+    <value>"Режим чата" вкл/выкл</value>
     <comment>Tooltip text when you move the mouse over the icon of the chat mode</comment>
   </data>
   <data name="LeagueSearcherTooltip" xml:space="preserve">
-    <value>Search for league game</value>
+    <value>Поиск TUS-игр</value>
     <comment>Tooltip text when you move the mouse over the icon of the league searcher</comment>
   </data>
   <data name="MuteTooltip" xml:space="preserve">
-    <value>Sounds on / off</value>
+    <value>Звуки вкл/выкл</value>
     <comment>Tooltip text when you move the mouse over the icon of mute button</comment>
   </data>
-  <data name="VolumeTooltip" xml:space="preserve">
-    <value>Volume</value>
-    <comment>Tooltip text when you move the mouse over the icon of volume slider</comment>
-  </data>
   <data name="ShowSnooperText" xml:space="preserve">
-    <value>Show snooper</value>
+    <value>Развернуть</value>
     <comment>Show snooper label when you right click the taskbar icon</comment>
   </data>
   <data name="NotificatorTooltip" xml:space="preserve">
-    <value>Notificator</value>
+    <value>Уведомитель</value>
     <comment>Tooltip text when you move the mouse over the icon of the notificator</comment>
   </data>
   <data name="LeaguesLoadingText" xml:space="preserve">
-    <value>Leagues may be still loading, please wait!</value>
+    <value>Возможно, TUS-игры ещё грузятся. Пожалуйста, подождите!</value>
     <comment>The text of the popup message when leagues are still loading</comment>
   </data>
-  <data name="StartWAExeTooltip1" xml:space="preserve">
-    <value>Run WA.exe</value>
-    <comment>Run WA.exe tooltip</comment>
-  </data>
-  <data name="StartWAExeTooltip2" xml:space="preserve">
-    <value>Run alternative WA.exe</value>
-    <comment>Run alternative WA.exe tooltip</comment>
-  </data>
   <data name="ChannelOfflineText" xml:space="preserve">
-    <value>You must join a channel first!</value>
+    <value>Cнaчaлa зайдите на кaнaл.</value>
     <comment>The text of the popup message when the user wants to look for league in a channel where he/she is not online</comment>
   </data>
-  <data name="AutoJoinText" xml:space="preserve">
-    <value>Auto join this channel</value>
-    <comment>Auto join text</comment>
-  </data>
   <data name="EnterChannelText" xml:space="preserve">
-    <value>Enter this channel</value>
+    <value>Зайти на этот канал</value>
     <comment>Enter this channel text</comment>
   </data>
   <data name="ConnectingText" xml:space="preserve">
-    <value>Connecting</value>
+    <value>Идёт соединение...</value>
     <comment>Connecting text</comment>
   </data>
   <data name="ChatText" xml:space="preserve">
-    <value>Chat with this user</value>
+    <value>Начать чат</value>
     <comment>Chat text (when you press right click on a player)</comment>
   </data>
   <data name="GroupText" xml:space="preserve">
-    <value>Group</value>
+    <value>Группа</value>
     <comment>Group text (when you press right click on a player)</comment>
   </data>
   <data name="CountryHeaderLabel" xml:space="preserve">
-    <value>C.</value>
+    <value>С.</value>
     <comment>Country label in the header of the user list</comment>
   </data>
   <data name="RankHeaderLabel" xml:space="preserve">
-    <value>Rank</value>
+    <value>Ранг</value>
     <comment>Rank label in the header of the user list</comment>
   </data>
   <data name="NickHeaderLabel" xml:space="preserve">
-    <value>Nick</value>
+    <value>Никнейм</value>
     <comment>Nick label in the header of the user list</comment>
   </data>
   <data name="ClanHeaderLabel" xml:space="preserve">
-    <value>Clan</value>
+    <value>Клан</value>
     <comment>Clan label in the header of the user list</comment>
   </data>
   <data name="InfoHeaderLabel" xml:space="preserve">
-    <value>Info</value>
+    <value>Информация</value>
     <comment>Info label in the header of the user list (you must enable it in settings / window to see it)</comment>
   </data>
   <data name="HostAGameText" xml:space="preserve">
-    <value>Host a game</value>
+    <value>Захостить</value>
     <comment>Label of the "Host a game" button</comment>
   </data>
   <data name="RefrestGameListText" xml:space="preserve">
-    <value>Refresh game list</value>
+    <value>Обновить список игр</value>
     <comment>Label of the "Refresh game list" button</comment>
   </data>
   <data name="LeaveChannelText" xml:space="preserve">
-    <value>Leave this channel</value>
+    <value>Покинуть этот канал</value>
     <comment>Label of the "Leave this channel" button</comment>
   </data>
   <data name="UsersText" xml:space="preserve">
-    <value>Users</value>
+    <value>Пользователей</value>
     <comment>Users. (the text in the line "&lt;channel_name&gt; | &lt;number&gt; Users | &lt;number&gt; Games" at the top)</comment>
   </data>
   <data name="GamesText" xml:space="preserve">
-    <value>Games</value>
+    <value>Игр</value>
     <comment>Games. (the text in the line "&lt;channel_name&gt; | &lt;number&gt; Users | &lt;number&gt; Games" at the top)</comment>
   </data>
   <data name="JoinGameText" xml:space="preserve">
-    <value>Join this game</value>
+    <value>Войти в эту игру</value>
     <comment>Join this game label when you right click on a game</comment>
   </data>
   <data name="SilentJoinText" xml:space="preserve">
-    <value>Silent join</value>
+    <value>Тихий вход</value>
     <comment>Silent join label when you right click on a game</comment>
   </data>
   <data name="JoinCloseText" xml:space="preserve">
-    <value>Join and close snooper</value>
+    <value>Войти и закрыть GS</value>
     <comment>Join and close snooper label when you right click on a game</comment>
   </data>
   <data name="SilentJoinCloseText" xml:space="preserve">
-    <value>Silent join and close snooper</value>
+    <value>Тихий вход с закрытием GS</value>
     <comment>Silent join and close snooper label when you right click on a game</comment>
   </data>
-  <data name="AwayManagerTooltipAway" xml:space="preserve">
-    <value>You are away: {0}</value>
+  <data name="AwayManagerTooltip" xml:space="preserve">
+    <value>Сообщение автоответчика: {0}</value>
     <comment>Away message to display when you are away and you move your mouse over the away manager button\n{0} will be the away message</comment>
   </data>
   <data name="WelcomeText" xml:space="preserve">
-    <value>Welcome {0}!</value>
+    <value>Привет, {0}!</value>
     <comment>Welcome message in top left\n{0} will be the name of the user</comment>
   </data>
   <data name="CommonSettingFailText" xml:space="preserve">
-    <value>Failed to load the common settings! You won't be allowed to spam for league games (but you can still look for them). If this problem doesn't go away then the snooper may need to be updated.</value>
+    <value>Не удалось загрузить некоторые настройки. Вы не сможете делать рассылку (но Вы сможете искать игры). Попробуйте перезапустить GS. Если эта проблема не решается, тогда GS, возможно, следует обновить.</value>
     <comment>The text of the popup message when loding common settings fails</comment>
   </data>
   <data name="NewVersionText" xml:space="preserve">
-    <value>There is a new update available for Great Snooper! Would you like to download it now?</value>
+    <value>Найдено обновление для Great Snooper. Скачать его сейчас?</value>
     <comment>The text of the popup message when there is new version of the snooper available</comment>
   </data>
   <data name="UpdaterFailText" xml:space="preserve">
-    <value>Failed to start the updater! Please try to run it manually from the installation directory of Great Snooper!</value>
-    <comment>The text of the popup message when starting of the updater fails</comment>
+    <value>Не удалось начать обновление. Пожалуйста, попытайтесь запустить Updater.exe вручную из корневой папки Great Snooper.</value>
+    <comment>l10n-ru\nThe text of the popup message when starting of the updater fails</comment>
   </data>
   <data name="SpamStopMessage" xml:space="preserve">
-    <value>Great Snooper stopped spamming and searching for league game(s)!</value>
+    <value>Great Snooper остановил рассылку и поиск игр!</value>
     <comment>The message when great snooper stops spamming</comment>
   </data>
   <data name="FilterText" xml:space="preserve">
-    <value>Filter..</value>
+    <value>Фильтр...</value>
     <comment>Filter text in the filter textbox</comment>
   </data>
   <data name="AddToConvText" xml:space="preserve">
-    <value>Add to conversation</value>
+    <value>Добавить в конференцию</value>
     <comment>Add to conversation label when right clicking a user</comment>
   </data>
   <data name="RemoveFromConvText" xml:space="preserve">
-    <value>Remove from conversation</value>
+    <value>Удалить из конференции</value>
     <comment>Remove from conversation label when right clicking a user</comment>
   </data>
   <data name="NoGroupText" xml:space="preserve">
-    <value>No group</value>
+    <value>(Нет)</value>
     <comment>No group text, the first "group" in the group list when right clicking a user. It means that the user doesn't belong to any group</comment>
   </data>
   <data name="AddIgnoreText" xml:space="preserve">
-    <value>Add to ignore list</value>
+    <value>Добавить в список игнорируемых</value>
     <comment>Add to ignore list text when right clicking a user</comment>
   </data>
   <data name="RemoveIgnoreText" xml:space="preserve">
-    <value>Remove from ignore list</value>
+    <value>Удалить из списка игнорируемых</value>
     <comment>Remove from ignore list text when right clicking a user</comment>
   </data>
   <data name="ViewTusText" xml:space="preserve">
-    <value>View {0}'s profile</value>
+    <value>Показать TUS-профиль {0}</value>
     <comment>View user's TUS profile when right clicking a user who is logged in with TUS account\n{0} will be the name of the user</comment>
   </data>
   <data name="InfoText" xml:space="preserve">
-    <value>Info: {0}</value>
+    <value>Инфо: {0}</value>
     <comment>Info text when right clicking a user\n{0} will be the information (usually snooper name or WA version)</comment>
   </data>
   <data name="GSRunningTaskbar" xml:space="preserve">
-    <value>Great Snooper is still running here.</value>
+    <value>Great Snooper всё еще работает.</value>
     <comment>Great snooper is still running notification in taskbar</comment>
   </data>
   <data name="ReconnectMessage" xml:space="preserve">
-    <value>Great Snooper has reconnected.</value>
+    <value>Great Snooper переподключился.</value>
     <comment>The system message when the snooper has reconnected</comment>
   </data>
   <data name="GSNickInUseText" xml:space="preserve">
-    <value>Your nickname is already used by somebody on this server. You can choose another nickname in Settings.</value>
+    <value>Ваш никнейм уже используется на этом сервере. Вы можете выбрать другой никнейм в Настройках. Замечание: если у Вас пропало соединение, то, возможно, Ваш никнейм «завис» на сервере, из-за чего вход под тем же никнеймом становится невозможным. В этом случае рекомендуется подождать 3 минуты и попробовать подключиться снова.</value>
     <comment>The title of the popup message when the user's nickname is already used on GameSurge</comment>
   </data>
   <data name="ChannelSchemeText" xml:space="preserve">
-    <value>Failed to load the scheme of the channel. Try to rejoin the channel!</value>
+    <value>Не удалось загрузить схему канала. Пожалуйста, перезайдите на канал.</value>
     <comment>The title of the popup message when loading channel scheme fails</comment>
   </data>
   <data name="NotificatorGameText" xml:space="preserve">
-    <value>{0} is hosting a game: {1}</value>
+    <value>{0} захостил игру: {1}</value>
     <comment>When notificator founds match in a game name\n{0} will be the name of the hoster\n{1} will be the name of the game</comment>
   </data>
   <data name="CloseChatText" xml:space="preserve">
-    <value>Close</value>
+    <value>Закрыть</value>
     <comment>Close chat label when closing a private chat with right click</comment>
   </data>
   <data name="AwayManagerTitle" xml:space="preserve">
-    <value>Away Manager</value>
+    <value>Автоответчик</value>
     <comment>Title of the away manager window</comment>
   </data>
   <data name="AwayLabel" xml:space="preserve">
-    <value>Away text:</value>
+    <value>Текст</value>
     <comment>Away text label over the textbox</comment>
   </data>
   <data name="AwayButtonAway" xml:space="preserve">
-    <value>Set away</value>
+    <value>Включить</value>
     <comment>Awaybutton content to set away text</comment>
   </data>
   <data name="AwayButtonBack" xml:space="preserve">
-    <value>Set back</value>
+    <value>Выключить</value>
     <comment>Awaybutton content to set back</comment>
   </data>
-  <data name="CloseText" xml:space="preserve">
-    <value>Close</value>
+  <data name="CloseTest" xml:space="preserve">
+    <value>Закрыть</value>
     <comment>The content of close button (this will be the content of every close button!)</comment>
   </data>
   <data name="ExampleLabel" xml:space="preserve">
-    <value>Example</value>
+    <value>Образец</value>
     <comment>Example label</comment>
   </data>
   <data name="PlayerLabel" xml:space="preserve">
-    <value>Player:</value>
+    <value>Игрок:</value>
     <comment>Player label (in the label "Player: message")</comment>
   </data>
   <data name="MessageLabel" xml:space="preserve">
-    <value>message</value>
+    <value>сообщение</value>
     <comment>Message label (in the label "Player: message")</comment>
   </data>
   <data name="HostingTitle" xml:space="preserve">
-    <value>Host a game</value>
+    <value>Захостить</value>
     <comment>Title of the hosting window</comment>
   </data>
   <data name="GameNameLabel" xml:space="preserve">
-    <value>Game name:</value>
+    <value>Название игры:</value>
     <comment>Game name label</comment>
   </data>
   <data name="HostingPasswordLabel" xml:space="preserve">
-    <value>Password (optional):</value>
+    <value>Пароль (необязательно):</value>
     <comment>Password label</comment>
   </data>
-  <data name="UsingWormNat2" xml:space="preserve">
-    <value>Using WormNat2?</value>
-    <comment>Using WormNat2? question</comment>
+  <data name="UsingWormNAT2" xml:space="preserve">
+    <value>Использовать WormNAT2?</value>
+    <comment>Using WormNAT2? question</comment>
   </data>
-  <data name="AboutWormNat2Text" xml:space="preserve">
-    <value>About WormNat 2: If you host with the game, then it will create the server on your computer and it will wait for players to join on a specified port (usually 17011). But most of the routers and firewall programs don't allow incoming connections, so nobody can join your game. You will need to enable port forwarding on your router and/or configure your firewall if you use one in order to let players join your game. WormNat2 uses a technique, that you can host games without incoming connections so your host will work properly. To make this possible it uses a dedicated proxy server, which actually handles all the connections. But since there is no support for other proxy servers, we would much rather that you configure your system to use normal way of hosting your games and use WormNat2 only if nothing else works so the proxy server will not be overloaded. Enable loading WormKit modules are NOT needed to use WormNat2 hosting feature of the snooper!</value>
-    <comment>The text of the popup message when About WormNat2 is clicked</comment>
+  <data name="AboutWormNAT2Text" xml:space="preserve">
+    <value>О WormNAT2: Если Вы хостите игру обычным способом (без использования сторонних программ), W:A создает сервер на Вашем компьютере и ожидает присоединения игроков на указанном порту (обычно 17011). Но большинство роутеров и брандмауэров по умолчанию не пропускают входящие соединения, таким образом, никдто не сможет присоединиться к Вашей игре. Вы должны будете разрешить перенаправление портов на Вашем роутере и/или настроить Ваш брандмауэр, если Вы его используете, чтобы игроки могли присоединиться к Вашей игре. Используя WormNAT2, Вы можете хостить игры без входящих соединений и Ваш хост будет работать должным образом. WormNAT2 использует выделенный прокси-сервер, который обрабатывает все соединения. Но в таком случае нет никакой поддержки для других прокси-серверов и будет лучше, если Вы настроете свою систему так, чтобы использовать нормальный способ хостинга игр и будете использовать WormNAT2 только если ничто иное не решает проблему. Вы можете найти руководство по хостингу игр на http://worms2d.info/Руководство_по_хостингу. Разрешения загрузки модулей WormKit не требуется, чтобы использовать способность снупера хостить игры).</value>
+    <comment>The text of the popup message when About WormNAT2 is clicked</comment>
   </data>
-  <data name="WormNat2GreetingText" xml:space="preserve">
-    <value>Greetings WormNAT2 user! This is a reminder message to remind you that WormNAT2 is a free service. Using WormNAT2 tunnels all data through a proxy server hosted by the community, thus consuming bandwidth and other resources. Therefore, we would like to ask you to only use WormNAT2 when you have already tried configuring hosting the proper way. Don't forget that you can find instructions on how to set up hosting here: http://worms2d.info/Hosting</value>
-    <comment>The text of the WormNat2 greeting popup window when somebody hosts a game using WormNat2</comment>
+  <data name="WormNAT2GreetingText" xml:space="preserve">
+    <value>Приветствуем Вас - пользователь WormNAT2! Это - напоминающее сообщение, о том, что WormNAT2 - бесплатный сервис. Используя WormNAT2 все данные идут через прокси-сервер принятый сообществом, таким образом, занимая полосу пропускания и другие ресурсы. Поэтому, мы хотели бы попросить, чтобы Вы использовали WormNAT2 только когда Вы уже попробовали настроить хостинг должным образом, но ничего не вышло. Не забывайте, что Вы можете найти инструкции относительно того, как настроить хостинг здесь: http://worms2d.info/Руководство_по_хостингу</value>
+    <comment>The text of the WormNAT2 greeting popup window when somebody hosts a game using WormNAT2</comment>
   </data>
   <data name="HostingAction" xml:space="preserve">
-    <value>Send hosting action to channel?</value>
+    <value>Сообщить о хостинге игры на канал?</value>
     <comment>Send info to channel label (action message will be: "&lt;player&gt; is hosting a game: &lt;gamename&gt;")</comment>
   </data>
   <data name="ExitAfterHosting" xml:space="preserve">
-    <value>Exit snooper after hosting?</value>
+    <value>Выйти из GS после хостинга?</value>
     <comment>Exit snooper after hosting label</comment>
   </data>
   <data name="CreateGameText" xml:space="preserve">
-    <value>Create game</value>
+    <value>Захостить игру</value>
     <comment>Create game button content</comment>
   </data>
+  <data name="GamePassBadTitle" xml:space="preserve">
+    <value>Неверные символы</value>
+    <comment>The title of the popup message when game password contains bad character(s)</comment>
+  </data>
   <data name="GamePassBadText" xml:space="preserve">
-    <value>Password can contain only characters from the English alphabet!</value>
+    <value>Пароль может содержать символы только из английского алфавита!</value>
     <comment>The text of the popup message when game password contains bad character(s)</comment>
   </data>
-  <data name="FontChooserTitle" xml:space="preserve">
-    <value>Font Chooser</value>
-    <comment>Title of the font chooser window</comment>
-  </data>
   <data name="SizeLabel" xml:space="preserve">
-    <value>Size:</value>
+    <value>Размер:</value>
     <comment>Size label</comment>
   </data>
   <data name="NickColorLabel" xml:space="preserve">
-    <value>Nick Color:</value>
+    <value>Цвет никанейма:</value>
     <comment>Nick color label</comment>
   </data>
   <data name="MessageColorLabel" xml:space="preserve">
-    <value>Message Color:</value>
+    <value>Цвет сообщений:</value>
     <comment>Message color label</comment>
   </data>
   <data name="BoldLabel" xml:space="preserve">
-    <value>Bold:</value>
+    <value>Жирный шрифт:</value>
     <comment>Bold label</comment>
   </data>
   <data name="ItalicLabel" xml:space="preserve">
-    <value>Italic:</value>
+    <value>Курсив:</value>
     <comment>Italic label</comment>
   </data>
   <data name="StrikethroughLabel" xml:space="preserve">
-    <value>Strikethrough:</value>
+    <value>Перечёркивание:</value>
     <comment>Strikethrough label</comment>
   </data>
   <data name="UnderlineLabel" xml:space="preserve">
-    <value>Underline:</value>
+    <value>Подчёркивание:</value>
     <comment>Underline label</comment>
   </data>
   <data name="SaveText" xml:space="preserve">
-    <value>Save</value>
+    <value>Сохранить</value>
     <comment>Save label (this will be the content of every save button!)</comment>
   </data>
   <data name="LeagueGameTitle" xml:space="preserve">
-    <value>League Game Searcher</value>
+    <value>Поиск TUS-игр</value>
     <comment>Title of the font chooser window</comment>
   </data>
   <data name="SpamChannelText" xml:space="preserve">
-    <value>Spam the channel?</value>
+    <value>Спамить канал?</value>
     <comment>Spam the channel label</comment>
   </data>
   <data name="StartSearchingText" xml:space="preserve">
-    <value>Start searching</value>
+    <value>Начать поиск</value>
     <comment>Start searching button content</comment>
   </data>
   <data name="StopSearchingText" xml:space="preserve">
-    <value>Stop searching</value>
+    <value>Закончить поиск</value>
     <comment>Start searching button content (when searching is active)</comment>
   </data>
-  <data name="NoLeaguesSelectedError" xml:space="preserve">
-    <value>Please select the league(s) you are looking for!</value>
-    <comment>When no leagues were selected</comment>
-  </data>
   <data name="RemoveText" xml:space="preserve">
-    <value>Remove</value>
+    <value>Удалить</value>
     <comment>Remove text (when you right click on an item in the list editor, ex. in ignore list)</comment>
   </data>
   <data name="AddUserToList" xml:space="preserve">
-    <value>Add a new user to the list..</value>
+    <value>Добавить пользователя в список...</value>
     <comment>Add new user to the list text in the textbox</comment>
   </data>
   <data name="EnterTextText" xml:space="preserve">
-    <value>Enter text here..</value>
+    <value>Введите текст здесь...</value>
     <comment>Enter text here text in the textbox when you are modifying server list in the login window</comment>
   </data>
   <data name="ListEditorInfoTitle" xml:space="preserve">
-    <value>Help</value>
+    <value>Помощь</value>
     <comment>The title of the popup message when you click ? in the top right corner in the list editor</comment>
   </data>
   <data name="ListEditorInfoText" xml:space="preserve">
-    <value>To add item to the list enter text into the textbox and press enter. To remove item from the list right click on an item and choose remove.</value>
+    <value>Чтобы добавить элемент в список, введите текст в поле ввода и нажмите Enter. Чтобы удалить элемент из списка, щёлкните правой кнопкой мыши по элементу и выберите пункт "Удалить").</value>
     <comment>The text of the popup message when you click ? in the top right corner in the list editor</comment>
   </data>
   <data name="SettingsTitle" xml:space="preserve">
-    <value>Settings</value>
+    <value>Настройки</value>
     <comment>The title of the settings window</comment>
   </data>
   <data name="GeneralText" xml:space="preserve">
-    <value>General</value>
+    <value>Главные</value>
     <comment>General label for general settings</comment>
   </data>
   <data name="BrowseButtonContent" xml:space="preserve">
-    <value>Browse</value>
+    <value>Обзор</value>
     <comment>The content of the browse button in the general settings</comment>
   </data>
   <data name="WindowText" xml:space="preserve">
-    <value>Window</value>
+    <value>Окно</value>
     <comment>Window label for window settings</comment>
   </data>
   <data name="UserGroupsText" xml:space="preserve">
-    <value>User groups</value>
+    <value>Группы игроков</value>
     <comment>User groups label for user group settings</comment>
   </data>
   <data name="GSWormsText" xml:space="preserve">
@@ -870,367 +814,283 @@
     <comment>#worms label for GameSurge settings</comment>
   </data>
   <data name="MessagesText" xml:space="preserve">
-    <value>Messages</value>
+    <value>Сообщения</value>
     <comment>Messages label for message settings</comment>
   </data>
   <data name="SoundsText" xml:space="preserve">
-    <value>Sounds</value>
+    <value>Звуки</value>
     <comment>Sounds label for sound settings</comment>
   </data>
-  <data name="GeneralSoundsText" xml:space="preserve">
-    <value>General sounds</value>
-    <comment>General sounds label in the sound settings</comment>
-  </data>
   <data name="GroupSoundsText" xml:space="preserve">
-    <value>Group sounds</value>
+    <value>Звуки групп</value>
     <comment>Group sounds label in the sound settings</comment>
   </data>
   <data name="NotificationsText" xml:space="preserve">
-    <value>Notifications</value>
+    <value>Уведомления</value>
     <comment>Notifications label for notifications settings</comment>
   </data>
   <data name="AboutText" xml:space="preserve">
-    <value>About</value>
+    <value>О GS...</value>
     <comment>About label</comment>
   </data>
   <data name="VersionText" xml:space="preserve">
-    <value>Version: {0}</value>
+    <value>Версия: {0}</value>
     <comment>Version line in about section\n{0} will be the version number</comment>
   </data>
   <data name="MadeByText" xml:space="preserve">
-    <value>This program was written by Tomi</value>
+    <value>Эта программа написана Tomi</value>
     <comment>Next line: This program was written by Tomi</comment>
   </data>
   <data name="ContactText" xml:space="preserve">
-    <value>You can contact me at http://www.tus-wa.com/profile/Tomi/ using private message</value>
+    <value>Вы можете связаться со мной на http://www.tus-wa.com/profile/Tomi/ через личные сообщения</value>
     <comment>Next line: You can contact me at http://www.tus-wa.com/profile/Tomi/ using private message</comment>
   </data>
   <data name="LicenseText" xml:space="preserve">
-    <value>License: GPLv2</value>
+    <value>Лицензия: GPLv2</value>
     <comment>Next line: License: GPLv2</comment>
   </data>
   <data name="ThanksText" xml:space="preserve">
-    <value>This program would never exist without the help of:</value>
+    <value>Эта программа никогда бы не была создана без помощи:</value>
     <comment>Next line: This program would never exist without the help of:</comment>
   </data>
   <data name="LastLineText" xml:space="preserve">
-    <value>.. and without this nice community ;)</value>
+    <value>... и без этого замечательного сообщества ;)</value>
     <comment>Last line: .. and without this nice community ;)</comment>
   </data>
   <data name="GSVersionTrolling" xml:space="preserve">
-    <value>No trolling please!</value>
+    <value>Врать нехорошо!</value>
     <comment>When the user tries to replace the version number which is not the actual version of the snooper in the default quit message\nSo when you are using GS 1.4.9 and you try to set "Great Snooper v1.7.4" as quit message</comment>
   </data>
   <data name="EmptyErrorMessage" xml:space="preserve">
-    <value>This text cannot be empty!</value>
+    <value>Это поле не может быть пустым.</value>
     <comment>When the user tries to set empty text for something which can not be empty</comment>
   </data>
   <data name="AutoLogInSettingText" xml:space="preserve">
-    <value>Auto login at startup:</value>
+    <value>Автоподключение при запуске:</value>
     <comment>Auto login setting</comment>
   </data>
+  <data name="AutoJoinSettingText" xml:space="preserve">
+    <value>Автовход на эти каналы при подключении к серверу:</value>
+    <comment>Auto join setting</comment>
+  </data>
   <data name="EditText" xml:space="preserve">
-    <value>Edit</value>
+    <value>Изменить</value>
     <comment>The content of the edit button</comment>
   </data>
+  <data name="AutoJoinEditorTitle" xml:space="preserve">
+    <value>Список каналов</value>
+    <comment>The title of the autojoin list editor window</comment>
+  </data>
   <data name="MessageJoinedGameText" xml:space="preserve">
-    <value>Send action message to the channel if I join a game:</value>
+    <value>Отсылать в канал сообщение-действие о присоединении к игре:</value>
     <comment>Send a joining action message option (&lt;nick&gt; is joining a game: &lt;game&gt;)</comment>
   </data>
   <data name="MarkAwayText" xml:space="preserve">
-    <value>Mark me away when I host or join a game:</value>
+    <value>Включить автоответчик при хостинге или присоединении к игре:</value>
     <comment>Mark away option</comment>
   </data>
   <data name="AwayMessageText" xml:space="preserve">
-    <value>Away message:</value>
+    <value>Сообщение автоответчика:</value>
     <comment>Away message label</comment>
   </data>
   <data name="SendBackText" xml:space="preserve">
-    <value>Send back message in private chats if I am back:</value>
+    <value>Отсылать сообщение о возвращении (когда автоответчик отключился/был отключен):</value>
     <comment>Send back message option</comment>
   </data>
   <data name="BackMessageText" xml:space="preserve">
-    <value>Back message:</value>
+    <value>Сообщение о возвращении:</value>
     <comment>Back message label</comment>
   </data>
   <data name="DeleteLogsText" xml:space="preserve">
-    <value>Delete channel logs older than 30 days at startup:</value>
+    <value>Удалять логи старше 30 дней при запуске:</value>
     <comment>Delete old logs at startup option</comment>
   </data>
   <data name="QuitMessageText" xml:space="preserve">
-    <value>Quit message:</value>
+    <value>Сообщение при отсоединении (quit):</value>
     <comment>Quit message label</comment>
   </data>
-  <data name="WAExeText" xml:space="preserve">
-    <value>WA.exe:</value>
-    <comment>WA.exe label</comment>
-  </data>
-  <data name="WAExeText2" xml:space="preserve">
-    <value>Alternative WA.exe:</value>
-    <comment>Alternative WA.exe label</comment>
-  </data>
   <data name="ShowBannedUsersText" xml:space="preserve">
-    <value>Show banned users in user list:</value>
+    <value>Показывать игнорируемых в списке игроков:</value>
     <comment>Show banned users option</comment>
   </data>
   <data name="ShowBannedMessagesText" xml:space="preserve">
-    <value>Show messages of banned users in the channels:</value>
+    <value>Показывать сообщения игнорируемых игроков:</value>
     <comment>Show messages of banned users option</comment>
   </data>
   <data name="ShowInfoColumnText" xml:space="preserve">
-    <value>Show information column in user list:</value>
+    <value>Показывать колонку «Доп. информация» в списке игроков:</value>
     <comment>Show information column option</comment>
   </data>
   <data name="CloseToTrayText" xml:space="preserve">
-    <value>Exit button minimizes the snooper to tray:</value>
+    <value>Кнопка «Выход» сворачивает GS в трей:</value>
     <comment>Set exit button to minimize the snooper to tray option</comment>
   </data>
   <data name="EnergySaveModeGameText" xml:space="preserve">
-    <value>Energy save mode while playing:</value>
+    <value>Переводить GS в режим сбережения энергии во время игры:</value>
     <comment>Energy save mode while playing option</comment>
   </data>
   <data name="EnergySaveModeWinText" xml:space="preserve">
-    <value>Energy save mode when snooper is hidden:</value>
+    <value>Переводить GS в режим сбережения энергии когда он свёрнут:</value>
     <comment>Energy save mode when snooper is hidden option</comment>
   </data>
   <data name="WaHighPriorityText" xml:space="preserve">
-    <value>Set W:A task priority to high:</value>
+    <value>Повысить приоритет игры (WA.exe):</value>
     <comment>Set W:A task priority to high option</comment>
   </data>
   <data name="AskNotificatorOffText" xml:space="preserve">
-    <value>Ask if I would like to turn off the notificator when I host or join a game:</value>
+    <value>Спрашивать, выключить ли уведомитель при хостинге или входе в игру:</value>
     <comment>Notify when notificator is on when hosting/joining a game</comment>
   </data>
   <data name="AskLeagueSOffText" xml:space="preserve">
-    <value>Ask if I would like to turn off the league searcher when I host or join a game:</value>
+    <value>Спрашивать, выключить ли поиск TUS-игр при хостинге или входе в игру:</value>
     <comment>Notify when league searcher is on when hosting/joining a game</comment>
   </data>
   <data name="TrayNotificationsText" xml:space="preserve">
-    <value>Enable tray balloon messages:</value>
+    <value>Включить всплывающие сообщения GS в трее:</value>
     <comment>Enable tray balloon messages option</comment>
   </data>
   <data name="TrayFlashingText" xml:space="preserve">
-    <value>Enable tray flashing:</value>
+    <value>Включить возможность оповещения посредством мигания иконки GS в трее:</value>
     <comment>Enable tray flashing option</comment>
   </data>
   <data name="ShowWormsText" xml:space="preserve">
-    <value>Show #worms channel:</value>
+    <value>Показывать канал #worms:</value>
     <comment>Show #worms channel option</comment>
   </data>
   <data name="WormsNickLabel" xml:space="preserve">
-    <value>#worms channel nickname:</value>
+    <value>Ник, используемый на канале #worms:</value>
     <comment>#worms nickname label</comment>
   </data>
   <data name="ChangeWormsNickText" xml:space="preserve">
-    <value>Set #worms nick to WormNet nick at startup:</value>
+    <value>При входе на #worms использовать никнейм, который использовался Вами на WormNet:</value>
     <comment>Update #worms nickname at startup option</comment>
   </data>
   <data name="MessageTimeText" xml:space="preserve">
-    <value>Show the time when the message arrived:</value>
+    <value>Показывать, когда появилось сообщение (timestamp):</value>
     <comment>Show the time when message arrived option</comment>
   </data>
   <data name="ActionMessageGTText" xml:space="preserve">
-    <value>Action message using '&gt;' character:</value>
+    <value>Использовать символ '&gt;' в качестве синонима для команды '/me':</value>
     <comment>Action message using &gt; character option</comment>
   </data>
   <data name="UserMessageStyleText" xml:space="preserve">
-    <value>Style of your message:</value>
+    <value>Стиль Ваших сообщений:</value>
     <comment>User message style label</comment>
   </data>
   <data name="ChannelMessageStyleText" xml:space="preserve">
-    <value>Style of other users' messages:</value>
+    <value>Стиль сообщений остальных игроков:</value>
     <comment>Style of other users' messages label</comment>
   </data>
   <data name="JoinMessageStyleText" xml:space="preserve">
-    <value>Join message style:</value>
+    <value>Стиль сообщений о заходе на канал:</value>
     <comment>Join message style label</comment>
   </data>
   <data name="PartMessageStyleText" xml:space="preserve">
-    <value>Part message style:</value>
+    <value>Стиль сообщений о выходе с канала:</value>
     <comment>Part message style label</comment>
   </data>
   <data name="QuitMessageStyleText" xml:space="preserve">
-    <value>Quit message style:</value>
+    <value>Стиль сообщений об отключении от сервера:</value>
     <comment>Quit message style label</comment>
   </data>
   <data name="ActionMessageStyleText" xml:space="preserve">
-    <value>Action message style:</value>
+    <value>Стиль действий (action):</value>
     <comment>Action message style label</comment>
   </data>
   <data name="NoticeMessageStyleText" xml:space="preserve">
-    <value>Notice message style:</value>
+    <value>Стиль оповещений (notice):</value>
     <comment>Notice message style label</comment>
   </data>
   <data name="SystemMessageStyleText" xml:space="preserve">
-    <value>System message style:</value>
+    <value>Стиль системных сообщений GS:</value>
     <comment>System message style label</comment>
   </data>
   <data name="MessageTimeStyleText" xml:space="preserve">
-    <value>Style of message arrived time:</value>
+    <value>Стиль временных меток(timestamp):</value>
     <comment>Message arrived time style label</comment>
   </data>
   <data name="HyperlinksStyleText" xml:space="preserve">
-    <value>Style of hyperlinks:</value>
+    <value>Стиль гиперссылок:</value>
     <comment>Style of hyperlinks label</comment>
   </data>
   <data name="FoundStyleText" xml:space="preserve">
-    <value>Found text style:</value>
+    <value>Стиль текста, найденного через уведомитель:</value>
     <comment>Found text style label</comment>
   </data>
   <data name="ChangeButtonText" xml:space="preserve">
-    <value>Change</value>
+    <value>Сменить</value>
     <comment>The content of the change buttons for styles</comment>
   </data>
   <data name="PMBeepSettingText" xml:space="preserve">
-    <value>Private message arrived:</value>
+    <value>Получено личное сообщение:</value>
     <comment>Private message arrived sound setting label</comment>
   </data>
   <data name="HighlightSettingText" xml:space="preserve">
-    <value>When your name appears in chat:</value>
+    <value>Когда кто-то произносит Ваш ник (highlight):</value>
     <comment>Highlight sound setting label</comment>
   </data>
   <data name="LeagueSoundSettingText" xml:space="preserve">
-    <value>When the snooper finds a league game:</value>
+    <value>Когда поиск TUS-игр находит игру:</value>
     <comment>League searcher found sound setting label</comment>
   </data>
   <data name="LeagueFailSettingText" xml:space="preserve">
-    <value>When the snooper stops searching league game:</value>
+    <value>Когда поиск TUS-игр НЕ находит игру:</value>
     <comment>League searcher fails sound setting label</comment>
   </data>
   <data name="NotifSoundSettingText" xml:space="preserve">
-    <value>When the notificator finds something:</value>
+    <value>Когда уведомитель что-либо находит:</value>
     <comment>Notificator found sound setting label</comment>
   </data>
   <data name="GroupSoundSettingText" xml:space="preserve">
-    <value>A player from {0} comes online:</value>
+    <value>Игрок из группы {0} сейчас в сети:</value>
     <comment>Sound settings for a group label\n{0} will be the name of the group</comment>
   </data>
   <data name="PlayersText" xml:space="preserve">
-    <value>Player list</value>
+    <value>Список игроков</value>
     <comment>The content of the players button for group settings to modify player list of a group</comment>
   </data>
   <data name="GroupPlayersEditTitle" xml:space="preserve">
-    <value>{0} players</value>
+    <value>{0} список</value>
     <comment>The title of the player list editor window when modifying players of a group\n{0} will be the name of the group</comment>
   </data>
   <data name="EnabledText" xml:space="preserve">
-    <value>Enabled</value>
+    <value>Разрешено</value>
     <comment>Enabled label for sound settings</comment>
   </data>
   <data name="BuddiesGroupText" xml:space="preserve">
-    <value>Friends</value>
+    <value>Друзья</value>
     <comment>Buddies group name</comment>
   </data>
   <data name="ClanMatesGroupText" xml:space="preserve">
-    <value>Clanmates</value>
+    <value>Соклановцы</value>
     <comment>The default name of clan mates group</comment>
   </data>
   <data name="LeaguePlayersGroupText" xml:space="preserve">
-    <value>League players</value>
+    <value>TUS-игроки</value>
     <comment>The default name of league players group</comment>
   </data>
   <data name="Other1GroupText" xml:space="preserve">
-    <value>Other 1</value>
+    <value>Другая 1</value>
     <comment>The default name of other 1 group</comment>
   </data>
-  <data name="Other2GroupText" xml:space="preserve">
-    <value>Other 2</value>
+  <data name="Other1GroupText" xml:space="preserve">
+    <value>Другая 2</value>
     <comment>The default name of other 2 group</comment>
   </data>
-  <data name="Other3GroupText" xml:space="preserve">
-    <value>Other 3</value>
+  <data name="Other1GroupText" xml:space="preserve">
+    <value>Другая 3</value>
     <comment>The default name of other 3 group</comment>
   </data>
-  <data name="Other4GroupText" xml:space="preserve">
-    <value>Other 4</value>
+  <data name="Other1GroupText" xml:space="preserve">
+    <value>Другая 4</value>
     <comment>The default name of other 4 group</comment>
   </data>
   <data name="GSCheckTitle" xml:space="preserve">
-    <value>Great Snooper check</value>
+    <value>Пользователи Great Snooper</value>
     <comment>The title of the popup message when user types /gs in channel textbox to get how many people are using Great Snooper</comment>
   </data>
   <data name="GSCheckText" xml:space="preserve">
-    <value>Great Snooper is used by {0} user(s)! {1}</value>
+    <value>{0} игроков используют Great Snooper: {1}</value>
     <comment>The text of the popup message when user types /gs in channel textbox to get how many people are using Great Snooper\n{0} will be the count of the Great Snooper users\n{1} will be a comma separated list from the Great Snooper users</comment>
-  </data>
-  <data name="KickMessage" xml:space="preserve">
-    <value>Kicked by {0}</value>
-    <comment>Kick message</comment>
-  </data>
-  <data name="TopicMessage" xml:space="preserve">
-    <value>{0} has changed the topic of the channel to "{1}".</value>
-    <comment>Topic message</comment>
-  </data>
-  <data name="InMessagesLabel" xml:space="preserve">
-    <value>In messages</value>
-    <comment>Notif</comment>
-  </data>
-  <data name="InSenderNamesLabel" xml:space="preserve">
-    <value>In sender names</value>
-    <comment>Notif</comment>
-  </data>
-  <data name="InGameNamesLabel" xml:space="preserve">
-    <value>In game names</value>
-    <comment>Notif</comment>
-  </data>
-  <data name="InHosterNamesLabel" xml:space="preserve">
-    <value>In hoster names</value>
-    <comment>Notif</comment>
-  </data>
-  <data name="InJoinMessagesLabel" xml:space="preserve">
-    <value>In join messages</value>
-    <comment>Notif</comment>
-  </data>
-  <data name="StartNotifWithSnooper" xml:space="preserve">
-    <value>Start notificator with snooper</value>
-    <comment>Notif</comment>
-  </data>
-  <data name="AwayMessageFormat" xml:space="preserve">
-    <value>is away: {0}</value>
-    <comment>Away message format</comment>
-  </data>
-  <data name="HideChannelText" xml:space="preserve">
-    <value>Hide channel</value>
-    <comment>Hide channel text</comment>
-  </data>
-  <data name="HiddenChannelsText" xml:space="preserve">
-    <value>Hidden channels</value>
-    <comment>Hiden channels text in settings</comment>
-  </data>
-  <data name="UseSnooperRank" xml:space="preserve">
-    <value>Use snooper rank:</value>
-    <comment>Use snooper rank text</comment>
-  </data>
-  <data name="UseSnooperRankHelp" xml:space="preserve">
-    <value>This option is required for TUS login if you would like to use HostingBuddy to host games with the snooper.</value>
-    <comment>Use snooper rank help</comment>
-  </data>
-  <data name="HosterWormNatError" xml:space="preserve">
-    <value>The communication with WormNat server failed.</value>
-    <comment>Hoster - WormNat error, WormNat init error, Wormnat client error</comment>
-  </data>
-  <data name="HosterCreateGameFail" xml:space="preserve">
-    <value>Failed to create the game on WormNet.</value>
-    <comment>Hoster - Create game request failed</comment>
-  </data>
-  <data name="HosterNoGameIDError" xml:space="preserve">
-    <value>Failed to host a game. Probably you have hosted too many games recently. Please wait a while!</value>
-    <comment>Hoster - No game id</comment>
-  </data>
-  <data name="HosterStartGameFail" xml:space="preserve">
-    <value>Failed to start Worms: Armageddon.</value>
-    <comment>Hoster - Failed to start the game</comment>
-  </data>
-  <data name="HosterUnknownFail" xml:space="preserve">
-    <value>An unexpected error happened while trying to host a game.</value>
-    <comment>Hoster - Unknown fail</comment>
-  </data>
-  <data name="NotificatorHelpLabel" xml:space="preserve">
-    <value>How to use notificator?</value>
-    <comment>Notificator help label</comment>
-  </data>
-  <data name="NotificatorHelpText" xml:space="preserve">
-    <value>Notificator can look for words in messages, sender names, hoster names, game names and join messages. By default it will look for whole words, but you can use special characters '*', '+', and '.'. '*' matches any character, '+' matches at least 1 character and '.' matches only 1 character. So if you are looking for words similar to "example" then you can search for it as "example", "*ample", "examp*", "*amp*", "e.ample", "+amp+", etc. You can add one word per line. If you would like to ignore a word from searching then delete it or write '#' before it like "#example".</value>
-    <comment>Notificator help text</comment>
   </data>
 </root>

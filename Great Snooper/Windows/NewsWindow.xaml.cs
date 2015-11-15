@@ -1,4 +1,5 @@
-﻿using GreatSnooper.ViewModel;
+﻿using GreatSnooper.Model;
+using GreatSnooper.ViewModel;
 using MahApps.Metro.Controls;
 using System.Collections.Generic;
 
@@ -8,9 +9,9 @@ namespace GreatSnooper.Windows
     {
         private NewsViewModel vm;
 
-        public NewsWindow(List<Dictionary<string, string>> news, Dictionary<string, bool> newsSeen)
+        public NewsWindow(List<News> news)
         {
-            this.vm = new NewsViewModel(news, newsSeen);
+            this.vm = new NewsViewModel(news);
             this.DataContext = vm;
             InitializeComponent(); 
         }

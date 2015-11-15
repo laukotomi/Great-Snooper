@@ -66,8 +66,7 @@ namespace GreatSnooper.ViewModel
         private Task loadSettingsTask;
         private Task loadGamesTask;
         private readonly List<League> leagues = new List<League>();
-        private readonly List<Dictionary<string, string>> newsList = new List<Dictionary<string, string>>();
-        private readonly Dictionary<string, bool> newsSeen = new Dictionary<string, bool>();
+        private readonly List<News> newsList = new List<News>();
         private readonly DispatcherTimer secondTimer = new DispatcherTimer(DispatcherPriority.Input);
         private int gameListCounter = 0;
 
@@ -433,11 +432,6 @@ namespace GreatSnooper.ViewModel
             filterTimer.Interval = new TimeSpan(0, 0, 0, 0, 300);
             filterTimer.Tick += filterTimer_Tick;
 
-            // Unserialize newsseen
-            string[] list = Properties.Settings.Default.NewsSeen.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 0; i < list.Length; i++)
-                newsSeen.Add(list[i], false);
-
             wormNetC.GetChannelList(this);
         }
         #endregion
@@ -700,6 +694,7 @@ namespace GreatSnooper.ViewModel
         internal void ContentRendered(object sender, EventArgs e)
         {
             string latestVersion = string.Empty;
+            bool openNews = false;
 
             loadSettingsTask = Task.Factory.StartNew(() =>
             {
@@ -777,7 +772,17 @@ namespace GreatSnooper.ViewModel
                                 while (inner.MoveToNextAttribute())
                                     newsThings.Add(inner.Name, inner.Value);
 
-                                newsList.Add(newsThings);
+                                int id;
+                                double fontsize;
+                                if (newsThings.ContainsKey("id") && int.TryParse(newsThings["id"], out id) && newsThings.ContainsKey("show")
+                                    && newsThings.ContainsKey("background") && newsThings.ContainsKey("textcolor")
+                                    && newsThings.ContainsKey("fontsize") && double.TryParse(newsThings["fontsize"], out fontsize) && newsThings.ContainsKey("bbcode"))
+                                {
+                                    if (newsThings["show"] == "1" && id > Properties.Settings.Default.LastNewsID)
+                                        openNews = true;
+
+                                    newsList.Add(new News(id, newsThings["show"] == "1", newsThings["background"], newsThings["textcolor"], fontsize, newsThings["bbcode"]));
+                                }
                             }
                         }
 
@@ -838,50 +843,13 @@ namespace GreatSnooper.ViewModel
                                     this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.UpdaterFailText);
                                 }
                             }
-                            else
-                                ProcessNews();
+                            else if (openNews)
+                                OpenNewsCommand.Execute(null);
                         });
                 }
-                else
-                    ProcessNews();
+                else if (openNews)
+                    OpenNewsCommand.Execute(null);
             }, TaskScheduler.FromCurrentSynchronizationContext());
-        }
-
-        private void ProcessNews()
-        {
-            bool open = false;
-            bool first = true;
-            foreach (Dictionary<string, string> item in newsList)
-            {
-                try
-                {
-                    if (item["show"] == "1")
-                    {
-                        if (first)
-                        {
-                            first = false;
-                            if (!newsSeen.ContainsKey(item["id"]))
-                                open = true;
-                        }
-
-                        if (newsSeen.ContainsKey(item["id"]))
-                            newsSeen[item["id"]] = true;
-                    }
-                }
-                catch (Exception) { }
-            }
-
-            List<string> toRemove = new List<string>();
-            foreach (var item in newsSeen)
-            {
-                if (!item.Value)
-                    toRemove.Add(item.Key);
-            }
-            for (int i = 0; i < toRemove.Count; i++)
-                newsSeen.Remove(toRemove[i]);
-
-            if (open)
-                OpenNewsCommand.Execute(null);
         }
         #endregion
 
@@ -939,8 +907,11 @@ namespace GreatSnooper.ViewModel
         private void HideChannel(ChannelViewModel chvm)
         {
             this.CloseChannelTab(chvm);
-            GlobalManager.HiddenChannels.Add(chvm.Name);
-            SettingsHelper.Save("HiddenChannels", GlobalManager.HiddenChannels);
+            if (chvm.Server is WormNetCommunicator)
+            {
+                GlobalManager.HiddenChannels.Add(chvm.Name);
+                SettingsHelper.Save("HiddenChannels", GlobalManager.HiddenChannels);
+            }
         }
         #endregion
 
@@ -1786,7 +1757,7 @@ namespace GreatSnooper.ViewModel
 
         private void OpenNews()
         {
-            var window = new NewsWindow(newsList, newsSeen);
+            var window = new NewsWindow(newsList);
             window.Owner = DialogService.GetView();
             window.ShowDialog();
         }

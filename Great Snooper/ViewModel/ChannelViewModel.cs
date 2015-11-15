@@ -31,7 +31,6 @@ namespace GreatSnooper.ViewModel
         private Regex messageRegex;
         private bool isHighlightInRegex;
         private bool isLeagueSearcherInRegex;
-        private bool isNotificatorInRegex;
         #endregion
 
         #region Properties
@@ -153,13 +152,11 @@ namespace GreatSnooper.ViewModel
             if (this.Joined)
             {
                 this.leagueSearcher.MessageRegexChange += GenerateMessageRegex;
-                this.notificator.MessageRegexChange += GenerateMessageRegex;
                 this.Loading = false;
             }
             else // Part
             {
                 this.leagueSearcher.MessageRegexChange -= GenerateMessageRegex;
-                this.notificator.MessageRegexChange -= GenerateMessageRegex;
 
                 ClearUsers();
                 this.Games.Clear();
@@ -337,28 +334,6 @@ namespace GreatSnooper.ViewModel
             else
                 isLeagueSearcherInRegex = false;
 
-            if (notificator.SearchInMessagesEnabled)
-            {
-                sb.Append("|(");
-                isNotificatorInRegex = true;
-                bool first = true;
-                foreach (string word in notificator.SearchInMessages)
-                {
-                    if (word.StartsWith("#") == false && helper.Contains(word) == false)
-                    {
-                        helper.Add(word);
-                        if (first == false)
-                            sb.Append('|');
-                        else
-                            first = false;
-                        sb.Append(notificator.GetRegexStr(word));
-                    }
-                }
-                sb.Append(')');
-            }
-            else
-                isNotificatorInRegex = false;
-
             this.messageRegex = new Regex(@"\b(" + sb.ToString() + @")\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         }
 
@@ -379,14 +354,7 @@ namespace GreatSnooper.ViewModel
                 if (this.notificator.SearchInSenderNamesEnabled && this.notificator.SenderNamesRegex.IsMatch(msg.Sender.Name))
                     this.MainViewModel.NotificatorFound(msg, this);
  
-                int hIdx = 4, lIdx = 4, nIdx = 4;
-                if (isHighlightInRegex)
-                {
-                    lIdx++;
-                    nIdx++;
-                }
-                if (isLeagueSearcherInRegex)
-                    nIdx++;
+                int hIdx = 4, lIdx = 5;
 
                 if (messageRegex == null)
                     GenerateMessageRegex();
@@ -427,12 +395,10 @@ namespace GreatSnooper.ViewModel
                                 Sounds.PlaySoundByName("LeagueFoundBeep");
                         }
                     }
-                    else if (isNotificatorInRegex && groups[nIdx].Value.Length > 0)
-                    {
-                        msg.AddHighlightWord(groups[nIdx].Index, groups[nIdx].Length, Message.HightLightTypes.NotificatorFound);
-                        this.MainViewModel.NotificatorFound(msg, this);
-                    }
                 }
+
+                if (this.notificator.SearchInMessagesEnabled && this.notificator.InMessagesRegex.IsMatch(msg.Text))
+                    this.MainViewModel.NotificatorFound(msg, this);
             }
             else if (msgTask.Setting.Type == Message.MessageTypes.Action || msgTask.Setting.Type == Message.MessageTypes.Notice)
             {

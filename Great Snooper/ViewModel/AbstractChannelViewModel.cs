@@ -273,7 +273,7 @@ namespace GreatSnooper.ViewModel
                             AbstractChannelViewModel chvm;
                             if (Server.Channels.TryGetValue(parts[0], out chvm) == false)
                             {
-                                if (parts.Length == 0)
+                                if (parts.Length == 1)
                                     new ChannelViewModel(this.MainViewModel, this.Server, parts[0], "");
                                 else
                                     new ChannelViewModel(this.MainViewModel, this.Server, parts[0], "", parts[1]);

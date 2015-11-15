@@ -518,18 +518,6 @@ namespace GreatSnooper.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string NewsSeen {
-            get {
-                return ((string)(this["NewsSeen"]));
-            }
-            set {
-                this["NewsSeen"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         public string TimeLogsDeleted {
             get {
                 return ((string)(this["TimeLogsDeleted"]));
@@ -1436,6 +1424,18 @@ namespace GreatSnooper.Properties {
             }
             set {
                 this["SelectedWaExe"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("0")]
+        public int LastNewsID {
+            get {
+                return ((int)(this["LastNewsID"]));
+            }
+            set {
+                this["LastNewsID"] = value;
             }
         }
     }
