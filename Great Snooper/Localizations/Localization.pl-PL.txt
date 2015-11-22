@@ -819,3 +819,117 @@ GSCheckTitle=Weryfikacja programu Great Snooper
 # {0} will be the count of the Great Snooper users
 # {1} will be a comma separated list from the Great Snooper users
 GSCheckText=Z programu Great Snooper korzysta {0} użytkownik(ów)! {1}
+
+
+&&&&&&&
+& NEW &
+&&&&&&&
+# Notification message that the language data be updated after restart
+LanguageChangedText=Please restart Great Snooper to apply new language settings everywhere!
+
+# When a user lefts a channel (the message will begin with the name of the user) with message
+# {0} will be the message
+PartMessage2=has left the channel ({0}).
+
+# Title of the news window
+NewsWindowTitle=News
+
+# Tooltip text when you move the mouse over the icon of volume slider
+VolumeTooltip=Volume
+
+# Run WA.exe tooltip
+StartWAExeTooltip1=Run WA.exe
+
+#Run alternative WA.exe tooltip
+StartWAExeTooltip2=Run alternative WA.exe
+
+# Auto join text
+AutoJoinText=Auto join this channel
+
+# Away message to display when you are away and you move your mouse over the away manager button
+# {0} will be the away message
+AwayManagerTooltipAway=You are away: {0}
+
+# When no leagues were selected
+NoLeaguesSelectedError=Please select the league(s) you are looking for!
+
+# General sounds label in the sound settings
+GeneralSoundsText=General sounds
+
+# WA.exe label
+WAExeText=WA.exe:
+
+# Alternative WA.exe label
+WAExeText2=Alternative WA.exe:
+
+# Kick message
+KickMessage=Kicked by {0}
+
+# Topic message
+TopicMessage={0} has changed the topic of the channel to "{1}".
+
+# Notif
+InMessagesLabel=In messages
+
+# Notif
+InSenderNamesLabel=In sender names
+
+# Notif
+InGameNamesLabel=In game names
+
+# Notif
+InHosterNamesLabel=In hoster names
+
+# Notif
+InJoinMessagesLabel=In join messages
+
+# Notif
+StartNotifWithSnooper=Start notificator with snooper
+
+# Away message format
+AwayMessageFormat=is away: {0}
+
+# Hide channel text
+HideChannelText=Hide channel
+
+# Hiden channels text in settings
+HiddenChannelsText=Hidden channels
+
+# Use snooper rank text
+UseSnooperRank=Use snooper rank:
+
+# Use snooper rank help
+UseSnooperRankHelp=This option is required for TUS login if you would like to use HostingBuddy to host games with the snooper.
+
+# Hoster - WormNat error, WormNat init error, Wormnat client error
+HosterWormNatError=The communication with WormNat server failed.
+
+# Hoster - Create game request failed
+HosterCreateGameFail=Failed to create the game on WormNet.
+
+# Hoster - No game id
+HosterNoGameIDError=Failed to host a game. Probably you have hosted too many games recently. Please wait a while!
+
+# Hoster - Failed to start the game
+HosterStartGameFail=Failed to start Worms: Armageddon.
+
+# Hoster - Unknown fail
+HosterUnknownFail=An unexpected error happened while trying to host a game.
+
+# Notificator help label
+NotificatorHelpLabel=How to use notificator?
+
+# Notificator help text
+NotificatorHelpText=Notificator can look for words in messages, sender names, hoster names, game names and join messages. By default it will look for whole words, but you can use special characters '*', '+', and '.'. '*' matches any character, '+' matches at least 1 character and '.' matches only 1 character. So if you are looking for words similar to "example" then you can search for it as "example", "*ample", "examp*", "*amp*", "e.ample", "+amp+", etc. You can add one word per line. If you would like to ignore a word from searching then delete it or write '#' before it like "#example".
+
+# Join this game label when you right click on a game using alternative WA.exe
+JoinGameText2=Join this game (Alternative WA.exe)
+
+# Silent join label when you right click on a game using alternative WA.exe
+SilentJoinText2=Silent join (Alternative WA.exe)
+
+# Join and close snooper label when you right click on a game using alternative WA.exe
+JoinCloseText2=Join and close snooper (Alternative WA.exe)
+
+# Silent join and close snooper label when you right click on a game using alternative WA.exe
+SilentJoinCloseText2=Silent join and close snooper (Alternative WA.exe)
