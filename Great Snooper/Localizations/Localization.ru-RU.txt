@@ -16,12 +16,9 @@ LanguageName=Русский
 # The name of the system user
 SystemUserName=Система
 
-
-
 &&&&&&&&&&&&&&&&&&
 & Popup messages &
 &&&&&&&&&&&&&&&&&&
-
 # The title of the popup message when an error occurs
 ErrorText=Ошибка
 
@@ -55,7 +52,6 @@ MoreInfoText=Подробнее...
 &&&&&&&&&&&&&&&&
 & Login Window &
 &&&&&&&&&&&&&&&&
-
 # Message logs label in the dropdown menu
 MessageLogsText=Логи
 
@@ -70,7 +66,6 @@ ServerText=Сервер:
 
 # Question mark after ServerText
 QuestionMark=?
-
 
 # The text of the popup message when you click the "?" after ServerText in the login window
 ServerInfoText=Oфициaльный cepвep - wormnet1.team17.com, обычно, все игроки подключаются к нему. Oднaкo, инoгдa oн нeдocтyпeн в cвязи c тexничecкими paбoтaми, в тaкoм cлyчae Bы мoжeтe иcпoльзoвaть aльтepнaтивный cepвep.
@@ -275,10 +270,6 @@ NotificatorRunningText=Выключить уведомитель?
 
 # The text of the popup message when the user wants to host a game but Hoster.exe doesn't exist
 HosterExeText=Файл Hoster.exe не найден. Без него Great Snooper не может хостить игры, однако, все остальные функции будут работать. Рекомендуется переустановить Great Snooper.
-
-# The text of the popup message when hosting fails
-HostFailText=Не удалось захостить игру. Возможно, в последние несколько минут Вы захостили слишком много игр — подождите и повторите попытку.
-
 
 
 &&&&&&&&&&&&&&&
@@ -529,9 +520,6 @@ UsingWormNAT2=Использовать WormNAT2?
 # The text of the popup message when About WormNAT2 is clicked
 AboutWormNAT2Text=О WormNAT2: Если Вы хостите игру обычным способом (без использования сторонних программ), W:A создает сервер на Вашем компьютере и ожидает присоединения игроков на указанном порту (обычно 17011). Но большинство роутеров и брандмауэров по умолчанию не пропускают входящие соединения, таким образом, никдто не сможет присоединиться к Вашей игре. Вы должны будете разрешить перенаправление портов на Вашем роутере и/или настроить Ваш брандмауэр, если Вы его используете, чтобы игроки могли присоединиться к Вашей игре. Используя WormNAT2, Вы можете хостить игры без входящих соединений и Ваш хост будет работать должным образом. WormNAT2 использует выделенный прокси-сервер, который обрабатывает все соединения. Но в таком случае нет никакой поддержки для других прокси-серверов и будет лучше, если Вы настроете свою систему так, чтобы использовать нормальный способ хостинга игр и будете использовать WormNAT2 только если ничто иное не решает проблему. Вы можете найти руководство по хостингу игр на http://worms2d.info/Руководство_по_хостингу. Разрешения загрузки модулей WormKit не требуется, чтобы использовать способность снупера хостить игры).
 
-# The text of the WormNAT2 greeting popup window when somebody hosts a game using WormNAT2
-WormNAT2GreetingText=Приветствуем Вас - пользователь WormNAT2! Это - напоминающее сообщение, о том, что WormNAT2 - бесплатный сервис. Используя WormNAT2 все данные идут через прокси-сервер принятый сообществом, таким образом, занимая полосу пропускания и другие ресурсы. Поэтому, мы хотели бы попросить, чтобы Вы использовали WormNAT2 только когда Вы уже попробовали настроить хостинг должным образом, но ничего не вышло. Не забывайте, что Вы можете найти инструкции относительно того, как настроить хостинг здесь: http://worms2d.info/Руководство_по_хостингу
-
 # Send info to channel label (action message will be: "<player> is hosting a game: <gamename>")
 HostingAction=Сообщить о хостинге игры на канал?
 
@@ -540,9 +528,6 @@ ExitAfterHosting=Выйти из GS после хостинга?
 
 # Create game button content
 CreateGameText=Захостить игру
-
-# The title of the popup message when game password contains bad character(s)
-GamePassBadTitle=Неверные символы
 
 # The text of the popup message when game password contains bad character(s)
 GamePassBadText=Пароль может содержать символы только из английского алфавита!
@@ -685,14 +670,8 @@ EmptyErrorMessage=Это поле не может быть пустым.
 # Auto login setting
 AutoLogInSettingText=Автоподключение при запуске:
 
-# Auto join setting
-AutoJoinSettingText=Автовход на эти каналы при подключении к серверу:
-
 # The content of the edit button
 EditText=Изменить
-
-# The title of the autojoin list editor window
-AutoJoinEditorTitle=Список каналов
 
 # Send a joining action message option (<nick> is joining a game: <game>)
 MessageJoinedGameText=Отсылать в канал сообщение-действие о присоединении к игре:

@@ -46,5 +46,13 @@ namespace GreatSnooper.Helpers
                 }
             }
         }
+
+        public static void ReloadSound(string name)
+        {
+            SoundPlayer sp;
+            string path = SettingsHelper.Load<string>(name);
+            if (File.Exists(path))
+                soundPlayers[name] = new SoundPlayer(new FileInfo(path).FullName);
+        }
     }
 }

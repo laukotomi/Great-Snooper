@@ -409,10 +409,6 @@
     <value>Plik Hoster.exe nie istnieje! Bez tego pliku nie możesz zakładać gier!</value>
     <comment>The text of the popup message when the user wants to host a game but Hoster.exe doesn't exist</comment>
   </data>
-  <data name="HostFailText" xml:space="preserve">
-    <value>Hostowanie gry nie powiodło się. Prawdopodobnie założyłeś ostatnio zbyt dużo gier. Proszę chwilę poczekać!</value>
-    <comment>The text of the popup message when hosting fails</comment>
-  </data>
   <data name="DefaultText" xml:space="preserve">
     <value>Domyślnie</value>
     <comment>Default in your language (when the user wants to remove instant color and set default)\nWhen you right click on a user and then the first group in the groups menu\nWhen you right click a message, then the name of the first option for instant colors</comment>
@@ -705,10 +701,6 @@
     <value>O module WormNat 2: Jeśli założysz grę, zostanie utworzony serwer na Twoim komputerze oczekujący na graczy, którzy będą wchodzić na określonym porcie (zazwyczaj 17011). Jednakże większość ruterów oraz zapor sieciowych z reguły nie przepuszcza nadchodzących połączeń, przez co nikt nie dołączy do Twojej gry. Będziesz musiał włączyć tzw. przekierowanie portów (ang. port forwarding) i/lub skonfigurować swoją zaporę ogniową, o ile z takowej korzystasz, by zezwolić graczom na dołączenie do gry. WormNat2 korzysta z techniki pozwalającej Ci na zakładanie gier bez nadchodzących połączeń, dzięki czemu Twój host zadziała prawidłowo. Aby było to możliwe, moduł ten używa dedykowanego serwera proxy, który właściwie ma nadzór nad wszystkimi połączeniami. Lecz odkąd nie ma obsługi dla innych serwerów proxy, to wolelibyśmy, żebyś odpowiednio skonfigurował swój system w celu zakładania gier normalnym sposobem i używać modułu WormNat2 tylko wtedy, gdy wszystkie inne metody zawiodą, aby zapobiec przeciążeniu serwera proxy. Prosty przewodnik instalacji możesz odnaleźć w języku polskim na stronie http://worms2d.info/Hosting_Guide/pl. Opcja „Wczytaj moduły WormKit” NIE jest wymagana, by móc skorzystać z funkcji hostowania przez WormNat2 w Snooperze!</value>
     <comment>The text of the popup message when About WormNat2 is clicked</comment>
   </data>
-  <data name="WormNat2GreetingText" xml:space="preserve">
-    <value>Drogi użytkowniku modułu WormNAT2! Pokazujemy Tobie ten komunikat, aby przypomnieć, że WormNAT2 jest darmowym serwisem. WormNAT2 podczas używania przepuszcza wszystkie dane poprzez serwer proxy hostowany przez społeczność, toteż zużywa przepustowość oraz inne zasoby. Dlatego chcielibyśmy Cię poprosić, byś korzystał z tego modułu tylko, gdy już wcześniej próbowałeś skonfigurować hosting właściwą metodą. Nie zapomnij o tym, że możesz odnaleźć instrukcje odnośnie konfiguracji hostingu tutaj: http://worms2d.info/Hosting_Guide/pl</value>
-    <comment>The text of the WormNat2 greeting popup window when somebody hosts a game using WormNat2</comment>
-  </data>
   <data name="HostingAction" xml:space="preserve">
     <value>Wysłać uwagę o hostowaniu do kanału?</value>
     <comment>Send info to channel label (action message will be: "&lt;player&gt; is hosting a game: &lt;gamename&gt;")</comment>
@@ -720,10 +712,6 @@
   <data name="CreateGameText" xml:space="preserve">
     <value>Utwórz grę</value>
     <comment>Create game button content</comment>
-  </data>
-  <data name="GamePassBadTitle" xml:space="preserve">
-    <value>Złe znaki</value>
-    <comment>The title of the popup message when game password contains bad character(s)</comment>
   </data>
   <data name="GamePassBadText" xml:space="preserve">
     <value>Hasło może zawierać wyłącznie znaki z alfabetu języka angielskiego!</value>
@@ -881,17 +869,9 @@
     <value>Automatyczne logowanie po uruchomieniu:</value>
     <comment>Auto login setting</comment>
   </data>
-  <data name="AutoJoinSettingText" xml:space="preserve">
-    <value>Dołączaj do tych kanałów po uruchomieniu:</value>
-    <comment>Auto join setting</comment>
-  </data>
   <data name="EditText" xml:space="preserve">
     <value>Edytuj</value>
     <comment>The content of the edit button</comment>
-  </data>
-  <data name="AutoJoinEditorTitle" xml:space="preserve">
-    <value>Lista kanałów</value>
-    <comment>The title of the autojoin list editor window</comment>
   </data>
   <data name="MessageJoinedGameText" xml:space="preserve">
     <value>Wyślij wiadomość akcji do kanału, gdy dołączam do gry:</value>

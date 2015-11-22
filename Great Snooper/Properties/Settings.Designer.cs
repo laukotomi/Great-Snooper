@@ -613,7 +613,7 @@ namespace GreatSnooper.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("#AnythingGoes")]
+        [global::System.Configuration.DefaultSettingValueAttribute("{\"#AnythingGoes\":null}")]
         public string AutoJoinChannels {
             get {
                 return ((string)(this["AutoJoinChannels"]));
@@ -656,18 +656,6 @@ namespace GreatSnooper.Properties {
             }
             set {
                 this["ColumnOrder"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string Notificator {
-            get {
-                return ((string)(this["Notificator"]));
-            }
-            set {
-                this["Notificator"] = value;
             }
         }
         

@@ -250,7 +250,7 @@
     <comment>What is TUS login? question in the login window when TUS login is selected</comment>
   </data>
   <data name="WhatIsTusLoginText" xml:space="preserve">
-    <value>TUS is The Ultimate Site. It is a website for Worms: Armageddon, which has a lot of things for the game, such as: leagues, cups, tournaments, schemes, maps, forum, etc. It also supports snoopers. If you login with your TUS account into the snooper, then your rank will be your TUS league rank, your clan will also be set and you will be marked online on the website. . You can also set a different nickname and a password for snooper login on TUS site in your Account Settings.</value>
+    <value>TUS is The Ultimate Site. It is a website for Worms: Armageddon, which has a lot of things for the game, such as: leagues, cups, tournaments, schemes, maps, forum, etc. It also supports snoopers. If you login with your TUS account into the snooper, then your rank will be your TUS league rank, your clan will also be set and you will be marked online on the website. You can also set a different nickname and a password for snooper login on TUS site in your Account Settings.</value>
     <comment>The text of the popup message when What is TUS login? link is clicked</comment>
   </data>
   <data name="LogInText" xml:space="preserve">
@@ -630,7 +630,7 @@
     <comment>The text of the popup message when loding common settings fails</comment>
   </data>
   <data name="NewVersionText" xml:space="preserve">
-    <value>There is a new update available for Great Snooper! Would you like to download it now?</value>
+    <value>There is a new update available for Great Snooper! Would you like to update it now?</value>
     <comment>The text of the popup message when there is new version of the snooper available</comment>
   </data>
   <data name="UpdaterFailText" xml:space="preserve">
@@ -748,10 +748,6 @@
   <data name="AboutWormNat2Text" xml:space="preserve">
     <value>About WormNat 2: If you host with the game, then it will create the server on your computer and it will wait for players to join on a specified port (usually 17011). But most of the routers and firewall programs don't allow incoming connections, so nobody can join your game. You will need to enable port forwarding on your router and/or configure your firewall if you use one in order to let players join your game. WormNat2 uses a technique, that you can host games without incoming connections so your host will work properly. To make this possible it uses a dedicated proxy server, which actually handles all the connections. But since there is no support for other proxy servers, we would much rather that you configure your system to use normal way of hosting your games and use WormNat2 only if nothing else works so the proxy server will not be overloaded. Enable loading WormKit modules are NOT needed to use WormNat2 hosting feature of the snooper!</value>
     <comment>The text of the popup message when About WormNat2 is clicked</comment>
-  </data>
-  <data name="WormNat2GreetingText" xml:space="preserve">
-    <value>Greetings WormNAT2 user! This is a reminder message to remind you that WormNAT2 is a free service. Using WormNAT2 tunnels all data through a proxy server hosted by the community, thus consuming bandwidth and other resources. Therefore, we would like to ask you to only use WormNAT2 when you have already tried configuring hosting the proper way. Don't forget that you can find instructions on how to set up hosting here: http://worms2d.info/Hosting</value>
-    <comment>The text of the WormNat2 greeting popup window when somebody hosts a game using WormNat2</comment>
   </data>
   <data name="HostingAction" xml:space="preserve">
     <value>Send hosting action to channel?</value>
@@ -1232,5 +1228,21 @@
   <data name="NotificatorHelpText" xml:space="preserve">
     <value>Notificator can look for words in messages, sender names, hoster names, game names and join messages. By default it will look for whole words, but you can use special characters '*', '+', and '.'. '*' matches any character, '+' matches at least 1 character and '.' matches only 1 character. So if you are looking for words similar to "example" then you can search for it as "example", "*ample", "examp*", "*amp*", "e.ample", "+amp+", etc. You can add one word per line. If you would like to ignore a word from searching then delete it or write '#' before it like "#example".</value>
     <comment>Notificator help text</comment>
+  </data>
+  <data name="JoinGameText2" xml:space="preserve">
+    <value>Join this game (Alternative WA.exe)</value>
+    <comment>Join this game label when you right click on a game using alternative WA.exe</comment>
+  </data>
+  <data name="SilentJoinText2" xml:space="preserve">
+    <value>Silent join (Alternative WA.exe)</value>
+    <comment>Silent join label when you right click on a game using alternative WA.exe</comment>
+  </data>
+  <data name="JoinCloseText2" xml:space="preserve">
+    <value>Join and close snooper (Alternative WA.exe)</value>
+    <comment>Join and close snooper label when you right click on a game using alternative WA.exe</comment>
+  </data>
+  <data name="SilentJoinCloseText2" xml:space="preserve">
+    <value>Silent join and close snooper (Alternative WA.exe)</value>
+    <comment>Silent join and close snooper label when you right click on a game using alternative WA.exe</comment>
   </data>
 </root>

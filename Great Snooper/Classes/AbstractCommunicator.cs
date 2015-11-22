@@ -385,7 +385,7 @@ namespace GreatSnooper.Classes
                     return;
                 }
 
-                Debug.WriteLine("SENDING: " + this.ServerAddress + " " + message);
+                //Debug.WriteLine("SENDING: " + this.ServerAddress + " " + message);
                 ircServer.Send(sendBuffer, 0, i, SocketFlags.None);
             }
         }

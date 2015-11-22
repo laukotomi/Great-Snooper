@@ -150,7 +150,7 @@
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="AutoJoinChannels" Type="System.String" Scope="User">
-      <Value Profile="(Default)">#AnythingGoes</Value>
+      <Value Profile="(Default)">{"#AnythingGoes":null}</Value>
     </Setting>
     <Setting Name="SpammingChecked" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
@@ -159,9 +159,6 @@
       <Value Profile="(Default)">True</Value>
     </Setting>
     <Setting Name="ColumnOrder" Type="System.String" Scope="User">
-      <Value Profile="(Default)" />
-    </Setting>
-    <Setting Name="Notificator" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
     <Setting Name="AskNotificatorOff" Type="System.Boolean" Scope="User">

@@ -401,10 +401,6 @@
     <value>Файл Hoster.exe не найден. Без него Great Snooper не может хостить игры, однако, все остальные функции будут работать. Рекомендуется переустановить Great Snooper.</value>
     <comment>The text of the popup message when the user wants to host a game but Hoster.exe doesn't exist</comment>
   </data>
-  <data name="HostFailText" xml:space="preserve">
-    <value>Не удалось захостить игру. Возможно, в последние несколько минут Вы захостили слишком много игр — подождите и повторите попытку.</value>
-    <comment>The text of the popup message when hosting fails</comment>
-  </data>
   <data name="DefaultText" xml:space="preserve">
     <value>По умолчанию</value>
     <comment>Default in your language (when the user wants to remove instant color and set default)\nWhen you right click on a user and then the first group in the groups menu\nWhen you right click a message, then the name of the first option for instant colors</comment>
@@ -697,10 +693,6 @@
     <value>О WormNAT2: Если Вы хостите игру обычным способом (без использования сторонних программ), W:A создает сервер на Вашем компьютере и ожидает присоединения игроков на указанном порту (обычно 17011). Но большинство роутеров и брандмауэров по умолчанию не пропускают входящие соединения, таким образом, никдто не сможет присоединиться к Вашей игре. Вы должны будете разрешить перенаправление портов на Вашем роутере и/или настроить Ваш брандмауэр, если Вы его используете, чтобы игроки могли присоединиться к Вашей игре. Используя WormNAT2, Вы можете хостить игры без входящих соединений и Ваш хост будет работать должным образом. WormNAT2 использует выделенный прокси-сервер, который обрабатывает все соединения. Но в таком случае нет никакой поддержки для других прокси-серверов и будет лучше, если Вы настроете свою систему так, чтобы использовать нормальный способ хостинга игр и будете использовать WormNAT2 только если ничто иное не решает проблему. Вы можете найти руководство по хостингу игр на http://worms2d.info/Руководство_по_хостингу. Разрешения загрузки модулей WormKit не требуется, чтобы использовать способность снупера хостить игры).</value>
     <comment>The text of the popup message when About WormNAT2 is clicked</comment>
   </data>
-  <data name="WormNAT2GreetingText" xml:space="preserve">
-    <value>Приветствуем Вас - пользователь WormNAT2! Это - напоминающее сообщение, о том, что WormNAT2 - бесплатный сервис. Используя WormNAT2 все данные идут через прокси-сервер принятый сообществом, таким образом, занимая полосу пропускания и другие ресурсы. Поэтому, мы хотели бы попросить, чтобы Вы использовали WormNAT2 только когда Вы уже попробовали настроить хостинг должным образом, но ничего не вышло. Не забывайте, что Вы можете найти инструкции относительно того, как настроить хостинг здесь: http://worms2d.info/Руководство_по_хостингу</value>
-    <comment>The text of the WormNAT2 greeting popup window when somebody hosts a game using WormNAT2</comment>
-  </data>
   <data name="HostingAction" xml:space="preserve">
     <value>Сообщить о хостинге игры на канал?</value>
     <comment>Send info to channel label (action message will be: "&lt;player&gt; is hosting a game: &lt;gamename&gt;")</comment>
@@ -712,10 +704,6 @@
   <data name="CreateGameText" xml:space="preserve">
     <value>Захостить игру</value>
     <comment>Create game button content</comment>
-  </data>
-  <data name="GamePassBadTitle" xml:space="preserve">
-    <value>Неверные символы</value>
-    <comment>The title of the popup message when game password contains bad character(s)</comment>
   </data>
   <data name="GamePassBadText" xml:space="preserve">
     <value>Пароль может содержать символы только из английского алфавита!</value>
@@ -869,17 +857,9 @@
     <value>Автоподключение при запуске:</value>
     <comment>Auto login setting</comment>
   </data>
-  <data name="AutoJoinSettingText" xml:space="preserve">
-    <value>Автовход на эти каналы при подключении к серверу:</value>
-    <comment>Auto join setting</comment>
-  </data>
   <data name="EditText" xml:space="preserve">
     <value>Изменить</value>
     <comment>The content of the edit button</comment>
-  </data>
-  <data name="AutoJoinEditorTitle" xml:space="preserve">
-    <value>Список каналов</value>
-    <comment>The title of the autojoin list editor window</comment>
   </data>
   <data name="MessageJoinedGameText" xml:space="preserve">
     <value>Отсылать в канал сообщение-действие о присоединении к игре:</value>

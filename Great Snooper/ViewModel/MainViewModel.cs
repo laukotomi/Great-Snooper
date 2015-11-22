@@ -54,10 +54,8 @@ namespace GreatSnooper.ViewModel
         private bool _isEnergySaveMode;
         private AbstractChannelViewModel _selectedChannel;
         private string _filterText = Localizations.GSLocalization.Instance.FilterText;
-        private WindowState _tempWindowState = WindowState.Maximized;
 
         private AbstractCommunicator[] servers;
-        private volatile bool closing;
         private int procId = Process.GetCurrentProcess().Id;
         private Timer tusTimer;
         private readonly List<int> visitedChannels = new List<int>();
@@ -79,6 +77,10 @@ namespace GreatSnooper.ViewModel
         private IntPtr lobbyWindow = IntPtr.Zero;
         private IntPtr gameWindow = IntPtr.Zero;
         private bool isHidden;
+        private bool shouldLeaveEnergySaveMode;
+        private bool shouldWindowBeActivated;
+        private bool shouldWindowBeShowed;
+        public volatile bool closing;
         #endregion
 
         #region Properties
@@ -89,15 +91,6 @@ namespace GreatSnooper.ViewModel
         public StartedGameTypes StartedGameType { get; set; }
         public bool ExitSnooperAfterGameStart { get; set; }
         public LeagueSearcher LeagueSearcher { get; private set; }
-        public WindowState TempWindowState
-        {
-            get { return _tempWindowState; }
-            set
-            {
-                if (_tempWindowState != value)
-                    _tempWindowState = value;
-            }
-        }
 
         public bool IsAway
         {
@@ -439,6 +432,9 @@ namespace GreatSnooper.ViewModel
         #region Load Games + League searcher spam
         void secondTimer_Tick(object sender, EventArgs e)
         {
+            if (this.shouldLeaveEnergySaveMode && IsEnergySaveMode)
+                this.LeaveEnergySaveMode();
+
             // Game list refresh
             if (this.SelectedGLChannel != null && this.SelectedGLChannel.Joined && this.SelectedGLChannel.CanHost)
             {
@@ -663,18 +659,46 @@ namespace GreatSnooper.ViewModel
         #endregion
 
         #region EnergySave mode
-        private void EnterEnergySaveMode()
+        public void EnterEnergySaveMode()
         {
+            /*
+            this.shouldWindowBeActivated = this.isHidden == false && this.DialogService.GetView().WindowState != WindowState.Minimized;
+            this.shouldWindowBeShowed = this.isHidden == false;
+            if (this.isHidden == false)
+            {
+                this.DialogService.GetView().Hide();
+                this.isHidden = true;
+            }
+            */
             this.IsEnergySaveMode = true;
+            for (int i = 0; i < this.servers.Length; i++)
+            {
+                foreach (var item in this.servers[i].Channels)
+                {
+                    if (item.Value is ChannelViewModel)
+                    {
+                        var chvm = (ChannelViewModel)item.Value;
+                        if (chvm.UserListDG != null)
+                            chvm.UserListDG.ItemsSource = null;
+                        if (chvm.GameListGrid != null)
+                            chvm.GameListGrid.DataContext = null;
+                    }
+                }
+            }
         }
 
         private void LeaveEnergySaveMode()
         {
-            if (Properties.Settings.Default.EnergySaveModeWin && (this.isHidden || TempWindowState == WindowState.Minimized))
+            if (Properties.Settings.Default.EnergySaveModeWin && this.isHidden)
                 return;
+            var screenBounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
+            if (screenBounds.Height == 480 && screenBounds.Width == 640)
+            {
+                shouldLeaveEnergySaveMode = true;
+                return;
+            }
 
             this.IsEnergySaveMode = false;
-            this.DialogService.GetView().WindowState = TempWindowState;
 
             for (int i = 0; i < this.servers.Length; i++)
             {
@@ -682,11 +706,27 @@ namespace GreatSnooper.ViewModel
                 {
                     foreach (var item in this.servers[i].Channels)
                     {
+                        if (item.Value is ChannelViewModel)
+                        {
+                            var chvm = (ChannelViewModel)item.Value;
+                            if (chvm.UserListDG != null)
+                                chvm.UserListDG.ItemsSource = chvm.Users;
+                            if (chvm.GameListGrid != null)
+                                chvm.GameListGrid.DataContext = chvm;
+                        }
                         if (item.Value.Joined && item.Value.NewMessagesCount != 0)
                             item.Value.LoadNewMessages();
                     }
                 }
             }
+
+            if (this.shouldWindowBeShowed)
+            {
+                this.DialogService.GetView().Show();
+                this.isHidden = false;
+            }
+            if (shouldWindowBeActivated)
+                this.DialogService.GetView().Activate();
         }
         #endregion
 
@@ -1038,17 +1078,76 @@ namespace GreatSnooper.ViewModel
         #endregion
 
         #region Settings changed
-        private Regex groupSoundRegex = new Regex(@"^Group(\d+)Sound$");
+        private Regex groupSoundRegex = new Regex(@"^Group(\d+)Sound$", RegexOptions.Compiled);
+        private Regex groupListRegex = new Regex(@"^Group(\d+)List$", RegexOptions.Compiled);
         private void SettingsChanged(object sender, PropertyChangedEventArgs e)
         {
-            Match m = groupSoundRegex.Match(e.PropertyName);
+            Match m;
+            m = groupSoundRegex.Match(e.PropertyName);
             if (m.Success)
             {
                 UserGroups.Groups["Group" + m.Groups[1].Value].Sound = null;
                 return;
             }
+
+            m = groupListRegex.Match(e.PropertyName);
+            if (m.Success)
+            {
+                string[] userList = SettingsHelper.Load<string>("Group" + m.Groups[1].Value + "List").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                var group = UserGroups.Groups["Group" + m.Groups[1].Value];
+                foreach (var user in group.Users.Except(userList))
+                {
+                    foreach (var server in this.servers)
+                    {
+                        User u;
+                        if (server.Users.TryGetValue(user, out u))
+                        {
+                            UserGroups.AddOrRemoveUser(u, null);
+                            break;
+                        }
+                    }
+                }
+                
+                foreach (string user in userList.Except(group.Users))
+                {
+                    foreach (var server in this.servers)
+                    {
+                        User u;
+                        if (server.Users.TryGetValue(user, out u))
+                        {
+                            UserGroups.AddOrRemoveUser(u, group);
+                            break;
+                        }
+                    }
+                }
+                return;
+            }
+
             switch (e.PropertyName)
             {
+                case "Group0":
+                case "Group1":
+                case "Group2":
+                case "Group3":
+                case "Group4":
+                case "Group5":
+                case "Group6":
+                    var group = UserGroups.Groups[e.PropertyName];
+                    group.ReloadData();
+                    foreach (var server in this.servers)
+                    {
+                        foreach (var chvm in server.Channels)
+                        {
+                            if (chvm.Value is ChannelViewModel)
+                            {
+                                ((ChannelViewModel)chvm.Value).RegenerateGroupsMenu = true;
+                                if (chvm.Value.Joined)
+                                    chvm.Value.LoadMessages(GlobalManager.MaxMessagesDisplayed, true);
+                            }
+                        }
+                    }
+                    break;
+
                 case "ShowWormsChannel":
                     if (Properties.Settings.Default.ShowWormsChannel)
                         new ChannelViewModel(this, this.GameSurge, "#worms", "A place for hardcore wormers");
@@ -1084,6 +1183,61 @@ namespace GreatSnooper.ViewModel
                                 if (this.Channels.Any(x => x.Name.Equals(chvm.Key, StringComparison.OrdinalIgnoreCase)) == false && GlobalManager.HiddenChannels.Contains(chvm.Key) == false)
                                     this.Channels.Add(chvm.Value);
                             }
+                        }
+                    }
+                    break;
+
+                case "PMBeep":
+                case "HBeep":
+                case "LeagueFoundBeep":
+                case "LeagueFailBeep":
+                case "NotificatorSound":
+                    Sounds.ReloadSound(e.PropertyName);
+                    break;
+
+                case "ChannelMessageStyle":
+                case "JoinMessageStyle":
+                case "PartMessageStyle":
+                case "QuitMessageStyle":
+                case "SystemMessageStyle":
+                case "ActionMessageStyle":
+                case "UserMessageStyle":
+                case "NoticeMessageStyle":
+                case "MessageTimeStyle":
+                case "HyperLinkStyle":
+                case "LeagueFoundMessageStyle":
+                case "ShowBannedMessages":
+                    for (int i = 0; i < this.servers.Length; i++)
+                    {
+                        if (this.servers[i].State == AbstractCommunicator.ConnectionStates.Connected)
+                        {
+                            foreach (var item in this.servers[i].Channels)
+                            {
+                                if (item.Value.Joined)
+                                    item.Value.LoadMessages(GlobalManager.MaxMessagesDisplayed, true);
+                            }
+                        }
+                    }
+                    break;
+
+                case "ShowBannedUsers":
+                    for (int i = 0; i < this.servers.Length; i++)
+                    {
+                        foreach (var item in this.servers[i].Channels)
+                        {
+                            if (item.Value is ChannelViewModel)
+                                ((ChannelViewModel)item.Value).UserListDG.SetUserListDGView();
+                        }
+                    }
+                    break;
+
+                case "ShowInfoColumn":
+                    for (int i = 0; i < this.servers.Length; i++)
+                    {
+                        foreach (var item in this.servers[i].Channels)
+                        {
+                            if (item.Value is ChannelViewModel)
+                                ((ChannelViewModel)item.Value).UserListDG.Columns[4].Visibility = (Properties.Settings.Default.ShowInfoColumn) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
                         }
                     }
                     break;
@@ -1396,32 +1550,16 @@ namespace GreatSnooper.ViewModel
         }
         #endregion
 
-        #region WindowClosingCommand
-        public RelayCommand<CancelEventArgs> WindowClosingCommand
-        {
-            get { return new RelayCommand<CancelEventArgs>(WindowClosing); }
-        }
-
-        private void WindowClosing(CancelEventArgs e)
-        {
-            if (closing == false && Properties.Settings.Default.CloseToTray)
-            {
-                e.Cancel = true;
-                HideWindow();
-                if (Properties.Settings.Default.TrayNotifications)
-                    this.TaskbarIconService.ShowMessage(Localizations.GSLocalization.Instance.GSRunningTaskbar);
-            }
-        }
-
         private void HideWindow()
         {
             if (Properties.Settings.Default.EnergySaveModeWin && !IsEnergySaveMode)
                 EnterEnergySaveMode();
-
-            this.DialogService.GetView().Hide();
-            this.isHidden = true;
+            else
+            {
+                this.DialogService.GetView().Hide();
+                this.isHidden = true;
+            }
         }
-        #endregion
 
         internal void FlashWindow()
         {
@@ -1485,7 +1623,15 @@ namespace GreatSnooper.ViewModel
         #region Closing request
         internal void ClosingRequest(object sender, CancelEventArgs e)
         {
-            this.closing = true;
+            if (closing == false && Properties.Settings.Default.CloseToTray)
+            {
+                e.Cancel = true;
+                HideWindow();
+                if (Properties.Settings.Default.TrayNotifications)
+                    this.TaskbarIconService.ShowMessage(Localizations.GSLocalization.Instance.GSRunningTaskbar);
+
+                return;
+            }
 
             if (channelSchemeTask != null && !channelSchemeTask.IsCompleted)
                 e.Cancel = true;
@@ -1525,6 +1671,7 @@ namespace GreatSnooper.ViewModel
 
         private void Close()
         {
+            this.closing = true;
             DialogService.CloseRequest();
         }
         #endregion
@@ -1538,7 +1685,7 @@ namespace GreatSnooper.ViewModel
         private void Logout()
         {
             new Login().Show();
-            DialogService.CloseRequest();
+            this.CloseCommand.Execute(null);
         }
         #endregion
 

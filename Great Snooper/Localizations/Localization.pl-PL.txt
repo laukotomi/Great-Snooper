@@ -16,7 +16,6 @@ LanguageName=Polski
 # The name of the system user
 SystemUserName=System
 
-
 &&&&&&&&&&&&&&&&&&
 & Popup messages &
 &&&&&&&&&&&&&&&&&&
@@ -269,9 +268,6 @@ NotificatorRunningText=Czy chcesz wyłączyć asystenta powiadamiania?
 # The text of the popup message when the user wants to host a game but Hoster.exe doesn't exist
 HosterExeText=Plik Hoster.exe nie istnieje! Bez tego pliku nie możesz zakładać gier!
 
-# The text of the popup message when hosting fails
-HostFailText=Hostowanie gry nie powiodło się. Prawdopodobnie założyłeś ostatnio zbyt dużo gier. Proszę chwilę poczekać!
-
 
 &&&&&&&&&&&&&&&
 & Main window &
@@ -511,9 +507,6 @@ UsingWormNat2=WormNat2 obsługiwany?
 # The text of the popup message when About WormNat2 is clicked
 AboutWormNat2Text=O module WormNat 2: Jeśli założysz grę, zostanie utworzony serwer na Twoim komputerze oczekujący na graczy, którzy będą wchodzić na określonym porcie (zazwyczaj 17011). Jednakże większość ruterów oraz zapor sieciowych z reguły nie przepuszcza nadchodzących połączeń, przez co nikt nie dołączy do Twojej gry. Będziesz musiał włączyć tzw. przekierowanie portów (ang. port forwarding) i/lub skonfigurować swoją zaporę ogniową, o ile z takowej korzystasz, by zezwolić graczom na dołączenie do gry. WormNat2 korzysta z techniki pozwalającej Ci na zakładanie gier bez nadchodzących połączeń, dzięki czemu Twój host zadziała prawidłowo. Aby było to możliwe, moduł ten używa dedykowanego serwera proxy, który właściwie ma nadzór nad wszystkimi połączeniami. Lecz odkąd nie ma obsługi dla innych serwerów proxy, to wolelibyśmy, żebyś odpowiednio skonfigurował swój system w celu zakładania gier normalnym sposobem i używać modułu WormNat2 tylko wtedy, gdy wszystkie inne metody zawiodą, aby zapobiec przeciążeniu serwera proxy. Prosty przewodnik instalacji możesz odnaleźć w języku polskim na stronie http://worms2d.info/Hosting_Guide/pl. Opcja „Wczytaj moduły WormKit” NIE jest wymagana, by móc skorzystać z funkcji hostowania przez WormNat2 w Snooperze!
 
-# The text of the WormNat2 greeting popup window when somebody hosts a game using WormNat2
-WormNat2GreetingText=Drogi użytkowniku modułu WormNAT2! Pokazujemy Tobie ten komunikat, aby przypomnieć, że WormNAT2 jest darmowym serwisem. WormNAT2 podczas używania przepuszcza wszystkie dane poprzez serwer proxy hostowany przez społeczność, toteż zużywa przepustowość oraz inne zasoby. Dlatego chcielibyśmy Cię poprosić, byś korzystał z tego modułu tylko, gdy już wcześniej próbowałeś skonfigurować hosting właściwą metodą. Nie zapomnij o tym, że możesz odnaleźć instrukcje odnośnie konfiguracji hostingu tutaj: http://worms2d.info/Hosting_Guide/pl
-
 # Send info to channel label (action message will be: "<player> is hosting a game: <gamename>")
 HostingAction=Wysłać uwagę o hostowaniu do kanału?
 
@@ -522,9 +515,6 @@ ExitAfterHosting=Wyłączyć program po założeniu gry?
 
 # Create game button content
 CreateGameText=Utwórz grę
-
-# The title of the popup message when game password contains bad character(s)
-GamePassBadTitle=Złe znaki
 
 # The text of the popup message when game password contains bad character(s)
 GamePassBadText=Hasło może zawierać wyłącznie znaki z alfabetu języka angielskiego!
@@ -661,14 +651,8 @@ EmptyErrorMessage=Ten tekst nie może być pusty!
 # Auto login setting
 AutoLogInSettingText=Automatyczne logowanie po uruchomieniu:
 
-# Auto join setting
-AutoJoinSettingText=Dołączaj do tych kanałów po uruchomieniu:
-
 # The content of the edit button
 EditText=Edytuj
-
-# The title of the autojoin list editor window
-AutoJoinEditorTitle=Lista kanałów
 
 # Send a joining action message option (<nick> is joining a game: <game>)
 MessageJoinedGameText=Wyślij wiadomość akcji do kanału, gdy dołączam do gry:

@@ -83,49 +83,7 @@ namespace GreatSnooper.Model
             if (id != UserGroups.SystemGroupID)
             {
                 this.SettingName = "Group" + id.ToString();
-                string value = SettingsHelper.Load<string>(this.SettingName);
-                string[] values = value.Split(new char[] { '|' });
-
-                string defaultValue = SettingsHelper.GetDefaultValue<string>(this.SettingName);
-                string[] defaultValues = defaultValue.Split(new char[] { '|' });
-
-                // If the name of the group is default then we can show localized group name
-                if (values[0] == defaultValues[0])
-                {
-                    switch (this.ID)
-                    {
-                        case 0:
-                            this._name = Localizations.GSLocalization.Instance.BuddiesGroupText;
-                            break;
-                        case 1:
-                            this._name = Localizations.GSLocalization.Instance.ClanMatesGroupText;
-                            break;
-                        case 2:
-                            this._name = Localizations.GSLocalization.Instance.LeaguePlayersGroupText;
-                            break;
-                        case 3:
-                            this._name = Localizations.GSLocalization.Instance.Other1GroupText;
-                            break;
-                        case 4:
-                            this._name = Localizations.GSLocalization.Instance.Other2GroupText;
-                            break;
-                        case 5:
-                            this._name = Localizations.GSLocalization.Instance.Other3GroupText;
-                            break;
-                        case 6:
-                            this._name = Localizations.GSLocalization.Instance.Other4GroupText;
-                            break;
-                    }
-                }
-                else
-                    this._name = values[0];
-
-                SetColors(new SolidColorBrush(Color.FromArgb(
-                    byte.Parse(values[1].Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
-                    byte.Parse(values[1].Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
-                    byte.Parse(values[1].Substring(4, 2), System.Globalization.NumberStyles.HexNumber),
-                    byte.Parse(values[1].Substring(6, 2), System.Globalization.NumberStyles.HexNumber)
-                )));
+                this.ReloadData();
 
                 string userList = SettingsHelper.Load<string>(this.SettingName + "List");
                 this.Users = new HashSet<string>(
@@ -182,6 +140,53 @@ namespace GreatSnooper.Model
         internal void SaveUsers()
         {
             SettingsHelper.Save(this.SettingName + "List", this.Users);
+        }
+
+        internal void ReloadData()
+        {
+            string value = SettingsHelper.Load<string>(this.SettingName);
+            string[] values = value.Split(new char[] { '|' });
+
+            string defaultValue = SettingsHelper.GetDefaultValue<string>(this.SettingName);
+            string[] defaultValues = defaultValue.Split(new char[] { '|' });
+
+            // If the name of the group is default then we can show localized group name
+            if (values[0] == defaultValues[0])
+            {
+                switch (this.ID)
+                {
+                    case 0:
+                        this._name = Localizations.GSLocalization.Instance.BuddiesGroupText;
+                        break;
+                    case 1:
+                        this._name = Localizations.GSLocalization.Instance.ClanMatesGroupText;
+                        break;
+                    case 2:
+                        this._name = Localizations.GSLocalization.Instance.LeaguePlayersGroupText;
+                        break;
+                    case 3:
+                        this._name = Localizations.GSLocalization.Instance.Other1GroupText;
+                        break;
+                    case 4:
+                        this._name = Localizations.GSLocalization.Instance.Other2GroupText;
+                        break;
+                    case 5:
+                        this._name = Localizations.GSLocalization.Instance.Other3GroupText;
+                        break;
+                    case 6:
+                        this._name = Localizations.GSLocalization.Instance.Other4GroupText;
+                        break;
+                }
+            }
+            else
+                this._name = values[0];
+
+            SetColors(new SolidColorBrush(Color.FromArgb(
+                byte.Parse(values[1].Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
+                byte.Parse(values[1].Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
+                byte.Parse(values[1].Substring(4, 2), System.Globalization.NumberStyles.HexNumber),
+                byte.Parse(values[1].Substring(6, 2), System.Globalization.NumberStyles.HexNumber)
+            )));
         }
     }
 }

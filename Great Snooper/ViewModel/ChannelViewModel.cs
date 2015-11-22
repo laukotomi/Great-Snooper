@@ -91,10 +91,12 @@ namespace GreatSnooper.ViewModel
                 }
             }
         }
+        public bool RegenerateGroupsMenu { get; set; }
         public SortedObservableCollection<Game> Games { get; private set; }
         public Game SelectedGame { get; set; }
         public DateTime GameListUpdatedTime { get; set; }
         public UserListGrid UserListDG { get; private set; }
+        public Grid GameListGrid { get; private set; }
         #endregion
 
         public ChannelViewModel(MainViewModel mainViewModel, AbstractCommunicator server, string channelName, string description, string password = null)
@@ -107,6 +109,7 @@ namespace GreatSnooper.ViewModel
             this.notificator = Notificator.Instance;
             this._autoJoin = GlobalManager.AutoJoinList.ContainsKey(channelName);
             this.GameListUpdatedTime = new DateTime(1999, 5, 31);
+            this.RegenerateGroupsMenu = true;
 
             this.Games = new SortedObservableCollection<Game>();
 
@@ -432,9 +435,9 @@ namespace GreatSnooper.ViewModel
 
         public TabItem GetGameListLayout()
         {
-            var gameListGrid = new GameListLayout();
-            gameListGrid.DataContext = this;
-            return new TabItem() { Content = gameListGrid, Visibility = Visibility.Collapsed };
+            GameListGrid = new GameListLayout();
+            GameListGrid.DataContext = this;
+            return new TabItem() { Content = GameListGrid, Visibility = Visibility.Collapsed };
         }
 
         public TabItem GetUserListLayout()
@@ -493,8 +496,9 @@ namespace GreatSnooper.ViewModel
                     conversation.IsEnabled = false;
 
                 var group = (MenuItem)obj.ContextMenu.Items[2];
-                if (group.Items.Count == 0)
+                if (this.RegenerateGroupsMenu)
                 {
+                    group.Items.Clear();
                     var defItem = new MenuItem() { Header = Localizations.GSLocalization.Instance.NoGroupText };
                     defItem.Command = AddUserToDefaultGroupCommand;
                     group.Items.Add(defItem);

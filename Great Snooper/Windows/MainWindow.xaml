@@ -19,9 +19,6 @@
         <i:EventTrigger EventName="StateChanged">
             <cmd:EventToCommand Command="{Binding Path=WindowStateChangedCommand, Mode=OneTime}" PassEventArgsToCommand="False" />
         </i:EventTrigger>
-        <i:EventTrigger EventName="Closing">
-            <cmd:EventToCommand Command="{Binding Path=WindowClosingCommand, Mode=OneTime}" PassEventArgsToCommand="True" />
-        </i:EventTrigger>
     </i:Interaction.Triggers>
     <controls:MetroWindow.Resources>
         <ContextMenu x:Key="taskbarContextMenu">

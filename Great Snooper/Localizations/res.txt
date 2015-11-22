@@ -1,0 +1,38 @@
+NINCS:
+LanguageChangedText
+PartMessage2
+NewsWindowTitle
+VolumeTooltip
+StartWAExeTooltip1
+StartWAExeTooltip2
+AutoJoinText
+AwayManagerTooltipAway
+NoLeaguesSelectedError
+GeneralSoundsText
+WAExeText
+WAExeText2
+KickMessage
+TopicMessage
+InMessagesLabel
+InSenderNamesLabel
+InGameNamesLabel
+InHosterNamesLabel
+InJoinMessagesLabel
+StartNotifWithSnooper
+AwayMessageFormat
+HideChannelText
+HiddenChannelsText
+UseSnooperRank
+UseSnooperRankHelp
+HosterWormNatError
+HosterCreateGameFail
+HosterNoGameIDError
+HosterStartGameFail
+HosterUnknownFail
+NotificatorHelpLabel
+NotificatorHelpText
+VAN:
+HostFailText OK
+GamePassBadTitle OK
+AutoJoinSettingText OK
+AutoJoinEditorTitle OK

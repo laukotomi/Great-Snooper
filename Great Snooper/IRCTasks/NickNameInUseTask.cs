@@ -13,9 +13,8 @@ namespace GreatSnooper.IRCTasks
 
         public override void DoTask(MainViewModel mvm)
         {
-            AbstractChannelViewModel chvm;
-            if (this.Sender.Channels.TryGetValue("#worms", out chvm) && chvm.Joined)
-                chvm.AddMessage(GlobalManager.SystemUser, Localizations.GSLocalization.Instance.GSNicknameInUse, MessageSettings.SystemMessage);
+            if (mvm.SelectedChannel.Server is GameSurgeCommunicator && mvm.SelectedChannel.Joined)
+                mvm.SelectedChannel.AddMessage(GlobalManager.SystemUser, Localizations.GSLocalization.Instance.GSNicknameInUse, MessageSettings.SystemMessage);
         }
     }
 }

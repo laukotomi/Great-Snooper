@@ -1291,6 +1291,17 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Join and close snooper.
+        /// </summary>
+        public string JoinCloseText2
+        {
+            get
+            {
+                return _rm.GetString("JoinCloseText2");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Join this game.
         /// </summary>
         public string JoinGameText
@@ -1298,6 +1309,17 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("JoinGameText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Join this game.
+        /// </summary>
+        public string JoinGameText2
+        {
+            get
+            {
+                return _rm.GetString("JoinGameText2");
             }
         }
 
@@ -2381,6 +2403,17 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Silent join and close snooper.
+        /// </summary>
+        public string SilentJoinCloseText2
+        {
+            get
+            {
+                return _rm.GetString("SilentJoinCloseText2");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Silent join.
         /// </summary>
         public string SilentJoinText
@@ -2388,6 +2421,17 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("SilentJoinText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Silent join.
+        /// </summary>
+        public string SilentJoinText2
+        {
+            get
+            {
+                return _rm.GetString("SilentJoinText2");
             }
         }
 

@@ -9,6 +9,9 @@ namespace GreatSnooper.Helpers
         [DllImport("user32.dll")]
         internal static extern IntPtr GetForegroundWindow();
 
+        [DllImport("user32.dll", SetLastError = true)]
+        internal static extern IntPtr GetWindow(IntPtr hWnd, GetWindow_Cmd uCmd);
+
         [DllImport("user32.dll")]
         internal static extern int GetWindowThreadProcessId(IntPtr handle, out int processId);
         
@@ -102,5 +105,16 @@ namespace GreatSnooper.Helpers
         Normal = 1,
         Minimized = 2,
         Maximized = 3,
+    }
+
+    internal enum GetWindow_Cmd : uint
+    {
+        GW_HWNDFIRST = 0,
+        GW_HWNDLAST = 1,
+        GW_HWNDNEXT = 2,
+        GW_HWNDPREV = 3,
+        GW_OWNER = 4,
+        GW_CHILD = 5,
+        GW_ENABLEDPOPUP = 6
     }
 }

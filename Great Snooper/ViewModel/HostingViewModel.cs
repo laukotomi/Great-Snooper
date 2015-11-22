@@ -188,16 +188,6 @@ namespace GreatSnooper.ViewModel
                 );
 
                 string success = TryHostGame(arguments);
-                HosterErrors result;
-                if (Enum.TryParse(success, out result) && result == HosterErrors.NoError)
-                {
-                    this.dispatcher.Invoke(new Action(() =>
-                    {
-                        if (this.MVM.DialogService.GetView().WindowState != WindowState.Minimized)
-                            this.MVM.TempWindowState = this.DialogService.GetView().WindowState;
-                        this.MVM.DialogService.GetView().WindowState = WindowState.Minimized;
-                    }));
-                }
 
                 using (gameProcess.StandardInput)
                 {
