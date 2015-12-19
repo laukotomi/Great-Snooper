@@ -820,13 +820,13 @@ LeaguePlayersGroupText=TUS-игроки
 Other1GroupText=Другая 1
 
 # The default name of other 2 group
-Other1GroupText=Другая 2
+Other2GroupText=Другая 2
 
 # The default name of other 3 group
-Other1GroupText=Другая 3
+Other3GroupText=Другая 3
 
 # The default name of other 4 group
-Other1GroupText=Другая 4
+Other4GroupText=Другая 4
 
 
 

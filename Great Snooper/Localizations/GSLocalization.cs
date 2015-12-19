@@ -1069,6 +1069,17 @@ namespace GreatSnooper.Localizations
                 return _rm.GetString("HosterExeText");
             }
         }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Failed to get local IP address. Please try hosting using WormNat2!.
+        /// </summary>
+        public string HosterFailedToGetLocalIP
+        {
+            get
+            {
+                return _rm.GetString("HosterFailedToGetLocalIP");
+            }
+        }
 
         /// <summary>
         ///   Looks up a localized string similar to Failed to host a game. Probably you have hosted too many games recently. Please wait a while!.
@@ -1265,6 +1276,17 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("InvalidValueText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Italic font style for Great Snooper users:
+        /// </summary>
+        public string ItalicForGSUsers
+        {
+            get
+            {
+                return _rm.GetString("ItalicForGSUsers");
             }
         }
 

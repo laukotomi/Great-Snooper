@@ -1245,4 +1245,12 @@
     <value>Silent join and close snooper (Alternative WA.exe)</value>
     <comment>Silent join and close snooper label when you right click on a game using alternative WA.exe</comment>
   </data>
+  <data name="ItalicForGSUsers" xml:space="preserve">
+    <value>Italic font style for Great Snooper users:</value>
+    <comment>Italic font style for Great Snooper users</comment>
+  </data>
+  <data name="HosterFailedToGetLocalIP" xml:space="preserve">
+    <value>Failed to get local IP address. Please try hosting using WormNat2!</value>
+    <comment>When hoster fails to get local ip address</comment>
+  </data>
 </root>

@@ -15,21 +15,22 @@
         </Style>
 
         <DataTemplate x:Key="boolSettingTemplate">
-            <Grid HorizontalAlignment="Center">
+            <Grid HorizontalAlignment="Stretch" Margin="50,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="350" />
-                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock VerticalAlignment="Center" Text="{Binding Path=Text, Mode=OneTime}" Grid.Column="0" />
-                <CheckBox Focusable="False" IsChecked="{Binding Path=Value, Mode=TwoWay}" Grid.Column="1" Margin="0,5" HorizontalAlignment="Center" />
+                <CheckBox Focusable="False" IsChecked="{Binding Path=Value, Mode=TwoWay}" Grid.Column="1"
+                          Margin="0,5" Padding="0" />
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="stringSettingTemplate">
-            <Grid HorizontalAlignment="Center">
+            <Grid HorizontalAlignment="Stretch" Margin="50,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="350" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="200" />
                 </Grid.ColumnDefinitions>
 
@@ -39,48 +40,50 @@
         </DataTemplate>
 
         <DataTemplate x:Key="styleSettingTemplate">
-            <Grid HorizontalAlignment="Center">
+            <Grid HorizontalAlignment="Stretch" Margin="50,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="240" />
-                    <ColumnDefinition Width="110" />
-                    <ColumnDefinition Width="200" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="150" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock VerticalAlignment="Center" Text="{Binding Path=Text, Mode=OneTime}" Grid.Column="0" />
-                <u:ExampleText VerticalAlignment="Center" Grid.Column="1" DataContext="{Binding Path=Style, Mode=OneTime}" Margin="0,5" />
+                <u:ExampleText VerticalAlignment="Center" Grid.Column="1" DataContext="{Binding Path=Style, Mode=OneTime}" Margin="0,5"
+                               HorizontalAlignment="Left"/>
 
-                <Button VerticalAlignment="Center" Focusable="False" Grid.Column="2" Margin="0,5"
+                <Button VerticalAlignment="Center" Focusable="False" Grid.Column="3" Margin="0,5"
                         Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ChangeButtonText, Mode=OneWay}"
-                        Command="{Binding Path=StyleCommand, Mode=OneTime}" Width="100" />
+                        Command="{Binding Path=StyleCommand, Mode=OneTime}" MinWidth="100" />
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="soundSettingTemplate">
-            <Grid HorizontalAlignment="Center">
+            <Grid HorizontalAlignment="Stretch" Margin="50,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="280" />
-                    <ColumnDefinition Width="300" />
-                    <ColumnDefinition Width="80" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="210" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
 
                 <TextBlock VerticalAlignment="Center" Text="{Binding Path=Text, Mode=OneTime}" Grid.Column="0" />
 
-                <StackPanel VerticalAlignment="Center" Margin="0,5" Orientation="Horizontal" Grid.Column="1">
-                    <TextBox IsReadOnly="True" Text="{Binding Path=Path, Mode=OneWay}" Width="210" />
-                    <Button Focusable="False" Width="75"
-                            Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=BrowseButtonContent, Mode=OneWay}"
-                            Command="{Binding Path=SoundBrowseCommand, Mode=OneTime}" />
-                </StackPanel>
+                <TextBox IsReadOnly="True" Text="{Binding Path=Path, Mode=OneWay}" Grid.Column="1" VerticalAlignment="Center" />
+                <Button Focusable="False" MinWidth="75" Grid.Column="2" VerticalAlignment="Center"
+                        Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=BrowseButtonContent, Mode=OneWay}"
+                        Command="{Binding Path=SoundBrowseCommand, Mode=OneTime}" />
 
-                <CheckBox VerticalAlignment="Center" Margin="0,5" Grid.Column="2" Focusable="False" IsChecked="{Binding Enabled, Mode=TwoWay}"
+                <CheckBox VerticalAlignment="Center" Margin="0,5" Grid.Column="4" Focusable="False" IsChecked="{Binding Enabled, Mode=TwoWay}"
                           Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=EnabledText, Mode=OneWay}" />
             </Grid>
         </DataTemplate>
 
         <DataTemplate x:Key="textListSettingTemplate">
-            <Grid HorizontalAlignment="Center">
+            <Grid HorizontalAlignment="Stretch" Margin="50,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="350" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="200" />
                 </Grid.ColumnDefinitions>
 
@@ -93,9 +96,9 @@
         </DataTemplate>
 
         <DataTemplate x:Key="userGroupSettingTemplate">
-            <Grid HorizontalAlignment="Center">
+            <Grid HorizontalAlignment="Stretch" Margin="50,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="250" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="10" />
                     <ColumnDefinition Width="100" />
                     <ColumnDefinition Width="10" />
@@ -112,9 +115,9 @@
         </DataTemplate>
                       
         <DataTemplate x:Key="waExeSettingTemplate">
-            <Grid HorizontalAlignment="Center">
+            <Grid HorizontalAlignment="Stretch" Margin="50,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="170" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="280" />
                     <ColumnDefinition Width="100" />
                 </Grid.ColumnDefinitions>
@@ -128,9 +131,9 @@
         </DataTemplate>
 
         <DataTemplate x:Key="comboboxSettingTemplate">
-            <Grid HorizontalAlignment="Center">
+            <Grid HorizontalAlignment="Stretch" Margin="50,0">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="350" />
+                    <ColumnDefinition Width="*" />
                     <ColumnDefinition Width="200" />
                 </Grid.ColumnDefinitions>
 

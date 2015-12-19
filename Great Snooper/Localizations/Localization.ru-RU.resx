@@ -1053,15 +1053,15 @@
     <value>Другая 1</value>
     <comment>The default name of other 1 group</comment>
   </data>
-  <data name="Other1GroupText" xml:space="preserve">
+  <data name="Other2GroupText" xml:space="preserve">
     <value>Другая 2</value>
     <comment>The default name of other 2 group</comment>
   </data>
-  <data name="Other1GroupText" xml:space="preserve">
+  <data name="Other3GroupText" xml:space="preserve">
     <value>Другая 3</value>
     <comment>The default name of other 3 group</comment>
   </data>
-  <data name="Other1GroupText" xml:space="preserve">
+  <data name="Other4GroupText" xml:space="preserve">
     <value>Другая 4</value>
     <comment>The default name of other 4 group</comment>
   </data>
@@ -1072,5 +1072,149 @@
   <data name="GSCheckText" xml:space="preserve">
     <value>{0} игроков используют Great Snooper: {1}</value>
     <comment>The text of the popup message when user types /gs in channel textbox to get how many people are using Great Snooper\n{0} will be the count of the Great Snooper users\n{1} will be a comma separated list from the Great Snooper users</comment>
+  </data>
+  <data name="LanguageChangedText" xml:space="preserve">
+    <value>Please restart Great Snooper to apply new language settings everywhere!</value>
+    <comment>Notification message that the language data be updated after restart</comment>
+  </data>
+  <data name="PartMessage2" xml:space="preserve">
+    <value>has left the channel ({0}).</value>
+    <comment>When a user lefts a channel (the message will begin with the name of the user) with message\n{0} will be the message</comment>
+  </data>
+  <data name="NewsWindowTitle" xml:space="preserve">
+    <value>News</value>
+    <comment>Title of the news window</comment>
+  </data>
+  <data name="VolumeTooltip" xml:space="preserve">
+    <value>Volume</value>
+    <comment>Tooltip text when you move the mouse over the icon of volume slider</comment>
+  </data>
+  <data name="StartWAExeTooltip1" xml:space="preserve">
+    <value>Run WA.exe</value>
+    <comment>Run WA.exe tooltip</comment>
+  </data>
+  <data name="StartWAExeTooltip2" xml:space="preserve">
+    <value>Run alternative WA.exe</value>
+    <comment>Run alternative WA.exe tooltip</comment>
+  </data>
+  <data name="AutoJoinText" xml:space="preserve">
+    <value>Auto join this channel</value>
+    <comment>Auto join text</comment>
+  </data>
+  <data name="AwayManagerTooltipAway" xml:space="preserve">
+    <value>You are away: {0}</value>
+    <comment>Away message to display when you are away and you move your mouse over the away manager button\n{0} will be the away message</comment>
+  </data>
+  <data name="NoLeaguesSelectedError" xml:space="preserve">
+    <value>Please select the league(s) you are looking for!</value>
+    <comment>When no leagues were selected</comment>
+  </data>
+  <data name="GeneralSoundsText" xml:space="preserve">
+    <value>General sounds</value>
+    <comment>General sounds label in the sound settings</comment>
+  </data>
+  <data name="WAExeText" xml:space="preserve">
+    <value>WA.exe:</value>
+    <comment>WA.exe label</comment>
+  </data>
+  <data name="WAExeText2" xml:space="preserve">
+    <value>Alternative WA.exe:</value>
+    <comment>Alternative WA.exe label</comment>
+  </data>
+  <data name="KickMessage" xml:space="preserve">
+    <value>Kicked by {0}</value>
+    <comment>Kick message</comment>
+  </data>
+  <data name="TopicMessage" xml:space="preserve">
+    <value>{0} has changed the topic of the channel to "{1}".</value>
+    <comment>Topic message</comment>
+  </data>
+  <data name="InMessagesLabel" xml:space="preserve">
+    <value>In messages</value>
+    <comment>Notif</comment>
+  </data>
+  <data name="InSenderNamesLabel" xml:space="preserve">
+    <value>In sender names</value>
+    <comment>Notif</comment>
+  </data>
+  <data name="InGameNamesLabel" xml:space="preserve">
+    <value>In game names</value>
+    <comment>Notif</comment>
+  </data>
+  <data name="InHosterNamesLabel" xml:space="preserve">
+    <value>In hoster names</value>
+    <comment>Notif</comment>
+  </data>
+  <data name="InJoinMessagesLabel" xml:space="preserve">
+    <value>In join messages</value>
+    <comment>Notif</comment>
+  </data>
+  <data name="StartNotifWithSnooper" xml:space="preserve">
+    <value>Start notificator with snooper</value>
+    <comment>Notif</comment>
+  </data>
+  <data name="AwayMessageFormat" xml:space="preserve">
+    <value>is away: {0}</value>
+    <comment>Away message format</comment>
+  </data>
+  <data name="HideChannelText" xml:space="preserve">
+    <value>Hide channel</value>
+    <comment>Hide channel text</comment>
+  </data>
+  <data name="HiddenChannelsText" xml:space="preserve">
+    <value>Hidden channels</value>
+    <comment>Hiden channels text in settings</comment>
+  </data>
+  <data name="UseSnooperRank" xml:space="preserve">
+    <value>Use snooper rank:</value>
+    <comment>Use snooper rank text</comment>
+  </data>
+  <data name="UseSnooperRankHelp" xml:space="preserve">
+    <value>This option is required for TUS login if you would like to use HostingBuddy to host games with the snooper.</value>
+    <comment>Use snooper rank help</comment>
+  </data>
+  <data name="HosterWormNatError" xml:space="preserve">
+    <value>The communication with WormNat server failed.</value>
+    <comment>Hoster - WormNat error, WormNat init error, Wormnat client error</comment>
+  </data>
+  <data name="HosterCreateGameFail" xml:space="preserve">
+    <value>Failed to create the game on WormNet.</value>
+    <comment>Hoster - Create game request failed</comment>
+  </data>
+  <data name="HosterNoGameIDError" xml:space="preserve">
+    <value>Failed to host a game. Probably you have hosted too many games recently. Please wait a while!</value>
+    <comment>Hoster - No game id</comment>
+  </data>
+  <data name="HosterStartGameFail" xml:space="preserve">
+    <value>Failed to start Worms: Armageddon.</value>
+    <comment>Hoster - Failed to start the game</comment>
+  </data>
+  <data name="HosterUnknownFail" xml:space="preserve">
+    <value>An unexpected error happened while trying to host a game.</value>
+    <comment>Hoster - Unknown fail</comment>
+  </data>
+  <data name="NotificatorHelpLabel" xml:space="preserve">
+    <value>How to use notificator?</value>
+    <comment>Notificator help label</comment>
+  </data>
+  <data name="NotificatorHelpText" xml:space="preserve">
+    <value>Notificator can look for words in messages, sender names, hoster names, game names and join messages. By default it will look for whole words, but you can use special characters '*', '+', and '.'. '*' matches any character, '+' matches at least 1 character and '.' matches only 1 character. So if you are looking for words similar to "example" then you can search for it as "example", "*ample", "examp*", "*amp*", "e.ample", "+amp+", etc. You can add one word per line. If you would like to ignore a word from searching then delete it or write '#' before it like "#example".</value>
+    <comment>Notificator help text</comment>
+  </data>
+  <data name="JoinGameText2" xml:space="preserve">
+    <value>Join this game (Alternative WA.exe)</value>
+    <comment>Join this game label when you right click on a game using alternative WA.exe</comment>
+  </data>
+  <data name="SilentJoinText2" xml:space="preserve">
+    <value>Silent join (Alternative WA.exe)</value>
+    <comment>Silent join label when you right click on a game using alternative WA.exe</comment>
+  </data>
+  <data name="JoinCloseText2" xml:space="preserve">
+    <value>Join and close snooper (Alternative WA.exe)</value>
+    <comment>Join and close snooper label when you right click on a game using alternative WA.exe</comment>
+  </data>
+  <data name="SilentJoinCloseText2" xml:space="preserve">
+    <value>Silent join and close snooper (Alternative WA.exe)</value>
+    <comment>Silent join and close snooper label when you right click on a game using alternative WA.exe</comment>
   </data>
 </root>

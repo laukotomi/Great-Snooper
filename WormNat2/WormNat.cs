@@ -9,7 +9,7 @@ namespace Hoster
 {
     class WormNat
     {
-        private enum Errors { NoError, WormNatError, WormNatInitError, CreateGameFailed, NoGameID, FailedToStartTheGame, Unkown, WormNatClientError }
+        private enum Errors { NoError, WormNatError, WormNatInitError, FailedToGetLocalIP, CreateGameFailed, NoGameID, FailedToStartTheGame, Unkown, WormNatClientError }
         private volatile Errors error = Errors.NoError;
         private Exception exception;
         private object exceptionLocker = new object();
@@ -35,11 +35,10 @@ namespace Hoster
         private readonly string location;
         private readonly string cc;
         private readonly string snooperSettingsPath;
-        private readonly string localIP;
         private readonly bool useWormNat;
         private readonly bool highPriority;
 
-        public WormNat(string serverAddress, string gameExePath, string nickName, string hostName, string passWord, string channelName, string channelScheme, string location, string cc, string useWormNat, string highPriority, string settingsPath, string localIP)
+        public WormNat(string serverAddress, string gameExePath, string nickName, string hostName, string passWord, string channelName, string channelScheme, string location, string cc, string useWormNat, string highPriority, string settingsPath)
         {
             this.serverAddress = serverAddress;
             this.gameExePath = gameExePath;
@@ -53,7 +52,6 @@ namespace Hoster
             this.useWormNat = (useWormNat == "1");
             this.highPriority = (highPriority == "1");
             this.snooperSettingsPath = settingsPath;
-            this.localIP = localIP;
         }
 
         private void ConnectionThread(int proxyPort)
@@ -258,7 +256,52 @@ namespace Hoster
                 }
                 // Basic way to host
                 else
-                    hostIP = localIP + ":" + gamePort.ToString();
+                {
+                    // Get local IP
+                    try
+                    {
+                        HttpWebRequest wrGETURL = (HttpWebRequest)WebRequest.Create("http://bot.whatismyipaddress.com");
+                        wrGETURL.AllowAutoRedirect = false;
+                        wrGETURL.Proxy = null;
+                        using (WebResponse response = wrGETURL.GetResponse())
+                        using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+                        {
+                            string localIP = stream.ReadToEnd();
+                            if (localIP.Contains("."))
+                                hostIP = localIP + ":" + gamePort.ToString(); // IPv4
+                            else
+                                hostIP = "[" + localIP + "]:" + gamePort.ToString(); // IPv6
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        try
+                        {
+                            WebRequest request = WebRequest.Create("http://checkip.dyndns.org/");
+                            request.Proxy = null;
+                            using (WebResponse response = request.GetResponse())
+                            using (StreamReader stream = new StreamReader(response.GetResponseStream()))
+                            {
+                                //Search for the ip in the html
+                                string localIP = stream.ReadToEnd();
+                                int first = localIP.IndexOf("Address: ") + 9;
+                                int last = localIP.LastIndexOf("</body>");
+                                localIP = localIP.Substring(first, last - first);
+
+                                if (localIP.Contains("."))
+                                    hostIP = localIP + ":" + gamePort.ToString(); // IPv4
+                                else
+                                    hostIP = "[" + localIP + "]:" + gamePort.ToString(); // IPv6
+                            }
+                        }
+                        catch (Exception)
+                        {
+                            this.error = Errors.FailedToGetLocalIP;
+                            this.exception = ex;
+                            throw;
+                        }
+                    }
+                }
 
                 try
                 {

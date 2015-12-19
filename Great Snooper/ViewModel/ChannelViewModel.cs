@@ -303,13 +303,13 @@ namespace GreatSnooper.ViewModel
             var sb = new StringBuilder();
 
             // URLs
-            sb.Append(@"((http|ftp)s?://\S+)");
+            sb.Append(@"(\b(http|ftp)s?://\S+\b/?)");
 
             if (Properties.Settings.Default.HBeepEnabled)
             {
                 isHighlightInRegex = true;
                 helper.Add(this.Server.User.Name);
-                sb.Append("|(" + Regex.Escape(this.Server.User.Name) + ")");
+                sb.Append(@"|(\b" + Regex.Escape(this.Server.User.Name) + @"\b)");
             }
             else
                 isHighlightInRegex = false;
@@ -317,7 +317,7 @@ namespace GreatSnooper.ViewModel
             if (leagueSearcher.ChannelToSearch == this)
             {
                 isLeagueSearcherInRegex = true;
-                sb.Append("|(");
+                sb.Append(@"|(\b");
                 bool first = true;
                 foreach (string word in leagueSearcher.SearchData.Keys)
                 {
@@ -332,12 +332,12 @@ namespace GreatSnooper.ViewModel
                         first = false;
                     }
                 }
-                sb.Append(')');
+                sb.Append(@"\b)");
             }
             else
                 isLeagueSearcherInRegex = false;
 
-            this.messageRegex = new Regex(@"\b(" + sb.ToString() + @")\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            this.messageRegex = new Regex(sb.ToString(), RegexOptions.IgnoreCase | RegexOptions.Compiled);
         }
 
         private void GenerateMessageRegex(object sender)
@@ -357,7 +357,7 @@ namespace GreatSnooper.ViewModel
                 if (this.notificator.SearchInSenderNamesEnabled && this.notificator.SenderNamesRegex.IsMatch(msg.Sender.Name))
                     this.MainViewModel.NotificatorFound(msg, this);
  
-                int hIdx = 4, lIdx = 5;
+                int hIdx = 3, lIdx = 4;
 
                 if (messageRegex == null)
                     GenerateMessageRegex();
@@ -365,11 +365,11 @@ namespace GreatSnooper.ViewModel
                 for (int i = 0; i < matches.Count; i++)
                 {
                     var groups = matches[i].Groups;
-                    if (groups[2].Length > 0)
+                    if (groups[1].Length > 0)
                     {
                         Uri uri;
-                        if (Uri.TryCreate(groups[2].Value, UriKind.RelativeOrAbsolute, out uri))
-                            msg.AddHighlightWord(groups[2].Index, groups[2].Length, Message.HightLightTypes.URI);
+                        if (Uri.TryCreate(groups[1].Value, UriKind.RelativeOrAbsolute, out uri))
+                            msg.AddHighlightWord(groups[1].Index, groups[1].Length, Message.HightLightTypes.URI);
                     }
                     else if (isHighlightInRegex && groups[hIdx].Value.Length > 0)
                     {
@@ -379,7 +379,7 @@ namespace GreatSnooper.ViewModel
                             this.Highlight();
                             this.MainViewModel.FlashWindow();
                             if (Properties.Settings.Default.TrayNotifications)
-                                this.MainViewModel.TaskbarIconService.ShowMessage(string.Format(Localizations.GSLocalization.Instance.HightLightMessage, this.Name));
+                                this.MainViewModel.ShowTrayMessage(string.Format(Localizations.GSLocalization.Instance.HightLightMessage, this.Name));
                             if (Properties.Settings.Default.HBeepEnabled)
                                 Sounds.PlaySoundByName("HBeep");
                         }
@@ -393,15 +393,22 @@ namespace GreatSnooper.ViewModel
                             leagueSearcher.SearchData[leagueName].Add(msg.Sender.Name);
                             this.MainViewModel.FlashWindow();
                             if (Properties.Settings.Default.TrayNotifications)
-                                this.MainViewModel.TaskbarIconService.ShowMessage(msg.Sender.Name + ": " + msg.Text);
+                                this.MainViewModel.ShowTrayMessage(msg.Sender.Name + ": " + msg.Text);
                             if (Properties.Settings.Default.LeagueFoundBeepEnabled)
                                 Sounds.PlaySoundByName("LeagueFoundBeep");
                         }
                     }
                 }
 
-                if (this.notificator.SearchInMessagesEnabled && this.notificator.InMessagesRegex.IsMatch(msg.Text))
-                    this.MainViewModel.NotificatorFound(msg, this);
+                if (this.notificator.SearchInMessagesEnabled)
+                {
+                    var nmatches = this.notificator.InMessagesRegex.Matches(msg.Text);
+                    for (int i = 0; i < nmatches.Count; i++)
+                    {
+                        var groups = nmatches[i].Groups;
+                        msg.AddHighlightWord(groups[0].Index, groups[0].Length, Message.HightLightTypes.NotificatorFound);
+                    }
+                }
             }
             else if (msgTask.Setting.Type == Message.MessageTypes.Action || msgTask.Setting.Type == Message.MessageTypes.Notice)
             {

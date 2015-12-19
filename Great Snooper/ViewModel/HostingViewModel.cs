@@ -25,7 +25,7 @@ namespace GreatSnooper.ViewModel
         #endregion
 
         #region Enums
-        private enum HosterErrors { NoError, WormNatError, WormNatInitError, CreateGameFailed, NoGameID, FailedToStartTheGame, Unkown, WormNatClientError }
+        private enum HosterErrors { NoError, WormNatError, WormNatInitError, FailedToGetLocalIP, CreateGameFailed, NoGameID, FailedToStartTheGame, Unkown, WormNatClientError }
         #endregion
 
         #region Members
@@ -171,7 +171,7 @@ namespace GreatSnooper.ViewModel
                 string highPriority = Properties.Settings.Default.WAHighPriority ? "1" : "0";
                 string waExe = (this.SelectedWaExe == 0) ? Properties.Settings.Default.WaExe : Properties.Settings.Default.WaExe2;
 
-                string arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" \"{8}\" \"{9}\" \"{10}\" \"{11}\" \"{12}\"",
+                string arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" \"{8}\" \"{9}\" \"{10}\" \"{11}\"",
                     serverAddress,
                     waExe,
                     channel.Server.User.Name,
@@ -183,8 +183,7 @@ namespace GreatSnooper.ViewModel
                     cc,
                     wormnat,
                     highPriority,
-                    GlobalManager.SettingsPath,
-                    this.MVM.WormNet.LocalIP
+                    GlobalManager.SettingsPath
                 );
 
                 string success = TryHostGame(arguments);
@@ -218,6 +217,10 @@ namespace GreatSnooper.ViewModel
 
                     case HosterErrors.NoGameID:
                         this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterNoGameIDError);
+                        return;
+
+                    case HosterErrors.FailedToGetLocalIP:
+                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterFailedToGetLocalIP);
                         return;
 
                     case HosterErrors.WormNatClientError:

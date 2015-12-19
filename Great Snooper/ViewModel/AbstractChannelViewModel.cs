@@ -26,7 +26,7 @@ namespace GreatSnooper.ViewModel
     {
         #region Static
         private static Regex dateRegex = new Regex(@"[^0-9]");
-        protected static Regex urlRegex = new Regex(@"\b(http|ftp)s?://\S+\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        protected static Regex urlRegex = new Regex(@"\b(http|ftp)s?://\S+\b/?", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         #endregion
 
         #region Members
@@ -547,7 +547,7 @@ namespace GreatSnooper.ViewModel
                             Hyperlink word = new Hyperlink(new Run(hword));
                             MessageSettings.LoadSettingsFor(word, MessageSettings.HyperLinkStyle);
                             word.Foreground = MessageSettings.HyperLinkStyle.NickColor;
-                            word.Command = this.MainViewModel.OpenLinkCommand;
+                            word.Click += OpenLickClick;
                             word.CommandParameter = hword;
                             p.Inlines.Add(word);
                         }
@@ -582,6 +582,19 @@ namespace GreatSnooper.ViewModel
                 ErrorLog.Log(e);
             }
             return false;
+        }
+
+        private void OpenLickClick(object sender, RoutedEventArgs e)
+        {
+            var link = (Hyperlink)sender;
+            try
+            {
+                Process.Start((string)link.CommandParameter);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+            }
         }
         #endregion
 

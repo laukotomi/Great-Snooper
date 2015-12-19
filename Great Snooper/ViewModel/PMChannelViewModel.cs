@@ -127,15 +127,28 @@ namespace GreatSnooper.ViewModel
             if (this.Disabled)
                 this.Disabled = false;
 
+            var msg = new Message(msgTask.User, msgTask.Message, msgTask.Setting);
+            if (msgTask.Setting.Type == Message.MessageTypes.Channel || msgTask.Setting.Type == Message.MessageTypes.Quit || msgTask.Setting.Type == Message.MessageTypes.Action || msgTask.Setting.Type == Message.MessageTypes.Notice)
+            {
+                var matches = urlRegex.Matches(msgTask.Message);
+                for (int i = 0; i < matches.Count; i++)
+                {
+                    var groups = matches[i].Groups;
+                    Uri uri;
+                    if (Uri.TryCreate(groups[0].Value, UriKind.RelativeOrAbsolute, out uri))
+                        msg.AddHighlightWord(groups[0].Index, groups[0].Length, Message.HightLightTypes.URI);
+                }
+            }
+
             // This way away message will be added to the channel later than the arrived message
-            this.AddMessage(msgTask.User, msgTask.Message, msgTask.Setting);
+            this.AddMessage(msg);
 
             if (!msgTask.User.IsBanned)
             {
                 this.Highlight();
                 this.MainViewModel.FlashWindow();
                 if (Properties.Settings.Default.TrayNotifications && this.MainViewModel.SelectedChannel != this)
-                    this.MainViewModel.TaskbarIconService.ShowMessage(msgTask.User.Name + ": " + msgTask.Message);
+                    this.MainViewModel.ShowTrayMessage(msgTask.User.Name + ": " + msgTask.Message);
                 if (Properties.Settings.Default.PMBeepEnabled)
                     Sounds.PlaySoundByName("PMBeep");
 

@@ -144,7 +144,7 @@ namespace GreatSnooper.UserControls
             }
         }
 
-        private void SetDefaultOrderForGrid()
+        public void SetDefaultOrderForGrid()
         {
             if (this.chvm.Server is WormNetCommunicator)
             {

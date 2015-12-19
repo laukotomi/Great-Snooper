@@ -1426,5 +1426,17 @@ namespace GreatSnooper.Properties {
                 this["LastNewsID"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool ItalicForGSUsers {
+            get {
+                return ((bool)(this["ItalicForGSUsers"]));
+            }
+            set {
+                this["ItalicForGSUsers"] = value;
+            }
+        }
     }
 }

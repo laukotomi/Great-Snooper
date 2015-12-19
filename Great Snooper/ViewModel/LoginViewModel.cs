@@ -273,9 +273,6 @@ namespace GreatSnooper.ViewModel
             }
             else
             {
-                Thread.CurrentThread.CurrentCulture = new CultureInfo(Properties.Settings.Default.CultureName);
-                Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-
                 var theme = ThemeManager.DetectAppStyle(Application.Current);
                 var accent = ThemeManager.GetAccent(Properties.Settings.Default.AccentName);
                 ThemeManager.ChangeAppStyle(Application.Current, accent, theme.Item1);

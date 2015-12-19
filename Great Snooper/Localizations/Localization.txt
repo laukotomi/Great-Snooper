@@ -925,3 +925,9 @@ JoinCloseText2=Join and close snooper (Alternative WA.exe)
 
 # Silent join and close snooper label when you right click on a game using alternative WA.exe
 SilentJoinCloseText2=Silent join and close snooper (Alternative WA.exe)
+
+#Italic font style for Great Snooper users
+ItalicForGSUsers=Italic font style for Great Snooper users:
+
+# When hoster fails to get local ip address
+HosterFailedToGetLocalIP=Failed to get local IP address. Please try hosting using WormNat2!

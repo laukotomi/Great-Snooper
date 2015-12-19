@@ -151,6 +151,7 @@ namespace GreatSnooper.ViewModel
             this.WindowSettings.Add(new BoolSetting("EnergySaveModeGame", Localizations.GSLocalization.Instance.EnergySaveModeGameText));
             this.WindowSettings.Add(new BoolSetting("EnergySaveModeWin", Localizations.GSLocalization.Instance.EnergySaveModeWinText));
             this.WindowSettings.Add(new BoolSetting("WAHighPriority", Localizations.GSLocalization.Instance.WaHighPriorityText));
+            this.WindowSettings.Add(new BoolSetting("ItalicForGSUsers", Localizations.GSLocalization.Instance.ItalicForGSUsers));
 
             this.NotificationSettings = new List<AbstractSetting>();
             this.NotificationSettings.Add(new BoolSetting("TrayNotifications", Localizations.GSLocalization.Instance.TrayNotificationsText));

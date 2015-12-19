@@ -86,7 +86,6 @@ namespace GreatSnooper.Classes
         public MainViewModel MVM { get; set; }
         public Dictionary<string, User> Users { get; private set; } // Is used only from UI thread!
         public Dictionary<string, AbstractChannelViewModel> Channels { get; private set; } // Is used only from UI thread!
-        public string LocalIP { get; private set; }
         #endregion
 
         #region Events
@@ -179,12 +178,6 @@ namespace GreatSnooper.Classes
                     ircServer.ReceiveBufferSize = 10240;
                     Debug.WriteLine("Trying to connect " + this.ServerAddress + ":" + serverPort.ToString());
                     ircServer.Connect(System.Net.Dns.GetHostAddresses(ServerAddress), serverPort);
-
-                    IPEndPoint ip = (IPEndPoint)ircServer.LocalEndPoint;
-                    if (ip.AddressFamily == AddressFamily.InterNetworkV6)
-                        this.LocalIP = "[" + ip.Address.ToString() + "]";
-                    else
-                        this.LocalIP = ip.Address.ToString();
 
                     // Reset things
                     lastServerAction = DateTime.Now;

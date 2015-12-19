@@ -62,7 +62,7 @@ namespace GreatSnooper.IRCTasks
                     else if (u.Group.ID != UserGroups.SystemGroupID)
                     {
                         if (Properties.Settings.Default.TrayNotifications)
-                            chvm.MainViewModel.TaskbarIconService.ShowMessage(string.Format(Localizations.GSLocalization.Instance.OnlineMessage, u.Name));
+                            mvm.ShowTrayMessage(string.Format(Localizations.GSLocalization.Instance.OnlineMessage, u.Name));
                         if (u.Group.SoundEnabled)
                             Sounds.PlaySound(u.Group.Sound);
                     }

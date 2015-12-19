@@ -53,6 +53,9 @@
                                     <DataTrigger Binding="{Binding Path=TusAccount, Mode=OneWay, Converter={StaticResource nullToBoolConverter}}" Value="True">
                                         <Setter Property="TextDecorations" Value="Underline" />
                                     </DataTrigger>
+                                    <DataTrigger Binding="{Binding Path=UsingGreatSnooperItalic, Mode=OneWay}" Value="True">
+                                        <Setter Property="FontStyle" Value="Italic" />
+                                    </DataTrigger>
                                 </Style.Triggers>
                             </Style>
                         </TextBlock.Resources>

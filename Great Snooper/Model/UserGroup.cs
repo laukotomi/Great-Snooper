@@ -151,6 +151,8 @@ namespace GreatSnooper.Model
             string[] defaultValues = defaultValue.Split(new char[] { '|' });
 
             // If the name of the group is default then we can show localized group name
+            var asd = System.Threading.Thread.CurrentThread.CurrentCulture;
+            var das = System.Threading.Thread.CurrentThread.CurrentUICulture;
             if (values[0] == defaultValues[0])
             {
                 switch (this.ID)

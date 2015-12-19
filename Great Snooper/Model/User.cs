@@ -190,6 +190,10 @@ namespace GreatSnooper.Model
                 return _usingGreatSnooper.Value;
             }
         }
+        public bool UsingGreatSnooperItalic
+        {
+            get { return Properties.Settings.Default.ItalicForGSUsers && this.UsingGreatSnooper; }
+        }
         public bool CanConversation
         {
             get
@@ -257,6 +261,11 @@ namespace GreatSnooper.Model
         public override string ToString()
         {
             return this.Name;
+        }
+
+        public void RaisePropertyChangedPublic(string propertyName)
+        {
+            this.RaisePropertyChanged(propertyName);
         }
     }
 }

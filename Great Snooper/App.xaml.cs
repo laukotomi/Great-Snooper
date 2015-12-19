@@ -5,6 +5,8 @@ using GreatSnooper.Helpers;
 using Microsoft.Win32;
 using System.IO;
 using GreatSnooper.Validators;
+using System.Threading;
+using System.Globalization;
 
 namespace GreatSnooper
 {
@@ -27,10 +29,13 @@ namespace GreatSnooper
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
+            var settings = GreatSnooper.Properties.Settings.Default;
+            Thread.CurrentThread.CurrentCulture = new CultureInfo(settings.CultureName);
+            Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
             WormNetCharTable.Initialize();
             bool save = false;
 
-            var settings = GreatSnooper.Properties.Settings.Default;
             if (!settings.SettingsUpgraded)
             {
                 try

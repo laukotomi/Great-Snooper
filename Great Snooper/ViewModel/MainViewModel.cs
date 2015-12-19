@@ -710,7 +710,10 @@ namespace GreatSnooper.ViewModel
                         {
                             var chvm = (ChannelViewModel)item.Value;
                             if (chvm.UserListDG != null)
+                            {
                                 chvm.UserListDG.ItemsSource = chvm.Users;
+                                chvm.UserListDG.SetDefaultOrderForGrid();
+                            }
                             if (chvm.GameListGrid != null)
                                 chvm.GameListGrid.DataContext = chvm;
                         }
@@ -1241,6 +1244,26 @@ namespace GreatSnooper.ViewModel
                         }
                     }
                     break;
+
+                case "ItalicForGSUsers":
+                    for (int i = 0; i < this.servers.Length; i++)
+                    {
+                        if (this.servers[i].State == AbstractCommunicator.ConnectionStates.Connected)
+                        {
+                            foreach (var item in this.servers[i].Channels)
+                            {
+                                if (item.Value is ChannelViewModel && item.Value.Joined)
+                                {
+                                    foreach (var user in item.Value.Users)
+                                    {
+                                        if (user.UsingGreatSnooper)
+                                            user.RaisePropertyChangedPublic("UsingGreatSnooperItalic");
+                                    }
+                                }
+                            }
+                        }
+                    }
+                    break;
             }
         }
         #endregion
@@ -1628,7 +1651,7 @@ namespace GreatSnooper.ViewModel
                 e.Cancel = true;
                 HideWindow();
                 if (Properties.Settings.Default.TrayNotifications)
-                    this.TaskbarIconService.ShowMessage(Localizations.GSLocalization.Instance.GSRunningTaskbar);
+                    this.ShowTrayMessage(Localizations.GSLocalization.Instance.GSRunningTaskbar);
 
                 return;
             }
@@ -1922,9 +1945,9 @@ namespace GreatSnooper.ViewModel
             {
                 Process.Start(o);
             }
-            catch (Exception e)
+            catch (Exception ex)
             {
-                ErrorLog.Log(e);
+                ErrorLog.Log(ex);
             }
         }
         #endregion
@@ -2086,7 +2109,7 @@ namespace GreatSnooper.ViewModel
         {
             this.FlashWindow();
             if (Properties.Settings.Default.TrayNotifications)
-                this.TaskbarIconService.ShowMessage("(" + chvm.Name + ") " + msg.Sender.Name + ": " + msg.Text);
+                this.ShowTrayMessage("(" + chvm.Name + ") " + msg.Sender.Name + ": " + msg.Text);
             if (Properties.Settings.Default.NotificatorSoundEnabled)
                 Sounds.PlaySoundByName("NotificatorSound");
         }
@@ -2095,7 +2118,7 @@ namespace GreatSnooper.ViewModel
         {
             this.FlashWindow();
             if (Properties.Settings.Default.TrayNotifications)
-                this.TaskbarIconService.ShowMessage(msg);
+                this.ShowTrayMessage(msg);
             if (Properties.Settings.Default.NotificatorSoundEnabled)
                 Sounds.PlaySoundByName("NotificatorSound");
         }
@@ -2105,5 +2128,11 @@ namespace GreatSnooper.ViewModel
             RaisePropertyChanged("NotificatorEnabled");
         }
         #endregion
+
+        internal void ShowTrayMessage(string message)
+        {
+            if ((Properties.Settings.Default.EnergySaveModeGame && this.IsEnergySaveMode == false) || this.GameProcess == null)
+                this.TaskbarIconService.ShowMessage(message);
+        }
     }
 }
