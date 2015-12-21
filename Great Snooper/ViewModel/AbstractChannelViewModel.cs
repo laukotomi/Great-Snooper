@@ -455,7 +455,7 @@ namespace GreatSnooper.ViewModel
 
         protected void AddMessage(Message msg)
         {
-            if (this.MainViewModel.IsEnergySaveMode == false && this.Messages.Count >= GlobalManager.MaxMessagesInMemory)
+            if (this.Messages.Count >= GlobalManager.MaxMessagesInMemory && this.MainViewModel.IsGameWindowOn() == false)
                 Log(this.Messages.Count - GlobalManager.MaxMessagesInMemory + GlobalManager.NumOfOldMessagesToBeLoaded);
 
             this.Messages.AddLast(msg);

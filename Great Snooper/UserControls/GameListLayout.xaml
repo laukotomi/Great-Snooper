@@ -18,21 +18,19 @@
 
     <Border Grid.Row="0" BorderThickness="1,0,1,1" BorderBrush="Gray" Background="{DynamicResource AccentColorBrush4}">
         <DockPanel>
-            <Canvas DockPanel.Dock="Left" Visibility="{Binding Path=CanHostJoined, Mode=OneWay, Converter={StaticResource boolToVisibilityConverter}}">
-                <StackPanel Canvas.Left="0" Orientation="Horizontal">
-                    <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=HostAGameText, Mode=OneWay}"
-                            Focusable="False" Height="33" Background="Black" BorderThickness="0,0,1,0" Padding="15,0"
-                            Command="{Binding Path=HostGameCommand, Mode=OneTime}" />
-                    <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=RefrestGameListText, Mode=OneWay}"
-                            Focusable="False" Height="33" Background="Black" BorderThickness="0,0,1,0" Padding="15,0"
-                            Command="{Binding Path=MainViewModel.RefreshGameListCommand, Mode=OneTime}" />
-                </StackPanel>
-            </Canvas>
-            <Canvas DockPanel.Dock="Right" Visibility="{Binding Path=Joined, Mode=OneWay, Converter={StaticResource boolToVisibilityConverter}}">
-                <Button Canvas.Right="0" Height="33" Background="Black" BorderThickness="1,0,0,0"
-                        Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=LeaveChannelText, Mode=OneWay}"
-                        Focusable="False" Padding="15,0" Command="{Binding Path=LeaveChannelCommand, Mode=OneTime}" />
-            </Canvas>
+            <StackPanel DockPanel.Dock="Left" Orientation="Horizontal" Visibility="{Binding Path=CanHostJoined, Mode=OneWay, Converter={StaticResource boolToVisibilityConverter}}">
+                <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=HostAGameText, Mode=OneWay}"
+                        Focusable="False" Height="33" Background="Black" BorderThickness="0,0,1,0" Padding="15,0"
+                        Command="{Binding Path=HostGameCommand, Mode=OneTime}" />
+                <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=RefrestGameListText, Mode=OneWay}"
+                        Focusable="False" Height="33" Background="Black" BorderThickness="0,0,1,0" Padding="15,0"
+                        Command="{Binding Path=MainViewModel.RefreshGameListCommand, Mode=OneTime}" />
+            </StackPanel>
+
+            <Button DockPanel.Dock="Right" Height="33" Background="Black" BorderThickness="1,0,0,0" Visibility="{Binding Path=Joined, Mode=OneWay, Converter={StaticResource boolToVisibilityConverter}}"
+                    Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=LeaveChannelText, Mode=OneWay}"
+                    Focusable="False" Padding="15,0" Command="{Binding Path=LeaveChannelCommand, Mode=OneTime}" />
+            
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" VerticalAlignment="Center">
                 <TextBlock Text="{Binding Path=Name, Mode=OneTime}" />
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"

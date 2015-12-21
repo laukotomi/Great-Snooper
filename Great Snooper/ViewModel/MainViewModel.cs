@@ -1775,9 +1775,7 @@ namespace GreatSnooper.ViewModel
                 }
 
                 if (GameProcess != null)
-                {
                     this.FreeGameProcess();
-                }
 
                 Properties.Settings.Default.PropertyChanged -= SettingsChanged;
                 this.notificator.IsEnabledChanged -= notificator_IsEnabledChanged;
@@ -2144,8 +2142,17 @@ namespace GreatSnooper.ViewModel
 
         internal void ShowTrayMessage(string message)
         {
-            if ((Properties.Settings.Default.EnergySaveModeGame && this.IsEnergySaveMode == false) || this.GameProcess == null)
+            if (this.GameProcess == null && !IsGameWindowOn())
                 this.TaskbarIconService.ShowMessage(message);
+        }
+
+        public bool IsGameWindowOn()
+        {
+            var lobby = NativeMethods.FindWindow(null, "Worms Armageddon");
+            if (lobby != IntPtr.Zero)
+                return NativeMethods.GetPlacement(lobby).showCmd == ShowWindowCommands.Normal;
+
+            return false;
         }
     }
 }
