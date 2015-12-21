@@ -16,13 +16,12 @@ namespace GreatSnooper.Settings
         public string Path
         {
             get { return _path; }
-            private set
+            set
             {
                 if (_path != value)
                 {
                     _path = value;
                     SettingsHelper.Save(this.settingName, value);
-                    RaisePropertyChanged("Path");
                 }
             }
         }
@@ -59,7 +58,10 @@ namespace GreatSnooper.Settings
 
             // Get the selected file name and display in a TextBox 
             if (result.HasValue && result.Value)
+            {
                 this.Path = dlg.FileName;
+                RaisePropertyChanged("Path");
+            }
         }
         #endregion
 

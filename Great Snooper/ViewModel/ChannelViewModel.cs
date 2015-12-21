@@ -31,6 +31,7 @@ namespace GreatSnooper.ViewModel
         private Regex messageRegex;
         private bool isHighlightInRegex;
         private bool isLeagueSearcherInRegex;
+        private Game joinedGame;
         #endregion
 
         #region Properties
@@ -749,6 +750,8 @@ namespace GreatSnooper.ViewModel
             if (!CheckWAExe())
                 return;
 
+            this.joinedGame = this.SelectedGame;
+
             if (this.leagueSearcher.IsEnabled && Properties.Settings.Default.AskLeagueSearcherOff)
             {
                 this.MainViewModel.DialogService.ShowDialog(Localizations.GSLocalization.Instance.QuestionText, Localizations.GSLocalization.Instance.LeagueSearcherRunningText, MessageDialogStyle.AffirmativeAndNegative, GlobalManager.YesNoDialogSetting, (tt) =>
@@ -780,13 +783,13 @@ namespace GreatSnooper.ViewModel
             this.MainViewModel.GameProcess = new Process();
             this.MainViewModel.GameProcess.StartInfo.UseShellExecute = false;
             this.MainViewModel.GameProcess.StartInfo.FileName = (wa == "1") ? Properties.Settings.Default.WaExe : Properties.Settings.Default.WaExe2;
-            this.MainViewModel.GameProcess.StartInfo.Arguments = "wa://" + this.SelectedGame.Address + "?gameid=" + this.SelectedGame.ID + "&scheme=" + this.Scheme;
+            this.MainViewModel.GameProcess.StartInfo.Arguments = "wa://" + this.joinedGame.Address + "?gameid=" + this.joinedGame.ID + "&scheme=" + this.Scheme;
             if (this.MainViewModel.GameProcess.Start())
             {
                 if (Properties.Settings.Default.WAHighPriority)
                     this.MainViewModel.GameProcess.PriorityClass = ProcessPriorityClass.High;
                 if (Properties.Settings.Default.MessageJoinedGame && !silent)
-                    this.SendActionMessage("is joining a game: " + this.SelectedGame.Name);
+                    this.SendActionMessage("is joining a game: " + this.joinedGame.Name);
                 if (Properties.Settings.Default.MarkAway)
                     this.MainViewModel.SetAway();
             }

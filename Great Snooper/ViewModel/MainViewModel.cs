@@ -1151,6 +1151,17 @@ namespace GreatSnooper.ViewModel
                     }
                     break;
 
+                case "CultureName":
+                    foreach (var server in this.servers)
+                    {
+                        foreach (var chvm in server.Channels)
+                        {
+                            if (chvm.Value is ChannelViewModel)
+                                ((ChannelViewModel)chvm.Value).RegenerateGroupsMenu = true;
+                        }
+                    }
+                    break;
+
                 case "ShowWormsChannel":
                     if (Properties.Settings.Default.ShowWormsChannel)
                         new ChannelViewModel(this, this.GameSurge, "#worms", "A place for hardcore wormers");
@@ -1404,7 +1415,7 @@ namespace GreatSnooper.ViewModel
         #region ConnectionState
         private void ConnectionState(object sender, AbstractCommunicator.ConnectionStates oldState)
         {
-            this.Dispatcher.Invoke(new Action(delegate()
+            this.Dispatcher.BeginInvoke(new Action(delegate()
             {
                 var server = (AbstractCommunicator)sender;
 
@@ -1655,6 +1666,8 @@ namespace GreatSnooper.ViewModel
 
                 return;
             }
+
+            this.closing = true;
 
             if (channelSchemeTask != null && !channelSchemeTask.IsCompleted)
                 e.Cancel = true;

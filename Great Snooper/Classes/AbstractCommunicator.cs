@@ -120,32 +120,48 @@ namespace GreatSnooper.Classes
 
         public void Reconnect()
         {
-            // Reset things
-            this.State = ConnectionStates.ReConnecting;
-            reconnectCounter = 0;
+            try
+            {
+                // Reset things
+                this.State = ConnectionStates.ReConnecting;
+                reconnectCounter = 0;
 
-            if (reconnectTimer == null)
-                reconnectTimer = new Timer(ReconnectNow, null, 500, Timeout.Infinite);
-            else
-                reconnectTimer.Change(500, Timeout.Infinite);
+                if (reconnectTimer == null)
+                    reconnectTimer = new Timer(ReconnectNow, null, 500, Timeout.Infinite);
+                else
+                    reconnectTimer.Change(500, Timeout.Infinite);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+                Stop(ErrorStates.Error);
+            }
         }
 
         private void ReconnectNow(object state)
         {
-            if (this.State == ConnectionStates.Disconnected)
-                return;
-
-            if (this.State == ConnectionStates.Disconnecting)
+            try
             {
-                Stop(ErrorStates.None);
-                return;
-            }
+                if (this.State == ConnectionStates.Disconnected)
+                    return;
 
-            reconnectCounter++;
-            if (reconnectCounter == 30) // 15 seconds
-                Connect(true);
-            else
-                reconnectTimer.Change(500, Timeout.Infinite);
+                if (this.State == ConnectionStates.Disconnecting)
+                {
+                    Stop(ErrorStates.None);
+                    return;
+                }
+
+                reconnectCounter++;
+                if (reconnectCounter == 30) // 15 seconds
+                    Connect(true);
+                else
+                    reconnectTimer.Change(500, Timeout.Infinite);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+                Stop(ErrorStates.Error);
+            }
         }
 
         public void Connect(bool reconnect = false)

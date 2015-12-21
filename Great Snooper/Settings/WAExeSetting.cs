@@ -17,12 +17,12 @@ namespace GreatSnooper.Settings
         public string Path
         {
             get { return _path; }
-            private set
+            set
             {
                 if (_path != value)
                 {
                     _path = value;
-                    RaisePropertyChanged("Path");
+                    SettingsHelper.Save(this.settingName, _path);
                 }
             }
         }
@@ -48,7 +48,7 @@ namespace GreatSnooper.Settings
             if (result.HasValue && result.Value)
             {
                 this.Path = dlg.FileName;
-                SettingsHelper.Save(this.settingName, dlg.FileName);
+                RaisePropertyChanged("Path");
             }
         }
         #endregion

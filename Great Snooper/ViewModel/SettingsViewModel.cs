@@ -99,6 +99,9 @@ namespace GreatSnooper.ViewModel
 
                     Localizations.GSLocalization.Instance.CultureChanged();
 
+                    foreach (var userGroup in UserGroups.Groups)
+                        userGroup.Value.ReloadData();
+
                     Properties.Settings.Default.CultureName = language.CultureName;
                     Properties.Settings.Default.Save();
 

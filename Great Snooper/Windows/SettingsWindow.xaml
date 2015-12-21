@@ -70,7 +70,7 @@
 
                 <TextBlock VerticalAlignment="Center" Text="{Binding Path=Text, Mode=OneTime}" Grid.Column="0" />
 
-                <TextBox IsReadOnly="True" Text="{Binding Path=Path, Mode=OneWay}" Grid.Column="1" VerticalAlignment="Center" />
+                <TextBox Text="{Binding Path=Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" VerticalAlignment="Center" />
                 <Button Focusable="False" MinWidth="75" Grid.Column="2" VerticalAlignment="Center"
                         Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=BrowseButtonContent, Mode=OneWay}"
                         Command="{Binding Path=SoundBrowseCommand, Mode=OneTime}" />
@@ -123,7 +123,8 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock VerticalAlignment="Center" Text="{Binding Path=Text, Mode=OneTime}" Grid.Column="0" />
-                <TextBox VerticalAlignment="Center" Grid.Column="1" Text="{Binding Path=Path, Mode=OneWay}" Margin="0,5" IsReadOnly="True" />
+                <TextBox VerticalAlignment="Center" Grid.Column="1" Text="{Binding Path=Path, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                         Margin="0,5" />
                 <Button VerticalAlignment="Center" Focusable="False" Grid.Column="2" Margin="0,5"
                             Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=BrowseButtonContent, Mode=OneWay}"
                             Command="{Binding Path=WAExeCommand, Mode=OneTime}" />

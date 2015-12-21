@@ -300,7 +300,7 @@
 
         <controls:ProgressRing IsActive="{Binding Path=Loading, Mode=OneWay}" />
 
-        <tb:TaskbarIcon x:Name="myNotifyIcon" ToolTipText="Great Snooper" IconSource="/Resources/icon.ico" TrayPopup="{StaticResource gsBalloon}"
+        <tb:TaskbarIcon x:Name="myNotifyIcon" ToolTipText="Great Snooper" IconSource="/Resources/icon.ico"
                         DoubleClickCommand="{Binding Path=ActivationCommand, Mode=OneTime}">
             <tb:TaskbarIcon.ContextMenu>
                 <ContextMenu>
