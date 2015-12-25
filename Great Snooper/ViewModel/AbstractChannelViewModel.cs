@@ -453,7 +453,7 @@ namespace GreatSnooper.ViewModel
             this.AddMessage(msg);
         }
 
-        protected void AddMessage(Message msg)
+        public void AddMessage(Message msg)
         {
             if (this.Messages.Count >= GlobalManager.MaxMessagesInMemory && this.MainViewModel.IsGameWindowOn() == false)
                 Log(this.Messages.Count - GlobalManager.MaxMessagesInMemory + GlobalManager.NumOfOldMessagesToBeLoaded);
@@ -520,7 +520,7 @@ namespace GreatSnooper.ViewModel
                 p.Inlines.Add(nick);
 
                 // Message content
-                if (msg.Style.IsFixedText || msg.HighlightWords == null)
+                if (msg.HighlightWords == null)
                     p.Inlines.Add(new Run(msg.Text));
                 else
                 {

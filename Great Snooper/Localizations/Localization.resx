@@ -1253,4 +1253,28 @@
     <value>Failed to get local IP address. Please try hosting using WormNat2!</value>
     <comment>When hoster fails to get local ip address</comment>
   </data>
+  <data name="LoadGamesText" xml:space="preserve">
+    <value>Load games</value>
+    <comment>Load games</comment>
+  </data>
+  <data name="LoadTUSUsersText" xml:space="preserve">
+    <value>Load TUS users</value>
+    <comment>Load TUS users</comment>
+  </data>
+  <data name="LoadCommonSettingsText" xml:space="preserve">
+    <value>Load common settings (required for league searcher, updater and news)</value>
+    <comment>Load common settings</comment>
+  </data>
+  <data name="LoadChannelSchemeText" xml:space="preserve">
+    <value>Load channel scheme (required for hosting)</value>
+    <comment>Load channel scheme</comment>
+  </data>
+  <data name="UseWhoMessagesText" xml:space="preserve">
+    <value>Use WHO messages (required for country, rank, user info)</value>
+    <comment>Use who messages</comment>
+  </data>
+  <data name="ViewClanProfileText" xml:space="preserve">
+    <value>{0}'s profile</value>
+    <comment>View clan profile\n{0} will be the name of the clan</comment>
+  </data>
 </root>

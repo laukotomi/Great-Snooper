@@ -108,9 +108,9 @@
 
             <StackPanel Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
                 <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=SaveText, Mode=OneWay}"
-                        Width="100" Margin="10" Command="{Binding Path=SaveCommand, Mode=OneTime}" />
+                        MinWidth="100" Margin="10" Command="{Binding Path=SaveCommand, Mode=OneTime}" />
                 <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CloseText, Mode=OneWay}"
-                        Width="100" Margin="10" Command="{Binding Path=CloseCommand, Mode=OneTime}" IsCancel="True" />
+                        MinWidth="100" Margin="10" Command="{Binding Path=CloseCommand, Mode=OneTime}" IsCancel="True" />
             </StackPanel>
         </Grid>
     </DockPanel>

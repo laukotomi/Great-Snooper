@@ -1438,5 +1438,65 @@ namespace GreatSnooper.Properties {
                 this["ItalicForGSUsers"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LoadGames {
+            get {
+                return ((bool)(this["LoadGames"]));
+            }
+            set {
+                this["LoadGames"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LoadTUSAccounts {
+            get {
+                return ((bool)(this["LoadTUSAccounts"]));
+            }
+            set {
+                this["LoadTUSAccounts"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LoadCommonSettings {
+            get {
+                return ((bool)(this["LoadCommonSettings"]));
+            }
+            set {
+                this["LoadCommonSettings"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool LoadChannelScheme {
+            get {
+                return ((bool)(this["LoadChannelScheme"]));
+            }
+            set {
+                this["LoadChannelScheme"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool UseWhoMessages {
+            get {
+                return ((bool)(this["UseWhoMessages"]));
+            }
+            set {
+                this["UseWhoMessages"] = value;
+            }
+        }
     }
 }

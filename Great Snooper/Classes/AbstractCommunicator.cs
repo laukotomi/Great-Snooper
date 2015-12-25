@@ -38,14 +38,15 @@ namespace GreatSnooper.Classes
         protected SortedDictionary<string, string> channelListHelper;
 
         // #Help 10 :05 A place to get help, or help others
-        protected readonly Regex channelRegex = new Regex(@"((#|&)\S+)[^:]+\S+\s(.*)");
+        protected readonly Regex channelRegex = new Regex(@"((#|&)\S+)[^:]+\S+\s(.*)", RegexOptions.Compiled);
         // #AnythingGoes ~UserName no.address.for.you wormnet1.team17.com Herbsman H :0 68 7 LT The Wheat Snooper 2.8
         // * ~ooo OutofOrder.user.gamesurge *.GameSurge.net OutofOrder Hx :3 Tomás Ticado
         // #worms ~tear tear.moe *.GameSurge.net Tear H :3 Tear
-        protected readonly Regex clientRegex = new Regex(@"(\S+)\s~?(\S+)\s\S+\s\S+\s(\S+)[^:]+\S+\s(.*)");
+        protected readonly Regex clientRegex = new Regex(@"(\S+)\s~?(\S+)\s\S+\s\S+\s(\S+)[^:]+\S+\s(.*)", RegexOptions.Compiled);
         // :sToOMiToO!~AeF@no.address.for.you JOIN :#RopersHeaven
         // :AeF`T!Username@no.address.for.you PRIVMSG #AnythingGoes :\x01ACTION ads\x01
-        protected readonly Regex messageRegex = new Regex(@":?([^!]+)!~?([^@]+)\S+\s(\S+)\s?:?(.*)");
+        protected readonly Regex messageRegex = new Regex(@":?([^!]+)!~?([^@]+)\S+\s(\S+)\s?:?(.*)", RegexOptions.Compiled);
+        protected readonly Regex namesRegex = new Regex(@"^(=|\*|@) ([^ ]+) :(.*)", RegexOptions.Compiled);
 
         // Communication things
         protected Socket ircServer;
@@ -58,7 +59,8 @@ namespace GreatSnooper.Classes
 
         // Reconnet things
         protected Timer reconnectTimer;
-        protected int reconnectCounter;
+        protected DateTime lastReconnectAttempt;
+        protected readonly TimeSpan reconnectTimeout = new TimeSpan(0, 0, 30);
 
         private bool handleGlobalMessage;
         #endregion
@@ -110,6 +112,7 @@ namespace GreatSnooper.Classes
             this.HandleJoinRequest = handleJoinRequest;
             this.Users = new Dictionary<string, User>(StringComparer.OrdinalIgnoreCase);
             this.Channels = new Dictionary<string, AbstractChannelViewModel>(StringComparer.OrdinalIgnoreCase);
+            this.lastReconnectAttempt = new DateTime(1999, 5, 31);
         }
 
         public void CancelAsync()
@@ -120,11 +123,13 @@ namespace GreatSnooper.Classes
 
         public void Reconnect()
         {
+            if (this.State != ConnectionStates.Disconnected)
+                return;
+
             try
             {
                 // Reset things
                 this.State = ConnectionStates.ReConnecting;
-                reconnectCounter = 0;
 
                 if (reconnectTimer == null)
                     reconnectTimer = new Timer(ReconnectNow, null, 500, Timeout.Infinite);
@@ -142,7 +147,7 @@ namespace GreatSnooper.Classes
         {
             try
             {
-                if (this.State == ConnectionStates.Disconnected)
+                if (this.State != ConnectionStates.ReConnecting)
                     return;
 
                 if (this.State == ConnectionStates.Disconnecting)
@@ -151,9 +156,8 @@ namespace GreatSnooper.Classes
                     return;
                 }
 
-                reconnectCounter++;
-                if (reconnectCounter == 30) // 15 seconds
-                    Connect(true);
+                if (DateTime.Now - lastReconnectAttempt > reconnectTimeout)
+                    Connect();
                 else
                     reconnectTimer.Change(500, Timeout.Infinite);
             }
@@ -164,12 +168,14 @@ namespace GreatSnooper.Classes
             }
         }
 
-        public void Connect(bool reconnect = false)
+        public void Connect()
         {
-            if (this.State != ConnectionStates.Disconnected)
+            if (this.State != ConnectionStates.Disconnected && this.State != ConnectionStates.ReConnecting)
                 return;
-            if (!reconnect)
+            if (this.State == ConnectionStates.Disconnected)
                 this.State = ConnectionStates.Connecting;
+
+            this.lastReconnectAttempt = DateTime.Now;
             this.SetUser();
 
             if (connectionTask != null)
@@ -182,13 +188,13 @@ namespace GreatSnooper.Classes
             {
                 try
                 {
-                    // Connect to server
                     if (ircServer != null)
                     {
                         ircServer.Dispose();
                         ircServer = null;
                     }
 
+                    // Connect to server
                     ircServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                     ircServer.SendTimeout = 15000;
                     ircServer.ReceiveBufferSize = 10240;
@@ -197,7 +203,7 @@ namespace GreatSnooper.Classes
 
                     // Reset things
                     lastServerAction = DateTime.Now;
-                    if (reconnect)
+                    if (this.State == ConnectionStates.ReConnecting)
                     {
                         pingSent = false;
                         this.serverIrcAddress = string.Empty;
@@ -294,7 +300,7 @@ namespace GreatSnooper.Classes
                     // process the message line-by-line
                     for (int i = 0; i < lines.Length - 1; i++) // the last line is either string.Empty or a line which end hasn't arrived yet
                     {
-                        //Debug.WriteLine("RECEIVED: " + this.ServerAddress + " " + lines[i]);
+                        Debug.WriteLine("RECEIVED: " + this.ServerAddress + " " + lines[i]);
 
                         // Get the sender of the message
                         int spacePos = lines[i].IndexOf(' ');
@@ -350,10 +356,8 @@ namespace GreatSnooper.Classes
 
                     // Clear processed data from the buffer
                     recvMessage.Clear();
-                    if (lines[lines.Length - 1] != string.Empty)
-                    {
+                    if (lines.Length > 0 && lines[lines.Length - 1] != string.Empty)
                         recvMessage.Append(lines[lines.Length - 1]);
-                    }
                 }
 
                 // If there was no server action for idleTimeout, then send ping message in every idleTimeout seconds
@@ -729,16 +733,13 @@ namespace GreatSnooper.Classes
                 case 433:
                     if (serverIrcAddress == string.Empty)
                         return true;
-                    else
+                    else if (MVM != null)
                     {
                         // nickname is in use when we tried to change with /NICK command
-                        if (MVM != null)
+                        MVM.Dispatcher.BeginInvoke(new Action(() =>
                         {
-                            MVM.Dispatcher.BeginInvoke(new Action(() =>
-                            {
-                                new NickNameInUseTask(this).DoTask(MVM);
-                            }));
-                        }
+                            new NickNameInUseTask(this).DoTask(MVM);
+                        }));
                     }
                     break;
 
@@ -773,35 +774,48 @@ namespace GreatSnooper.Classes
 
                 // A client (answer for WHO command)
                 case 352:
-                    // :wormnet1.team17.com 352 Test #AnythingGoes ~UserName no.address.for.you wormnet1.team17.com Herbsman H :0 68 7 LT The Wheat Snooper 2.8
-                    Match clMatch = clientRegex.Match(line, spacePos);
-                    if (clMatch.Success)
+                    if (MVM != null)
                     {
-                        string channelHash = clMatch.Groups[1].Value;
-                        string clan = clMatch.Groups[2].Value.Equals("Username", StringComparison.OrdinalIgnoreCase) ? string.Empty : clMatch.Groups[2].Value;
-                        string clientName = clMatch.Groups[3].Value;
-                        string[] realName = clMatch.Groups[4].Value.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries); // 68 7 LT The Wheat Snooper
-
-                        Country country = Countries.DefaultCountry;
-                        int rank = 0;
-                        string clientApp = clMatch.Groups[4].Value;
-
-                        if (realName.Length >= 3)
+                        // :wormnet1.team17.com 352 Test #AnythingGoes ~UserName no.address.for.you wormnet1.team17.com Herbsman H :0 68 7 LT The Wheat Snooper 2.8
+                        Match clMatch = clientRegex.Match(line, spacePos);
+                        if (clMatch.Success)
                         {
-                            // set rank
-                            if (int.TryParse(realName[1], out rank))
-                            {
-                                if (rank > 13)
-                                    rank = 13;
-                                if (rank < 0)
-                                    rank = 0;
-                            }
+                            string channelHash = clMatch.Groups[1].Value;
+                            string clan = clMatch.Groups[2].Value.Equals("Username", StringComparison.OrdinalIgnoreCase) ? string.Empty : clMatch.Groups[2].Value;
+                            string clientName = clMatch.Groups[3].Value;
+                            string[] realName = clMatch.Groups[4].Value.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries); // 68 7 LT The Wheat Snooper
 
-                            // set country
-                            int countrycode;
-                            if (int.TryParse(realName[0], out countrycode) && countrycode >= 0 && countrycode <= 52)
+                            Country country = Countries.DefaultCountry;
+                            int rank = 0;
+                            string clientApp = clMatch.Groups[4].Value;
+
+                            if (realName.Length >= 3)
                             {
-                                if (countrycode == 49 && realName[2].Length == 2) // use cc as countricode
+                                // set rank
+                                if (int.TryParse(realName[1], out rank))
+                                {
+                                    if (rank > 13)
+                                        rank = 13;
+                                    if (rank < 0)
+                                        rank = 0;
+                                }
+
+                                // set country
+                                int countrycode;
+                                if (int.TryParse(realName[0], out countrycode) && countrycode >= 0 && countrycode <= 52)
+                                {
+                                    if (countrycode == 49 && realName[2].Length == 2) // use cc as countricode
+                                    {
+                                        if (realName[2].Equals("UK", StringComparison.OrdinalIgnoreCase))
+                                            realName[2] = "GB";
+                                        else if (realName[2].Equals("EL", StringComparison.OrdinalIgnoreCase))
+                                            realName[2] = "GR";
+                                        country = Countries.GetCountryByCC(realName[2]);
+                                    }
+                                    else
+                                        country = Countries.GetCountryByID(countrycode);
+                                }
+                                else if (realName[2].Length == 2) // use cc if countrycode is bigger than 52
                                 {
                                     if (realName[2].Equals("UK", StringComparison.OrdinalIgnoreCase))
                                         realName[2] = "GB";
@@ -809,30 +823,17 @@ namespace GreatSnooper.Classes
                                         realName[2] = "GR";
                                     country = Countries.GetCountryByCC(realName[2]);
                                 }
-                                else
-                                    country = Countries.GetCountryByID(countrycode);
-                            }
-                            else if (realName[2].Length == 2) // use cc if countrycode is bigger than 52
-                            {
-                                if (realName[2].Equals("UK", StringComparison.OrdinalIgnoreCase))
-                                    realName[2] = "GB";
-                                else if (realName[2].Equals("EL", StringComparison.OrdinalIgnoreCase))
-                                    realName[2] = "GR";
-                                country = Countries.GetCountryByCC(realName[2]);
+
+                                StringBuilder sb = new StringBuilder();
+                                for (int i = 3; i < realName.Length; i++)
+                                {
+                                    sb.Append(realName[i]);
+                                    if (i + 1 < realName.Length)
+                                        sb.Append(" ");
+                                }
+                                clientApp = sb.ToString();
                             }
 
-                            StringBuilder sb = new StringBuilder();
-                            for (int i = 3; i < realName.Length; i++)
-                            {
-                                sb.Append(realName[i]);
-                                if (i + 1 < realName.Length)
-                                    sb.Append(" ");
-                            }
-                            clientApp = sb.ToString();
-                        }
-
-                        if (MVM != null)
-                        {
                             MVM.Dispatcher.BeginInvoke(new Action(() =>
                             {
                                 new UserInfoTask(this, channelHash, clientName, country, clan, rank, clientApp).DoTask(MVM);
@@ -841,15 +842,33 @@ namespace GreatSnooper.Classes
                     }
                     break;
 
+                // NAMES command answer
+                case 353:
+                    if (Properties.Settings.Default.UseWhoMessages == false && MVM != null)
+                    {
+                        Match m = namesRegex.Match(line.Substring(spacePos));
+                        if (m.Success)
+                        {
+                            string channelName = m.Groups[2].Value;
+                            string[] names = m.Groups[3].Value.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+
+                            MVM.Dispatcher.BeginInvoke(new Action(() =>
+                            {
+                                new NamesTask(this, channelName, names).DoTask(MVM);
+                            }));
+                        }
+                    }
+                    break;
+
                 // The user is offline message
                 case 401:
-                    // :wormnet1.team17.com 401 Test sToOMiToO :No such nick/channel
-                    spacePos2 = line.IndexOf(' ', spacePos);
-                    if (spacePos2 != -1)
+                    if (MVM != null)
                     {
-                        string clientName = line.Substring(spacePos, spacePos2 - spacePos);
-                        if (MVM != null)
+                        // :wormnet1.team17.com 401 Test sToOMiToO :No such nick/channel
+                        spacePos2 = line.IndexOf(' ', spacePos);
+                        if (spacePos2 != -1)
                         {
+                            string clientName = line.Substring(spacePos, spacePos2 - spacePos);
                             MVM.Dispatcher.BeginInvoke(new Action(() =>
                             {
                                 new OfflineTask(this, clientName).DoTask(MVM);
@@ -859,16 +878,13 @@ namespace GreatSnooper.Classes
                     break;
 
                 default:
-                    if (GlobalManager.DebugMode && number > 401)
+                    if (MVM != null && GlobalManager.DebugMode && number > 401)
                     {
                         string text = (line[spacePos + 1] == ':') ? line.Substring(spacePos + 2) : line.Substring(spacePos + 1);
-                        if (MVM != null)
+                        MVM.Dispatcher.BeginInvoke(new Action(() =>
                         {
-                            MVM.Dispatcher.BeginInvoke(new Action(() =>
-                            {
-                                MVM.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, text);
-                            }));
-                        }
+                            MVM.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, text);
+                        }));
                     }
                     break;
             }

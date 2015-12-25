@@ -26,20 +26,20 @@ namespace GreatSnooper.Helpers
         // This method ensures that the initialization will be made from the appropriate thread
         public static void Initialize()
         {
-            ChannelMessage = SettingToObj(Properties.Settings.Default.ChannelMessageStyle, Message.MessageTypes.Channel, false, false);
-            JoinMessage = SettingToObj(Properties.Settings.Default.JoinMessageStyle, Message.MessageTypes.Join, true, false);
-            QuitMessage = SettingToObj(Properties.Settings.Default.QuitMessageStyle, Message.MessageTypes.Quit, false, false);
-            PartMessage = SettingToObj(Properties.Settings.Default.PartMessageStyle, Message.MessageTypes.Part, true, false);
-            SystemMessage = SettingToObj(Properties.Settings.Default.SystemMessageStyle, Message.MessageTypes.Offline, true, false);
-            ActionMessage = SettingToObj(Properties.Settings.Default.ActionMessageStyle, Message.MessageTypes.Action, false, false);
-            UserMessage = SettingToObj(Properties.Settings.Default.UserMessageStyle, Message.MessageTypes.User, false, false);
-            NoticeMessage = SettingToObj(Properties.Settings.Default.NoticeMessageStyle, Message.MessageTypes.Notice, false, false);
-            MessageTimeStyle = SettingToObj(Properties.Settings.Default.MessageTimeStyle, Message.MessageTypes.Time, true, true);
-            HyperLinkStyle = SettingToObj(Properties.Settings.Default.HyperLinkStyle, Message.MessageTypes.Hyperlink, true, true);
-            LeagueFoundMessage = SettingToObj(Properties.Settings.Default.LeagueFoundMessageStyle, Message.MessageTypes.League, true, true);
+            ChannelMessage = SettingToObj(Properties.Settings.Default.ChannelMessageStyle, Message.MessageTypes.Channel, false);
+            JoinMessage = SettingToObj(Properties.Settings.Default.JoinMessageStyle, Message.MessageTypes.Join, false);
+            QuitMessage = SettingToObj(Properties.Settings.Default.QuitMessageStyle, Message.MessageTypes.Quit, false);
+            PartMessage = SettingToObj(Properties.Settings.Default.PartMessageStyle, Message.MessageTypes.Part, false);
+            SystemMessage = SettingToObj(Properties.Settings.Default.SystemMessageStyle, Message.MessageTypes.Offline, false);
+            ActionMessage = SettingToObj(Properties.Settings.Default.ActionMessageStyle, Message.MessageTypes.Action, false);
+            UserMessage = SettingToObj(Properties.Settings.Default.UserMessageStyle, Message.MessageTypes.User, false);
+            NoticeMessage = SettingToObj(Properties.Settings.Default.NoticeMessageStyle, Message.MessageTypes.Notice, false);
+            MessageTimeStyle = SettingToObj(Properties.Settings.Default.MessageTimeStyle, Message.MessageTypes.Time, true);
+            HyperLinkStyle = SettingToObj(Properties.Settings.Default.HyperLinkStyle, Message.MessageTypes.Hyperlink, true);
+            LeagueFoundMessage = SettingToObj(Properties.Settings.Default.LeagueFoundMessageStyle, Message.MessageTypes.League, true);
         }
 
-        public static MessageSetting SettingToObj(string setting, Message.MessageTypes type, bool isFixedText, bool oneColorOnly)
+        public static MessageSetting SettingToObj(string setting, Message.MessageTypes type, bool oneColorOnly)
         {
             var things = setting.Split('|');
 
@@ -64,10 +64,10 @@ namespace GreatSnooper.Helpers
                     byte.Parse(things[1].Substring(4, 2), System.Globalization.NumberStyles.HexNumber)
                 );
 
-                return new MessageSetting(nickColor, messageColor, double.Parse(things[2]), things[3], things[4], things[5], things[6], things[7], type, isFixedText);
+                return new MessageSetting(nickColor, messageColor, double.Parse(things[2]), things[3], things[4], things[5], things[6], things[7], type);
             }
             else
-                return new MessageSetting(nickColor, double.Parse(things[1]), things[2], things[3], things[4], things[5], things[6], type, isFixedText);
+                return new MessageSetting(nickColor, double.Parse(things[1]), things[2], things[3], things[4], things[5], things[6], type);
         }
 
 

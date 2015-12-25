@@ -137,11 +137,10 @@ namespace GreatSnooper.Model
                 }
             }
         }
-        public bool IsFixedText { get; private set; }
         public bool OneColorOnly { get; private set; }
         #endregion
 
-        public MessageSetting(Color nickColor, Color messageColor, double size, string bold, string italic, string strikethrough, string underline, string fontfamily, Message.MessageTypes type, bool isFixedText)
+        public MessageSetting(Color nickColor, Color messageColor, double size, string bold, string italic, string strikethrough, string underline, string fontfamily, Message.MessageTypes type)
         {
             this._fontFamily = new FontFamily(fontfamily);
             this._nickColor = new SolidColorBrush(nickColor);
@@ -154,10 +153,9 @@ namespace GreatSnooper.Model
             this._strikethrough = strikethrough == "1";
             this._underline = underline == "1";
             this.Type = type;
-            this.IsFixedText = isFixedText;
         }
 
-        public MessageSetting(Color nickColor, double size, string bold, string italic, string strikethrough, string underline, string fontfamily, Message.MessageTypes type, bool isFixedText)
+        public MessageSetting(Color nickColor, double size, string bold, string italic, string strikethrough, string underline, string fontfamily, Message.MessageTypes type)
         {
             this._fontFamily = new FontFamily(fontfamily);
             this._nickColor = new SolidColorBrush(nickColor);
@@ -170,7 +168,6 @@ namespace GreatSnooper.Model
             this._strikethrough = strikethrough == "1";
             this._underline = underline == "1";
             this.Type = type;
-            this.IsFixedText = isFixedText;
             this.OneColorOnly = true;
         }
 
@@ -185,7 +182,6 @@ namespace GreatSnooper.Model
             this._strikethrough = messageSetting._strikethrough;
             this._underline = messageSetting._underline;
             this.Type = messageSetting.Type;
-            this.IsFixedText = messageSetting.IsFixedText;
             this.OneColorOnly = messageSetting.OneColorOnly;
         }
 

@@ -8,7 +8,7 @@ namespace GreatSnooper.IRCTasks
 {
     public class MessageTask : IRCTask
     {
-        private static Regex nickRegex = new Regex(@"[a-z0-9`\-]", RegexOptions.IgnoreCase);
+        private static Regex nickRegex = new Regex(@"[a-z0-9`\-]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         public string ClientName { get; private set; }
         public string ChannelHash { get; private set; }

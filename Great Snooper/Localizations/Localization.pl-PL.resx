@@ -230,7 +230,7 @@
     <comment>What is TUS login? question in the login window when TUS login is selected</comment>
   </data>
   <data name="WhatIsTusLoginText" xml:space="preserve">
-    <value>TUS to skrót od The Ultimate Site. Jest to strona internetowa odnośnie gry Worms: Armageddon posiadająca mnóstwo rzeczy dla niej, takich jak: ligi, puchary, turnieje, schematy, mapy, forum, itd.. Wspiera ona również Snoopery. Jeżeli zalogujesz się za pomocą swojego konta TUS w Snooperze, to ranga będzie odzwierciedlała Twoją obecną rangę z lig TUS, nazwa Twojego klanu również będzie odczytana z owej bazy danych oraz otrzymasz status online na stronie. . Możesz także ustawić inny pseudonim i hasło do logowania w Snooperze na stronie TUS-a w Twoich ustawieniach konta.</value>
+    <value>TUS to skrót od The Ultimate Site. Jest to strona internetowa poświęcona grze Worms: Armageddon posiadająca mnóstwo rzeczy z nią związanych, takich jak: ligi, puchary, turnieje, schematy, mapy, forum, itd.. Wspiera ona również Snoopery. Jeżeli zalogujesz się za pomocą swojego konta TUS w Snooperze, to ranga będzie odzwierciedlała Twoją obecną rangę z lig TUS, nazwa Twojego klanu również będzie odczytana z owej bazy danych oraz otrzymasz status online na stronie. . Możesz także ustawić inny pseudonim i hasło do logowania w Snooperze na stronie TUS-a w Twoich ustawieniach konta.</value>
     <comment>The text of the popup message when What is TUS login? link is clicked</comment>
   </data>
   <data name="LogInText" xml:space="preserve">
@@ -242,7 +242,7 @@
     <comment>The text of the popup message when Great Snooper could not locate WA.exe</comment>
   </data>
   <data name="WelcomeMessage" xml:space="preserve">
-    <value>Witaj w programie Great Snooper!</value>
+    <value>Great Snooper — witamy!</value>
     <comment>Login window title and the welcome message in taskbar notification when you start Great Snooper</comment>
   </data>
   <data name="ServerMissingText" xml:space="preserve">
@@ -398,11 +398,11 @@
     <comment>The text of the popup message when the user tries to join a game, but he/she is already in an other game</comment>
   </data>
   <data name="LeagueSearcherRunningText" xml:space="preserve">
-    <value>Czy chcesz wyłączyć poszukiwacza ligowego?</value>
+    <value>Czy chcesz wyłączyć Poszukiwacza ligowego?</value>
     <comment>The text of the popup message when the user tries to host or join a game and the league searcher is on</comment>
   </data>
   <data name="NotificatorRunningText" xml:space="preserve">
-    <value>Czy chcesz wyłączyć asystenta powiadamiania?</value>
+    <value>Czy chcesz wyłączyć Asystenta powiadamiania?</value>
     <comment>The text of the popup message when the user tries to host or join a game and the notificator is on</comment>
   </data>
   <data name="HosterExeText" xml:space="preserve">
@@ -568,10 +568,6 @@
   <data name="SilentJoinCloseText" xml:space="preserve">
     <value>Dołącz po cichu i zamknij Snoopera</value>
     <comment>Silent join and close snooper label when you right click on a game</comment>
-  </data>
-  <data name="AwayManagerTooltip" xml:space="preserve">
-    <value>Jesteś nieobecny: {0}</value>
-    <comment>Away message to display when you are away and you move your mouse over the away manager button\n{0} will be the away message</comment>
   </data>
   <data name="WelcomeText" xml:space="preserve">
     <value>Witaj, {0}!</value>
@@ -786,7 +782,7 @@
     <comment>The title of the popup message when you click ? in the top right corner in the list editor</comment>
   </data>
   <data name="ListEditorInfoText" xml:space="preserve">
-    <value>By dodać rzecz do listy, wprowadź tekst w polu tekstowym i naciśnij przycisk Enter. Aby usunąć rzecz z listy, kliknij na nią prawym przyciskiem myszy, a następnie wybierz opcję Usuń.</value>
+    <value>By dodać element do listy, wprowadź tekst w polu tekstowym i naciśnij przycisk Enter. Aby usunąć element z listy, kliknij na niego prawym przyciskiem myszy, a następnie wybierz opcję Usuń.</value>
     <comment>The text of the popup message when you click ? in the top right corner in the list editor</comment>
   </data>
   <data name="SettingsTitle" xml:space="preserve">
@@ -842,7 +838,7 @@
     <comment>Next line: This program was written by Tomi</comment>
   </data>
   <data name="ContactText" xml:space="preserve">
-    <value>Możesz się ze mną skontaktować na stronie http://www.tus-wa.com/profile/Tomi/ za pomocą wiadomości prywatnych</value>
+    <value>Możesz się ze mną skontaktować na stronie http://www.tus-wa.com/profile/Tomi/ wysyłając wiadomość prywatną</value>
     <comment>Next line: You can contact me at http://www.tus-wa.com/profile/Tomi/ using private message</comment>
   </data>
   <data name="LicenseText" xml:space="preserve">
@@ -858,7 +854,7 @@
     <comment>Last line: .. and without this nice community ;)</comment>
   </data>
   <data name="GSVersionTrolling" xml:space="preserve">
-    <value>Nie trolluj!</value>
+    <value>Kłamstwo jest grzechem!</value>
     <comment>When the user tries to replace the version number which is not the actual version of the snooper in the default quit message\nSo when you are using GS 1.4.9 and you try to set "Great Snooper v1.7.4" as quit message</comment>
   </data>
   <data name="EmptyErrorMessage" xml:space="preserve">
@@ -930,11 +926,11 @@
     <comment>Set W:A task priority to high option</comment>
   </data>
   <data name="AskNotificatorOffText" xml:space="preserve">
-    <value>Pytaj, czy chcę wyłączyć asystenta powiadamiania, gdy zakładam lub dołączam do gry:</value>
+    <value>Pytaj, czy chcę wyłączyć Asystenta powiadamiania, gdy zakładam lub dołączam do gry:</value>
     <comment>Notify when notificator is on when hosting/joining a game</comment>
   </data>
   <data name="AskLeagueSOffText" xml:space="preserve">
-    <value>Pytaj, czy chcę wyłączyć poszukiwacza ligowego, gdy zakładam lub dołączam do gry:</value>
+    <value>Pytaj, czy chcę wyłączyć Poszukiwacza ligowego, gdy zakładam lub dołączam do gry:</value>
     <comment>Notify when league searcher is on when hosting/joining a game</comment>
   </data>
   <data name="TrayNotificationsText" xml:space="preserve">
@@ -1030,7 +1026,7 @@
     <comment>League searcher fails sound setting label</comment>
   </data>
   <data name="NotifSoundSettingText" xml:space="preserve">
-    <value>Gdy asystent powiadamiania coś znajdzie:</value>
+    <value>Gdy Asystent powiadamiania coś znajdzie:</value>
     <comment>Notificator found sound setting label</comment>
   </data>
   <data name="GroupSoundSettingText" xml:space="preserve">
@@ -1086,147 +1082,147 @@
     <comment>The text of the popup message when user types /gs in channel textbox to get how many people are using Great Snooper\n{0} will be the count of the Great Snooper users\n{1} will be a comma separated list from the Great Snooper users</comment>
   </data>
   <data name="LanguageChangedText" xml:space="preserve">
-    <value>Please restart Great Snooper to apply new language settings everywhere!</value>
+    <value>Proszę ponownie uruchomić program Great Snooper, aby w całości zastosować nowe ustawienia językowe!</value>
     <comment>Notification message that the language data be updated after restart</comment>
   </data>
   <data name="PartMessage2" xml:space="preserve">
-    <value>has left the channel ({0}).</value>
+    <value>opuścił kanał ({0}).</value>
     <comment>When a user lefts a channel (the message will begin with the name of the user) with message\n{0} will be the message</comment>
   </data>
   <data name="NewsWindowTitle" xml:space="preserve">
-    <value>News</value>
+    <value>Aktualności</value>
     <comment>Title of the news window</comment>
   </data>
   <data name="VolumeTooltip" xml:space="preserve">
-    <value>Volume</value>
+    <value>Głośność</value>
     <comment>Tooltip text when you move the mouse over the icon of volume slider</comment>
   </data>
   <data name="StartWAExeTooltip1" xml:space="preserve">
-    <value>Run WA.exe</value>
+    <value>Uruchom WA.exe</value>
     <comment>Run WA.exe tooltip</comment>
   </data>
   <data name="StartWAExeTooltip2" xml:space="preserve">
-    <value>Run alternative WA.exe</value>
+    <value>Uruchom alternatywny plik WA.exe</value>
     <comment>Run alternative WA.exe tooltip</comment>
   </data>
   <data name="AutoJoinText" xml:space="preserve">
-    <value>Auto join this channel</value>
+    <value>Automatycznie dołączaj do tego kanału</value>
     <comment>Auto join text</comment>
   </data>
   <data name="AwayManagerTooltipAway" xml:space="preserve">
-    <value>You are away: {0}</value>
+    <value>Jesteś nieobecny: {0}</value>
     <comment>Away message to display when you are away and you move your mouse over the away manager button\n{0} will be the away message</comment>
   </data>
   <data name="NoLeaguesSelectedError" xml:space="preserve">
-    <value>Please select the league(s) you are looking for!</value>
+    <value>Proszę zaznaczyć co najmniej jedną ligę, którą poszukujesz!</value>
     <comment>When no leagues were selected</comment>
   </data>
   <data name="GeneralSoundsText" xml:space="preserve">
-    <value>General sounds</value>
+    <value>Dźwięki ogólne</value>
     <comment>General sounds label in the sound settings</comment>
   </data>
   <data name="WAExeText" xml:space="preserve">
-    <value>WA.exe:</value>
+    <value>Lokalizacja pliku WA.exe:</value>
     <comment>WA.exe label</comment>
   </data>
   <data name="WAExeText2" xml:space="preserve">
-    <value>Alternative WA.exe:</value>
+    <value>Alternatywny plik WA.exe:</value>
     <comment>Alternative WA.exe label</comment>
   </data>
   <data name="KickMessage" xml:space="preserve">
-    <value>Kicked by {0}</value>
+    <value>Wyrzucony przez użytkownika {0}</value>
     <comment>Kick message</comment>
   </data>
   <data name="TopicMessage" xml:space="preserve">
-    <value>{0} has changed the topic of the channel to "{1}".</value>
+    <value>Użytkownik {0} zmienił temat kanału na „{1}”.</value>
     <comment>Topic message</comment>
   </data>
   <data name="InMessagesLabel" xml:space="preserve">
-    <value>In messages</value>
+    <value>Wśród wiadomości</value>
     <comment>Notif</comment>
   </data>
   <data name="InSenderNamesLabel" xml:space="preserve">
-    <value>In sender names</value>
+    <value>W nazwach nadawców</value>
     <comment>Notif</comment>
   </data>
   <data name="InGameNamesLabel" xml:space="preserve">
-    <value>In game names</value>
+    <value>W nazwach gier</value>
     <comment>Notif</comment>
   </data>
   <data name="InHosterNamesLabel" xml:space="preserve">
-    <value>In hoster names</value>
+    <value>W nazwach graczy host.</value>
     <comment>Notif</comment>
   </data>
   <data name="InJoinMessagesLabel" xml:space="preserve">
-    <value>In join messages</value>
+    <value>W wiadomościach o doł.</value>
     <comment>Notif</comment>
   </data>
   <data name="StartNotifWithSnooper" xml:space="preserve">
-    <value>Start notificator with snooper</value>
+    <value>Uruchom Asystenta powiadamiania wraz ze Snooperem</value>
     <comment>Notif</comment>
   </data>
   <data name="AwayMessageFormat" xml:space="preserve">
-    <value>is away: {0}</value>
+    <value>jest nieobecny: {0}</value>
     <comment>Away message format</comment>
   </data>
   <data name="HideChannelText" xml:space="preserve">
-    <value>Hide channel</value>
+    <value>Ukryj kanał</value>
     <comment>Hide channel text</comment>
   </data>
   <data name="HiddenChannelsText" xml:space="preserve">
-    <value>Hidden channels</value>
+    <value>Ukryte kanały</value>
     <comment>Hiden channels text in settings</comment>
   </data>
   <data name="UseSnooperRank" xml:space="preserve">
-    <value>Use snooper rank:</value>
+    <value>Użyj rangi Snoopera:</value>
     <comment>Use snooper rank text</comment>
   </data>
   <data name="UseSnooperRankHelp" xml:space="preserve">
-    <value>This option is required for TUS login if you would like to use HostingBuddy to host games with the snooper.</value>
+    <value>Ta opcja jest wymagana dla logowania przez TUS, jeśli chcesz korzystać z HostingBuddy'ego w celu zakładania gier za pomocą Snoopera.</value>
     <comment>Use snooper rank help</comment>
   </data>
   <data name="HosterWormNatError" xml:space="preserve">
-    <value>The communication with WormNat server failed.</value>
+    <value>Nawiązanie łączności z serwerem WormNat nie powiodło się.</value>
     <comment>Hoster - WormNat error, WormNat init error, Wormnat client error</comment>
   </data>
   <data name="HosterCreateGameFail" xml:space="preserve">
-    <value>Failed to create the game on WormNet.</value>
+    <value>Nie udało się utworzyć gry na serwerze WormNet.</value>
     <comment>Hoster - Create game request failed</comment>
   </data>
   <data name="HosterNoGameIDError" xml:space="preserve">
-    <value>Failed to host a game. Probably you have hosted too many games recently. Please wait a while!</value>
+    <value>Nie udało się założyć gry. Prawdopodobnie założyłeś ich ostatnio zbyt dużo. Proszę odczekać chwilę!</value>
     <comment>Hoster - No game id</comment>
   </data>
   <data name="HosterStartGameFail" xml:space="preserve">
-    <value>Failed to start Worms: Armageddon.</value>
+    <value>Nie udało się uruchomić gry Worms: Armageddon.</value>
     <comment>Hoster - Failed to start the game</comment>
   </data>
   <data name="HosterUnknownFail" xml:space="preserve">
-    <value>An unexpected error happened while trying to host a game.</value>
+    <value>Napotkano nieoczekiwany błąd podczas próby założenia gry.</value>
     <comment>Hoster - Unknown fail</comment>
   </data>
   <data name="NotificatorHelpLabel" xml:space="preserve">
-    <value>How to use notificator?</value>
+    <value>Jak używać Asystenta powiadamiania?</value>
     <comment>Notificator help label</comment>
   </data>
   <data name="NotificatorHelpText" xml:space="preserve">
-    <value>Notificator can look for words in messages, sender names, hoster names, game names and join messages. By default it will look for whole words, but you can use special characters '*', '+', and '.'. '*' matches any character, '+' matches at least 1 character and '.' matches only 1 character. So if you are looking for words similar to "example" then you can search for it as "example", "*ample", "examp*", "*amp*", "e.ample", "+amp+", etc. You can add one word per line. If you would like to ignore a word from searching then delete it or write '#' before it like "#example".</value>
+    <value>Asystent powiadamania służy do odnajdywania słów w wiadomościach, nazwach nadawców, graczy hostujących, gier i wiadomościach informujących o dołączeniu do kanału. Domyślnie będzie szukał całych słów, lecz możesz skorzystać ze znaków specjalnych „*”, „+”, oraz „.”. „*” odpowiada dowolnemu ciągowi znaków, „+” przynajmniej 1 znakowi, a z kolei „.” wyłącznie jednemu z nich. Jeśli zatem szukasz słów podobnych do słowa „przykład”, to możesz go odnaleźć poprzez hasła, takie jak „przykład”, „*zykład”, „przykł*”, „*zykł*”, „p.zykład”, „+zykł+” itd.. Możesz dodać jedno słowo na wiersz. Jeżeli chcesz, by słowo zostało zignorowane podczas wyszukiwania, usuń je lub wpisz przed nim znak „#” jak tutaj: „#przykład”.</value>
     <comment>Notificator help text</comment>
   </data>
   <data name="JoinGameText2" xml:space="preserve">
-    <value>Join this game (Alternative WA.exe)</value>
+    <value>Dołącz do tej gry (alternatywny plik WA.exe)</value>
     <comment>Join this game label when you right click on a game using alternative WA.exe</comment>
   </data>
   <data name="SilentJoinText2" xml:space="preserve">
-    <value>Silent join (Alternative WA.exe)</value>
+    <value>Dołącz po cichu (alternatywny plik WA.exe)</value>
     <comment>Silent join label when you right click on a game using alternative WA.exe</comment>
   </data>
   <data name="JoinCloseText2" xml:space="preserve">
-    <value>Join and close snooper (Alternative WA.exe)</value>
+    <value>Dołącz i zamknij Snoopera (alternatywny plik WA.exe)</value>
     <comment>Join and close snooper label when you right click on a game using alternative WA.exe</comment>
   </data>
   <data name="SilentJoinCloseText2" xml:space="preserve">
-    <value>Silent join and close snooper (Alternative WA.exe)</value>
+    <value>Dołącz po cichu i zamknij Snoopera (alternatywny plik WA.exe)</value>
     <comment>Silent join and close snooper label when you right click on a game using alternative WA.exe</comment>
   </data>
 </root>

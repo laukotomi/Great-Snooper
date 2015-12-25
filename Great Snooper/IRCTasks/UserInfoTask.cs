@@ -30,6 +30,8 @@ namespace GreatSnooper.IRCTasks
         {
             AbstractChannelViewModel chvm;
             bool channelOK = Sender.Channels.TryGetValue(ChannelHash, out chvm) && chvm.Joined; // GameSurge may send info about client with channel name: *.. so we try to process all these messages
+            if (chvm.GetType() != typeof(ChannelViewModel))
+                return;
 
             User u = null;
             if (!Sender.Users.TryGetValue(ClientName, out u))
@@ -47,12 +49,27 @@ namespace GreatSnooper.IRCTasks
 
             if (u.AddToChannel.Count > 0)
             {
+                Message msg = new Message(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage);
+
+                if (Notificator.Instance.SearchInJoinMessagesEnabled && Notificator.Instance.JoinMessagesRegex.IsMatch(u.Name))
+                {
+                    msg.AddHighlightWord(0, msg.Text.Length, Message.HightLightTypes.NotificatorFound);
+                    chvm.MainViewModel.NotificatorFound(string.Format(Localizations.GSLocalization.Instance.NotifOnlineMessage, u.Name, chvm.Name));
+                }
+                else if (u.Group.ID != UserGroups.SystemGroupID)
+                {
+                    if (Properties.Settings.Default.TrayNotifications)
+                        mvm.ShowTrayMessage(string.Format(Localizations.GSLocalization.Instance.OnlineMessage, u.Name));
+                    if (u.Group.SoundEnabled)
+                        Sounds.PlaySound(u.Group.Sound);
+                }
+
                 foreach (var channel in u.AddToChannel)
                 {
                     if (channel.Joined && !u.Channels.Contains(chvm))
                     {
                         channel.AddUser(u);
-                        channel.AddMessage(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage);
+                        channel.AddMessage(msg);
                     }
                 }
                 u.AddToChannel.Clear();

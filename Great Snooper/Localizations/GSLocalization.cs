@@ -1555,6 +1555,50 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Load channel scheme (required for hosting).
+        /// </summary>
+        public string LoadChannelSchemeText
+        {
+            get
+            {
+                return _rm.GetString("LoadChannelSchemeText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Load common settings (required for league searcher, updater and news).
+        /// </summary>
+        public string LoadCommonSettingsText
+        {
+            get
+            {
+                return _rm.GetString("LoadCommonSettingsText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Load games.
+        /// </summary>
+        public string LoadGamesText
+        {
+            get
+            {
+                return _rm.GetString("LoadGamesText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Load TUS users.
+        /// </summary>
+        public string LoadTUSUsersText
+        {
+            get
+            {
+                return _rm.GetString("LoadTUSUsersText");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Log in.
         /// </summary>
         public string LogInText
@@ -2942,6 +2986,17 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Use WHO messages (required for country, rank, user info).
+        /// </summary>
+        public string UseWhoMessagesText
+        {
+            get
+            {
+                return _rm.GetString("UseWhoMessagesText");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Using WormNat2?.
         /// </summary>
         public string UsingWormNat2
@@ -2971,6 +3026,17 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("ViewTusText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to View {0}&apos;s profile.
+        /// </summary>
+        public string ViewClanProfileText
+        {
+            get
+            {
+                return _rm.GetString("ViewClanProfileText");
             }
         }
 

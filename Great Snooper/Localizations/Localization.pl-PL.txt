@@ -109,7 +109,7 @@ TusPasswordText=Hasło TUS:
 WhatIsTusLoginLabel=Czym jest logowanie przez TUS?
 
 # The text of the popup message when What is TUS login? link is clicked
-WhatIsTusLoginText=TUS to skrót od The Ultimate Site. Jest to strona internetowa odnośnie gry Worms: Armageddon posiadająca mnóstwo rzeczy dla niej, takich jak: ligi, puchary, turnieje, schematy, mapy, forum, itd.. Wspiera ona również Snoopery. Jeżeli zalogujesz się za pomocą swojego konta TUS w Snooperze, to ranga będzie odzwierciedlała Twoją obecną rangę z lig TUS, nazwa Twojego klanu również będzie odczytana z owej bazy danych oraz otrzymasz status online na stronie. . Możesz także ustawić inny pseudonim i hasło do logowania w Snooperze na stronie TUS-a w Twoich ustawieniach konta.
+WhatIsTusLoginText=TUS to skrót od The Ultimate Site. Jest to strona internetowa poświęcona grze Worms: Armageddon posiadająca mnóstwo rzeczy z nią związanych, takich jak: ligi, puchary, turnieje, schematy, mapy, forum, itd.. Wspiera ona również Snoopery. Jeżeli zalogujesz się za pomocą swojego konta TUS w Snooperze, to ranga będzie odzwierciedlała Twoją obecną rangę z lig TUS, nazwa Twojego klanu również będzie odczytana z owej bazy danych oraz otrzymasz status online na stronie. . Możesz także ustawić inny pseudonim i hasło do logowania w Snooperze na stronie TUS-a w Twoich ustawieniach konta.
 
 # The label of the login button in the login window
 LogInText=Zaloguj się
@@ -118,7 +118,7 @@ LogInText=Zaloguj się
 WAExeNotFoundText=Ups, wygląda na to, że Great Snooper nie mógł odnaleźć pliku WA.exe u Ciebie – bez tego pliku nie możesz zakładać ani dołączyć do gry! Czy chcesz teraz zlokalizować swój plik WA.exe? Możesz to również zrobić później w ustawieniach.
 
 # Login window title and the welcome message in taskbar notification when you start Great Snooper
-WelcomeMessage=Witaj w programie Great Snooper!
+WelcomeMessage=Great Snooper — witamy!
 
 # The text of the popup message when server is not selected
 ServerMissingText=Proszę wybrać serwer!
@@ -260,10 +260,10 @@ WAExeNotExistsText=Nie można odnaleźć pliku WA.exe! Proszę ustawić lokaliza
 WAIsRunningText=Już jesteś w grze!
 
 # The text of the popup message when the user tries to host or join a game and the league searcher is on
-LeagueSearcherRunningText=Czy chcesz wyłączyć poszukiwacza ligowego?
+LeagueSearcherRunningText=Czy chcesz wyłączyć Poszukiwacza ligowego?
 
 # The text of the popup message when the user tries to host or join a game and the notificator is on
-NotificatorRunningText=Czy chcesz wyłączyć asystenta powiadamiania?
+NotificatorRunningText=Czy chcesz wyłączyć Asystenta powiadamiania?
 
 # The text of the popup message when the user wants to host a game but Hoster.exe doesn't exist
 HosterExeText=Plik Hoster.exe nie istnieje! Bez tego pliku nie możesz zakładać gier!
@@ -394,10 +394,6 @@ JoinCloseText=Dołącz i zamknij Snoopera
 
 # Silent join and close snooper label when you right click on a game
 SilentJoinCloseText=Dołącz po cichu i zamknij Snoopera
-
-# Away message to display when you are away and you move your mouse over the away manager button
-# {0} will be the away message
-AwayManagerTooltip=Jesteś nieobecny: {0}
 
 # Welcome message in top left
 # {0} will be the name of the user
@@ -583,7 +579,7 @@ EnterTextText=Wprowadź tutaj tekst..
 ListEditorInfoTitle=Pomoc
 
 # The text of the popup message when you click ? in the top right corner in the list editor
-ListEditorInfoText=By dodać rzecz do listy, wprowadź tekst w polu tekstowym i naciśnij przycisk Enter. Aby usunąć rzecz z listy, kliknij na nią prawym przyciskiem myszy, a następnie wybierz opcję Usuń.
+ListEditorInfoText=By dodać element do listy, wprowadź tekst w polu tekstowym i naciśnij przycisk Enter. Aby usunąć element z listy, kliknij na niego prawym przyciskiem myszy, a następnie wybierz opcję Usuń.
 
 
 &&&&&&&&&&&&
@@ -630,7 +626,7 @@ VersionText=Wersja: {0}
 MadeByText=Ten program został napisany przez Tomiego
 
 # Next line: You can contact me at http://www.tus-wa.com/profile/Tomi/ using private message
-ContactText=Możesz się ze mną skontaktować na stronie http://www.tus-wa.com/profile/Tomi/ za pomocą wiadomości prywatnych
+ContactText=Możesz się ze mną skontaktować na stronie http://www.tus-wa.com/profile/Tomi/ wysyłając wiadomość prywatną
 
 # Next line: License: GPLv2
 LicenseText=Licencja: GPLv2
@@ -643,7 +639,7 @@ LastLineText=.. i bez tej wspaniałej społeczności ;)
 
 # When the user tries to replace the version number which is not the actual version of the snooper in the default quit message
 # So when you are using GS 1.4.9 and you try to set "Great Snooper v1.7.4" as quit message
-GSVersionTrolling=Nie trolluj!
+GSVersionTrolling=Kłamstwo jest grzechem!
 
 # When the user tries to set empty text for something which can not be empty
 EmptyErrorMessage=Ten tekst nie może być pusty!
@@ -697,10 +693,10 @@ EnergySaveModeWinText=Tryb oszczędzania energii gdy Snooper jest ukryty:
 WaHighPriorityText=Ustaw priorytet zadania W:A na wysoki:
 
 # Notify when notificator is on when hosting/joining a game
-AskNotificatorOffText=Pytaj, czy chcę wyłączyć asystenta powiadamiania, gdy zakładam lub dołączam do gry:
+AskNotificatorOffText=Pytaj, czy chcę wyłączyć Asystenta powiadamiania, gdy zakładam lub dołączam do gry:
 
 # Notify when league searcher is on when hosting/joining a game
-AskLeagueSOffText=Pytaj, czy chcę wyłączyć poszukiwacza ligowego, gdy zakładam lub dołączam do gry:
+AskLeagueSOffText=Pytaj, czy chcę wyłączyć Poszukiwacza ligowego, gdy zakładam lub dołączam do gry:
 
 # Enable tray balloon messages option
 TrayNotificationsText=Włącz dymki z komunikatem w zasobniku:
@@ -772,7 +768,7 @@ LeagueSoundSettingText=Gdy Snooper znajdzie grę ligową:
 LeagueFailSettingText=Gdy Snooper przestanie poszukiwać gier ligowych:
 
 # Notificator found sound setting label
-NotifSoundSettingText=Gdy asystent powiadamiania coś znajdzie:
+NotifSoundSettingText=Gdy Asystent powiadamiania coś znajdzie:
 
 # Sound settings for a group label
 # {0} will be the name of the group
@@ -825,111 +821,111 @@ GSCheckText=Z programu Great Snooper korzysta {0} użytkownik(ów)! {1}
 & NEW &
 &&&&&&&
 # Notification message that the language data be updated after restart
-LanguageChangedText=Please restart Great Snooper to apply new language settings everywhere!
+LanguageChangedText=Proszę ponownie uruchomić program Great Snooper, aby w całości zastosować nowe ustawienia językowe!
 
 # When a user lefts a channel (the message will begin with the name of the user) with message
 # {0} will be the message
-PartMessage2=has left the channel ({0}).
+PartMessage2=opuścił kanał ({0}).
 
 # Title of the news window
-NewsWindowTitle=News
+NewsWindowTitle=Aktualności
 
 # Tooltip text when you move the mouse over the icon of volume slider
-VolumeTooltip=Volume
+VolumeTooltip=Głośność
 
 # Run WA.exe tooltip
-StartWAExeTooltip1=Run WA.exe
+StartWAExeTooltip1=Uruchom WA.exe
 
 #Run alternative WA.exe tooltip
-StartWAExeTooltip2=Run alternative WA.exe
+StartWAExeTooltip2=Uruchom alternatywny plik WA.exe
 
 # Auto join text
-AutoJoinText=Auto join this channel
+AutoJoinText=Automatycznie dołączaj do tego kanału
 
 # Away message to display when you are away and you move your mouse over the away manager button
 # {0} will be the away message
-AwayManagerTooltipAway=You are away: {0}
+AwayManagerTooltipAway=Jesteś nieobecny: {0}
 
 # When no leagues were selected
-NoLeaguesSelectedError=Please select the league(s) you are looking for!
+NoLeaguesSelectedError=Proszę zaznaczyć co najmniej jedną ligę, którą poszukujesz!
 
 # General sounds label in the sound settings
-GeneralSoundsText=General sounds
+GeneralSoundsText=Dźwięki ogólne
 
 # WA.exe label
-WAExeText=WA.exe:
+WAExeText=Lokalizacja pliku WA.exe:
 
 # Alternative WA.exe label
-WAExeText2=Alternative WA.exe:
+WAExeText2=Alternatywny plik WA.exe:
 
 # Kick message
-KickMessage=Kicked by {0}
+KickMessage=Wyrzucony przez użytkownika {0}
 
 # Topic message
-TopicMessage={0} has changed the topic of the channel to "{1}".
+TopicMessage=Użytkownik {0} zmienił temat kanału na „{1}”.
 
 # Notif
-InMessagesLabel=In messages
+InMessagesLabel=Wśród wiadomości
 
 # Notif
-InSenderNamesLabel=In sender names
+InSenderNamesLabel=W nazwach nadawców
 
 # Notif
-InGameNamesLabel=In game names
+InGameNamesLabel=W nazwach gier
 
 # Notif
-InHosterNamesLabel=In hoster names
+InHosterNamesLabel=W nazwach graczy host.
 
 # Notif
-InJoinMessagesLabel=In join messages
+InJoinMessagesLabel=W wiadomościach o doł.
 
 # Notif
-StartNotifWithSnooper=Start notificator with snooper
+StartNotifWithSnooper=Uruchom Asystenta powiadamiania wraz ze Snooperem
 
 # Away message format
-AwayMessageFormat=is away: {0}
+AwayMessageFormat=jest nieobecny: {0}
 
 # Hide channel text
-HideChannelText=Hide channel
+HideChannelText=Ukryj kanał
 
 # Hiden channels text in settings
-HiddenChannelsText=Hidden channels
+HiddenChannelsText=Ukryte kanały
 
 # Use snooper rank text
-UseSnooperRank=Use snooper rank:
+UseSnooperRank=Użyj rangi Snoopera:
 
 # Use snooper rank help
-UseSnooperRankHelp=This option is required for TUS login if you would like to use HostingBuddy to host games with the snooper.
+UseSnooperRankHelp=Ta opcja jest wymagana dla logowania przez TUS, jeśli chcesz korzystać z HostingBuddy'ego w celu zakładania gier za pomocą Snoopera.
 
 # Hoster - WormNat error, WormNat init error, Wormnat client error
-HosterWormNatError=The communication with WormNat server failed.
+HosterWormNatError=Nawiązanie łączności z serwerem WormNat nie powiodło się.
 
 # Hoster - Create game request failed
-HosterCreateGameFail=Failed to create the game on WormNet.
+HosterCreateGameFail=Nie udało się utworzyć gry na serwerze WormNet.
 
 # Hoster - No game id
-HosterNoGameIDError=Failed to host a game. Probably you have hosted too many games recently. Please wait a while!
+HosterNoGameIDError=Nie udało się założyć gry. Prawdopodobnie założyłeś ich ostatnio zbyt dużo. Proszę odczekać chwilę!
 
 # Hoster - Failed to start the game
-HosterStartGameFail=Failed to start Worms: Armageddon.
+HosterStartGameFail=Nie udało się uruchomić gry Worms: Armageddon.
 
 # Hoster - Unknown fail
-HosterUnknownFail=An unexpected error happened while trying to host a game.
+HosterUnknownFail=Napotkano nieoczekiwany błąd podczas próby założenia gry.
 
 # Notificator help label
-NotificatorHelpLabel=How to use notificator?
+NotificatorHelpLabel=Jak używać Asystenta powiadamiania?
 
 # Notificator help text
-NotificatorHelpText=Notificator can look for words in messages, sender names, hoster names, game names and join messages. By default it will look for whole words, but you can use special characters '*', '+', and '.'. '*' matches any character, '+' matches at least 1 character and '.' matches only 1 character. So if you are looking for words similar to "example" then you can search for it as "example", "*ample", "examp*", "*amp*", "e.ample", "+amp+", etc. You can add one word per line. If you would like to ignore a word from searching then delete it or write '#' before it like "#example".
+NotificatorHelpText=Asystent powiadamania służy do odnajdywania słów w wiadomościach, nazwach nadawców, graczy hostujących, gier i wiadomościach informujących o dołączeniu do kanału. Domyślnie będzie szukał całych słów, lecz możesz skorzystać ze znaków specjalnych „*”, „+”, oraz „.”. „*” odpowiada dowolnemu ciągowi znaków, „+” przynajmniej 1 znakowi, a z kolei „.” wyłącznie jednemu z nich. Jeśli zatem szukasz słów podobnych do słowa „przykład”, to możesz go odnaleźć poprzez hasła, takie jak „przykład”, „*zykład”, „przykł*”, „*zykł*”, „p.zykład”, „+zykł+” itd.. Możesz dodać jedno słowo na wiersz. Jeżeli chcesz, by słowo zostało zignorowane podczas wyszukiwania, usuń je lub wpisz przed nim znak „#” jak tutaj: „#przykład”.
 
 # Join this game label when you right click on a game using alternative WA.exe
-JoinGameText2=Join this game (Alternative WA.exe)
+JoinGameText2=Dołącz do tej gry (alternatywny plik WA.exe)
 
 # Silent join label when you right click on a game using alternative WA.exe
-SilentJoinText2=Silent join (Alternative WA.exe)
+SilentJoinText2=Dołącz po cichu (alternatywny plik WA.exe)
 
 # Join and close snooper label when you right click on a game using alternative WA.exe
-JoinCloseText2=Join and close snooper (Alternative WA.exe)
+JoinCloseText2=Dołącz i zamknij Snoopera (alternatywny plik WA.exe)
 
 # Silent join and close snooper label when you right click on a game using alternative WA.exe
-SilentJoinCloseText2=Silent join and close snooper (Alternative WA.exe)
+SilentJoinCloseText2=Dołącz po cichu i zamknij Snoopera (alternatywny plik WA.exe)

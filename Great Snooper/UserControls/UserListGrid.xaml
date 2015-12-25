@@ -21,6 +21,7 @@
             <MenuItem Name="Group" Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=GroupText, Mode=OneWay}" />
             <MenuItem Name="Ignore" Command="{Binding Path=MainViewModel.AddOrRemoveBanCommand, Mode=OneTime}" />
             <MenuItem Name="TUS" Command="{Binding Path=MainViewModel.OpenLinkCommand, Mode=OneTime}" />
+            <MenuItem Name="TUSClan" Command="{Binding Path=MainViewModel.OpenLinkCommand, Mode=OneTime}" />
             <MenuItem Name="Info" />
         </ContextMenu>
     </DataGrid.ContextMenu>

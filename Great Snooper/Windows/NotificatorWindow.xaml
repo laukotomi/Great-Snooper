@@ -59,7 +59,7 @@
                  Text="{Binding Path=InJoinMessages, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                  IsEnabled="{Binding Path=IsSearching, Mode=OneWay, Converter={StaticResource invertBoolConverter}}" />
 
-        <CheckBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="3" HorizontalAlignment="Left"
+        <CheckBox Grid.Row="4" Grid.Column="1" Grid.ColumnSpan="5" HorizontalAlignment="Left"
                   Margin="0,8" IsChecked="{Binding Path=AutoStart, Mode=TwoWay}"
                   Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=StartNotifWithSnooper, Mode=OneWay}" />
 
@@ -70,11 +70,11 @@
         </TextBlock>
         
         <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="11" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button Grid.Row="5" Grid.Column="0" Width="120" Margin="0,0,10,0"
+            <Button Grid.Row="5" Grid.Column="0" MinWidth="120" Margin="0,0,10,0"
                 Content="{Binding Path=StartStopButtonText, Mode=OneWay}"
                 Command="{Binding Path=StartStopCommand, Mode=OneTime}" IsDefault="True" />
 
-            <Button Grid.Row="5" Grid.Column="2" Width="120"
+            <Button Grid.Row="5" Grid.Column="2" MinWidth="120"
                 Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CloseText, Mode=OneWay}" IsCancel="True"
                 Command="{Binding Path=CloseCommand, Mode=OneTime}" />
         </StackPanel>

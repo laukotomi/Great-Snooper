@@ -141,6 +141,11 @@ namespace GreatSnooper.ViewModel
             this.GeneralSettings.Add(new StringSetting("QuitMessagee", Localizations.GSLocalization.Instance.QuitMessageText, Validator.GSVersionValidator, this.DialogService));
             this.GeneralSettings.Add(new WAExeSetting("WaExe", Localizations.GSLocalization.Instance.WAExeText));
             this.GeneralSettings.Add(new WAExeSetting("WaExe2", Localizations.GSLocalization.Instance.WAExeText2));
+            this.GeneralSettings.Add(new BoolSetting("LoadCommonSettings", Localizations.GSLocalization.Instance.LoadCommonSettingsText));
+            this.GeneralSettings.Add(new BoolSetting("LoadTUSAccounts", Localizations.GSLocalization.Instance.LoadTUSUsersText));
+            this.GeneralSettings.Add(new BoolSetting("LoadGames", Localizations.GSLocalization.Instance.LoadGamesText));
+            this.GeneralSettings.Add(new BoolSetting("LoadChannelScheme", Localizations.GSLocalization.Instance.LoadChannelSchemeText));
+            this.GeneralSettings.Add(new BoolSetting("UseWhoMessages", Localizations.GSLocalization.Instance.UseWhoMessagesText));
 
             this.UserGroupSettings = new List<AbstractSetting>();
             foreach (var item in UserGroups.Groups)

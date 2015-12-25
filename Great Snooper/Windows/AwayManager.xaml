@@ -5,16 +5,16 @@
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
         xmlns:l="clr-namespace:GreatSnooper.Localizations"
         Title="{Binding Source={x:Static l:GSLocalization.Instance}, Path=AwayManagerTitle, Mode=OneWay}"
-        Height="150" Width="350" Style="{StaticResource MyDialogWindow}"
+        Height="150" Width="450" Style="{StaticResource MyDialogWindow}"
         WindowStartupLocation="CenterScreen">
     <controls:MetroWindow.Resources>
         <c:InvertBoolConverter x:Key="invertBoolConverter" />
     </controls:MetroWindow.Resources>
     <!-- Content -->
-    <Grid HorizontalAlignment="Center" Width="300" VerticalAlignment="Center">
+    <Grid HorizontalAlignment="Center" Width="400" VerticalAlignment="Center">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="*" />
-            <ColumnDefinition Width="2*" />
+            <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -29,12 +29,12 @@
                  IsEnabled="{Binding Path=IsAway, Mode=OneWay, Converter={StaticResource invertBoolConverter}}"/>
 
         <StackPanel Grid.Row="2" Grid.ColumnSpan="2" Orientation="Horizontal" HorizontalAlignment="Center">
-            <Button IsDefault="True" Width="100" Margin="10,0"
+            <Button IsDefault="True" MinWidth="100" Margin="10,0"
                     Command="{Binding Path=AwayCommand, Mode=OneTime}"
                     Content="{Binding Path=AwayButtonText, Mode=OneWay}" />
 
             <Button IsCancel="True" Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CloseText, Mode=OneWay}"
-                    Command="{Binding Path=CloseCommand, Mode=OneTime}" Width="100" Margin="10,0" />
+                    Command="{Binding Path=CloseCommand, Mode=OneTime}" MinWidth="100" Margin="10,0" />
         </StackPanel>
     </Grid>
 </controls:MetroWindow>

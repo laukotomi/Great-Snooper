@@ -125,6 +125,7 @@
     <Compile Include="IRCTasks\ClientRemoveTask.cs" />
     <Compile Include="IRCTasks\JoinedTask.cs" />
     <Compile Include="IRCTasks\MessageTask.cs" />
+    <Compile Include="IRCTasks\NamesTask.cs" />
     <Compile Include="IRCTasks\NickChangeTask.cs" />
     <Compile Include="IRCTasks\NickNameInUseTask.cs" />
     <Compile Include="IRCTasks\OfflineTask.cs" />

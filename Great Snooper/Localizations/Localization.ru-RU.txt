@@ -399,10 +399,6 @@ JoinCloseText=Войти и закрыть GS
 # Silent join and close snooper label when you right click on a game
 SilentJoinCloseText=Тихий вход с закрытием GS
 
-# Away message to display when you are away and you move your mouse over the away manager button
-# {0} will be the away message
-AwayManagerTooltip=Сообщение автоответчика: {0}
-
 
 # Welcome message in top left
 # {0} will be the name of the user
@@ -871,7 +867,7 @@ AutoJoinText=Auto join this channel
 
 # Away message to display when you are away and you move your mouse over the away manager button
 # {0} will be the away message
-AwayManagerTooltipAway=You are away: {0}
+AwayManagerTooltipAway=Сообщение автоответчика: {0}
 
 # When no leagues were selected
 NoLeaguesSelectedError=Please select the league(s) you are looking for!

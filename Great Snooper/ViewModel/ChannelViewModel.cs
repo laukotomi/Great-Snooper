@@ -356,7 +356,10 @@ namespace GreatSnooper.ViewModel
             if (msgTask.Setting.Type == Message.MessageTypes.Channel)
             {
                 if (this.notificator.SearchInSenderNamesEnabled && this.notificator.SenderNamesRegex.IsMatch(msg.Sender.Name))
+                {
+                    msg.AddHighlightWord(0, msg.Text.Length, Message.HightLightTypes.NotificatorFound);
                     this.MainViewModel.NotificatorFound(msg, this);
+                }
  
                 int hIdx = 3, lIdx = 4;
 
@@ -409,6 +412,8 @@ namespace GreatSnooper.ViewModel
                         var groups = nmatches[i].Groups;
                         msg.AddHighlightWord(groups[0].Index, groups[0].Length, Message.HightLightTypes.NotificatorFound);
                     }
+                    if (nmatches.Count > 0)
+                        this.MainViewModel.NotificatorFound(msg, this);
                 }
             }
             else if (msgTask.Setting.Type == Message.MessageTypes.Action || msgTask.Setting.Type == Message.MessageTypes.Notice)
@@ -561,7 +566,17 @@ namespace GreatSnooper.ViewModel
                 else
                     tusInfo.Visibility = System.Windows.Visibility.Collapsed;
 
-                var appinfo = (MenuItem)obj.ContextMenu.Items[5];
+                var tusClanInfo = (MenuItem)obj.ContextMenu.Items[5];
+                if (u.TusAccount != null && string.IsNullOrWhiteSpace(u.TusAccount.Clan) == false)
+                {
+                    tusClanInfo.CommandParameter = "http://www.tus-wa.com/groups/" + u.TusAccount.Clan + "/";
+                    tusClanInfo.Header = string.Format(Localizations.GSLocalization.Instance.ViewClanProfileText, u.TusAccount.Clan);
+                    tusClanInfo.Visibility = System.Windows.Visibility.Visible;
+                }
+                else
+                    tusClanInfo.Visibility = System.Windows.Visibility.Collapsed;
+
+                var appinfo = (MenuItem)obj.ContextMenu.Items[6];
                 appinfo.Header = string.Format(Localizations.GSLocalization.Instance.InfoText, u.ClientName);
             }
             catch (Exception ex)
@@ -600,7 +615,8 @@ namespace GreatSnooper.ViewModel
         {
             this.Joined = true;
             this.AddMessage(this.Server.User, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage);
-            this.Server.GetChannelClients(this, this.Name); // get the users in the channel
+            if (Properties.Settings.Default.UseWhoMessages)
+                this.Server.GetChannelClients(this, this.Name); // get the users in the channel
         }
 
         #region Game host / join

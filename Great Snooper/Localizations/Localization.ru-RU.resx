@@ -561,10 +561,6 @@
     <value>Тихий вход с закрытием GS</value>
     <comment>Silent join and close snooper label when you right click on a game</comment>
   </data>
-  <data name="AwayManagerTooltip" xml:space="preserve">
-    <value>Сообщение автоответчика: {0}</value>
-    <comment>Away message to display when you are away and you move your mouse over the away manager button\n{0} will be the away message</comment>
-  </data>
   <data name="WelcomeText" xml:space="preserve">
     <value>Привет, {0}!</value>
     <comment>Welcome message in top left\n{0} will be the name of the user</comment>
@@ -1102,7 +1098,7 @@
     <comment>Auto join text</comment>
   </data>
   <data name="AwayManagerTooltipAway" xml:space="preserve">
-    <value>You are away: {0}</value>
+    <value>Сообщение автоответчика: {0}</value>
     <comment>Away message to display when you are away and you move your mouse over the away manager button\n{0} will be the away message</comment>
   </data>
   <data name="NoLeaguesSelectedError" xml:space="preserve">

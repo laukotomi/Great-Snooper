@@ -436,7 +436,7 @@ namespace GreatSnooper.ViewModel
                 this.LeaveEnergySaveMode();
 
             // Game list refresh
-            if (this.SelectedGLChannel != null && this.SelectedGLChannel.Joined && this.SelectedGLChannel.CanHost)
+            if (Properties.Settings.Default.LoadGames && this.SelectedGLChannel != null && this.SelectedGLChannel.Joined && this.SelectedGLChannel.CanHost)
             {
                 gameListCounter++;
 
@@ -743,26 +743,29 @@ namespace GreatSnooper.ViewModel
             {
                 string settingsXMLPath = GlobalManager.SettingsPath + @"\Settings.xml";
 
-                try
+                if (Properties.Settings.Default.LoadCommonSettings)
                 {
-                    string settingsXMLPathTemp = GlobalManager.SettingsPath + @"\SettingsTemp.xml";
-
-                    using (WebDownload webClient = new WebDownload() { Proxy = null })
+                    try
                     {
-                        webClient.DownloadFile("http://mediacreator.hu/SnooperSettings.xml", settingsXMLPathTemp);
+                        string settingsXMLPathTemp = GlobalManager.SettingsPath + @"\SettingsTemp.xml";
+
+                        using (WebDownload webClient = new WebDownload() { Proxy = null })
+                        {
+                            webClient.DownloadFile("http://mediacreator.hu/SnooperSettings.xml", settingsXMLPathTemp);
+                        }
+
+                        // If downloading will fail then leagues won't be loaded. If they would, it could be hacked easily.
+                        GlobalManager.SpamAllowed = true;
+
+                        if (File.Exists(settingsXMLPath))
+                            File.Delete(settingsXMLPath);
+
+                        File.Move(settingsXMLPathTemp, settingsXMLPath);
                     }
-
-                    // If downloading will fail then leagues won't be loaded. If they would, it could be hacked easily.
-                    GlobalManager.SpamAllowed = true;
-
-                    if (File.Exists(settingsXMLPath))
-                        File.Delete(settingsXMLPath);
-
-                    File.Move(settingsXMLPathTemp, settingsXMLPath);
-                }
-                catch (Exception ex)
-                {
-                    ErrorLog.Log(ex);
+                    catch (Exception ex)
+                    {
+                        ErrorLog.Log(ex);
+                    }
                 }
 
                 if (this.closing)
@@ -837,6 +840,11 @@ namespace GreatSnooper.ViewModel
                     if (updateServers)
                         SettingsHelper.Save("ServerAddresses", serverList);
                 }
+                else
+                {
+                    leagues.Add(new League("TUS - Classic", "TUS"));
+                    leagues.Add(new League("Clanner", "Clanner"));
+                }
 
                 if (this.closing)
                     return;
@@ -849,7 +857,7 @@ namespace GreatSnooper.ViewModel
                     return;
                 }
 
-                if (!GlobalManager.SpamAllowed)
+                if (!GlobalManager.SpamAllowed && Properties.Settings.Default.LoadCommonSettings)
                 {
                     if (t.IsFaulted)
                         ErrorLog.Log(t.Exception);
@@ -1380,34 +1388,38 @@ namespace GreatSnooper.ViewModel
         #region TusAccounts
         private void LoadTusAccounts(object state)
         {
-            try
+            if (Properties.Settings.Default.LoadTUSAccounts || GlobalManager.User.TusAccount != null)
             {
-                string userlist = string.Empty;
-
-                using (var tusRequest = new WebDownload())
+                try
                 {
-                    if (GlobalManager.User.TusAccount != null)
-                        userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic&update=" + System.Web.HttpUtility.UrlEncode(GlobalManager.User.TusAccount.TusNick));
-                    else
-                        userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic");
-                }
+                    string userlist = string.Empty;
 
-                if (closing)
-                    return;
+                    using (var tusRequest = new WebDownload())
+                    {
+                        if (GlobalManager.User.TusAccount != null)
+                            userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic&update=" + System.Web.HttpUtility.UrlEncode(GlobalManager.User.TusAccount.TusNick));
+                        else
+                            userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic");
+                    }
 
-                string[] rows = userlist.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-                this.Dispatcher.Invoke(new Action(() =>
-                {
                     if (closing)
                         return;
-                    TusAccounts.SetTusAccounts(rows, this.WormNet);
-                }));
+
+                    string[] rows = userlist.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    this.Dispatcher.Invoke(new Action(() =>
+                    {
+                        if (closing)
+                            return;
+                        TusAccounts.SetTusAccounts(rows, this.WormNet);
+                    }));
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex);
+                }
             }
-            catch (Exception ex)
-            {
-                ErrorLog.Log(ex);
-            }
+
             tusTimer.Change(20000, Timeout.Infinite);
         }
         #endregion
@@ -1440,7 +1452,8 @@ namespace GreatSnooper.ViewModel
                                 if (chvm.Value.GetType() != typeof(PMChannelViewModel))
                                 {
                                     server.JoinChannel(this, chvm.Value.Name);
-                                    server.GetChannelClients(this, chvm.Value.Name);
+                                    if (Properties.Settings.Default.UseWhoMessages)
+                                        server.GetChannelClients(this, chvm.Value.Name);
                                 }
                             }
                         }

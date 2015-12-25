@@ -931,3 +931,22 @@ ItalicForGSUsers=Italic font style for Great Snooper users:
 
 # When hoster fails to get local ip address
 HosterFailedToGetLocalIP=Failed to get local IP address. Please try hosting using WormNat2!
+
+# Load games
+LoadGamesText=Load games
+
+# Load TUS users
+LoadTUSUsersText=Load TUS users
+
+#Load common settings
+LoadCommonSettingsText=Load common settings (required for league searcher, updater and news)
+
+# Load channel scheme
+LoadChannelSchemeText=Load channel scheme (required for hosting)
+
+# Use who messages
+UseWhoMessagesText=Use WHO messages (required for country, rank, user info)
+
+# View clan profile
+# {0} will be the name of the clan
+ViewClanProfileText={0}'s profile

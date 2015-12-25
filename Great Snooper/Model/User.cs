@@ -186,7 +186,7 @@ namespace GreatSnooper.Model
             {
                 if (_usingGreatSnooper.HasValue)
                     return _usingGreatSnooper.Value;
-                _usingGreatSnooper = ClientName.StartsWith("Great Snooper", StringComparison.OrdinalIgnoreCase);
+                _usingGreatSnooper = ClientName != null && ClientName.StartsWith("Great Snooper", StringComparison.OrdinalIgnoreCase);
                 return _usingGreatSnooper.Value;
             }
         }
