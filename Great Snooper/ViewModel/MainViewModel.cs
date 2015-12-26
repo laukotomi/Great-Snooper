@@ -422,7 +422,7 @@ namespace GreatSnooper.ViewModel
             else
                 tusTimer.Change(2000, Timeout.Infinite);
 
-            filterTimer.Interval = new TimeSpan(0, 0, 0, 0, 300);
+            filterTimer.Interval = new TimeSpan(0, 0, 0, 0, 500);
             filterTimer.Tick += filterTimer_Tick;
 
             wormNetC.GetChannelList(this);
@@ -1327,9 +1327,9 @@ namespace GreatSnooper.ViewModel
                                     u.TusAccount.TusNick.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1
                                     || u.TusAccount.Clan.StartsWith(word, StringComparison.OrdinalIgnoreCase)
                                     )
-                                || u.Country.Name.StartsWith(word, StringComparison.OrdinalIgnoreCase)
-                                || u.Rank.Name.StartsWith(word, StringComparison.OrdinalIgnoreCase)
-                                || Properties.Settings.Default.ShowInfoColumn && u.ClientName.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1
+                                || u.Country != null && u.Country.Name.StartsWith(word, StringComparison.OrdinalIgnoreCase)
+                                || u.Rank != null && u.Rank.Name.StartsWith(word, StringComparison.OrdinalIgnoreCase)
+                                || Properties.Settings.Default.ShowInfoColumn && u.ClientName != null && u.ClientName.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1
                             )
                                 return true;
                         }

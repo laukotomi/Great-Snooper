@@ -580,7 +580,13 @@ namespace GreatSnooper.ViewModel
                     tusClanInfo.Visibility = System.Windows.Visibility.Collapsed;
 
                 var appinfo = (MenuItem)obj.ContextMenu.Items[6];
-                appinfo.Header = string.Format(Localizations.GSLocalization.Instance.InfoText, u.ClientName);
+                if (string.IsNullOrWhiteSpace(u.ClientName) == false)
+                {
+                    appinfo.Header = string.Format(Localizations.GSLocalization.Instance.InfoText, u.ClientName);
+                    appinfo.Visibility = Visibility.Visible;
+                }
+                else
+                    appinfo.Visibility = Visibility.Collapsed;
             }
             catch (Exception ex)
             {

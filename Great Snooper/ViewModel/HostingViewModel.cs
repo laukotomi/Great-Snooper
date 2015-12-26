@@ -238,6 +238,7 @@ namespace GreatSnooper.ViewModel
                     if (this.ExitSnooper.HasValue && this.ExitSnooper.Value)
                     {
                         this.gameProcess.Dispose();
+                        this.gameProcess = null;
                         this.MVM.CloseCommand.Execute(null);
                         return;
                     }
@@ -270,7 +271,10 @@ namespace GreatSnooper.ViewModel
                 }
             }
             else
-                this.MVM.FreeGameProcess();
+            {
+                gameProcess.Dispose();
+                gameProcess = null;
+            }
             return string.Empty;
         }
         #endregion

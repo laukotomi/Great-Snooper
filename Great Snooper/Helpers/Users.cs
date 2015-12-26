@@ -9,7 +9,7 @@ namespace GreatSnooper.Helpers
 {
     public static class Users
     {
-        public static User CreateUser(AbstractCommunicator server, string name, string clan = null)
+        public static User CreateUser(AbstractCommunicator server, string name, string clan = "")
         {
             var u = new User(name, clan);
             u.IsBanned = GlobalManager.BanList.Contains(u.Name);

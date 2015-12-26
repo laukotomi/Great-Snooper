@@ -10,7 +10,8 @@
           Background="Transparent" AutoGenerateColumns="False" SelectionMode="Single"
           Margin="0" Padding="0" ItemsSource="{Binding Path=Users, Mode=OneTime}" BorderThickness="0"
           GridLinesVisibility="None" HeadersVisibility="Column" SelectionUnit="FullRow" IsReadOnly="True"
-          VerticalScrollBarVisibility="Visible" LostFocus="DataGrid_LostFocus" SelectionChanged="DataGrid_SelectionChanged"
+          VerticalScrollBarVisibility="Visible" HorizontalScrollBarVisibility="Auto"
+          LostFocus="DataGrid_LostFocus" SelectionChanged="DataGrid_SelectionChanged"
           PreviewMouseUp="DataGrid_PreviewMouseUp" Sorting="DataGrid_Sorting" MouseDoubleClick="DataGrid_MouseDoubleClick">
     <DataGrid.ContextMenu>
         <ContextMenu>

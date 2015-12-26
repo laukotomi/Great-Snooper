@@ -123,7 +123,7 @@ namespace GreatSnooper.Model
                     {
                         // Reset client info
                         TusAccount = null;
-                        ClientName = "";
+                        ClientName = null;
                     }
                     RaisePropertyChanged("OnlineStatus");
                 }
