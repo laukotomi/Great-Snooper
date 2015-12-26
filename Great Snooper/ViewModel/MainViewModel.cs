@@ -751,7 +751,7 @@ namespace GreatSnooper.ViewModel
 
                         using (WebDownload webClient = new WebDownload() { Proxy = null })
                         {
-                            webClient.DownloadFile("http://mediacreator.hu/SnooperSettings.xml", settingsXMLPathTemp);
+                            webClient.DownloadFile("https://www.dropbox.com/s/5h5boog570q1nap/SnooperSettings.xml?dl=1", settingsXMLPathTemp);
                         }
 
                         // If downloading will fail then leagues won't be loaded. If they would, it could be hacked easily.
@@ -1495,6 +1495,9 @@ namespace GreatSnooper.ViewModel
                     {
                         if (server.ErrorState == AbstractCommunicator.ErrorStates.UsernameInUse)
                         {
+                            foreach (var chvm in server.Channels)
+                                chvm.Value.SetLoading(false);
+
                             if (oldState != AbstractCommunicator.ConnectionStates.ReConnecting)
                                 this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.GSNickInUseText);
                         }
@@ -1502,6 +1505,7 @@ namespace GreatSnooper.ViewModel
                         {
                             foreach (var item in server.Channels)
                             {
+                                item.Value.SetLoading(false);
                                 if (item.Value is ChannelViewModel)
                                     ((ChannelViewModel)item.Value).LeaveChannelCommand.Execute(null);
                                 else
@@ -1699,6 +1703,8 @@ namespace GreatSnooper.ViewModel
 
             if (e.Cancel)
                 return;
+
+            GlobalManager.TusAccounts.Clear();
 
             foreach (var server in this.servers)
             {

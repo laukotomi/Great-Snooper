@@ -180,11 +180,14 @@ namespace GreatSnooper.ViewModel
         }
         private void LeaveChannel(string message = null)
         {
-            if (String.IsNullOrWhiteSpace(message))
-                message = Localizations.GSLocalization.Instance.PartMessage;
-            this.AddMessage(this.Server.User, message, MessageSettings.PartMessage);
-            this.Server.LeaveChannel(this, this.Name);
-            this.Joined = false;
+            if (this.Joined)
+            {
+                if (String.IsNullOrWhiteSpace(message))
+                    message = Localizations.GSLocalization.Instance.PartMessage;
+                this.AddMessage(this.Server.User, message, MessageSettings.PartMessage);
+                this.Server.LeaveChannel(this, this.Name);
+                this.Joined = false;
+            }
         }
         #endregion
 

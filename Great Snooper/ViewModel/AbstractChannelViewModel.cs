@@ -797,7 +797,7 @@ namespace GreatSnooper.ViewModel
                 def.Click += RemoveInstantColor;
                 instantColorMenu.Items.Add(def);
 
-                string[] goodcolors = { "Aquamarine", "Bisque", "BlueViolet", "BurlyWood", "CadetBlue", "Chocolate", "CornflowerBlue", "Gold", "Pink", "Plum", "GreenYellow", "Sienna", "Violet" };
+                string[] goodcolors = { "Aquamarine", "Bisque", "BlueViolet", "BurlyWood", "CadetBlue", "Chocolate", "CornflowerBlue", "Gold", "GreenYellow", "LightCoral", "Pink", "Plum", "Red", "Sienna", "Violet", "White" };
                 // populate colors drop down (will work with other kinds of list controls)
                 Type colors = typeof(Colors);
                 PropertyInfo[] colorInfo = colors.GetProperties(BindingFlags.Public | BindingFlags.Static);
@@ -867,6 +867,7 @@ namespace GreatSnooper.ViewModel
                         {
                             if (Properties.Settings.Default.MessageTime)
                             {
+                                p.Inlines.FirstInline.Foreground = (color != null) ? color : MessageSettings.MessageTimeStyle.NickColor;
                                 p.Inlines.FirstInline.NextInline.Foreground = (color != null) ? color : msg.Style.NickColor;
                                 p.Inlines.FirstInline.NextInline.FontStyle = (italic) ? FontStyles.Italic : FontStyles.Normal;
                             }

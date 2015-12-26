@@ -176,6 +176,7 @@ namespace GreatSnooper.Classes
                 this.State = ConnectionStates.Connecting;
 
             this.lastReconnectAttempt = DateTime.Now;
+            this.ErrorState = ErrorStates.None;
             this.SetUser();
 
             if (connectionTask != null)
@@ -203,15 +204,12 @@ namespace GreatSnooper.Classes
 
                     // Reset things
                     lastServerAction = DateTime.Now;
-                    if (this.State == ConnectionStates.ReConnecting)
-                    {
-                        pingSent = false;
-                        this.serverIrcAddress = string.Empty;
+                    pingSent = false;
+                    this.serverIrcAddress = string.Empty;
 
-                        string message;
-                        while (messages.TryDequeue(out message)) ;
-                        recvMessage.Clear();
-                    }
+                    string message;
+                    while (messages.TryDequeue(out message)) ;
+                    recvMessage.Clear();
 
                     // Let's log in
                     SendLoginMessages();

@@ -30,8 +30,6 @@ namespace GreatSnooper.IRCTasks
         {
             AbstractChannelViewModel chvm;
             bool channelOK = Sender.Channels.TryGetValue(ChannelHash, out chvm) && chvm.Joined; // GameSurge may send info about client with channel name: *.. so we try to process all these messages
-            if (chvm.GetType() != typeof(ChannelViewModel))
-                return;
 
             User u = null;
             if (!Sender.Users.TryGetValue(ClientName, out u))
