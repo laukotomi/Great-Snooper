@@ -336,7 +336,7 @@ namespace GreatSnooper.ViewModel
                     if (t.Result == MessageDialogResult.Affirmative)
                     {
                         OpenFileDialog dlg = new OpenFileDialog();
-                        dlg.Filter = "Worms Armageddon Exe|*.exe";
+                        dlg.Filter = "Worms Armageddon Exe (*.exe)|*.exe";
 
                         // Display OpenFileDialog by calling ShowDialog method 
                         Nullable<bool> result = dlg.ShowDialog();

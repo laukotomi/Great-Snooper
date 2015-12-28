@@ -5,22 +5,25 @@ namespace GreatSnooper.Helpers
 {
     public static class SettingsHelper
     {
-        public static void Save(string settingName, object value)
+        public static void Save(string settingName, object value, bool save = true)
         {
             Properties.Settings.Default.GetType().GetProperty(settingName).SetValue(Properties.Settings.Default, value, null);
-            Properties.Settings.Default.Save();
+            if (save)
+                Properties.Settings.Default.Save();
         }
 
-        public static void Save(string settingName, IEnumerable<string> collection)
+        public static void Save(string settingName, IEnumerable<string> collection, bool save = true)
         {
             Properties.Settings.Default.GetType().GetProperty(settingName).SetValue(Properties.Settings.Default, string.Join(",", collection), null);
-            Properties.Settings.Default.Save();
+            if (save)
+                Properties.Settings.Default.Save();
         }
 
-        public static void Save(string settingName, Dictionary<string, string> collection)
+        public static void Save(string settingName, Dictionary<string, string> collection, bool save = true)
         {
             Properties.Settings.Default.GetType().GetProperty(settingName).SetValue(Properties.Settings.Default, JsonConvert.SerializeObject(collection), null);
-            Properties.Settings.Default.Save();
+            if (save)
+                Properties.Settings.Default.Save();
         }
 
         public static bool Exists(string settingName)

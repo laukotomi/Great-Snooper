@@ -144,7 +144,31 @@
                           ItemTemplate="{Binding Path=Template, Mode=OneTime}" Margin="0,5" />
             </Grid>
         </DataTemplate>
-        
+
+        <DataTemplate x:Key="exportImportSettingsTemplate">
+            <Grid HorizontalAlignment="Center">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="20" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="8" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ExportSettingsButtonContent, Mode=OneWay}"
+                        Grid.Column="0" Grid.Row="1" Command="{Binding Path=ExportSettingsCommand, Mode=OneTime}" />
+                <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ImportSettingsButtonContent, Mode=OneWay}"
+                        Grid.Column="2" Grid.Row="1" Command="{Binding Path=ImportSettingsCommand, Mode=OneTime}" />
+                <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ResetSettingsButtonContent, Mode=OneWay}"
+                        Grid.Column="4" Grid.Row="1" Command="{Binding Path=ResetSettingsCommand, Mode=OneTime}" />
+            </Grid>
+        </DataTemplate>
+
         <ui:SettingTemplateSelector x:Key="templateSelector"
                                    BoolSettingTemplate="{StaticResource boolSettingTemplate}"
                                    StringSettingTemplate="{StaticResource stringSettingTemplate}"
@@ -153,7 +177,8 @@
                                    TextListSettingTemplate="{StaticResource textListSettingTemplate}"
                                    UserGroupSettingTemplate="{StaticResource userGroupSettingTemplate}"
                                    WAExeSettingTemplate="{StaticResource waExeSettingTemplate}"
-                                   ComboboxSettingTemplate="{StaticResource comboboxSettingTemplate}" />
+                                   ComboboxSettingTemplate="{StaticResource comboboxSettingTemplate}"
+                                   ExportImportSettingTemplate="{StaticResource exportImportSettingsTemplate}" />
     </controls:MetroWindow.Resources>
     
     <TabControl Grid.Row="1" Background="Transparent">
@@ -270,8 +295,8 @@
                 <StackPanel HorizontalAlignment="Center" Orientation="Vertical" Margin="0,15">
                     <StackPanel.Resources>
                         <Style TargetType="TextBlock">
-                            <Setter Property="Margin" Value="0,5"></Setter>
-                            <Setter Property="HorizontalAlignment" Value="Center"></Setter>
+                            <Setter Property="Margin" Value="0,5" />
+                            <Setter Property="HorizontalAlignment" Value="Center" />
                         </Style>
                     </StackPanel.Resources>
                     <TextBlock FontWeight="Bold" FontSize="20" Text="Great Snooper" />
@@ -279,6 +304,13 @@
                     <TextBlock Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=MadeByText, Mode=OneWay}" />
                     <TextBlock Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ContactText, Mode=OneWay}" />
                     <TextBlock Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=LicenseText, Mode=OneWay}" />
+                    <TextBlock />
+                    <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=PolishTranslationText, Mode=OneWay}" />
+                    <TextBlock Text="ArtecTheFox" />
+                    <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=RussianTranslationText, Mode=OneWay}" />
+                    <TextBlock Text="Slayer" />
+                    <TextBlock Text="WTF-8" />
+                    <TextBlock Text="XanKriegor" />
                     <TextBlock />
                     <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ThanksText, Mode=OneWay}" />
                     <TextBlock Text="CyberShadow" />

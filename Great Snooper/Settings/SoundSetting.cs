@@ -49,7 +49,7 @@ namespace GreatSnooper.Settings
         private void BrowseSound()
         {
             var dlg = new Microsoft.Win32.OpenFileDialog();
-            dlg.Filter = "WAV Files|*.wav";
+            dlg.Filter = "WAV Files (*.wav)|*.wav";
             if (File.Exists(Path))
                 dlg.InitialDirectory = new FileInfo(Path).Directory.FullName;
 

@@ -263,10 +263,6 @@ namespace GreatSnooper.ViewModel
                     if (text.Length > 0)
                         Server.Send(this, text);
                 }
-                else if (command == "e")
-                {
-                    this.MainViewModel.EnterEnergySaveMode();
-                }
                 else if (command.Equals("join", StringComparison.OrdinalIgnoreCase))
                 {
                     if (Server.HandleJoinRequest && text.Length > 0 && (text.StartsWith("#") || text.StartsWith("&")))

@@ -21,6 +21,7 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -689,7 +690,7 @@ namespace GreatSnooper.ViewModel
 
         private void LeaveEnergySaveMode()
         {
-            if (Properties.Settings.Default.EnergySaveModeWin && this.isHidden)
+            if (this.isHidden || this.DialogService.GetView().WindowState == WindowState.Minimized)
                 return;
             var screenBounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
             if (screenBounds.Height == 480 && screenBounds.Width == 640)
@@ -1293,7 +1294,7 @@ namespace GreatSnooper.ViewModel
         {
             filterTimer.Stop();
 
-            if (!this.SelectedGLChannel.Joined)
+            if (this.SelectedGLChannel == null || !this.SelectedGLChannel.Joined)
                 return;
 
             List<string> words = new List<string>();
@@ -1571,7 +1572,7 @@ namespace GreatSnooper.ViewModel
                     EnterEnergySaveMode();
             }
             else if (IsEnergySaveMode)
-                LeaveEnergySaveMode();
+                this.shouldLeaveEnergySaveMode = true; // Somehow leaving energysave mode doesn't work
         }
         #endregion
 
@@ -1603,13 +1604,11 @@ namespace GreatSnooper.ViewModel
 
         private void HideWindow()
         {
+            this.DialogService.GetView().Hide();
+            this.isHidden = true;
+
             if (Properties.Settings.Default.EnergySaveModeWin && !IsEnergySaveMode)
                 EnterEnergySaveMode();
-            else
-            {
-                this.DialogService.GetView().Hide();
-                this.isHidden = true;
-            }
         }
 
         internal void FlashWindow()
@@ -1884,7 +1883,7 @@ namespace GreatSnooper.ViewModel
 
         private void OpenLeagueSearcher()
         {
-            if (this.SelectedGLChannel.Joined == false)
+            if (this.SelectedGLChannel == null || this.SelectedGLChannel.Joined == false)
             {
                 this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.ChannelOfflineText);
                 return;
@@ -2010,10 +2009,11 @@ namespace GreatSnooper.ViewModel
                 this.DialogService.GetView().Show();
                 this.isHidden = false;
             }
-            DialogService.ActivationRequest();
 
             if (IsEnergySaveMode)
-                LeaveEnergySaveMode(); 
+                this.LeaveEnergySaveMode();
+
+            DialogService.ActivationRequest();
         }
         #endregion
 

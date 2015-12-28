@@ -37,7 +37,7 @@ namespace GreatSnooper.Settings
         private void WAExe()
         {
             OpenFileDialog dlg = new OpenFileDialog();
-            dlg.Filter = "Worms Armageddon Exe|*.exe";
+            dlg.Filter = "Worms Armageddon Exe (*.exe)|*.exe";
             if (File.Exists(this.Path))
                 dlg.InitialDirectory = new FileInfo(this.Path).Directory.FullName;
 

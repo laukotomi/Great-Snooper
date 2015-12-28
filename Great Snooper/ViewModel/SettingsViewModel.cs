@@ -146,6 +146,7 @@ namespace GreatSnooper.ViewModel
             this.GeneralSettings.Add(new BoolSetting("LoadGames", Localizations.GSLocalization.Instance.LoadGamesText));
             this.GeneralSettings.Add(new BoolSetting("LoadChannelScheme", Localizations.GSLocalization.Instance.LoadChannelSchemeText));
             this.GeneralSettings.Add(new BoolSetting("UseWhoMessages", Localizations.GSLocalization.Instance.UseWhoMessagesText));
+            this.GeneralSettings.Add(new ExportImportSettings(this.DialogService));
 
             this.UserGroupSettings = new List<AbstractSetting>();
             foreach (var item in UserGroups.Groups)

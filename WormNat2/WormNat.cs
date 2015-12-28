@@ -341,7 +341,8 @@ namespace Hoster
                 }
                 catch (Exception ex)
                 {
-                    this.error = Errors.CreateGameFailed;
+                    if (this.error == Errors.NoError)
+                        this.error = Errors.CreateGameFailed;
                     this.exception = ex;
                     Debug.WriteLine("The Create-Game request failed!");
                     throw;

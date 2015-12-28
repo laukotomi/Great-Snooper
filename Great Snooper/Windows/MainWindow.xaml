@@ -626,18 +626,18 @@
         <!-- User list, filter, news -->
         <Grid Grid.Column="2">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*"></RowDefinition>
-                <RowDefinition Height="5"></RowDefinition>
-                <RowDefinition Height="Auto"></RowDefinition>
+                <RowDefinition Height="*" />
+                <RowDefinition Height="8" />
+                <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
             <!-- User list -->
-            <TabControl Name="UserList" Grid.Row="0" Padding="0" BorderThickness="0"
+            <TabControl Name="UserList" Grid.Row="0" Padding="0" BorderThickness="0" Margin="0"
                         SelectedIndex="{Binding Path=SelectedTabIndex2, Mode=OneWay}" />
 
 
             <!-- Filter -->
-            <TextBox Grid.Row="2" Margin="0,8,5,7" Background="Transparent"
+            <TextBox Grid.Row="2" Margin="0,0,5,7" Background="Transparent"
                      Text="{Binding Path=FilterText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                      ui:FocusExtension.IsFocused="{Binding Path=IsFilterFocused, Mode=OneWay}">
                 <i:Interaction.Triggers>

@@ -752,6 +752,17 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Export settings.
+        /// </summary>
+        public string ExportSettingsButtonContent
+        {
+            get
+            {
+                return _rm.GetString("ExportSettingsButtonContent");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Filter...
         /// </summary>
         public string FilterText
@@ -1188,6 +1199,17 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("InfoHeaderLabel");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Import settings.
+        /// </summary>
+        public string ImportSettingsButtonContent
+        {
+            get
+            {
+                return _rm.GetString("ImportSettingsButtonContent");
             }
         }
 
@@ -2150,6 +2172,17 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Polish translation by:.
+        /// </summary>
+        public string PolishTranslationText
+        {
+            get
+            {
+                return _rm.GetString("PolishTranslationText");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to ?.
         /// </summary>
         public string QuestionMark
@@ -2267,6 +2300,50 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("RemoveText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Reset settings.
+        /// </summary>
+        public string ResetSettingsButtonContent
+        {
+            get
+            {
+                return _rm.GetString("ResetSettingsButtonContent");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure to reset settings? All informations will be lost..
+        /// </summary>
+        public string ResetSettingsConfirm
+        {
+            get
+            {
+                return _rm.GetString("ResetSettingsConfirm");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Please restart Great Snooper to apply changes!.
+        /// </summary>
+        public string RestartToApplyChanges
+        {
+            get
+            {
+                return _rm.GetString("RestartToApplyChanges");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Russian translation by:.
+        /// </summary>
+        public string RussianTranslationText
+        {
+            get
+            {
+                return _rm.GetString("RussianTranslationText");
             }
         }
 

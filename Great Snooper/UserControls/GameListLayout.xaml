@@ -36,34 +36,14 @@
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"
                             Visibility="{Binding Path=Joined, Mode=OneWay, Converter={StaticResource boolToVisibilityConverter}}">
                     <TextBlock Text=" | " />
-                    <TextBlock Text="{Binding Path=Users.Count, Mode=OneWay}">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Path=MainViewModel.IsEnergySaveMode, Mode=OneWay}" Value="True">
-                                        <Setter Property="Text" Value="0" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                    <TextBlock Name="UsersCount" Text="{Binding Path=Users.Count, Mode=OneWay}" />
                     <TextBlock Text=" " />
                     <TextBlock Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=UsersText, Mode=OneWay}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"
                             Visibility="{Binding Path=CanHostJoined, Mode=OneWay, Converter={StaticResource boolToVisibilityConverter}}">
                     <TextBlock Text=" | " />
-                    <TextBlock Text="{Binding Path=Games.Count, Mode=OneWay}">
-                        <TextBlock.Style>
-                            <Style TargetType="TextBlock">
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding Path=MainViewModel.IsEnergySaveMode, Mode=OneWay}" Value="True">
-                                        <Setter Property="Foreground" Value="Red" />
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </TextBlock.Style>
-                    </TextBlock>
+                    <TextBlock Name="GamesCount" Text="{Binding Path=Games.Count, Mode=OneWay}" />
                     <TextBlock Text=" " />
                     <TextBlock Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=GamesText, Mode=OneWay}" />
                 </StackPanel>
@@ -73,15 +53,6 @@
     <ListBox HorizontalContentAlignment="Stretch" Background="Transparent" ItemsSource="{Binding Path=Games, Mode=OneTime}"
         SelectedItem="{Binding Path=SelectedGame, Mode=OneWayToSource}" Grid.Row="2" BorderThickness="0"
         LostFocus="ListBox_LostFocus" SelectionChanged="ListBox_SelectionChanged">
-        <ListBox.Style>
-            <Style TargetType="ListBox">
-                <Style.Triggers>
-                    <DataTrigger Binding="{Binding Path=MainViewModel.IsEnergySaveMode, Mode=OneWay}" Value="True">
-                        <Setter Property="ItemsSource" Value="{x:Null}" />
-                    </DataTrigger>
-                </Style.Triggers>
-            </Style>
-        </ListBox.Style>
         <ListBox.ItemTemplate>
             <DataTemplate>
                 <Grid>

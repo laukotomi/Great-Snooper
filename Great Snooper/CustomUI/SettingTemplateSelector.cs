@@ -15,6 +15,7 @@ namespace GreatSnooper.CustomUI
         public DataTemplate UserGroupSettingTemplate { get; set; }
         public DataTemplate WAExeSettingTemplate { get; set; }
         public DataTemplate ComboboxSettingTemplate { get; set; }
+        public DataTemplate ExportImportSettingTemplate { get; set; }
 
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
@@ -33,6 +34,8 @@ namespace GreatSnooper.CustomUI
                 return WAExeSettingTemplate;
             else if (type == typeof(ComboboxSetting))
                 return ComboboxSettingTemplate;
+            else if (type == typeof(ExportImportSettings))
+                return ExportImportSettingTemplate;
             return StyleSettingTemplate;
         }
     }

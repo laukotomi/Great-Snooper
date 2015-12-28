@@ -1277,4 +1277,32 @@
     <value>{0}'s profile</value>
     <comment>View clan profile\n{0} will be the name of the clan</comment>
   </data>
+  <data name="PolishTranslationText" xml:space="preserve">
+    <value>Polish translation by:</value>
+    <comment>Polish translation by text in settings / About</comment>
+  </data>
+  <data name="RussianTranslationText" xml:space="preserve">
+    <value>Russian translation by:</value>
+    <comment>Russian translation by text in settings / About</comment>
+  </data>
+  <data name="ExportSettingsButtonContent" xml:space="preserve">
+    <value>Export settings</value>
+    <comment>Export settings button label in General Settings</comment>
+  </data>
+  <data name="ImportSettingsButtonContent" xml:space="preserve">
+    <value>Import settings</value>
+    <comment>Import settings button label in General Settings</comment>
+  </data>
+  <data name="ResetSettingsButtonContent" xml:space="preserve">
+    <value>Reset settings</value>
+    <comment>Reset settings button label in General Settings</comment>
+  </data>
+  <data name="ResetSettingsConfirm" xml:space="preserve">
+    <value>Are you sure to reset settings? All informations will be lost.</value>
+    <comment>Reset settings button label in General Settings</comment>
+  </data>
+  <data name="RestartToApplyChanges" xml:space="preserve">
+    <value>Please restart Great Snooper to apply changes!</value>
+    <comment>Please restart to apply changes text</comment>
+  </data>
 </root>

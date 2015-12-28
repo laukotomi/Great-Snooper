@@ -950,3 +950,24 @@ UseWhoMessagesText=Use WHO messages (required for country, rank, user info)
 # View clan profile
 # {0} will be the name of the clan
 ViewClanProfileText={0}'s profile
+
+# Polish translation by text in settings / About
+PolishTranslationText=Polish translation by:
+
+# Russian translation by text in settings / About
+RussianTranslationText=Russian translation by:
+
+# Export settings button label in General Settings
+ExportSettingsButtonContent=Export settings
+
+# Import settings button label in General Settings
+ImportSettingsButtonContent=Import settings
+
+# Reset settings button label in General Settings
+ResetSettingsButtonContent=Reset settings
+
+# Reset settings button label in General Settings
+ResetSettingsConfirm=Are you sure to reset settings? All informations will be lost.
+
+# Please restart to apply changes text
+RestartToApplyChanges=Please restart Great Snooper to apply changes!

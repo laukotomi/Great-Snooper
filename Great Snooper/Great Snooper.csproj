@@ -140,6 +140,7 @@
     <Compile Include="Settings\BoolSetting.cs" />
     <Compile Include="Settings\ComboboxSetting.cs" />
     <Compile Include="CustomUI\SettingTemplateSelector.cs" />
+    <Compile Include="Settings\ExportImportSettings.cs" />
     <Compile Include="Settings\SoundSetting.cs" />
     <Compile Include="Settings\StringSetting.cs" />
     <Compile Include="Settings\StyleSetting.cs" />
