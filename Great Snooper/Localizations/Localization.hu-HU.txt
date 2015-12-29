@@ -472,9 +472,6 @@ ReconnectMessage=A Great Snooper sikeresen újracsatlakozott.
 # The title of the popup message when the user's nickname is already used on GameSurge
 GSNickInUseText=A megadott becenevet már valaki más használja. A beállításokban megadhatsz egy másikat.
 
-# The title of the popup message when loading channel scheme fails
-ChannelSchemeText=Nem sikerült betölteni a csatorna sémáját. Kérlek próbálj meg újracsatlakozni!
-
 # When notificator founds match in a game name
 # {0} will be the name of the hoster
 # {1} will be the name of the game

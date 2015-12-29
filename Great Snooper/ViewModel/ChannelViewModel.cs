@@ -10,8 +10,10 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -20,6 +22,10 @@ namespace GreatSnooper.ViewModel
 {
     public class ChannelViewModel : AbstractChannelViewModel
     {
+        #region Static
+        private static Regex channelSchemeRegex = new Regex(@"^<SCHEME=([^>]+)>$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        #endregion
+
         #region Members
         private Border _disconnectedLayout;
         private bool? _autoJoin;
@@ -57,7 +63,7 @@ namespace GreatSnooper.ViewModel
         public string Scheme
         {
             get { return _scheme; }
-            set
+            private set
             {
                 if (_scheme != value)
                 {
@@ -98,6 +104,7 @@ namespace GreatSnooper.ViewModel
         public DateTime GameListUpdatedTime { get; set; }
         public UserListGrid UserListDG { get; private set; }
         public Grid GameListGrid { get; private set; }
+        public Task ChannelSchemeTask { get; private set; }
         #endregion
 
         public ChannelViewModel(MainViewModel mainViewModel, AbstractCommunicator server, string channelName, string description, string password = null)
@@ -824,5 +831,58 @@ namespace GreatSnooper.ViewModel
         #endregion
 
         #endregion
+
+        public void TryGetChannelScheme(Action onSuccess = null)
+        {
+            // Can not dispose channelSchemeTask because there can be parallel requests if user selects at least 2 channels to autojoin
+            this.ChannelSchemeTask = Task.Factory.StartNew<string>(() =>
+            {
+                try
+                {
+                    HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://" + this.Server.ServerAddress + "/wormageddonweb/RequestChannelScheme.asp?Channel=" + this.Name.Substring(1));
+                    myHttpWebRequest.UserAgent = "T17Client/1.2";
+                    myHttpWebRequest.Proxy = null;
+                    myHttpWebRequest.AllowAutoRedirect = false;
+                    myHttpWebRequest.Timeout = GlobalManager.WebRequestTimeout;
+                    using (WebResponse myHttpWebResponse = myHttpWebRequest.GetResponse())
+                    using (Stream stream = myHttpWebResponse.GetResponseStream())
+                    {
+                        int bytes;
+                        var sb = new StringBuilder();
+                        byte[] schemeRecvBuffer = new byte[100];
+                        while ((bytes = stream.Read(schemeRecvBuffer, 0, schemeRecvBuffer.Length)) > 0)
+                        {
+                            for (int j = 0; j < bytes; j++)
+                                sb.Append(WormNetCharTable.Decode[schemeRecvBuffer[j]]);
+                        }
+
+                        // <SCHEME=Pf,Be>
+                        Match m = channelSchemeRegex.Match(sb.ToString());
+                        if (m.Success)
+                            return m.Groups[1].Value;
+                    }
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex);
+                }
+
+                return string.Empty;
+            })
+            .ContinueWith((t) =>
+            {
+                if (this.MainViewModel.closing)
+                {
+                    this.MainViewModel.CloseCommand.Execute(null);
+                    return;
+                }
+
+                if (t.Result.Length > 0)
+                    this.Scheme = t.Result;
+
+                if (onSuccess != null)
+                    onSuccess();
+            }, TaskScheduler.FromCurrentSynchronizationContext());
+        }
     }
 }

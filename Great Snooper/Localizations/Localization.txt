@@ -472,9 +472,6 @@ ReconnectMessage=Great Snooper has reconnected.
 # The title of the popup message when the user's nickname is already used on GameSurge
 GSNickInUseText=Your nickname is already used by somebody on this server. You can choose another nickname in Settings.
 
-# The title of the popup message when loading channel scheme fails
-ChannelSchemeText=Failed to load the scheme of the channel. Try to rejoin the channel!
-
 # When notificator founds match in a game name
 # {0} will be the name of the hoster
 # {1} will be the name of the game
@@ -942,7 +939,7 @@ LoadTUSUsersText=Load TUS users
 LoadCommonSettingsText=Load common settings (required for league searcher, updater and news)
 
 # Load channel scheme
-LoadChannelSchemeText=Load channel scheme (required for hosting)
+LoadChannelSchemeText=Load channel scheme (required for hosting and loading games)
 
 # Use who messages
 UseWhoMessagesText=Use WHO messages (required for country, rank, user info)
@@ -971,3 +968,6 @@ ResetSettingsConfirm=Are you sure to reset settings? All informations will be lo
 
 # Please restart to apply changes text
 RestartToApplyChanges=Please restart Great Snooper to apply changes!
+
+# Load games and TUS accounts only if window is active settings option
+LoadGamesTUSActiveWindow=Load games and TUS accounts only if window is active:

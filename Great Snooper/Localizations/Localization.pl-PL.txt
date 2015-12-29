@@ -446,9 +446,6 @@ ReconnectMessage=Great Snooper został ponownie połączony.
 # The title of the popup message when the user's nickname is already used on GameSurge
 GSNickInUseText=Twój pseudonim już jest używany przez kogoś na tym serwerze. Możesz wybrać inny pseudonim w ustawieniach.
 
-# The title of the popup message when loading channel scheme fails
-ChannelSchemeText=Nie udało się załadować schematu kanału. Spróbuj ponownie dołączyć do kanału!
-
 # When notificator founds match in a game name
 # {0} will be the name of the hoster
 # {1} will be the name of the game

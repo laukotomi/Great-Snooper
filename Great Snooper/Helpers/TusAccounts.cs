@@ -7,6 +7,8 @@ namespace GreatSnooper.Helpers
 {
     public static class TusAccounts
     {
+        public static DateTime tusAccountsLoaded = new DateTime(1999, 5, 31);
+
         public static void SetTusAccounts(string[] rows, AbstractCommunicator server = null)
         {
             foreach (var account in GlobalManager.TusAccounts)
@@ -51,6 +53,8 @@ namespace GreatSnooper.Helpers
 
             foreach (var key in toRemove)
                 GlobalManager.TusAccounts.Remove(key);
+
+            tusAccountsLoaded = DateTime.Now;
         }
     }
 }

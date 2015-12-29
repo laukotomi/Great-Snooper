@@ -58,29 +58,26 @@ namespace GreatSnooper.ViewModel
 
         private AbstractCommunicator[] servers;
         private int procId = Process.GetCurrentProcess().Id;
-        private Timer tusTimer;
         private readonly List<int> visitedChannels = new List<int>();
         private readonly DispatcherTimer filterTimer = new DispatcherTimer();
-        private Task<string> channelSchemeTask;
         private Task loadSettingsTask;
         private Task loadGamesTask;
+        private Task<string[]> loadTUSAccountsTask;
+        private TimeSpan tusAccountsLoadTime = new TimeSpan(0, 0, 20);
+        private TimeSpan gamesLoadTime = new TimeSpan(0, 0, 10);
         private readonly List<League> leagues = new List<League>();
         private readonly List<News> newsList = new List<News>();
         private readonly DispatcherTimer secondTimer = new DispatcherTimer(DispatcherPriority.Input);
-        private int gameListCounter = 0;
 
         private readonly Regex GameRegex = new Regex(@"^<GAME\s(\S*)\s(\S+)\s(\S+)\s(\S+)\s1\s(\S+)\s(\S+)\s([^>]+)>$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         private readonly byte[] gameRecvBuffer = new byte[10240];
         private readonly StringBuilder gameRecvSB = new StringBuilder(10240);
-        private readonly Regex channelSchemeRegex = new Regex(@"^<SCHEME=([^>]+)>$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private readonly Notificator notificator;
         private IntPtr lobbyWindow = IntPtr.Zero;
         private IntPtr gameWindow = IntPtr.Zero;
         private bool isHidden;
         private bool shouldLeaveEnergySaveMode;
-        private bool shouldWindowBeActivated;
-        private bool shouldWindowBeShowed;
         public volatile bool closing;
         #endregion
 
@@ -417,12 +414,6 @@ namespace GreatSnooper.ViewModel
             secondTimer.Start();
             GameListForce = true;
 
-            tusTimer = new Timer(LoadTusAccounts);
-            if (GlobalManager.User.TusAccount != null) // tus login filled it already
-                tusTimer.Change(20000, Timeout.Infinite);
-            else
-                tusTimer.Change(2000, Timeout.Infinite);
-
             filterTimer.Interval = new TimeSpan(0, 0, 0, 0, 500);
             filterTimer.Tick += filterTimer_Tick;
 
@@ -436,21 +427,20 @@ namespace GreatSnooper.ViewModel
             if (this.shouldLeaveEnergySaveMode && IsEnergySaveMode)
                 this.LeaveEnergySaveMode();
 
-            // Game list refresh
-            if (Properties.Settings.Default.LoadGames && this.SelectedGLChannel != null && this.SelectedGLChannel.Joined && this.SelectedGLChannel.CanHost)
+            // Game list refresh and channel scheme
+            if (!closing && this.SelectedGLChannel != null && this.SelectedGLChannel.Joined && this.SelectedGLChannel.Server is WormNetCommunicator)
             {
-                gameListCounter++;
-
-                if (!closing && (GameListForce || gameListCounter >= 10) && DateTime.Now >= this.SelectedGLChannel.GameListUpdatedTime.AddSeconds(3) && (loadGamesTask == null || loadGamesTask.IsCompleted))
+                if (Properties.Settings.Default.LoadChannelScheme && string.IsNullOrEmpty(this.SelectedGLChannel.Scheme) && (this.SelectedGLChannel.ChannelSchemeTask == null || this.SelectedGLChannel.ChannelSchemeTask.IsCompleted) && (this.GameProcess == null || this.IsGameWindowOn() == false))
+                    this.SelectedGLChannel.TryGetChannelScheme();
+                else if (Properties.Settings.Default.LoadGames && this.SelectedGLChannel.CanHost)
                 {
-                    LoadGames();
-
-                    GameListForce = false;
-                    gameListCounter = 0;
+                    if ((GameListForce || DateTime.Now - this.SelectedGLChannel.GameListUpdatedTime >= gamesLoadTime) && DateTime.Now >= this.SelectedGLChannel.GameListUpdatedTime.AddSeconds(3) && (this.loadGamesTask == null || this.loadGamesTask.IsCompleted) && (Properties.Settings.Default.LoadOnlyIfWindowActive == false || this.IsWindowActive))
+                    {
+                        LoadGames(this.SelectedGLChannel);
+                        GameListForce = false;
+                    }
                 }
             }
-            else if (gameListCounter != 0)
-                gameListCounter = 0;
 
             // Game things
             if (GameProcess != null)
@@ -468,6 +458,10 @@ namespace GreatSnooper.ViewModel
                         this.LeagueSearcher.DoSearch();
                 }
             }
+
+            // TUS accounts
+            if (!this.closing && Properties.Settings.Default.LoadTUSAccounts && DateTime.Now - TusAccounts.tusAccountsLoaded >= this.tusAccountsLoadTime && (Properties.Settings.Default.LoadOnlyIfWindowActive == false || this.IsWindowActive))
+                this.LoadTusAccounts();
         }
 
         private void HandleGameProcess()
@@ -512,9 +506,8 @@ namespace GreatSnooper.ViewModel
                 LeaveEnergySaveMode();
         }
 
-        private void LoadGames()
+        private void LoadGames(ChannelViewModel chvm)
         {
-            ChannelViewModel chvm = this.SelectedGLChannel;
             loadGamesTask = Task.Factory.StartNew(() =>
             {
                 try
@@ -546,7 +539,7 @@ namespace GreatSnooper.ViewModel
             })
             .ContinueWith((t) =>
             {
-                if (closing)
+                if (this.closing)
                 {
                     this.CloseCommand.Execute(null);
                     return;
@@ -723,20 +716,15 @@ namespace GreatSnooper.ViewModel
                     }
                 }
             }
-
-            if (this.shouldWindowBeShowed)
-            {
-                this.DialogService.GetView().Show();
-                this.isHidden = false;
-            }
-            if (shouldWindowBeActivated)
-                this.DialogService.GetView().Activate();
         }
         #endregion
 
         #region News, update
         internal void ContentRendered(object sender, EventArgs e)
         {
+            if (this.closing)
+                return;
+
             string latestVersion = string.Empty;
             bool openNews = false;
 
@@ -846,9 +834,6 @@ namespace GreatSnooper.ViewModel
                     leagues.Add(new League("TUS - Classic", "TUS"));
                     leagues.Add(new League("Clanner", "Clanner"));
                 }
-
-                if (this.closing)
-                    return;
             })
             .ContinueWith((t) =>
             {
@@ -967,58 +952,6 @@ namespace GreatSnooper.ViewModel
         }
         #endregion
 
-        public void GetChannelScheme(ChannelViewModel chvm, Action onSuccess)
-        {
-            // Can not dispose channelSchemeTask because there can be parallel requests if user selects at least 2 channels to autojoin
-            channelSchemeTask = Task.Factory.StartNew<string>(() =>
-            {
-                try
-                {
-                    HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://" + this.WormNet.ServerAddress + "/wormageddonweb/RequestChannelScheme.asp?Channel=" + chvm.Name.Substring(1));
-                    myHttpWebRequest.UserAgent = "T17Client/1.2";
-                    myHttpWebRequest.Proxy = null;
-                    myHttpWebRequest.AllowAutoRedirect = false;
-                    myHttpWebRequest.Timeout = GlobalManager.WebRequestTimeout;
-                    using (WebResponse myHttpWebResponse = myHttpWebRequest.GetResponse())
-                    using (Stream stream = myHttpWebResponse.GetResponseStream())
-                    {
-                        int bytes;
-                        var sb = new StringBuilder();
-                        byte[] schemeRecvBuffer = new byte[100];
-                        while ((bytes = stream.Read(schemeRecvBuffer, 0, schemeRecvBuffer.Length)) > 0)
-                        {
-                            for (int j = 0; j < bytes; j++)
-                                sb.Append(WormNetCharTable.Decode[schemeRecvBuffer[j]]);
-                        }
-
-                        // <SCHEME=Pf,Be>
-                        Match m = channelSchemeRegex.Match(sb.ToString());
-                        if (m.Success)
-                            return m.Groups[1].Value;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ErrorLog.Log(ex);
-                }
-
-                return string.Empty;
-            });
-            channelSchemeTask.ContinueWith((t) =>
-            {
-                if (this.closing)
-                {
-                    this.CloseCommand.Execute(null);
-                    return;
-                }
-
-                if (t.Result.Length == 0)
-                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.ChannelSchemeText);
-                else
-                    chvm.Scheme = t.Result;
-                onSuccess();
-            }, TaskScheduler.FromCurrentSynchronizationContext());
-        }
 
         public void SelectChannel(int i)
         {
@@ -1387,41 +1320,46 @@ namespace GreatSnooper.ViewModel
         #endregion
 
         #region TusAccounts
-        private void LoadTusAccounts(object state)
+        private void LoadTusAccounts()
         {
-            if (Properties.Settings.Default.LoadTUSAccounts || GlobalManager.User.TusAccount != null)
+            if ((this.loadTUSAccountsTask == null || this.loadTUSAccountsTask.IsCompleted) && (this.GameProcess == null || this.IsGameWindowOn() == false || GlobalManager.User.TusAccount != null))
             {
-                try
+                loadTUSAccountsTask = Task.Factory.StartNew<string[]>(() =>
                 {
-                    string userlist = string.Empty;
-
-                    using (var tusRequest = new WebDownload())
+                    try
                     {
-                        if (GlobalManager.User.TusAccount != null)
-                            userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic&update=" + System.Web.HttpUtility.UrlEncode(GlobalManager.User.TusAccount.TusNick));
-                        else
-                            userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic");
+                        string userlist = string.Empty;
+
+                        using (var tusRequest = new WebDownload())
+                        {
+                            if (GlobalManager.User.TusAccount != null)
+                                userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic&update=" + System.Web.HttpUtility.UrlEncode(GlobalManager.User.TusAccount.TusNick));
+                            else
+                                userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic");
+                        }
+
+                        return userlist.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorLog.Log(ex);
+                        throw;
+                    }
+                });
+                loadTUSAccountsTask.ContinueWith((t) =>
+                {
+                    if (closing)
+                    {
+                        this.CloseCommand.Execute(null);
+                        return;
                     }
 
-                    if (closing)
+                    if (t.IsFaulted)
                         return;
 
-                    string[] rows = userlist.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
-
-                    this.Dispatcher.Invoke(new Action(() =>
-                    {
-                        if (closing)
-                            return;
-                        TusAccounts.SetTusAccounts(rows, this.WormNet);
-                    }));
-                }
-                catch (Exception ex)
-                {
-                    ErrorLog.Log(ex);
-                }
+                    TusAccounts.SetTusAccounts(t.Result, this.WormNet);
+                }, TaskScheduler.FromCurrentSynchronizationContext());
             }
-
-            tusTimer.Change(20000, Timeout.Infinite);
         }
         #endregion
 
@@ -1685,10 +1623,13 @@ namespace GreatSnooper.ViewModel
 
             this.closing = true;
 
-            if (channelSchemeTask != null && !channelSchemeTask.IsCompleted)
+            if (loadSettingsTask != null && !loadSettingsTask.IsCompleted)
                 e.Cancel = true;
 
-            if (loadSettingsTask != null && !loadSettingsTask.IsCompleted)
+            if (loadTUSAccountsTask != null && !loadTUSAccountsTask.IsCompleted)
+                e.Cancel = true;
+
+            if (loadGamesTask != null && !loadGamesTask.IsCompleted)
                 e.Cancel = true;
 
             foreach (var server in this.servers)
@@ -1697,6 +1638,11 @@ namespace GreatSnooper.ViewModel
                 {
                     server.CancelAsync();
                     e.Cancel = true;
+                }
+                foreach (var chvm in server.Channels)
+                {
+                    if (chvm.Value is ChannelViewModel && ((ChannelViewModel)chvm.Value).ChannelSchemeTask != null && !((ChannelViewModel)chvm.Value).ChannelSchemeTask.IsCompleted)
+                        e.Cancel = true;
                 }
             }
 
@@ -1773,23 +1719,22 @@ namespace GreatSnooper.ViewModel
                     server.Dispose();
                 }
 
-                if (channelSchemeTask != null)
-                {
-                    channelSchemeTask.Dispose();
-                    channelSchemeTask = null;
-                }
-
                 if (loadSettingsTask != null)
                 {
                     loadSettingsTask.Dispose();
                     loadSettingsTask = null;
                 }
 
-                if (tusTimer != null)
+                if (loadGamesTask != null)
                 {
-                    tusTimer.Change(Timeout.Infinite, Timeout.Infinite);
-                    tusTimer.Dispose();
-                    tusTimer = null;
+                    loadGamesTask.Dispose();
+                    loadGamesTask = null;
+                }
+
+                if (loadTUSAccountsTask != null)
+                {
+                    loadTUSAccountsTask.Dispose();
+                    loadTUSAccountsTask = null;
                 }
 
                 if (GameProcess != null)

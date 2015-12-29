@@ -685,10 +685,6 @@
     <value>Your nickname is already used by somebody on this server. You can choose another nickname in Settings.</value>
     <comment>The title of the popup message when the user's nickname is already used on GameSurge</comment>
   </data>
-  <data name="ChannelSchemeText" xml:space="preserve">
-    <value>Failed to load the scheme of the channel. Try to rejoin the channel!</value>
-    <comment>The title of the popup message when loading channel scheme fails</comment>
-  </data>
   <data name="NotificatorGameText" xml:space="preserve">
     <value>{0} is hosting a game: {1}</value>
     <comment>When notificator founds match in a game name\n{0} will be the name of the hoster\n{1} will be the name of the game</comment>
@@ -1266,7 +1262,7 @@
     <comment>Load common settings</comment>
   </data>
   <data name="LoadChannelSchemeText" xml:space="preserve">
-    <value>Load channel scheme (required for hosting)</value>
+    <value>Load channel scheme (required for hosting and loading games)</value>
     <comment>Load channel scheme</comment>
   </data>
   <data name="UseWhoMessagesText" xml:space="preserve">
@@ -1304,5 +1300,9 @@
   <data name="RestartToApplyChanges" xml:space="preserve">
     <value>Please restart Great Snooper to apply changes!</value>
     <comment>Please restart to apply changes text</comment>
+  </data>
+  <data name="LoadGamesTUSActiveWindow" xml:space="preserve">
+    <value>Load games and TUS accounts only if window is active:</value>
+    <comment>Load games and TUS accounts only if window is active settings option</comment>
   </data>
 </root>

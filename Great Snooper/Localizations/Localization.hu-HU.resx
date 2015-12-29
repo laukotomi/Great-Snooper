@@ -685,10 +685,6 @@
     <value>A megadott becenevet már valaki más használja. A beállításokban megadhatsz egy másikat.</value>
     <comment>The title of the popup message when the user's nickname is already used on GameSurge</comment>
   </data>
-  <data name="ChannelSchemeText" xml:space="preserve">
-    <value>Nem sikerült betölteni a csatorna sémáját. Kérlek próbálj meg újracsatlakozni!</value>
-    <comment>The title of the popup message when loading channel scheme fails</comment>
-  </data>
   <data name="NotificatorGameText" xml:space="preserve">
     <value>{0} létrehozott egy játékot: {1}</value>
     <comment>When notificator founds match in a game name\n{0} will be the name of the hoster\n{1} will be the name of the game</comment>

@@ -1498,5 +1498,17 @@ namespace GreatSnooper.Properties {
                 this["UseWhoMessages"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool LoadOnlyIfWindowActive {
+            get {
+                return ((bool)(this["LoadOnlyIfWindowActive"]));
+            }
+            set {
+                this["LoadOnlyIfWindowActive"] = value;
+            }
+        }
     }
 }

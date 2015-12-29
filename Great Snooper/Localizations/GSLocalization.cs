@@ -356,17 +356,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Failed to load the scheme of the channel. Try to rejoin the channel!.
-        /// </summary>
-        public string ChannelSchemeText
-        {
-            get
-            {
-                return _rm.GetString("ChannelSchemeText");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to Chat mode on / off.
         /// </summary>
         public string ChatModeTooltip
@@ -1606,6 +1595,17 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("LoadGamesText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Load games and TUS accounts only if window is active:.
+        /// </summary>
+        public string LoadGamesTUSActiveWindow
+        {
+            get
+            {
+                return _rm.GetString("LoadGamesTUSActiveWindow");
             }
         }
 

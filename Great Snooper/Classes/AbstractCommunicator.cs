@@ -996,6 +996,12 @@ namespace GreatSnooper.Classes
                     connectionTask.Dispose();
                     connectionTask = null;
                 }
+
+                foreach (var chvm in this.Channels)
+                {
+                    if (chvm.Value is ChannelViewModel && ((ChannelViewModel)chvm.Value).ChannelSchemeTask != null)
+                        ((ChannelViewModel)chvm.Value).ChannelSchemeTask.Dispose();
+                }
             }
         }
 

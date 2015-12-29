@@ -82,9 +82,9 @@ namespace GreatSnooper.IRCTasks
             }
             else if (chvm.Joined == false) // We joined a channel
             {
-                if (Properties.Settings.Default.LoadChannelScheme && Sender is WormNetCommunicator && chvm.Scheme == string.Empty)
+                if (Properties.Settings.Default.LoadChannelScheme && Sender is WormNetCommunicator && string.IsNullOrEmpty(chvm.Scheme) && (chvm.ChannelSchemeTask == null || chvm.ChannelSchemeTask.IsCompleted))
                 {
-                    chvm.MainViewModel.GetChannelScheme(chvm, () =>
+                    chvm.TryGetChannelScheme(() =>
                     {
                         FinishJoin(chvm);
                     });

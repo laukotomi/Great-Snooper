@@ -625,10 +625,6 @@
     <value>Ваш никнейм уже используется на этом сервере. Вы можете выбрать другой никнейм в Настройках. Замечание: если у Вас пропало соединение, то, возможно, Ваш никнейм «завис» на сервере, из-за чего вход под тем же никнеймом становится невозможным. В этом случае рекомендуется подождать 3 минуты и попробовать подключиться снова.</value>
     <comment>The title of the popup message when the user's nickname is already used on GameSurge</comment>
   </data>
-  <data name="ChannelSchemeText" xml:space="preserve">
-    <value>Не удалось загрузить схему канала. Пожалуйста, перезайдите на канал.</value>
-    <comment>The title of the popup message when loading channel scheme fails</comment>
-  </data>
   <data name="NotificatorGameText" xml:space="preserve">
     <value>{0} захостил игру: {1}</value>
     <comment>When notificator founds match in a game name\n{0} will be the name of the hoster\n{1} will be the name of the game</comment>
