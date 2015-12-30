@@ -131,9 +131,10 @@
                 </Button>
             </Grid>
 
-            <TextBlock Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"
+            <TextBlock Grid.Column="0" Grid.Row="3" VerticalAlignment="Center" Grid.ColumnSpan="2"
                        Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=AutoLoginText, Mode=OneWay}" />
-            <CheckBox Grid.Column="1" Grid.Row="3" IsChecked="{Binding Path=AutoLogin, Mode=TwoWay}" />
+            <CheckBox Grid.Column="1" Grid.Row="3" IsChecked="{Binding Path=AutoLogin, Mode=TwoWay}"
+                      HorizontalAlignment="Right" Margin="0,0,20,0" />
 
             <TabControl SelectedIndex="{Binding Path=LoginType, Mode=TwoWay}" Grid.Row="5" Grid.ColumnSpan="2">
                 <TabControl.Resources>
@@ -270,7 +271,7 @@
                                    Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=TusNicknameText, Mode=OneWay}" />
                         <TextBlock Grid.Column="0" Grid.Row="3" VerticalAlignment="Center"
                                    Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=TusPasswordText, Mode=OneWay}" />
-                        <StackPanel Grid.Column="0" Grid.Row="5" Orientation="Horizontal">
+                        <StackPanel Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="5" Orientation="Horizontal">
                             <TextBlock VerticalAlignment="Center" HorizontalAlignment="Left"
                                        Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=UseSnooperRank, Mode=OneWay}" />
                             <TextBlock VerticalAlignment="Center" Margin="5,0,0,0">
@@ -289,7 +290,8 @@
                         <PasswordBox Grid.Column="1" Grid.Row="3" ui:PasswordBoxAssistant.BindPassword="True"
                                      ui:PasswordBoxAssistant.BoundPassword="{Binding Path=TusPass, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
                                      ui:FocusExtension.IsFocused="{Binding Path=IsTusPassFocused, Mode=OneWay}" />
-                        <CheckBox Grid.Row="5" Grid.Column="1" IsChecked="{Binding Path=UseSnooperRank, Mode=TwoWay}" />
+                        <CheckBox Grid.Row="5" Grid.Column="1" IsChecked="{Binding Path=UseSnooperRank, Mode=TwoWay}"
+                                  HorizontalAlignment="Right" Padding="0" />
                     </Grid>
                 </TabItem>
             </TabControl>

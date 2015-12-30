@@ -28,8 +28,9 @@ namespace GreatSnooper.ViewModel
         public string Version { get; private set; }
         public IMetroDialogService DialogService { get; set; }
         public List<AbstractSetting> GeneralSettings { get; private set; }
-        public List<AbstractSetting> UserGroupSettings { get; private set; }
+        public List<AbstractSetting> NetworkSettings { get; private set; }
         public List<AbstractSetting> WindowSettings { get; private set; }
+        public List<AbstractSetting> UserGroupSettings { get; private set; }
         public List<AbstractSetting> NotificationSettings { get; private set; }
         public List<AbstractSetting> WormsSettings { get; private set; }
         public List<AbstractSetting> MsgSettings { get; private set; }
@@ -141,17 +142,15 @@ namespace GreatSnooper.ViewModel
             this.GeneralSettings.Add(new StringSetting("QuitMessagee", Localizations.GSLocalization.Instance.QuitMessageText, Validator.GSVersionValidator, this.DialogService));
             this.GeneralSettings.Add(new WAExeSetting("WaExe", Localizations.GSLocalization.Instance.WAExeText));
             this.GeneralSettings.Add(new WAExeSetting("WaExe2", Localizations.GSLocalization.Instance.WAExeText2));
-            this.GeneralSettings.Add(new BoolSetting("LoadCommonSettings", Localizations.GSLocalization.Instance.LoadCommonSettingsText));
-            this.GeneralSettings.Add(new BoolSetting("LoadTUSAccounts", Localizations.GSLocalization.Instance.LoadTUSUsersText));
-            this.GeneralSettings.Add(new BoolSetting("LoadGames", Localizations.GSLocalization.Instance.LoadGamesText));
-            this.GeneralSettings.Add(new BoolSetting("LoadChannelScheme", Localizations.GSLocalization.Instance.LoadChannelSchemeText));
-            this.GeneralSettings.Add(new BoolSetting("UseWhoMessages", Localizations.GSLocalization.Instance.UseWhoMessagesText));
-            this.GeneralSettings.Add(new BoolSetting("LoadOnlyIfWindowActive", Localizations.GSLocalization.Instance.LoadGamesTUSActiveWindow));
             this.GeneralSettings.Add(new ExportImportSettings(this.DialogService));
 
-            this.UserGroupSettings = new List<AbstractSetting>();
-            foreach (var item in UserGroups.Groups)
-                this.UserGroupSettings.Add(new UserGroupSetting(item.Value, Validator.NotEmptyValidator, this.DialogService));
+            this.NetworkSettings = new List<AbstractSetting>();
+            this.NetworkSettings.Add(new BoolSetting("LoadCommonSettings", Localizations.GSLocalization.Instance.LoadCommonSettingsText));
+            this.NetworkSettings.Add(new BoolSetting("LoadTUSAccounts", Localizations.GSLocalization.Instance.LoadTUSUsersText));
+            this.NetworkSettings.Add(new BoolSetting("LoadGames", Localizations.GSLocalization.Instance.LoadGamesText));
+            this.NetworkSettings.Add(new BoolSetting("LoadChannelScheme", Localizations.GSLocalization.Instance.LoadChannelSchemeText));
+            this.NetworkSettings.Add(new BoolSetting("UseWhoMessages", Localizations.GSLocalization.Instance.UseWhoMessagesText));
+            this.NetworkSettings.Add(new BoolSetting("LoadOnlyIfWindowActive", Localizations.GSLocalization.Instance.LoadGamesTUSActiveWindow));
 
             this.WindowSettings = new List<AbstractSetting>();
             this.WindowSettings.Add(new BoolSetting("ShowBannedUsers", Localizations.GSLocalization.Instance.ShowBannedUsersText));
@@ -162,6 +161,10 @@ namespace GreatSnooper.ViewModel
             this.WindowSettings.Add(new BoolSetting("EnergySaveModeWin", Localizations.GSLocalization.Instance.EnergySaveModeWinText));
             this.WindowSettings.Add(new BoolSetting("WAHighPriority", Localizations.GSLocalization.Instance.WaHighPriorityText));
             this.WindowSettings.Add(new BoolSetting("ItalicForGSUsers", Localizations.GSLocalization.Instance.ItalicForGSUsers));
+
+            this.UserGroupSettings = new List<AbstractSetting>();
+            foreach (var item in UserGroups.Groups)
+                this.UserGroupSettings.Add(new UserGroupSetting(item.Value, Validator.NotEmptyValidator, this.DialogService));
 
             this.NotificationSettings = new List<AbstractSetting>();
             this.NotificationSettings.Add(new BoolSetting("TrayNotifications", Localizations.GSLocalization.Instance.TrayNotificationsText));

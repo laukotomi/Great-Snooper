@@ -1775,6 +1775,17 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Network.
+        /// </summary>
+        public string NetworkText
+        {
+            get
+            {
+                return _rm.GetString("NetworkText");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to News.
         /// </summary>
         public string NewsWindowTitle
@@ -2359,17 +2370,6 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
-        ///   Looks up a localized string similar to Send back message in private chats if I am back:.
-        /// </summary>
-        public string SendBackText
-        {
-            get
-            {
-                return _rm.GetString("SendBackText");
-            }
-        }
-
-        /// <summary>
         ///   Looks up a localized string similar to An error occurred: {0}.
         /// </summary>
         public string ServerErrorMessage
@@ -2388,17 +2388,6 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("ServerInfoText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to About servers.
-        /// </summary>
-        public string ServerInfoTitle
-        {
-            get
-            {
-                return _rm.GetString("ServerInfoTitle");
             }
         }
 

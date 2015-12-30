@@ -147,7 +147,7 @@ namespace GreatSnooper.ViewModel
             {
                 this.Highlight();
                 this.MainViewModel.FlashWindow();
-                if (Properties.Settings.Default.TrayNotifications && this.MainViewModel.SelectedChannel != this)
+                if (Properties.Settings.Default.TrayNotifications && (this.MainViewModel.SelectedChannel != this || this.MainViewModel.IsWindowActive == false))
                     this.MainViewModel.ShowTrayMessage(msgTask.User.Name + ": " + msgTask.Message);
                 if (Properties.Settings.Default.PMBeepEnabled)
                     Sounds.PlaySoundByName("PMBeep");

@@ -66,9 +66,6 @@ ServerText=Serwer:
 # Question mark after ServerText
 QuestionMark=?
 
-# The title of the popup message when you click the "?" after ServerText in the login window
-ServerInfoTitle=O serwerach
-
 # The text of the popup message when you click the "?" after ServerText in the login window
 ServerInfoText=Oficjalnym serwerem jest: wormnet1.team17.com, możesz tam odnaleźć wszystkich graczy. Czasem bywa jednak, że nie jest on dostępny z powodu prac konserwacyjnych – wtedy możesz skorzystać z serwera alternatywnego, aby na tę chwilę zagrać.
 
@@ -495,7 +492,7 @@ GameNameLabel=Nazwa gry:
 HostingPasswordLabel=Hasło (opcjonalne):
 
 # Using WormNat2? question
-UsingWormNat2=WormNat2 obsługiwany?
+UsingWormNat2=WormNat2 używany?
 
 # The text of the popup message when About WormNat2 is clicked
 AboutWormNat2Text=O module WormNat 2: Jeśli założysz grę, zostanie utworzony serwer na Twoim komputerze oczekujący na graczy, którzy będą wchodzić na określonym porcie (zazwyczaj 17011). Jednakże większość ruterów oraz zapor sieciowych z reguły nie przepuszcza nadchodzących połączeń, przez co nikt nie dołączy do Twojej gry. Będziesz musiał włączyć tzw. przekierowanie portów (ang. port forwarding) i/lub skonfigurować swoją zaporę ogniową, o ile z takowej korzystasz, by zezwolić graczom na dołączenie do gry. WormNat2 korzysta z techniki pozwalającej Ci na zakładanie gier bez nadchodzących połączeń, dzięki czemu Twój host zadziała prawidłowo. Aby było to możliwe, moduł ten używa dedykowanego serwera proxy, który właściwie ma nadzór nad wszystkimi połączeniami. Lecz odkąd nie ma obsługi dla innych serwerów proxy, to wolelibyśmy, żebyś odpowiednio skonfigurował swój system w celu zakładania gier normalnym sposobem i używać modułu WormNat2 tylko wtedy, gdy wszystkie inne metody zawiodą, aby zapobiec przeciążeniu serwera proxy. Prosty przewodnik instalacji możesz odnaleźć w języku polskim na stronie http://worms2d.info/Hosting_Guide/pl. Opcja „Wczytaj moduły WormKit” NIE jest wymagana, by móc skorzystać z funkcji hostowania przez WormNat2 w Snooperze!
@@ -656,12 +653,6 @@ MarkAwayText=Oznacz mnie jako nieobecnego, gdy zakładam lub dołączam do gry:
 # Away message label
 AwayMessageText=Wiadomość przy nieaktywności:
 
-# Send back message option
-SendBackText=Wysyłaj wiadomość powrotną w czatach prywatnych, gdy wracam:
-
-# Back message label
-BackMessageText=Wiadomość przy powrocie:
-
 # Delete old logs at startup option
 DeleteLogsText=Usuwaj logi kanałów starsze niż 30 dni po uruchomieniu:
 
@@ -769,7 +760,7 @@ NotifSoundSettingText=Gdy Asystent powiadamiania coś znajdzie:
 
 # Sound settings for a group label
 # {0} will be the name of the group
-GroupSoundSettingText=Gracz z grupy {0} pojawia się w trybie online:
+GroupSoundSettingText=Gracz z grupy {0} pojawia się online:
 
 # The content of the players button for group settings to modify player list of a group
 PlayersText=Lista graczy
@@ -926,3 +917,55 @@ JoinCloseText2=Dołącz i zamknij Snoopera (alternatywny plik WA.exe)
 
 # Silent join and close snooper label when you right click on a game using alternative WA.exe
 SilentJoinCloseText2=Dołącz po cichu i zamknij Snoopera (alternatywny plik WA.exe)
+
+#Italic font style for Great Snooper users
+ItalicForGSUsers=Pochyl czcionkę dla nazw użytkowników programu Great Snooper:
+
+# When hoster fails to get local ip address
+HosterFailedToGetLocalIP=Nie udało się otrzymać lokalnego adresu IP. Proszę spróbować założyć grę używając modułu WormNat2!
+
+# Load games
+LoadGamesText=Wczytuj gry:
+
+# Load TUS users
+LoadTUSUsersText=Wczytuj użytkowników TUS:
+
+#Load common settings
+LoadCommonSettingsText=Wczytuj ustawienia wspólne (wymagane dla Poszukiwacza ligowego, Aktualizatora i aktualności):
+
+# Load channel scheme
+LoadChannelSchemeText=Wczytuj schemat kanału (wymagane do zakładania i dołączania do gier):
+
+# Use who messages
+UseWhoMessagesText=Używaj wiadomości WHO (wymagane dla państwa, rangi, uwag użytkownika):
+
+# View clan profile
+# {0} will be the name of the clan
+ViewClanProfileText=Profil klanu {0}
+
+# Polish translation by text in settings / About
+PolishTranslationText=Polskie tłumaczenie:
+
+# Russian translation by text in settings / About
+RussianTranslationText=Rosyjskie tłumaczenie:
+
+# Export settings button label in General Settings
+ExportSettingsButtonContent=Eksportuj ustawienia
+
+# Import settings button label in General Settings
+ImportSettingsButtonContent=Importuj ustawienia
+
+# Reset settings button label in General Settings
+ResetSettingsButtonContent=Resetuj ustawienia
+
+# Reset settings button label in General Settings
+ResetSettingsConfirm=Czy jesteś pewien, aby zresetować ustawienia? Wszystkie informacje zostaną utracone.
+
+# Please restart to apply changes text
+RestartToApplyChanges=Proszę ponownie uruchomić program Great Snooper, aby zastosować zmiany!
+
+# Load games and TUS accounts only if window is active settings option
+LoadGamesTUSActiveWindow=Load games and TUS accounts only if window is active:
+
+# Network settings
+NetworkText=Network

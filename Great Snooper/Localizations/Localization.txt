@@ -66,9 +66,6 @@ ServerText=Server:
 # Question mark after ServerText
 QuestionMark=?
 
-# The title of the popup message when you click the "?" after ServerText in the login window
-ServerInfoTitle=About servers
-
 # The text of the popup message when you click the "?" after ServerText in the login window
 ServerInfoText=The official server is: wormnet1.team17.com, you can find there all the players. But sometimes it is not accessable due to maintenance. Then you can use an alternative server to play for that short time.
 
@@ -687,12 +684,6 @@ MarkAwayText=Mark me away when I host or join a game:
 # Away message label
 AwayMessageText=Away message:
 
-# Send back message option
-SendBackText=Send back message in private chats if I am back:
-
-# Back message label
-BackMessageText=Back message:
-
 # Delete old logs at startup option
 DeleteLogsText=Delete channel logs older than 30 days at startup:
 
@@ -930,19 +921,19 @@ ItalicForGSUsers=Italic font style for Great Snooper users:
 HosterFailedToGetLocalIP=Failed to get local IP address. Please try hosting using WormNat2!
 
 # Load games
-LoadGamesText=Load games
+LoadGamesText=Load games:
 
 # Load TUS users
-LoadTUSUsersText=Load TUS users
+LoadTUSUsersText=Load TUS users:
 
 #Load common settings
-LoadCommonSettingsText=Load common settings (required for league searcher, updater and news)
+LoadCommonSettingsText=Load common settings (required for league searcher, updater and news):
 
 # Load channel scheme
-LoadChannelSchemeText=Load channel scheme (required for hosting and loading games)
+LoadChannelSchemeText=Load channel scheme (required for hosting and loading games):
 
 # Use who messages
-UseWhoMessagesText=Use WHO messages (required for country, rank, user info)
+UseWhoMessagesText=Use WHO requests (required for country, rank, user info):
 
 # View clan profile
 # {0} will be the name of the clan
@@ -971,3 +962,6 @@ RestartToApplyChanges=Please restart Great Snooper to apply changes!
 
 # Load games and TUS accounts only if window is active settings option
 LoadGamesTUSActiveWindow=Load games and TUS accounts only if window is active:
+
+# Network settings
+NetworkText=Network

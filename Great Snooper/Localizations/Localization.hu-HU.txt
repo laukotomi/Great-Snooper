@@ -14,7 +14,7 @@ LanguageEnName=Hungarian
 LanguageName=Rendszer
 
 # The name of the system user
-SystemUserName=System
+SystemUserName=Rendszer
                                   
 &&&&&&&&&&&&&&&&&&
 & Popup messages &                            
@@ -65,9 +65,6 @@ ServerText=Szerver:
 
 # Question mark after ServerText
 QuestionMark=?
-
-# The title of the popup message when you click the "?" after ServerText in the login window
-ServerInfoTitle=A szerverekről
 
 # The text of the popup message when you click the "?" after ServerText in the login window
 ServerInfoText=A hivatalos szerver a wormnet1.team17.com, mindenki itt játszik. De néha karbantartás miatt nem érhető el, ilyenkor pedig itt lehet beállítani egy ideiglenes szervert.
@@ -412,10 +409,10 @@ JoinGameText=Csatlakozás
 SilentJoinText=Csendes csatlakozás
 
 # Join and close snooper label when you right click on a game
-JoinCloseText=Csatlakozás és Snooper kikapcsolása
+JoinCloseText=Csatlakozás és bezárás
 
 # Silent join and close snooper label when you right click on a game
-SilentJoinCloseText=Csendes csatlakozás és Snooper kikapcsolása
+SilentJoinCloseText=Csendes csatlakozás és bezárás
 
 # Away message to display when you are away and you move your mouse over the away manager button
 # {0} will be the away message
@@ -432,7 +429,7 @@ CommonSettingFailText=Nem sikerült betölteni a beállításokat! A liga meccs 
 NewVersionText=Új frissítés érhető el a Great Snooper-hez! Szeretnél frissíteni most?
 
 # The text of the popup message when starting of the updater fails
-UpdaterFailText=Failed to start the updater! Please try to run it manually from the installation directory of Great Snooper!
+UpdaterFailText=Nem sikerült elindítani a frissítőt. Próbáld meg manuálisan elindítani a Snooper telepítési mappájából!
 
 # The message when great snooper stops spamming
 SpamStopMessage=A snooper befejezte a liga mérkődés spammelését.
@@ -580,333 +577,391 @@ LeagueGameTitle=Liga mérkődés kereső
 SpamChannelText=Csatorna spammelése?
 
 # Start searching button content
-StartSearchingText=Start searching
+StartSearchingText=Indítás
 
 # Start searching button content (when searching is active)
-StopSearchingText=Stop searching
+StopSearchingText=Befejezés
 
 # When no leagues were selected
-NoLeaguesSelectedError=Please select the league(s) you are looking for!
+NoLeaguesSelectedError=Kérlek válaszd ki a ligá(ka)t, ami(ke)t keresel!
 
 &&&&&&&&&&&&&&&
 & List editor &
 &&&&&&&&&&&&&&&
 # Remove text (when you right click on an item in the list editor, ex. in ignore list)
-RemoveText=Remove
+RemoveText=Törlés
 
 # Add new user to the list text in the textbox
-AddUserToList=Add a new user to the list..
+AddUserToList=Új játékos hozzáadása a listához..
 
 # Enter text here text in the textbox when you are modifying server list in the login window
-EnterTextText=Enter text here..
+EnterTextText=Hozzáadás..
 
 # The title of the popup message when you click ? in the top right corner in the list editor
-ListEditorInfoTitle=Help
+ListEditorInfoTitle=Segítség
 
 # The text of the popup message when you click ? in the top right corner in the list editor
-ListEditorInfoText=To add item to the list enter text into the textbox and press enter. To remove item from the list right click on an item and choose remove.
+ListEditorInfoText=Egy új elem hozzáadásához írj be szöveget a mezőbe és nyomd meg az entert. Elem eltávolításához kattints rá jobb egérgombbal és válaszd a Törlést.
 
 
 &&&&&&&&&&&&
 & Settings &
 &&&&&&&&&&&&
 # The title of the settings window
-SettingsTitle=Settings
+SettingsTitle=Beállítások
 
 # General label for general settings
-GeneralText=General
+GeneralText=Általános
 
 # The content of the browse button in the general settings
-BrowseButtonContent=Browse
+BrowseButtonContent=Kiválaszt
 
 # Window label for window settings
-WindowText=Window
+WindowText=Ablak
 
 # User groups label for user group settings
-UserGroupsText=User groups
+UserGroupsText=Felhasználó csoportok
 
 # #worms label for GameSurge settings
 GSWormsText=#worms
 
 # Messages label for message settings
-MessagesText=Messages
+MessagesText=Üzenetek
 
 # Sounds label for sound settings
-SoundsText=Sounds
+SoundsText=Hangok
 
 # General sounds label in the sound settings
-GeneralSoundsText=General sounds
+GeneralSoundsText=Általános hangok
 
 # Group sounds label in the sound settings
-GroupSoundsText=Group sounds
+GroupSoundsText=Csoport hangok
 
 # Notifications label for notifications settings
-NotificationsText=Notifications
+NotificationsText=Figyelmeztető
 
 # About label
-AboutText=About
+AboutText=Névjegy
 
 # Version line in about section
 # {0} will be the version number
-VersionText=Version: {0}
+VersionText=Verziószám: {0}
 
 # Next line: This program was written by Tomi
-MadeByText=This program was written by Tomi
+MadeByText=Ezt a programot Tomi készítette
 
 # Next line: You can contact me at http://www.tus-wa.com/profile/Tomi/ using private message
-ContactText=You can contact me at http://www.tus-wa.com/profile/Tomi/ using private message
+ContactText=Ha kérdésed van, akkor a http://www.tus-wa.com/profile/Tomi/ oldalon küldj privát üzenetet
 
 # Next line: License: GPLv2
-LicenseText=License: GPLv2
+LicenseText=Licensz: GPLv2
 
 # Next line: This program would never exist without the help of:
-ThanksText=This program would never exist without the help of:
+ThanksText=Ez a program nem készülhetett volna el az alábbi emberek segítsége nélkül:
 
 # Last line: .. and without this nice community ;)
-LastLineText=.. and without this nice community ;)
+LastLineText=
 
 # When the user tries to replace the version number which is not the actual version of the snooper in the default quit message
 # So when you are using GS 1.4.9 and you try to set "Great Snooper v1.7.4" as quit message
-GSVersionTrolling=No trolling please!
+GSVersionTrolling=Ne trollkodj!
 
 # When the user tries to set empty text for something which can not be empty
-EmptyErrorMessage=This text cannot be empty!
+EmptyErrorMessage=Ez a szöveg nem lehet üres!
 
 # Auto login setting
-AutoLogInSettingText=Auto login at startup:
+AutoLogInSettingText=Automatikus belépés induláskor:
 
 # The content of the edit button
-EditText=Edit
+EditText=Szerkeszt
 
 # Send a joining action message option (<nick> is joining a game: <game>)
-MessageJoinedGameText=Send action message to the channel if I join a game:
+MessageJoinedGameText=Küldjön üzenetet a csatornába, ha csatlakozok egy játékhoz:
 
 # Mark away option
-MarkAwayText=Mark me away when I host or join a game:
+MarkAwayText=Váltson elfoglalt állapotra, ha játékban vagyok:
 
 # Away message label
-AwayMessageText=Away message:
-
-# Send back message option
-SendBackText=Send back message in private chats if I am back:
-
-# Back message label
-BackMessageText=Back message:
+AwayMessageText=Elfoglalt állapot üzenete:
 
 # Delete old logs at startup option
-DeleteLogsText=Delete channel logs older than 30 days at startup:
+DeleteLogsText=Törölje a 30 napnál régebbi csatorolna naplókat induláskor:
 
 # Quit message label
-QuitMessageText=Quit message:
+QuitMessageText=Üzenet kilépéskor:
 
 # WA.exe label
 WAExeText=WA.exe:
 
 # Alternative WA.exe label
-WAExeText2=Alternative WA.exe:
+WAExeText2=Másodlagos WA.exe:
 
 # Show banned users option
-ShowBannedUsersText=Show banned users in user list:
+ShowBannedUsersText=Letiltott felhasználók megjelenítése a játékos listában:
 
 # Show messages of banned users option
-ShowBannedMessagesText=Show messages of banned users in the channels:
+ShowBannedMessagesText=Letiltott felhasználók üzeneteinek megjelenítése a csatornákban:
 
 # Show information column option
-ShowInfoColumnText=Show information column in user list:
+ShowInfoColumnText=Információ oszlop megjelenítése a játékos listában:
 
 # Set exit button to minimize the snooper to tray option
-CloseToTrayText=Exit button minimizes the snooper to tray:
+CloseToTrayText=A kilépés gomb a tálcára teszi a Snoopert:
 
 # Energy save mode while playing option
-EnergySaveModeGameText=Energy save mode while playing:
+EnergySaveModeGameText=Energiatakarékos mód játék közben:
 
 # Energy save mode when snooper is hidden option
-EnergySaveModeWinText=Energy save mode when snooper is hidden:
+EnergySaveModeWinText=Energiatakarékos mód ha a Snooper rejtve van:
 
 # Set W:A task priority to high option
-WaHighPriorityText=Set W:A task priority to high:
+WaHighPriorityText=Magas prioritás beállítása a játék folyamatának:
 
 # Notify when notificator is on when hosting/joining a game
-AskNotificatorOffText=Ask if I would like to turn off the notificator when I host or join a game:
+AskNotificatorOffText=Kérdezze meg, hogy ki akarom-e kapcslni a figyelmeztetőt mikor csatlakozok vagy létrehozok egy játékhoz:
 
 # Notify when league searcher is on when hosting/joining a game
-AskLeagueSOffText=Ask if I would like to turn off the league searcher when I host or join a game:
+AskLeagueSOffText=Kérdezze meg, hogy ki akarom-e kapcsolni a liga meccs keresőt mikor csatlakozok vagy létrehozok egy játékot:
 
 # Enable tray balloon messages option
-TrayNotificationsText=Enable tray balloon messages:
+TrayNotificationsText=Tálca értesítések engedélyezése:
 
 # Enable tray flashing option
-TrayFlashingText=Enable tray flashing:
+TrayFlashingText=A program ikon villogásának engedélyezése a tálcán:
 
 # Show #worms channel option
-ShowWormsText=Show #worms channel:
+ShowWormsText=#worms csatorna megjelenítése:
 
 # #worms nickname label
-WormsNickLabel=#worms channel nickname:
+WormsNickLabel=#worms csatorna becenév:
 
 # Update #worms nickname at startup option
-ChangeWormsNickText=Set #worms nick to WormNet nick at startup:
+ChangeWormsNickText=Mindig az aktuális WormNet becenevemet használja a #worms csatornához:
 
 # Show the time when message arrived option
-MessageTimeText=Show the time when the message arrived:
+MessageTimeText=Üzenetek időpontjának mutatása:
 
 # Action message using > character option
-ActionMessageGTText=Action message using '>' character:
+ActionMessageGTText='>' karakterrel akció üzenet küldése:
 
 # User message style label
-UserMessageStyleText=Style of your message:
+UserMessageStyleText=A te üzeneted stílusa:
 
 # Style of other users' messages label
-ChannelMessageStyleText=Style of other users' messages:
+ChannelMessageStyleText=Mások üzenetének stílusa:
 
 # Join message style label
-JoinMessageStyleText=Join message style:
+JoinMessageStyleText=Belépés üzenet stílusa:
 
 # Part message style label
-PartMessageStyleText=Part message style:
+PartMessageStyleText=Csatorna elhagyás üzenet stílusa:
 
 # Quit message style label
-QuitMessageStyleText=Quit message style:
+QuitMessageStyleText=Kilépés üzenet stílusa:
 
 # Action message style label
-ActionMessageStyleText=Action message style:
+ActionMessageStyleText=Akció üzenet stílusa:
 
 # Notice message style label
-NoticeMessageStyleText=Notice message style:
+NoticeMessageStyleText=Értesítés üzenet stílusa:
 
 # System message style label
-SystemMessageStyleText=System message style:
+SystemMessageStyleText=Rendszer üzenet stílusa:
 
 # Message arrived time style label
-MessageTimeStyleText=Style of message arrived time:
+MessageTimeStyleText=Üzenet időpontjának stílusa:
 
 # Style of hyperlinks label
-HyperlinksStyleText=Style of hyperlinks:
+HyperlinksStyleText=Linkek stílusa:
 
 # Found text style label
-FoundStyleText=Found text style:
+FoundStyleText=Kereső találat stílusa:
 
 # The content of the change buttons for styles
-ChangeButtonText=Change
+ChangeButtonText=Módosít
 
 # Private message arrived sound setting label
-PMBeepSettingText=Private message arrived:
+PMBeepSettingText=Privát üzenet érdezésekor:
 
 # Highlight sound setting label
-HighlightSettingText=When your name appears in chat:
+HighlightSettingText=Mikor megemlítenek egy csatornában:
 
 # League searcher found sound setting label
-LeagueSoundSettingText=When the snooper finds a league game:
+LeagueSoundSettingText=Amikor a Snooper egy liga meccset talál:
 
 # League searcher fails sound setting label
-LeagueFailSettingText=When the snooper stops searching league game:
+LeagueFailSettingText=Amikor a snooper abbahagyja a liga meccs keresést:
 
 # Notificator found sound setting label
-NotifSoundSettingText=When the notificator finds something:
+NotifSoundSettingText=Amikor a figyelmeztető talál valamit:
 
 # Sound settings for a group label
 # {0} will be the name of the group
-GroupSoundSettingText=A player from {0} comes online:
+GroupSoundSettingText=Mikor valaki bejelentkezik a(z) {0} csoportból:
 
 # The content of the players button for group settings to modify player list of a group
-PlayersText=Player list
+PlayersText=Játékosok
 
 # The title of the player list editor window when modifying players of a group
 # {0} will be the name of the group
-GroupPlayersEditTitle={0} players
+GroupPlayersEditTitle={0} játékosok
 
 # Enabled label for sound settings
-EnabledText=Enabled
+EnabledText=Engedélyez
 
 # Buddies group name
-BuddiesGroupText=Friends
+BuddiesGroupText=Barátok
 
 # The default name of clan mates group
-ClanMatesGroupText=Clanmates
+ClanMatesGroupText=Klán társak
 
 # The default name of league players group
-LeaguePlayersGroupText=League players
+LeaguePlayersGroupText=Liga játékosok
 
 # The default name of other 1 group
-Other1GroupText=Other 1
+Other1GroupText=Egyéb 1
 
 # The default name of other 2 group
-Other2GroupText=Other 2
+Other2GroupText=Egyéb 2
 
 # The default name of other 3 group
-Other3GroupText=Other 3
+Other3GroupText=Egyéb 3
 
 # The default name of other 4 group
-Other4GroupText=Other 4
+Other4GroupText=Egyéb 4
 
 &&&&&&&&&&
 & Others &
 &&&&&&&&&&
 # The title of the popup message when user types /gs in channel textbox to get how many people are using Great Snooper
-GSCheckTitle=Great Snooper check
+GSCheckTitle=Great Snooper keresés
 
 # The text of the popup message when user types /gs in channel textbox to get how many people are using Great Snooper
 # {0} will be the count of the Great Snooper users
 # {1} will be a comma separated list from the Great Snooper users
-GSCheckText=Great Snooper is used by {0} user(s)! {1}
+GSCheckText=A Great Snoopert {0} játékos használja! {1}
 
 # Kick message
-KickMessage=Kicked by {0}
+KickMessage={0} kirúgott.
 
 # Topic message
-TopicMessage={0} has changed the topic of the channel to "{1}".
+TopicMessage={0} megváltoztatta a csatorna témáját erre: "{1}".
 
 
 # Notif
-InMessagesLabel=In messages
+InMessagesLabel=Üzenetekben
 
 # Notif
-InSenderNamesLabel=In sender names
+InSenderNamesLabel=Küldők között
 
 # Notif
-InGameNamesLabel=In game names
+InGameNamesLabel=Játék nevekben
 
 # Notif
-InHosterNamesLabel=In hoster names
+InHosterNamesLabel=Hosztolók között
 
 # Notif
-InJoinMessagesLabel=In join messages
+InJoinMessagesLabel=Belépés üzenetekben
 
 # Notif
-StartNotifWithSnooper=Start notificator with snooper
+StartNotifWithSnooper=A figyelmeztető aktiválása induláskor
 
 # Away message format
-AwayMessageFormat=is away: {0}
+AwayMessageFormat=elfoglalt: {0}
 
 # Hide channel text
-HideChannelText=Hide channel
+HideChannelText=Elrejtés
 
 # Hiden channels text in settings
-HiddenChannelsText=Hidden channels
+HiddenChannelsText=Rejtett csatornák
 
 # Use snooper rank text
-UseSnooperRank=Use snooper rank:
+UseSnooperRank=Snooper rang használata
 
 # Use snooper rank help
-UseSnooperRankHelp=This option is required for TUS login if you would like to use HostingBuddy to host games with the snooper.
+UseSnooperRankHelp=Ezt az opciót engedélyezni kell, ha TUS felhasználóval lépsz be és használni szeretnéd a HostingBuddyt a snooperrel.
 
 # Hoster - WormNat error, WormNat init error, Wormnat client error
-HosterWormNatError=The communication with WormNat server failed.
+HosterWormNatError=Nem sikerült csatlakozni a WormNat szerverhez.
 
 # Hoster - Create game request failed
-HosterCreateGameFail=Failed to create the game on WormNet.
+HosterCreateGameFail=Nem sikerült létrehozni a játékot a szerveren.
 
 # Hoster - No game id
-HosterNoGameIDError=Failed to host a game. Probably you have hosted too many games recently. Please wait a while!
+HosterNoGameIDError=Nem sikerült létrehozni a játékot. Valószínűleg rövid időn belül túl sokat hosztoltál. Kérlek várj egy kicsit!
 
 # Hoster - Failed to start the game
-HosterStartGameFail=Failed to start Worms: Armageddon.
+HosterStartGameFail=Nem sikerült elindítani a Worms: Armageddont.
 
 # Hoster - Unknown fail
-HosterUnknownFail=An unexpected error happened while trying to host a game.
+HosterUnknownFail=Valami hiba történt a játék létrehozása során.
 
 # Notificator help label
-NotificatorHelpLabel=How to use notificator?
+NotificatorHelpLabel=Hogyan használd a figyelmeztetőt?
 
 # Notificator help text
-NotificatorHelpText=Notificator can look for words in messages, sender names, hoster names, game names and join messages. By default it will look for whole words, but you can use special characters '*', '+', and '.'. '*' matches any character, '+' matches at least 1 character and '.' matches only 1 character. So if you are looking for words similar to "example" then you can search for it as "example", "*ample", "examp*", "*amp*", "e.ample", "+amp+", etc. You can add one word per line. If you would like to ignore a word from searching then delete it or write '#' before it like "#example".
+NotificatorHelpText=A figyelmeztető szavakat tud keresni az üzenetekben, a küldők nevében, a játékok nevében és a létrehozójuk nevében, valamint az éppen belépő játékosok nevében. Alapértelmezetten teljes egyezést keres, de használhatók a '*', '+', és a '.' speciális karakterek. A '*' bármennyi karaktert, a '+' legalább 1 karaktert és a '.' pontosan 1 karatert helyettesít. Tehát ha a "példa" szóra szeretnél keresni, akkor azt az alábbi módokon teheted meg "példa", "*lda", "pél*", "*éld*", "p.lda", "+éld+", stb. Egy sorba egy szót lehet beírni. Ha egy szóra mégsem szeretnél keresni, akkor töröld a sort vagy írj az elejére egy '#' karakterd ("#példa").
+
+# Join this game label when you right click on a game using alternative WA.exe
+JoinGameText2=Csatlakozás (Másodlagos WA.exe-vel)
+
+# Silent join label when you right click on a game using alternative WA.exe
+SilentJoinText2=Csendes csatlakozás (Másodlagos WA.exe-vel)
+
+# Join and close snooper label when you right click on a game using alternative WA.exe
+JoinCloseText2=Csatlakozás és bezárás (Másodlagos WA.exe-vel)
+
+# Silent join and close snooper label when you right click on a game using alternative WA.exe
+SilentJoinCloseText2=Csendes csatlakozás és bezárás (Másodlagos WA.exe-vel)
+
+#Italic font style for Great Snooper users
+ItalicForGSUsers=Dőlt betűtípus a Great Snoopert használóknak:
+
+# When hoster fails to get local ip address
+HosterFailedToGetLocalIP=Nem sikerült a lokális IP cím meghatározása. Kérlek próbálj meg a WormNat2-vel hosztolni!
+
+# Load games
+LoadGamesText=Játék lista betöltése:
+
+# Load TUS users
+LoadTUSUsersText=TUS felhasználók betöltése:
+
+#Load common settings
+LoadCommonSettingsText=Közös beállítások betöltése (szükséges a liga meccs keresőnek, a frissítőnek és a híreknek):
+
+# Load channel scheme
+LoadChannelSchemeText=A csatorna rendszerének betöltése (szükséges a hosztoláshoz és a játék lista betöltéséhez):
+
+# Use who messages
+UseWhoMessagesText=WHO parancsok használata (szükséges az ország, rang és információ meghatározásához):
+
+# View clan profile
+# {0} will be the name of the clan
+ViewClanProfileText={0} profilja
+
+# Polish translation by text in settings / About
+PolishTranslationText=Lengyel fordítás:
+
+# Russian translation by text in settings / About
+RussianTranslationText=Orosz fordítás:
+
+# Export settings button label in General Settings
+ExportSettingsButtonContent=Beállítások kimentése
+
+# Import settings button label in General Settings
+ImportSettingsButtonContent=Beállítások betöltése
+
+# Reset settings button label in General Settings
+ResetSettingsButtonContent=Beállítások alaphelyzetbe
+
+# Reset settings button label in General Settings
+ResetSettingsConfirm=Biztos alaphelyzetbe állítod a beállításokat? Minden adat el fog veszni.
+
+# Please restart to apply changes text
+RestartToApplyChanges=Kérlek indítsd újra a Great Snooper, hogy a módosítások életbe lépjenek!
+
+# Load games and TUS accounts only if window is active settings option
+LoadGamesTUSActiveWindow=Játék lista és TUS felhasználók betöltése csak akkor, ha aktív az ablak:
+
+# Network settings
+NetworkText=Hálózat

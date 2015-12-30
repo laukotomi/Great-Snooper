@@ -113,7 +113,7 @@ WhatIsTusLoginText=TUS (The Ultimate Site) - вебсайт о Worms: Armageddon
 LogInText=Подключиться
 
 # The text of the popup message when Great Snooper could not locate WA.exe
-#WAExeNotFoundText=Не удалось найти исполняемый файл игры (WA.exe). Пожалуйста, укажите путь к файлу WA.exe в Настройках. Указать путь к нему сейчас?
+WAExeNotFoundText=Не удалось найти исполняемый файл игры (WA.exe). Пожалуйста, укажите путь к файлу WA.exe в Настройках. Указать путь к нему сейчас?
 
 # Login window title and the welcome message in taskbar notification when you start Great Snooper
 WelcomeMessage=Добро пожаловать!
@@ -480,7 +480,7 @@ AwayButtonAway=Включить
 AwayButtonBack=Выключить
 
 # The content of close button (this will be the content of every close button!)
-CloseTest=Закрыть
+CloseText=Закрыть
 
 # Example label
 ExampleLabel=Образец
@@ -508,10 +508,10 @@ GameNameLabel=Название игры:
 HostingPasswordLabel=Пароль (необязательно):
 
 # Using WormNAT2? question
-UsingWormNAT2=Использовать WormNAT2?
+UsingWormNat2=Использовать WormNAT2?
 
 # The text of the popup message when About WormNAT2 is clicked
-AboutWormNAT2Text=О WormNAT2: Если Вы хостите игру обычным способом (без использования сторонних программ), W:A создает сервер на Вашем компьютере и ожидает присоединения игроков на указанном порту (обычно 17011). Но большинство роутеров и брандмауэров по умолчанию не пропускают входящие соединения, таким образом, никдто не сможет присоединиться к Вашей игре. Вы должны будете разрешить перенаправление портов на Вашем роутере и/или настроить Ваш брандмауэр, если Вы его используете, чтобы игроки могли присоединиться к Вашей игре. Используя WormNAT2, Вы можете хостить игры без входящих соединений и Ваш хост будет работать должным образом. WormNAT2 использует выделенный прокси-сервер, который обрабатывает все соединения. Но в таком случае нет никакой поддержки для других прокси-серверов и будет лучше, если Вы настроете свою систему так, чтобы использовать нормальный способ хостинга игр и будете использовать WormNAT2 только если ничто иное не решает проблему. Вы можете найти руководство по хостингу игр на http://worms2d.info/Руководство_по_хостингу. Разрешения загрузки модулей WormKit не требуется, чтобы использовать способность снупера хостить игры).
+AboutWormNat2Text=О WormNAT2: Если Вы хостите игру обычным способом (без использования сторонних программ), W:A создает сервер на Вашем компьютере и ожидает присоединения игроков на указанном порту (обычно 17011). Но большинство роутеров и брандмауэров по умолчанию не пропускают входящие соединения, таким образом, никдто не сможет присоединиться к Вашей игре. Вы должны будете разрешить перенаправление портов на Вашем роутере и/или настроить Ваш брандмауэр, если Вы его используете, чтобы игроки могли присоединиться к Вашей игре. Используя WormNAT2, Вы можете хостить игры без входящих соединений и Ваш хост будет работать должным образом. WormNAT2 использует выделенный прокси-сервер, который обрабатывает все соединения. Но в таком случае нет никакой поддержки для других прокси-серверов и будет лучше, если Вы настроете свою систему так, чтобы использовать нормальный способ хостинга игр и будете использовать WormNAT2 только если ничто иное не решает проблему. Вы можете найти руководство по хостингу игр на http://worms2d.info/Руководство_по_хостингу. Разрешения загрузки модулей WormKit не требуется, чтобы использовать способность снупера хостить игры).
 
 # Send info to channel label (action message will be: "<player> is hosting a game: <gamename>")
 HostingAction=Сообщить о хостинге игры на канал?
@@ -674,12 +674,6 @@ MarkAwayText=Включить автоответчик при хостинге �
 
 # Away message label
 AwayMessageText=Сообщение автоответчика:
-
-# Send back message option
-SendBackText=Отсылать сообщение о возвращении (когда автоответчик отключился/был отключен):
-
-# Back message label
-BackMessageText=Сообщение о возвращении:
 
 # Delete old logs at startup option
 DeleteLogsText=Удалять логи старше 30 дней при запуске:
@@ -949,3 +943,55 @@ JoinCloseText2=Join and close snooper (Alternative WA.exe)
 
 # Silent join and close snooper label when you right click on a game using alternative WA.exe
 SilentJoinCloseText2=Silent join and close snooper (Alternative WA.exe)
+
+#Italic font style for Great Snooper users
+ItalicForGSUsers=Italic font style for Great Snooper users:
+
+# When hoster fails to get local ip address
+HosterFailedToGetLocalIP=Failed to get local IP address. Please try hosting using WormNat2!
+
+# Load games
+LoadGamesText=Load games:
+
+# Load TUS users
+LoadTUSUsersText=Load TUS users:
+
+#Load common settings
+LoadCommonSettingsText=Load common settings (required for league searcher, updater and news):
+
+# Load channel scheme
+LoadChannelSchemeText=Load channel scheme (required for hosting and loading games):
+
+# Use who messages
+UseWhoMessagesText=Use WHO requests (required for country, rank, user info):
+
+# View clan profile
+# {0} will be the name of the clan
+ViewClanProfileText={0}'s profile
+
+# Polish translation by text in settings / About
+PolishTranslationText=Polish translation by:
+
+# Russian translation by text in settings / About
+RussianTranslationText=Russian translation by:
+
+# Export settings button label in General Settings
+ExportSettingsButtonContent=Export settings
+
+# Import settings button label in General Settings
+ImportSettingsButtonContent=Import settings
+
+# Reset settings button label in General Settings
+ResetSettingsButtonContent=Reset settings
+
+# Reset settings button label in General Settings
+ResetSettingsConfirm=Are you sure to reset settings? All informations will be lost.
+
+# Please restart to apply changes text
+RestartToApplyChanges=Please restart Great Snooper to apply changes!
+
+# Load games and TUS accounts only if window is active settings option
+LoadGamesTUSActiveWindow=Load games and TUS accounts only if window is active:
+
+# Network settings
+NetworkText=Network

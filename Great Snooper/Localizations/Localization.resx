@@ -193,10 +193,6 @@
     <value>?</value>
     <comment>Question mark after ServerText</comment>
   </data>
-  <data name="ServerInfoTitle" xml:space="preserve">
-    <value>About servers</value>
-    <comment>The title of the popup message when you click the "?" after ServerText in the login window</comment>
-  </data>
   <data name="ServerInfoText" xml:space="preserve">
     <value>The official server is: wormnet1.team17.com, you can find there all the players. But sometimes it is not accessable due to maintenance. Then you can use an alternative server to play for that short time.</value>
     <comment>The text of the popup message when you click the "?" after ServerText in the login window</comment>
@@ -937,14 +933,6 @@
     <value>Away message:</value>
     <comment>Away message label</comment>
   </data>
-  <data name="SendBackText" xml:space="preserve">
-    <value>Send back message in private chats if I am back:</value>
-    <comment>Send back message option</comment>
-  </data>
-  <data name="BackMessageText" xml:space="preserve">
-    <value>Back message:</value>
-    <comment>Back message label</comment>
-  </data>
   <data name="DeleteLogsText" xml:space="preserve">
     <value>Delete channel logs older than 30 days at startup:</value>
     <comment>Delete old logs at startup option</comment>
@@ -1250,23 +1238,23 @@
     <comment>When hoster fails to get local ip address</comment>
   </data>
   <data name="LoadGamesText" xml:space="preserve">
-    <value>Load games</value>
+    <value>Load games:</value>
     <comment>Load games</comment>
   </data>
   <data name="LoadTUSUsersText" xml:space="preserve">
-    <value>Load TUS users</value>
+    <value>Load TUS users:</value>
     <comment>Load TUS users</comment>
   </data>
   <data name="LoadCommonSettingsText" xml:space="preserve">
-    <value>Load common settings (required for league searcher, updater and news)</value>
+    <value>Load common settings (required for league searcher, updater and news):</value>
     <comment>Load common settings</comment>
   </data>
   <data name="LoadChannelSchemeText" xml:space="preserve">
-    <value>Load channel scheme (required for hosting and loading games)</value>
+    <value>Load channel scheme (required for hosting and loading games):</value>
     <comment>Load channel scheme</comment>
   </data>
   <data name="UseWhoMessagesText" xml:space="preserve">
-    <value>Use WHO messages (required for country, rank, user info)</value>
+    <value>Use WHO requests (required for country, rank, user info):</value>
     <comment>Use who messages</comment>
   </data>
   <data name="ViewClanProfileText" xml:space="preserve">
@@ -1304,5 +1292,9 @@
   <data name="LoadGamesTUSActiveWindow" xml:space="preserve">
     <value>Load games and TUS accounts only if window is active:</value>
     <comment>Load games and TUS accounts only if window is active settings option</comment>
+  </data>
+  <data name="NetworkText" xml:space="preserve">
+    <value>Network</value>
+    <comment>Network settings</comment>
   </data>
 </root>

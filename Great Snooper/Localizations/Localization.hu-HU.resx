@@ -134,7 +134,7 @@
     <comment>Language name in your language</comment>
   </data>
   <data name="SystemUserName" xml:space="preserve">
-    <value>System</value>
+    <value>Rendszer</value>
     <comment>The name of the system user</comment>
   </data>
   <data name="ErrorText" xml:space="preserve">
@@ -192,10 +192,6 @@
   <data name="QuestionMark" xml:space="preserve">
     <value>?</value>
     <comment>Question mark after ServerText</comment>
-  </data>
-  <data name="ServerInfoTitle" xml:space="preserve">
-    <value>A szerverekről</value>
-    <comment>The title of the popup message when you click the "?" after ServerText in the login window</comment>
   </data>
   <data name="ServerInfoText" xml:space="preserve">
     <value>A hivatalos szerver a wormnet1.team17.com, mindenki itt játszik. De néha karbantartás miatt nem érhető el, ilyenkor pedig itt lehet beállítani egy ideiglenes szervert.</value>
@@ -610,11 +606,11 @@
     <comment>Silent join label when you right click on a game</comment>
   </data>
   <data name="JoinCloseText" xml:space="preserve">
-    <value>Csatlakozás és Snooper kikapcsolása</value>
+    <value>Csatlakozás és bezárás</value>
     <comment>Join and close snooper label when you right click on a game</comment>
   </data>
   <data name="SilentJoinCloseText" xml:space="preserve">
-    <value>Csendes csatlakozás és Snooper kikapcsolása</value>
+    <value>Csendes csatlakozás és bezárás</value>
     <comment>Silent join and close snooper label when you right click on a game</comment>
   </data>
   <data name="AwayManagerTooltipAway" xml:space="preserve">
@@ -634,7 +630,7 @@
     <comment>The text of the popup message when there is new version of the snooper available</comment>
   </data>
   <data name="UpdaterFailText" xml:space="preserve">
-    <value>Failed to start the updater! Please try to run it manually from the installation directory of Great Snooper!</value>
+    <value>Nem sikerült elindítani a frissítőt. Próbáld meg manuálisan elindítani a Snooper telepítési mappájából!</value>
     <comment>The text of the popup message when starting of the updater fails</comment>
   </data>
   <data name="SpamStopMessage" xml:space="preserve">
@@ -806,55 +802,55 @@
     <comment>Spam the channel label</comment>
   </data>
   <data name="StartSearchingText" xml:space="preserve">
-    <value>Start searching</value>
+    <value>Indítás</value>
     <comment>Start searching button content</comment>
   </data>
   <data name="StopSearchingText" xml:space="preserve">
-    <value>Stop searching</value>
+    <value>Befejezés</value>
     <comment>Start searching button content (when searching is active)</comment>
   </data>
   <data name="NoLeaguesSelectedError" xml:space="preserve">
-    <value>Please select the league(s) you are looking for!</value>
+    <value>Kérlek válaszd ki a ligá(ka)t, ami(ke)t keresel!</value>
     <comment>When no leagues were selected</comment>
   </data>
   <data name="RemoveText" xml:space="preserve">
-    <value>Remove</value>
+    <value>Törlés</value>
     <comment>Remove text (when you right click on an item in the list editor, ex. in ignore list)</comment>
   </data>
   <data name="AddUserToList" xml:space="preserve">
-    <value>Add a new user to the list..</value>
+    <value>Új játékos hozzáadása a listához..</value>
     <comment>Add new user to the list text in the textbox</comment>
   </data>
   <data name="EnterTextText" xml:space="preserve">
-    <value>Enter text here..</value>
+    <value>Hozzáadás..</value>
     <comment>Enter text here text in the textbox when you are modifying server list in the login window</comment>
   </data>
   <data name="ListEditorInfoTitle" xml:space="preserve">
-    <value>Help</value>
+    <value>Segítség</value>
     <comment>The title of the popup message when you click ? in the top right corner in the list editor</comment>
   </data>
   <data name="ListEditorInfoText" xml:space="preserve">
-    <value>To add item to the list enter text into the textbox and press enter. To remove item from the list right click on an item and choose remove.</value>
+    <value>Egy új elem hozzáadásához írj be szöveget a mezőbe és nyomd meg az entert. Elem eltávolításához kattints rá jobb egérgombbal és válaszd a Törlést.</value>
     <comment>The text of the popup message when you click ? in the top right corner in the list editor</comment>
   </data>
   <data name="SettingsTitle" xml:space="preserve">
-    <value>Settings</value>
+    <value>Beállítások</value>
     <comment>The title of the settings window</comment>
   </data>
   <data name="GeneralText" xml:space="preserve">
-    <value>General</value>
+    <value>Általános</value>
     <comment>General label for general settings</comment>
   </data>
   <data name="BrowseButtonContent" xml:space="preserve">
-    <value>Browse</value>
+    <value>Kiválaszt</value>
     <comment>The content of the browse button in the general settings</comment>
   </data>
   <data name="WindowText" xml:space="preserve">
-    <value>Window</value>
+    <value>Ablak</value>
     <comment>Window label for window settings</comment>
   </data>
   <data name="UserGroupsText" xml:space="preserve">
-    <value>User groups</value>
+    <value>Felhasználó csoportok</value>
     <comment>User groups label for user group settings</comment>
   </data>
   <data name="GSWormsText" xml:space="preserve">
@@ -862,95 +858,88 @@
     <comment>#worms label for GameSurge settings</comment>
   </data>
   <data name="MessagesText" xml:space="preserve">
-    <value>Messages</value>
+    <value>Üzenetek</value>
     <comment>Messages label for message settings</comment>
   </data>
   <data name="SoundsText" xml:space="preserve">
-    <value>Sounds</value>
+    <value>Hangok</value>
     <comment>Sounds label for sound settings</comment>
   </data>
   <data name="GeneralSoundsText" xml:space="preserve">
-    <value>General sounds</value>
+    <value>Általános hangok</value>
     <comment>General sounds label in the sound settings</comment>
   </data>
   <data name="GroupSoundsText" xml:space="preserve">
-    <value>Group sounds</value>
+    <value>Csoport hangok</value>
     <comment>Group sounds label in the sound settings</comment>
   </data>
   <data name="NotificationsText" xml:space="preserve">
-    <value>Notifications</value>
+    <value>Figyelmeztető</value>
     <comment>Notifications label for notifications settings</comment>
   </data>
   <data name="AboutText" xml:space="preserve">
-    <value>About</value>
+    <value>Névjegy</value>
     <comment>About label</comment>
   </data>
   <data name="VersionText" xml:space="preserve">
-    <value>Version: {0}</value>
+    <value>Verziószám: {0}</value>
     <comment>Version line in about section\n{0} will be the version number</comment>
   </data>
   <data name="MadeByText" xml:space="preserve">
-    <value>This program was written by Tomi</value>
+    <value>Ezt a programot Tomi készítette</value>
     <comment>Next line: This program was written by Tomi</comment>
   </data>
   <data name="ContactText" xml:space="preserve">
-    <value>You can contact me at http://www.tus-wa.com/profile/Tomi/ using private message</value>
+    <value>Ha kérdésed van, akkor a http://www.tus-wa.com/profile/Tomi/ oldalon küldj privát üzenetet</value>
     <comment>Next line: You can contact me at http://www.tus-wa.com/profile/Tomi/ using private message</comment>
   </data>
   <data name="LicenseText" xml:space="preserve">
-    <value>License: GPLv2</value>
+    <value>Licensz: GPLv2</value>
     <comment>Next line: License: GPLv2</comment>
   </data>
   <data name="ThanksText" xml:space="preserve">
-    <value>This program would never exist without the help of:</value>
+    <value>Ez a program nem készülhetett volna el az alábbi emberek segítsége nélkül:</value>
     <comment>Next line: This program would never exist without the help of:</comment>
   </data>
   <data name="LastLineText" xml:space="preserve">
-    <value>.. and without this nice community ;)</value>
+    <value>
+    </value>
     <comment>Last line: .. and without this nice community ;)</comment>
   </data>
   <data name="GSVersionTrolling" xml:space="preserve">
-    <value>No trolling please!</value>
+    <value>Ne trollkodj!</value>
     <comment>When the user tries to replace the version number which is not the actual version of the snooper in the default quit message\nSo when you are using GS 1.4.9 and you try to set "Great Snooper v1.7.4" as quit message</comment>
   </data>
   <data name="EmptyErrorMessage" xml:space="preserve">
-    <value>This text cannot be empty!</value>
+    <value>Ez a szöveg nem lehet üres!</value>
     <comment>When the user tries to set empty text for something which can not be empty</comment>
   </data>
   <data name="AutoLogInSettingText" xml:space="preserve">
-    <value>Auto login at startup:</value>
+    <value>Automatikus belépés induláskor:</value>
     <comment>Auto login setting</comment>
   </data>
   <data name="EditText" xml:space="preserve">
-    <value>Edit</value>
+    <value>Szerkeszt</value>
     <comment>The content of the edit button</comment>
   </data>
   <data name="MessageJoinedGameText" xml:space="preserve">
-    <value>Send action message to the channel if I join a game:</value>
+    <value>Küldjön üzenetet a csatornába, ha csatlakozok egy játékhoz:</value>
     <comment>Send a joining action message option (&lt;nick&gt; is joining a game: &lt;game&gt;)</comment>
   </data>
   <data name="MarkAwayText" xml:space="preserve">
-    <value>Mark me away when I host or join a game:</value>
+    <value>Váltson elfoglalt állapotra, ha játékban vagyok:</value>
     <comment>Mark away option</comment>
   </data>
   <data name="AwayMessageText" xml:space="preserve">
-    <value>Away message:</value>
+    <value>Elfoglalt állapot üzenete:</value>
     <comment>Away message label</comment>
   </data>
-  <data name="SendBackText" xml:space="preserve">
-    <value>Send back message in private chats if I am back:</value>
-    <comment>Send back message option</comment>
-  </data>
-  <data name="BackMessageText" xml:space="preserve">
-    <value>Back message:</value>
-    <comment>Back message label</comment>
-  </data>
   <data name="DeleteLogsText" xml:space="preserve">
-    <value>Delete channel logs older than 30 days at startup:</value>
+    <value>Törölje a 30 napnál régebbi csatorolna naplókat induláskor:</value>
     <comment>Delete old logs at startup option</comment>
   </data>
   <data name="QuitMessageText" xml:space="preserve">
-    <value>Quit message:</value>
+    <value>Üzenet kilépéskor:</value>
     <comment>Quit message label</comment>
   </data>
   <data name="WAExeText" xml:space="preserve">
@@ -958,271 +947,355 @@
     <comment>WA.exe label</comment>
   </data>
   <data name="WAExeText2" xml:space="preserve">
-    <value>Alternative WA.exe:</value>
+    <value>Másodlagos WA.exe:</value>
     <comment>Alternative WA.exe label</comment>
   </data>
   <data name="ShowBannedUsersText" xml:space="preserve">
-    <value>Show banned users in user list:</value>
+    <value>Letiltott felhasználók megjelenítése a játékos listában:</value>
     <comment>Show banned users option</comment>
   </data>
   <data name="ShowBannedMessagesText" xml:space="preserve">
-    <value>Show messages of banned users in the channels:</value>
+    <value>Letiltott felhasználók üzeneteinek megjelenítése a csatornákban:</value>
     <comment>Show messages of banned users option</comment>
   </data>
   <data name="ShowInfoColumnText" xml:space="preserve">
-    <value>Show information column in user list:</value>
+    <value>Információ oszlop megjelenítése a játékos listában:</value>
     <comment>Show information column option</comment>
   </data>
   <data name="CloseToTrayText" xml:space="preserve">
-    <value>Exit button minimizes the snooper to tray:</value>
+    <value>A kilépés gomb a tálcára teszi a Snoopert:</value>
     <comment>Set exit button to minimize the snooper to tray option</comment>
   </data>
   <data name="EnergySaveModeGameText" xml:space="preserve">
-    <value>Energy save mode while playing:</value>
+    <value>Energiatakarékos mód játék közben:</value>
     <comment>Energy save mode while playing option</comment>
   </data>
   <data name="EnergySaveModeWinText" xml:space="preserve">
-    <value>Energy save mode when snooper is hidden:</value>
+    <value>Energiatakarékos mód ha a Snooper rejtve van:</value>
     <comment>Energy save mode when snooper is hidden option</comment>
   </data>
   <data name="WaHighPriorityText" xml:space="preserve">
-    <value>Set W:A task priority to high:</value>
+    <value>Magas prioritás beállítása a játék folyamatának:</value>
     <comment>Set W:A task priority to high option</comment>
   </data>
   <data name="AskNotificatorOffText" xml:space="preserve">
-    <value>Ask if I would like to turn off the notificator when I host or join a game:</value>
+    <value>Kérdezze meg, hogy ki akarom-e kapcslni a figyelmeztetőt mikor csatlakozok vagy létrehozok egy játékhoz:</value>
     <comment>Notify when notificator is on when hosting/joining a game</comment>
   </data>
   <data name="AskLeagueSOffText" xml:space="preserve">
-    <value>Ask if I would like to turn off the league searcher when I host or join a game:</value>
+    <value>Kérdezze meg, hogy ki akarom-e kapcsolni a liga meccs keresőt mikor csatlakozok vagy létrehozok egy játékot:</value>
     <comment>Notify when league searcher is on when hosting/joining a game</comment>
   </data>
   <data name="TrayNotificationsText" xml:space="preserve">
-    <value>Enable tray balloon messages:</value>
+    <value>Tálca értesítések engedélyezése:</value>
     <comment>Enable tray balloon messages option</comment>
   </data>
   <data name="TrayFlashingText" xml:space="preserve">
-    <value>Enable tray flashing:</value>
+    <value>A program ikon villogásának engedélyezése a tálcán:</value>
     <comment>Enable tray flashing option</comment>
   </data>
   <data name="ShowWormsText" xml:space="preserve">
-    <value>Show #worms channel:</value>
+    <value>#worms csatorna megjelenítése:</value>
     <comment>Show #worms channel option</comment>
   </data>
   <data name="WormsNickLabel" xml:space="preserve">
-    <value>#worms channel nickname:</value>
+    <value>#worms csatorna becenév:</value>
     <comment>#worms nickname label</comment>
   </data>
   <data name="ChangeWormsNickText" xml:space="preserve">
-    <value>Set #worms nick to WormNet nick at startup:</value>
+    <value>Mindig az aktuális WormNet becenevemet használja a #worms csatornához:</value>
     <comment>Update #worms nickname at startup option</comment>
   </data>
   <data name="MessageTimeText" xml:space="preserve">
-    <value>Show the time when the message arrived:</value>
+    <value>Üzenetek időpontjának mutatása:</value>
     <comment>Show the time when message arrived option</comment>
   </data>
   <data name="ActionMessageGTText" xml:space="preserve">
-    <value>Action message using '&gt;' character:</value>
+    <value>'&gt;' karakterrel akció üzenet küldése:</value>
     <comment>Action message using &gt; character option</comment>
   </data>
   <data name="UserMessageStyleText" xml:space="preserve">
-    <value>Style of your message:</value>
+    <value>A te üzeneted stílusa:</value>
     <comment>User message style label</comment>
   </data>
   <data name="ChannelMessageStyleText" xml:space="preserve">
-    <value>Style of other users' messages:</value>
+    <value>Mások üzenetének stílusa:</value>
     <comment>Style of other users' messages label</comment>
   </data>
   <data name="JoinMessageStyleText" xml:space="preserve">
-    <value>Join message style:</value>
+    <value>Belépés üzenet stílusa:</value>
     <comment>Join message style label</comment>
   </data>
   <data name="PartMessageStyleText" xml:space="preserve">
-    <value>Part message style:</value>
+    <value>Csatorna elhagyás üzenet stílusa:</value>
     <comment>Part message style label</comment>
   </data>
   <data name="QuitMessageStyleText" xml:space="preserve">
-    <value>Quit message style:</value>
+    <value>Kilépés üzenet stílusa:</value>
     <comment>Quit message style label</comment>
   </data>
   <data name="ActionMessageStyleText" xml:space="preserve">
-    <value>Action message style:</value>
+    <value>Akció üzenet stílusa:</value>
     <comment>Action message style label</comment>
   </data>
   <data name="NoticeMessageStyleText" xml:space="preserve">
-    <value>Notice message style:</value>
+    <value>Értesítés üzenet stílusa:</value>
     <comment>Notice message style label</comment>
   </data>
   <data name="SystemMessageStyleText" xml:space="preserve">
-    <value>System message style:</value>
+    <value>Rendszer üzenet stílusa:</value>
     <comment>System message style label</comment>
   </data>
   <data name="MessageTimeStyleText" xml:space="preserve">
-    <value>Style of message arrived time:</value>
+    <value>Üzenet időpontjának stílusa:</value>
     <comment>Message arrived time style label</comment>
   </data>
   <data name="HyperlinksStyleText" xml:space="preserve">
-    <value>Style of hyperlinks:</value>
+    <value>Linkek stílusa:</value>
     <comment>Style of hyperlinks label</comment>
   </data>
   <data name="FoundStyleText" xml:space="preserve">
-    <value>Found text style:</value>
+    <value>Kereső találat stílusa:</value>
     <comment>Found text style label</comment>
   </data>
   <data name="ChangeButtonText" xml:space="preserve">
-    <value>Change</value>
+    <value>Módosít</value>
     <comment>The content of the change buttons for styles</comment>
   </data>
   <data name="PMBeepSettingText" xml:space="preserve">
-    <value>Private message arrived:</value>
+    <value>Privát üzenet érdezésekor:</value>
     <comment>Private message arrived sound setting label</comment>
   </data>
   <data name="HighlightSettingText" xml:space="preserve">
-    <value>When your name appears in chat:</value>
+    <value>Mikor megemlítenek egy csatornában:</value>
     <comment>Highlight sound setting label</comment>
   </data>
   <data name="LeagueSoundSettingText" xml:space="preserve">
-    <value>When the snooper finds a league game:</value>
+    <value>Amikor a Snooper egy liga meccset talál:</value>
     <comment>League searcher found sound setting label</comment>
   </data>
   <data name="LeagueFailSettingText" xml:space="preserve">
-    <value>When the snooper stops searching league game:</value>
+    <value>Amikor a snooper abbahagyja a liga meccs keresést:</value>
     <comment>League searcher fails sound setting label</comment>
   </data>
   <data name="NotifSoundSettingText" xml:space="preserve">
-    <value>When the notificator finds something:</value>
+    <value>Amikor a figyelmeztető talál valamit:</value>
     <comment>Notificator found sound setting label</comment>
   </data>
   <data name="GroupSoundSettingText" xml:space="preserve">
-    <value>A player from {0} comes online:</value>
+    <value>Mikor valaki bejelentkezik a(z) {0} csoportból:</value>
     <comment>Sound settings for a group label\n{0} will be the name of the group</comment>
   </data>
   <data name="PlayersText" xml:space="preserve">
-    <value>Player list</value>
+    <value>Játékosok</value>
     <comment>The content of the players button for group settings to modify player list of a group</comment>
   </data>
   <data name="GroupPlayersEditTitle" xml:space="preserve">
-    <value>{0} players</value>
+    <value>{0} játékosok</value>
     <comment>The title of the player list editor window when modifying players of a group\n{0} will be the name of the group</comment>
   </data>
   <data name="EnabledText" xml:space="preserve">
-    <value>Enabled</value>
+    <value>Engedélyez</value>
     <comment>Enabled label for sound settings</comment>
   </data>
   <data name="BuddiesGroupText" xml:space="preserve">
-    <value>Friends</value>
+    <value>Barátok</value>
     <comment>Buddies group name</comment>
   </data>
   <data name="ClanMatesGroupText" xml:space="preserve">
-    <value>Clanmates</value>
+    <value>Klán társak</value>
     <comment>The default name of clan mates group</comment>
   </data>
   <data name="LeaguePlayersGroupText" xml:space="preserve">
-    <value>League players</value>
+    <value>Liga játékosok</value>
     <comment>The default name of league players group</comment>
   </data>
   <data name="Other1GroupText" xml:space="preserve">
-    <value>Other 1</value>
+    <value>Egyéb 1</value>
     <comment>The default name of other 1 group</comment>
   </data>
   <data name="Other2GroupText" xml:space="preserve">
-    <value>Other 2</value>
+    <value>Egyéb 2</value>
     <comment>The default name of other 2 group</comment>
   </data>
   <data name="Other3GroupText" xml:space="preserve">
-    <value>Other 3</value>
+    <value>Egyéb 3</value>
     <comment>The default name of other 3 group</comment>
   </data>
   <data name="Other4GroupText" xml:space="preserve">
-    <value>Other 4</value>
+    <value>Egyéb 4</value>
     <comment>The default name of other 4 group</comment>
   </data>
   <data name="GSCheckTitle" xml:space="preserve">
-    <value>Great Snooper check</value>
+    <value>Great Snooper keresés</value>
     <comment>The title of the popup message when user types /gs in channel textbox to get how many people are using Great Snooper</comment>
   </data>
   <data name="GSCheckText" xml:space="preserve">
-    <value>Great Snooper is used by {0} user(s)! {1}</value>
+    <value>A Great Snoopert {0} játékos használja! {1}</value>
     <comment>The text of the popup message when user types /gs in channel textbox to get how many people are using Great Snooper\n{0} will be the count of the Great Snooper users\n{1} will be a comma separated list from the Great Snooper users</comment>
   </data>
   <data name="KickMessage" xml:space="preserve">
-    <value>Kicked by {0}</value>
+    <value>{0} kirúgott.</value>
     <comment>Kick message</comment>
   </data>
   <data name="TopicMessage" xml:space="preserve">
-    <value>{0} has changed the topic of the channel to "{1}".</value>
+    <value>{0} megváltoztatta a csatorna témáját erre: "{1}".</value>
     <comment>Topic message</comment>
   </data>
   <data name="InMessagesLabel" xml:space="preserve">
-    <value>In messages</value>
+    <value>Üzenetekben</value>
     <comment>Notif</comment>
   </data>
   <data name="InSenderNamesLabel" xml:space="preserve">
-    <value>In sender names</value>
+    <value>Küldők között</value>
     <comment>Notif</comment>
   </data>
   <data name="InGameNamesLabel" xml:space="preserve">
-    <value>In game names</value>
+    <value>Játék nevekben</value>
     <comment>Notif</comment>
   </data>
   <data name="InHosterNamesLabel" xml:space="preserve">
-    <value>In hoster names</value>
+    <value>Hosztolók között</value>
     <comment>Notif</comment>
   </data>
   <data name="InJoinMessagesLabel" xml:space="preserve">
-    <value>In join messages</value>
+    <value>Belépés üzenetekben</value>
     <comment>Notif</comment>
   </data>
   <data name="StartNotifWithSnooper" xml:space="preserve">
-    <value>Start notificator with snooper</value>
+    <value>A figyelmeztető aktiválása induláskor</value>
     <comment>Notif</comment>
   </data>
   <data name="AwayMessageFormat" xml:space="preserve">
-    <value>is away: {0}</value>
+    <value>elfoglalt: {0}</value>
     <comment>Away message format</comment>
   </data>
   <data name="HideChannelText" xml:space="preserve">
-    <value>Hide channel</value>
+    <value>Elrejtés</value>
     <comment>Hide channel text</comment>
   </data>
   <data name="HiddenChannelsText" xml:space="preserve">
-    <value>Hidden channels</value>
+    <value>Rejtett csatornák</value>
     <comment>Hiden channels text in settings</comment>
   </data>
   <data name="UseSnooperRank" xml:space="preserve">
-    <value>Use snooper rank:</value>
+    <value>Snooper rang használata</value>
     <comment>Use snooper rank text</comment>
   </data>
   <data name="UseSnooperRankHelp" xml:space="preserve">
-    <value>This option is required for TUS login if you would like to use HostingBuddy to host games with the snooper.</value>
+    <value>Ezt az opciót engedélyezni kell, ha TUS felhasználóval lépsz be és használni szeretnéd a HostingBuddyt a snooperrel.</value>
     <comment>Use snooper rank help</comment>
   </data>
   <data name="HosterWormNatError" xml:space="preserve">
-    <value>The communication with WormNat server failed.</value>
+    <value>Nem sikerült csatlakozni a WormNat szerverhez.</value>
     <comment>Hoster - WormNat error, WormNat init error, Wormnat client error</comment>
   </data>
   <data name="HosterCreateGameFail" xml:space="preserve">
-    <value>Failed to create the game on WormNet.</value>
+    <value>Nem sikerült létrehozni a játékot a szerveren.</value>
     <comment>Hoster - Create game request failed</comment>
   </data>
   <data name="HosterNoGameIDError" xml:space="preserve">
-    <value>Failed to host a game. Probably you have hosted too many games recently. Please wait a while!</value>
+    <value>Nem sikerült létrehozni a játékot. Valószínűleg rövid időn belül túl sokat hosztoltál. Kérlek várj egy kicsit!</value>
     <comment>Hoster - No game id</comment>
   </data>
   <data name="HosterStartGameFail" xml:space="preserve">
-    <value>Failed to start Worms: Armageddon.</value>
+    <value>Nem sikerült elindítani a Worms: Armageddont.</value>
     <comment>Hoster - Failed to start the game</comment>
   </data>
   <data name="HosterUnknownFail" xml:space="preserve">
-    <value>An unexpected error happened while trying to host a game.</value>
+    <value>Valami hiba történt a játék létrehozása során.</value>
     <comment>Hoster - Unknown fail</comment>
   </data>
   <data name="NotificatorHelpLabel" xml:space="preserve">
-    <value>How to use notificator?</value>
+    <value>Hogyan használd a figyelmeztetőt?</value>
     <comment>Notificator help label</comment>
   </data>
   <data name="NotificatorHelpText" xml:space="preserve">
-    <value>Notificator can look for words in messages, sender names, hoster names, game names and join messages. By default it will look for whole words, but you can use special characters '*', '+', and '.'. '*' matches any character, '+' matches at least 1 character and '.' matches only 1 character. So if you are looking for words similar to "example" then you can search for it as "example", "*ample", "examp*", "*amp*", "e.ample", "+amp+", etc. You can add one word per line. If you would like to ignore a word from searching then delete it or write '#' before it like "#example".</value>
+    <value>A figyelmeztető szavakat tud keresni az üzenetekben, a küldők nevében, a játékok nevében és a létrehozójuk nevében, valamint az éppen belépő játékosok nevében. Alapértelmezetten teljes egyezést keres, de használhatók a '*', '+', és a '.' speciális karakterek. A '*' bármennyi karaktert, a '+' legalább 1 karaktert és a '.' pontosan 1 karatert helyettesít. Tehát ha a "példa" szóra szeretnél keresni, akkor azt az alábbi módokon teheted meg "példa", "*lda", "pél*", "*éld*", "p.lda", "+éld+", stb. Egy sorba egy szót lehet beírni. Ha egy szóra mégsem szeretnél keresni, akkor töröld a sort vagy írj az elejére egy '#' karakterd ("#példa").</value>
     <comment>Notificator help text</comment>
+  </data>
+  <data name="JoinGameText2" xml:space="preserve">
+    <value>Csatlakozás (Másodlagos WA.exe-vel)</value>
+    <comment>Join this game label when you right click on a game using alternative WA.exe</comment>
+  </data>
+  <data name="SilentJoinText2" xml:space="preserve">
+    <value>Csendes csatlakozás (Másodlagos WA.exe-vel)</value>
+    <comment>Silent join label when you right click on a game using alternative WA.exe</comment>
+  </data>
+  <data name="JoinCloseText2" xml:space="preserve">
+    <value>Csatlakozás és bezárás (Másodlagos WA.exe-vel)</value>
+    <comment>Join and close snooper label when you right click on a game using alternative WA.exe</comment>
+  </data>
+  <data name="SilentJoinCloseText2" xml:space="preserve">
+    <value>Csendes csatlakozás és bezárás (Másodlagos WA.exe-vel)</value>
+    <comment>Silent join and close snooper label when you right click on a game using alternative WA.exe</comment>
+  </data>
+  <data name="ItalicForGSUsers" xml:space="preserve">
+    <value>Dőlt betűtípus a Great Snoopert használóknak:</value>
+    <comment>Italic font style for Great Snooper users</comment>
+  </data>
+  <data name="HosterFailedToGetLocalIP" xml:space="preserve">
+    <value>Nem sikerült a lokális IP cím meghatározása. Kérlek próbálj meg a WormNat2-vel hosztolni!</value>
+    <comment>When hoster fails to get local ip address</comment>
+  </data>
+  <data name="LoadGamesText" xml:space="preserve">
+    <value>Játék lista betöltése:</value>
+    <comment>Load games</comment>
+  </data>
+  <data name="LoadTUSUsersText" xml:space="preserve">
+    <value>TUS felhasználók betöltése:</value>
+    <comment>Load TUS users</comment>
+  </data>
+  <data name="LoadCommonSettingsText" xml:space="preserve">
+    <value>Közös beállítások betöltése (szükséges a liga meccs keresőnek, a frissítőnek és a híreknek):</value>
+    <comment>Load common settings</comment>
+  </data>
+  <data name="LoadChannelSchemeText" xml:space="preserve">
+    <value>A csatorna rendszerének betöltése (szükséges a hosztoláshoz és a játék lista betöltéséhez):</value>
+    <comment>Load channel scheme</comment>
+  </data>
+  <data name="UseWhoMessagesText" xml:space="preserve">
+    <value>WHO parancsok használata (szükséges az ország, rang és információ meghatározásához):</value>
+    <comment>Use who messages</comment>
+  </data>
+  <data name="ViewClanProfileText" xml:space="preserve">
+    <value>{0} profilja</value>
+    <comment>View clan profile\n{0} will be the name of the clan</comment>
+  </data>
+  <data name="PolishTranslationText" xml:space="preserve">
+    <value>Lengyel fordítás:</value>
+    <comment>Polish translation by text in settings / About</comment>
+  </data>
+  <data name="RussianTranslationText" xml:space="preserve">
+    <value>Orosz fordítás:</value>
+    <comment>Russian translation by text in settings / About</comment>
+  </data>
+  <data name="ExportSettingsButtonContent" xml:space="preserve">
+    <value>Beállítások kimentése</value>
+    <comment>Export settings button label in General Settings</comment>
+  </data>
+  <data name="ImportSettingsButtonContent" xml:space="preserve">
+    <value>Beállítások betöltése</value>
+    <comment>Import settings button label in General Settings</comment>
+  </data>
+  <data name="ResetSettingsButtonContent" xml:space="preserve">
+    <value>Beállítások alaphelyzetbe</value>
+    <comment>Reset settings button label in General Settings</comment>
+  </data>
+  <data name="ResetSettingsConfirm" xml:space="preserve">
+    <value>Biztos alaphelyzetbe állítod a beállításokat? Minden adat el fog veszni.</value>
+    <comment>Reset settings button label in General Settings</comment>
+  </data>
+  <data name="RestartToApplyChanges" xml:space="preserve">
+    <value>Kérlek indítsd újra a Great Snooper, hogy a módosítások életbe lépjenek!</value>
+    <comment>Please restart to apply changes text</comment>
+  </data>
+  <data name="LoadGamesTUSActiveWindow" xml:space="preserve">
+    <value>Játék lista és TUS felhasználók betöltése csak akkor, ha aktív az ablak:</value>
+    <comment>Load games and TUS accounts only if window is active settings option</comment>
+  </data>
+  <data name="NetworkText" xml:space="preserve">
+    <value>Hálózat</value>
+    <comment>Network settings</comment>
   </data>
 </root>

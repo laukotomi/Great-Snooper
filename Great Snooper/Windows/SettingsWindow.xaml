@@ -11,7 +11,7 @@
         Style="{StaticResource MyDialogWindow}" Height="525" Width="800" WindowStartupLocation="CenterScreen">
     <controls:MetroWindow.Resources>
         <Style BasedOn="{StaticResource MetroTabItem}" TargetType="{x:Type TabItem}">
-            <Setter Property="controls:ControlsHelper.HeaderFontSize" Value="18" />
+            <Setter Property="controls:ControlsHelper.HeaderFontSize" Value="15" />
         </Style>
 
         <DataTemplate x:Key="boolSettingTemplate">
@@ -181,27 +181,27 @@
                                    ExportImportSettingTemplate="{StaticResource exportImportSettingsTemplate}" />
     </controls:MetroWindow.Resources>
     
-    <TabControl Grid.Row="1" Background="Transparent">
+    <TabControl Grid.Row="1" Background="Transparent" Margin="0,5,0,0">
         <TabItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=GeneralText, Mode=OneWay}">
             <ScrollViewer>
                 <ItemsControl ItemTemplateSelector="{StaticResource templateSelector}"
                               ItemsSource="{Binding Path=GeneralSettings, Mode=OneTime}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Margin="0,15" />
+                            <StackPanel Margin="0,10" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
             </ScrollViewer>
         </TabItem>
 
-        <TabItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=UserGroupsText, Mode=OneWay}">
+        <TabItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=NetworkText, Mode=OneWay}">
             <ScrollViewer>
                 <ItemsControl ItemTemplateSelector="{StaticResource templateSelector}"
-                              ItemsSource="{Binding Path=UserGroupSettings, Mode=OneTime}">
+                              ItemsSource="{Binding Path=NetworkSettings, Mode=OneTime}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Margin="0,15" />
+                            <StackPanel Margin="0,10" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
@@ -214,20 +214,33 @@
                               ItemsSource="{Binding Path=WindowSettings, Mode=OneTime}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Margin="0,15" />
+                            <StackPanel Margin="0,10" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
             </ScrollViewer>
         </TabItem>
 
+        <TabItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=UserGroupsText, Mode=OneWay}">
+            <ScrollViewer>
+                <ItemsControl ItemTemplateSelector="{StaticResource templateSelector}"
+                              ItemsSource="{Binding Path=UserGroupSettings, Mode=OneTime}">
+                    <ItemsControl.ItemsPanel>
+                        <ItemsPanelTemplate>
+                            <StackPanel Margin="0,10" />
+                        </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                </ItemsControl>
+            </ScrollViewer>
+        </TabItem>
+        
         <TabItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=NotificationsText, Mode=OneWay}">
             <ScrollViewer>
                 <ItemsControl ItemTemplateSelector="{StaticResource templateSelector}"
                               ItemsSource="{Binding Path=NotificationSettings, Mode=OneTime}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Margin="0,15" />
+                            <StackPanel Margin="0,10" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
@@ -240,7 +253,7 @@
                               ItemsSource="{Binding Path=WormsSettings, Mode=OneTime}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Margin="0,15" />
+                            <StackPanel Margin="0,10" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
@@ -253,7 +266,7 @@
                               ItemsSource="{Binding Path=MsgSettings, Mode=OneTime}">
                     <ItemsControl.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <StackPanel Margin="0,15" />
+                            <StackPanel Margin="0,10" />
                         </ItemsPanelTemplate>
                     </ItemsControl.ItemsPanel>
                 </ItemsControl>
@@ -264,7 +277,7 @@
             <ScrollViewer>
                 <StackPanel Orientation="Vertical">
                     <TextBlock Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=GeneralSoundsText, Mode=OneWay}"
-                               FontWeight="Bold" FontSize="14" Margin="20,15,0,0" />
+                               FontWeight="Bold" FontSize="14" Margin="20,10,0,0" />
 
                     <ItemsControl ItemTemplateSelector="{StaticResource templateSelector}"
                                   ItemsSource="{Binding Path=SoundSettings, Mode=OneTime}">
@@ -276,7 +289,7 @@
                     </ItemsControl>
 
                     <TextBlock Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=GroupSoundsText, Mode=OneWay}"
-                               FontWeight="Bold" FontSize="14" Margin="20,15,0,0" />
+                               FontWeight="Bold" FontSize="14" Margin="20,10,0,0" />
 
                     <ItemsControl ItemTemplateSelector="{StaticResource templateSelector}"
                                   ItemsSource="{Binding Path=GroupSoundSettings, Mode=OneTime}">
@@ -292,7 +305,7 @@
 
         <TabItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=AboutText, Mode=OneWay}">
             <ScrollViewer>
-                <StackPanel HorizontalAlignment="Center" Orientation="Vertical" Margin="0,15">
+                <StackPanel HorizontalAlignment="Center" Orientation="Vertical" Margin="0,5">
                     <StackPanel.Resources>
                         <Style TargetType="TextBlock">
                             <Setter Property="Margin" Value="0,5" />

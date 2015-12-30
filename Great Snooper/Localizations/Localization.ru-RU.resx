@@ -233,9 +233,13 @@
     <value>Подключиться</value>
     <comment>The label of the login button in the login window</comment>
   </data>
+  <data name="WAExeNotFoundText" xml:space="preserve">
+    <value>Не удалось найти исполняемый файл игры (WA.exe). Пожалуйста, укажите путь к файлу WA.exe в Настройках. Указать путь к нему сейчас?</value>
+    <comment>The text of the popup message when Great Snooper could not locate WA.exe</comment>
+  </data>
   <data name="WelcomeMessage" xml:space="preserve">
     <value>Добро пожаловать!</value>
-    <comment>The text of the popup message when Great Snooper could not locate WA.exe\nWAExeNotFoundText=Не удалось найти исполняемый файл игры (WA.exe). Пожалуйста, укажите путь к файлу WA.exe в Настройках. Указать путь к нему сейчас?\nLogin window title and the welcome message in taskbar notification when you start Great Snooper</comment>
+    <comment>Login window title and the welcome message in taskbar notification when you start Great Snooper</comment>
   </data>
   <data name="ServerMissingText" xml:space="preserve">
     <value>Пoжaлyйcтa, выберите сервер!</value>
@@ -649,7 +653,7 @@
     <value>Выключить</value>
     <comment>Awaybutton content to set back</comment>
   </data>
-  <data name="CloseTest" xml:space="preserve">
+  <data name="CloseText" xml:space="preserve">
     <value>Закрыть</value>
     <comment>The content of close button (this will be the content of every close button!)</comment>
   </data>
@@ -677,11 +681,11 @@
     <value>Пароль (необязательно):</value>
     <comment>Password label</comment>
   </data>
-  <data name="UsingWormNAT2" xml:space="preserve">
+  <data name="UsingWormNat2" xml:space="preserve">
     <value>Использовать WormNAT2?</value>
     <comment>Using WormNAT2? question</comment>
   </data>
-  <data name="AboutWormNAT2Text" xml:space="preserve">
+  <data name="AboutWormNat2Text" xml:space="preserve">
     <value>О WormNAT2: Если Вы хостите игру обычным способом (без использования сторонних программ), W:A создает сервер на Вашем компьютере и ожидает присоединения игроков на указанном порту (обычно 17011). Но большинство роутеров и брандмауэров по умолчанию не пропускают входящие соединения, таким образом, никдто не сможет присоединиться к Вашей игре. Вы должны будете разрешить перенаправление портов на Вашем роутере и/или настроить Ваш брандмауэр, если Вы его используете, чтобы игроки могли присоединиться к Вашей игре. Используя WormNAT2, Вы можете хостить игры без входящих соединений и Ваш хост будет работать должным образом. WormNAT2 использует выделенный прокси-сервер, который обрабатывает все соединения. Но в таком случае нет никакой поддержки для других прокси-серверов и будет лучше, если Вы настроете свою систему так, чтобы использовать нормальный способ хостинга игр и будете использовать WormNAT2 только если ничто иное не решает проблему. Вы можете найти руководство по хостингу игр на http://worms2d.info/Руководство_по_хостингу. Разрешения загрузки модулей WormKit не требуется, чтобы использовать способность снупера хостить игры).</value>
     <comment>The text of the popup message when About WormNAT2 is clicked</comment>
   </data>
@@ -864,14 +868,6 @@
   <data name="AwayMessageText" xml:space="preserve">
     <value>Сообщение автоответчика:</value>
     <comment>Away message label</comment>
-  </data>
-  <data name="SendBackText" xml:space="preserve">
-    <value>Отсылать сообщение о возвращении (когда автоответчик отключился/был отключен):</value>
-    <comment>Send back message option</comment>
-  </data>
-  <data name="BackMessageText" xml:space="preserve">
-    <value>Сообщение о возвращении:</value>
-    <comment>Back message label</comment>
   </data>
   <data name="DeleteLogsText" xml:space="preserve">
     <value>Удалять логи старше 30 дней при запуске:</value>
@@ -1208,5 +1204,73 @@
   <data name="SilentJoinCloseText2" xml:space="preserve">
     <value>Silent join and close snooper (Alternative WA.exe)</value>
     <comment>Silent join and close snooper label when you right click on a game using alternative WA.exe</comment>
+  </data>
+  <data name="ItalicForGSUsers" xml:space="preserve">
+    <value>Italic font style for Great Snooper users:</value>
+    <comment>Italic font style for Great Snooper users</comment>
+  </data>
+  <data name="HosterFailedToGetLocalIP" xml:space="preserve">
+    <value>Failed to get local IP address. Please try hosting using WormNat2!</value>
+    <comment>When hoster fails to get local ip address</comment>
+  </data>
+  <data name="LoadGamesText" xml:space="preserve">
+    <value>Load games:</value>
+    <comment>Load games</comment>
+  </data>
+  <data name="LoadTUSUsersText" xml:space="preserve">
+    <value>Load TUS users:</value>
+    <comment>Load TUS users</comment>
+  </data>
+  <data name="LoadCommonSettingsText" xml:space="preserve">
+    <value>Load common settings (required for league searcher, updater and news):</value>
+    <comment>Load common settings</comment>
+  </data>
+  <data name="LoadChannelSchemeText" xml:space="preserve">
+    <value>Load channel scheme (required for hosting and loading games):</value>
+    <comment>Load channel scheme</comment>
+  </data>
+  <data name="UseWhoMessagesText" xml:space="preserve">
+    <value>Use WHO requests (required for country, rank, user info):</value>
+    <comment>Use who messages</comment>
+  </data>
+  <data name="ViewClanProfileText" xml:space="preserve">
+    <value>{0}'s profile</value>
+    <comment>View clan profile\n{0} will be the name of the clan</comment>
+  </data>
+  <data name="PolishTranslationText" xml:space="preserve">
+    <value>Polish translation by:</value>
+    <comment>Polish translation by text in settings / About</comment>
+  </data>
+  <data name="RussianTranslationText" xml:space="preserve">
+    <value>Russian translation by:</value>
+    <comment>Russian translation by text in settings / About</comment>
+  </data>
+  <data name="ExportSettingsButtonContent" xml:space="preserve">
+    <value>Export settings</value>
+    <comment>Export settings button label in General Settings</comment>
+  </data>
+  <data name="ImportSettingsButtonContent" xml:space="preserve">
+    <value>Import settings</value>
+    <comment>Import settings button label in General Settings</comment>
+  </data>
+  <data name="ResetSettingsButtonContent" xml:space="preserve">
+    <value>Reset settings</value>
+    <comment>Reset settings button label in General Settings</comment>
+  </data>
+  <data name="ResetSettingsConfirm" xml:space="preserve">
+    <value>Are you sure to reset settings? All informations will be lost.</value>
+    <comment>Reset settings button label in General Settings</comment>
+  </data>
+  <data name="RestartToApplyChanges" xml:space="preserve">
+    <value>Please restart Great Snooper to apply changes!</value>
+    <comment>Please restart to apply changes text</comment>
+  </data>
+  <data name="LoadGamesTUSActiveWindow" xml:space="preserve">
+    <value>Load games and TUS accounts only if window is active:</value>
+    <comment>Load games and TUS accounts only if window is active settings option</comment>
+  </data>
+  <data name="NetworkText" xml:space="preserve">
+    <value>Network</value>
+    <comment>Network settings</comment>
   </data>
 </root>
