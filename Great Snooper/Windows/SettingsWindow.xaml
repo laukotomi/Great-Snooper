@@ -321,7 +321,6 @@
                     <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=PolishTranslationText, Mode=OneWay}" />
                     <TextBlock Text="ArtecTheFox" />
                     <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=RussianTranslationText, Mode=OneWay}" />
-                    <TextBlock Text="Slayer" />
                     <TextBlock Text="WTF-8" />
                     <TextBlock Text="XanKriegor" />
                     <TextBlock />

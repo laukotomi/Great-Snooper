@@ -705,6 +705,10 @@
     <value>Пароль может содержать символы только из английского алфавита!</value>
     <comment>The text of the popup message when game password contains bad character(s)</comment>
   </data>
+  <data name="FontChooserTitle" xml:space="preserve">
+    <value>Выбор шрифта</value>
+    <comment>Title of the font chooser window</comment>
+  </data>
   <data name="SizeLabel" xml:space="preserve">
     <value>Размер:</value>
     <comment>Size label</comment>
@@ -1062,31 +1066,31 @@
     <comment>The text of the popup message when user types /gs in channel textbox to get how many people are using Great Snooper\n{0} will be the count of the Great Snooper users\n{1} will be a comma separated list from the Great Snooper users</comment>
   </data>
   <data name="LanguageChangedText" xml:space="preserve">
-    <value>Please restart Great Snooper to apply new language settings everywhere!</value>
+    <value>Пожалуйста, перезапустите Great Snooper чтобы новые настройки вступили в силу.</value>
     <comment>Notification message that the language data be updated after restart</comment>
   </data>
   <data name="PartMessage2" xml:space="preserve">
-    <value>has left the channel ({0}).</value>
+    <value>покинул канал ({0}).</value>
     <comment>When a user lefts a channel (the message will begin with the name of the user) with message\n{0} will be the message</comment>
   </data>
   <data name="NewsWindowTitle" xml:space="preserve">
-    <value>News</value>
+    <value>Новости</value>
     <comment>Title of the news window</comment>
   </data>
   <data name="VolumeTooltip" xml:space="preserve">
-    <value>Volume</value>
+    <value>Громкость</value>
     <comment>Tooltip text when you move the mouse over the icon of volume slider</comment>
   </data>
   <data name="StartWAExeTooltip1" xml:space="preserve">
-    <value>Run WA.exe</value>
+    <value>Запустить WA.exe</value>
     <comment>Run WA.exe tooltip</comment>
   </data>
   <data name="StartWAExeTooltip2" xml:space="preserve">
-    <value>Run alternative WA.exe</value>
+    <value>Запустить альтернативный WA.exe</value>
     <comment>Run alternative WA.exe tooltip</comment>
   </data>
   <data name="AutoJoinText" xml:space="preserve">
-    <value>Auto join this channel</value>
+    <value>Автоматический вход на этот канал</value>
     <comment>Auto join text</comment>
   </data>
   <data name="AwayManagerTooltipAway" xml:space="preserve">
@@ -1094,11 +1098,11 @@
     <comment>Away message to display when you are away and you move your mouse over the away manager button\n{0} will be the away message</comment>
   </data>
   <data name="NoLeaguesSelectedError" xml:space="preserve">
-    <value>Please select the league(s) you are looking for!</value>
+    <value>Пожалуйста, выберите лигу, которую хотите искать.</value>
     <comment>When no leagues were selected</comment>
   </data>
   <data name="GeneralSoundsText" xml:space="preserve">
-    <value>General sounds</value>
+    <value>Общие</value>
     <comment>General sounds label in the sound settings</comment>
   </data>
   <data name="WAExeText" xml:space="preserve">
@@ -1106,171 +1110,171 @@
     <comment>WA.exe label</comment>
   </data>
   <data name="WAExeText2" xml:space="preserve">
-    <value>Alternative WA.exe:</value>
+    <value>Альтернативный WA.exe:</value>
     <comment>Alternative WA.exe label</comment>
   </data>
   <data name="KickMessage" xml:space="preserve">
-    <value>Kicked by {0}</value>
+    <value>{0} удалил вас из игры</value>
     <comment>Kick message</comment>
   </data>
   <data name="TopicMessage" xml:space="preserve">
-    <value>{0} has changed the topic of the channel to "{1}".</value>
+    <value>{0} изменил тему канала на "{1}".</value>
     <comment>Topic message</comment>
   </data>
   <data name="InMessagesLabel" xml:space="preserve">
-    <value>In messages</value>
+    <value>В сообщениях</value>
     <comment>Notif</comment>
   </data>
   <data name="InSenderNamesLabel" xml:space="preserve">
-    <value>In sender names</value>
+    <value>В именах отправителей</value>
     <comment>Notif</comment>
   </data>
   <data name="InGameNamesLabel" xml:space="preserve">
-    <value>In game names</value>
+    <value>В названиях игр</value>
     <comment>Notif</comment>
   </data>
   <data name="InHosterNamesLabel" xml:space="preserve">
-    <value>In hoster names</value>
+    <value>В именах хостеров</value>
     <comment>Notif</comment>
   </data>
   <data name="InJoinMessagesLabel" xml:space="preserve">
-    <value>In join messages</value>
-    <comment>Notif</comment>
+    <value>В сообщениях о заходе на канал</value>
+    <comment>Notif.</comment>
   </data>
   <data name="StartNotifWithSnooper" xml:space="preserve">
-    <value>Start notificator with snooper</value>
+    <value>Запускать уведомитель одновременно со снупером</value>
     <comment>Notif</comment>
   </data>
   <data name="AwayMessageFormat" xml:space="preserve">
-    <value>is away: {0}</value>
+    <value>Отсутствует: {0}</value>
     <comment>Away message format</comment>
   </data>
   <data name="HideChannelText" xml:space="preserve">
-    <value>Hide channel</value>
+    <value>Скрыть канал</value>
     <comment>Hide channel text</comment>
   </data>
   <data name="HiddenChannelsText" xml:space="preserve">
-    <value>Hidden channels</value>
+    <value>Скрытые каналы</value>
     <comment>Hiden channels text in settings</comment>
   </data>
   <data name="UseSnooperRank" xml:space="preserve">
-    <value>Use snooper rank:</value>
+    <value>Использовать ранг "снупер":</value>
     <comment>Use snooper rank text</comment>
   </data>
   <data name="UseSnooperRankHelp" xml:space="preserve">
-    <value>This option is required for TUS login if you would like to use HostingBuddy to host games with the snooper.</value>
+    <value>Эта опция необходима для TUS-входа, если вы хотите использовать HostingBuddy, чтобы хостить игры снупером.</value>
     <comment>Use snooper rank help</comment>
   </data>
   <data name="HosterWormNatError" xml:space="preserve">
-    <value>The communication with WormNat server failed.</value>
+    <value>Ошибка связи с сервером WormNat.</value>
     <comment>Hoster - WormNat error, WormNat init error, Wormnat client error</comment>
   </data>
   <data name="HosterCreateGameFail" xml:space="preserve">
-    <value>Failed to create the game on WormNet.</value>
+    <value>Не удалось создать игру на WormNet.</value>
     <comment>Hoster - Create game request failed</comment>
   </data>
   <data name="HosterNoGameIDError" xml:space="preserve">
-    <value>Failed to host a game. Probably you have hosted too many games recently. Please wait a while!</value>
+    <value>Не удалось захостить игру. Возможно, вы захостили слишком много игр недавно. Подождите, пожалуйста!</value>
     <comment>Hoster - No game id</comment>
   </data>
   <data name="HosterStartGameFail" xml:space="preserve">
-    <value>Failed to start Worms: Armageddon.</value>
+    <value>Не удалось  запустить W:A.</value>
     <comment>Hoster - Failed to start the game</comment>
   </data>
   <data name="HosterUnknownFail" xml:space="preserve">
-    <value>An unexpected error happened while trying to host a game.</value>
+    <value>Произошла неожиданная ошибка во время хостинга игры.</value>
     <comment>Hoster - Unknown fail</comment>
   </data>
   <data name="NotificatorHelpLabel" xml:space="preserve">
-    <value>How to use notificator?</value>
+    <value>Как использовать Уведомитель?</value>
     <comment>Notificator help label</comment>
   </data>
   <data name="NotificatorHelpText" xml:space="preserve">
-    <value>Notificator can look for words in messages, sender names, hoster names, game names and join messages. By default it will look for whole words, but you can use special characters '*', '+', and '.'. '*' matches any character, '+' matches at least 1 character and '.' matches only 1 character. So if you are looking for words similar to "example" then you can search for it as "example", "*ample", "examp*", "*amp*", "e.ample", "+amp+", etc. You can add one word per line. If you would like to ignore a word from searching then delete it or write '#' before it like "#example".</value>
+    <value>Уведомитель ищет слова в сообщениях, именах их отправителей, именах хостеров, названиях игр и сообщениях о входе. По умолчанию он будет искать целые слова, но вы можете использовать специальные символы '*', '+' и '.'. Символ '*' соответствует любому символу, '+' соответствует, по крайней мере, одному символу, а '.' соответствует только одному символу. Так, если вы ищете слова схожие с "example", то вы можете искать их, как "example", "*ample", "examp*", "*amp*", "e.ample", "+amp+" и т.д. Если вы хотите исключить слово из поиска, то удалите его или напишите '#' перед ним, то есть "#example".</value>
     <comment>Notificator help text</comment>
   </data>
   <data name="JoinGameText2" xml:space="preserve">
-    <value>Join this game (Alternative WA.exe)</value>
-    <comment>Join this game label when you right click on a game using alternative WA.exe</comment>
+    <value>Войти в эту игру (Альтернативный WA.exe)</value>
+    <comment>Метка присоединения к игре, когда вы кликаете правой кнопкой на игре используя альтернативный WA.exe</comment>
   </data>
   <data name="SilentJoinText2" xml:space="preserve">
-    <value>Silent join (Alternative WA.exe)</value>
+    <value>Тихий вход (Альтернативный WA.exe)</value>
     <comment>Silent join label when you right click on a game using alternative WA.exe</comment>
   </data>
   <data name="JoinCloseText2" xml:space="preserve">
-    <value>Join and close snooper (Alternative WA.exe)</value>
+    <value>Вход и закрыть снупер (Альтернативный WA.exe)</value>
     <comment>Join and close snooper label when you right click on a game using alternative WA.exe</comment>
   </data>
   <data name="SilentJoinCloseText2" xml:space="preserve">
-    <value>Silent join and close snooper (Alternative WA.exe)</value>
+    <value>Тихий вход и закрытие снупера (Альтернативный WA.exe)</value>
     <comment>Silent join and close snooper label when you right click on a game using alternative WA.exe</comment>
   </data>
   <data name="ItalicForGSUsers" xml:space="preserve">
-    <value>Italic font style for Great Snooper users:</value>
+    <value>Курсивный шрифт для пользователей Great Snooper:</value>
     <comment>Italic font style for Great Snooper users</comment>
   </data>
   <data name="HosterFailedToGetLocalIP" xml:space="preserve">
-    <value>Failed to get local IP address. Please try hosting using WormNat2!</value>
-    <comment>When hoster fails to get local ip address</comment>
+    <value>Не удалось получить локальный IP адрес. Пожалуйста, попробуйте хостить, используя WormNat2!</value>
+    <comment>Когда хостеру не удаётся получить локальный ip адрес</comment>
   </data>
   <data name="LoadGamesText" xml:space="preserve">
-    <value>Load games:</value>
+    <value>Загружать игры</value>
     <comment>Load games</comment>
   </data>
   <data name="LoadTUSUsersText" xml:space="preserve">
-    <value>Load TUS users:</value>
+    <value>Загружать пользователей TUS</value>
     <comment>Load TUS users</comment>
   </data>
   <data name="LoadCommonSettingsText" xml:space="preserve">
-    <value>Load common settings (required for league searcher, updater and news):</value>
+    <value>Загружать общие настройки (необходимо для поискоа игр, обновлений и новостей)</value>
     <comment>Load common settings</comment>
   </data>
   <data name="LoadChannelSchemeText" xml:space="preserve">
-    <value>Load channel scheme (required for hosting and loading games):</value>
-    <comment>Load channel scheme</comment>
+    <value>Загрузить схему канала (необходимо для хостинга и загрузки игр):</value>
+    <comment>Загрузить схему канала</comment>
   </data>
   <data name="UseWhoMessagesText" xml:space="preserve">
-    <value>Use WHO requests (required for country, rank, user info):</value>
+    <value>Использовать WHO-сообщение (необходимо для получения информации о странах, рангах, инфо о пользователях)</value>
     <comment>Use who messages</comment>
   </data>
   <data name="ViewClanProfileText" xml:space="preserve">
-    <value>{0}'s profile</value>
+    <value>Профиль {0}</value>
     <comment>View clan profile\n{0} will be the name of the clan</comment>
   </data>
   <data name="PolishTranslationText" xml:space="preserve">
-    <value>Polish translation by:</value>
+    <value>Польский перевод:</value>
     <comment>Polish translation by text in settings / About</comment>
   </data>
   <data name="RussianTranslationText" xml:space="preserve">
-    <value>Russian translation by:</value>
+    <value>Русский перевод:</value>
     <comment>Russian translation by text in settings / About</comment>
   </data>
   <data name="ExportSettingsButtonContent" xml:space="preserve">
-    <value>Export settings</value>
+    <value>Экспорт настроек</value>
     <comment>Export settings button label in General Settings</comment>
   </data>
   <data name="ImportSettingsButtonContent" xml:space="preserve">
-    <value>Import settings</value>
+    <value>Импорт настроек</value>
     <comment>Import settings button label in General Settings</comment>
   </data>
   <data name="ResetSettingsButtonContent" xml:space="preserve">
-    <value>Reset settings</value>
+    <value>Сброс настроек</value>
     <comment>Reset settings button label in General Settings</comment>
   </data>
   <data name="ResetSettingsConfirm" xml:space="preserve">
-    <value>Are you sure to reset settings? All informations will be lost.</value>
-    <comment>Reset settings button label in General Settings</comment>
+    <value>Уверены, что хотите сбросить настройки? Вся информация будет утеряна.</value>
+    <comment>Метка кнопки сброса настроек в Гланых настройках</comment>
   </data>
   <data name="RestartToApplyChanges" xml:space="preserve">
-    <value>Please restart Great Snooper to apply changes!</value>
+    <value>Пожалуйста, перезапустите снупер, чтобы изменения вступили в силу!</value>
     <comment>Please restart to apply changes text</comment>
   </data>
   <data name="LoadGamesTUSActiveWindow" xml:space="preserve">
-    <value>Load games and TUS accounts only if window is active:</value>
+    <value>Загрузка игр и TUS аккаунтов, только если окно активно:</value>
     <comment>Load games and TUS accounts only if window is active settings option</comment>
   </data>
   <data name="NetworkText" xml:space="preserve">
-    <value>Network</value>
+    <value>Сетевые настройки</value>
     <comment>Network settings</comment>
   </data>
 </root>

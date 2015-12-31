@@ -529,7 +529,8 @@ GamePassBadText=Пароль может содержать символы тол
 &&&&&&&&&&&&&&&&
 & Font chooser &
 &&&&&&&&&&&&&&&&
-
+# Title of the font chooser window
+FontChooserTitle=Выбор шрифта
 
 # Size label
 SizeLabel=Размер:
@@ -816,12 +817,9 @@ Other3GroupText=Другая 3
 Other4GroupText=Другая 4
 
 
-
 &&&&&&&&&&
 & Others &
 &&&&&&&&&&
-
-
 # The title of the popup message when user types /gs in channel textbox to get how many people are using Great Snooper
 GSCheckTitle=Пользователи Great Snooper
 
@@ -835,163 +833,163 @@ GSCheckText={0} игроков используют Great Snooper: {1}
 & NEW &
 &&&&&&&
 # Notification message that the language data be updated after restart
-LanguageChangedText=Please restart Great Snooper to apply new language settings everywhere!
+LanguageChangedText=Пожалуйста, перезапустите Great Snooper чтобы новые настройки вступили в силу.
 
 # When a user lefts a channel (the message will begin with the name of the user) with message
 # {0} will be the message
-PartMessage2=has left the channel ({0}).
+PartMessage2=покинул канал ({0}).
 
 # Title of the news window
-NewsWindowTitle=News
+NewsWindowTitle=Новости
 
 # Tooltip text when you move the mouse over the icon of volume slider
-VolumeTooltip=Volume
+VolumeTooltip=Громкость
 
 # Run WA.exe tooltip
-StartWAExeTooltip1=Run WA.exe
+StartWAExeTooltip1=Запустить WA.exe
 
 #Run alternative WA.exe tooltip
-StartWAExeTooltip2=Run alternative WA.exe
+StartWAExeTooltip2=Запустить альтернативный WA.exe 
 
 # Auto join text
-AutoJoinText=Auto join this channel
+AutoJoinText=Автоматический вход на этот канал
 
 # Away message to display when you are away and you move your mouse over the away manager button
 # {0} will be the away message
 AwayManagerTooltipAway=Сообщение автоответчика: {0}
 
 # When no leagues were selected
-NoLeaguesSelectedError=Please select the league(s) you are looking for!
+NoLeaguesSelectedError=Пожалуйста, выберите лигу, которую хотите искать.
 
 # General sounds label in the sound settings
-GeneralSoundsText=General sounds
+GeneralSoundsText=Общие
 
 # WA.exe label
 WAExeText=WA.exe:
 
 # Alternative WA.exe label
-WAExeText2=Alternative WA.exe:
+WAExeText2=Альтернативный WA.exe:
 
 # Kick message
-KickMessage=Kicked by {0}
+KickMessage={0} удалил вас из игры
 
 # Topic message
-TopicMessage={0} has changed the topic of the channel to "{1}".
+TopicMessage={0} изменил тему канала на "{1}".
 
 # Notif
-InMessagesLabel=In messages
+InMessagesLabel=В сообщениях
 
 # Notif
-InSenderNamesLabel=In sender names
+InSenderNamesLabel=В именах отправителей
 
 # Notif
-InGameNamesLabel=In game names
+InGameNamesLabel=В названиях игр
 
 # Notif
-InHosterNamesLabel=In hoster names
+InHosterNamesLabel=В именах хостеров
+
+# Notif.
+InJoinMessagesLabel=В сообщениях о заходе на канал
 
 # Notif
-InJoinMessagesLabel=In join messages
+StartNotifWithSnooper=Запускать уведомитель одновременно со снупером
 
-# Notif
-StartNotifWithSnooper=Start notificator with snooper
+# Away message format      
+AwayMessageFormat=Отсутствует: {0}
 
-# Away message format
-AwayMessageFormat=is away: {0}
+# Hide channel text         
+HideChannelText=Скрыть канал
 
-# Hide channel text
-HideChannelText=Hide channel
+# Hiden channels text in settings       
+HiddenChannelsText=Скрытые каналы
 
-# Hiden channels text in settings
-HiddenChannelsText=Hidden channels
-
-# Use snooper rank text
-UseSnooperRank=Use snooper rank:
+# Use snooper rank text         
+UseSnooperRank=Использовать ранг "снупер":
 
 # Use snooper rank help
-UseSnooperRankHelp=This option is required for TUS login if you would like to use HostingBuddy to host games with the snooper.
+UseSnooperRankHelp=Эта опция необходима для TUS-входа, если вы хотите использовать HostingBuddy, чтобы хостить игры снупером.
 
 # Hoster - WormNat error, WormNat init error, Wormnat client error
-HosterWormNatError=The communication with WormNat server failed.
+HosterWormNatError=Ошибка связи с сервером WormNat.
 
 # Hoster - Create game request failed
-HosterCreateGameFail=Failed to create the game on WormNet.
+HosterCreateGameFail=Не удалось создать игру на WormNet.
 
 # Hoster - No game id
-HosterNoGameIDError=Failed to host a game. Probably you have hosted too many games recently. Please wait a while!
+HosterNoGameIDError=Не удалось захостить игру. Возможно, вы захостили слишком много игр недавно. Подождите, пожалуйста!
 
 # Hoster - Failed to start the game
-HosterStartGameFail=Failed to start Worms: Armageddon.
+HosterStartGameFail=Не удалось  запустить W:A.
 
 # Hoster - Unknown fail
-HosterUnknownFail=An unexpected error happened while trying to host a game.
+HosterUnknownFail=Произошла неожиданная ошибка во время хостинга игры.
 
 # Notificator help label
-NotificatorHelpLabel=How to use notificator?
+NotificatorHelpLabel=Как использовать Уведомитель?
 
 # Notificator help text
-NotificatorHelpText=Notificator can look for words in messages, sender names, hoster names, game names and join messages. By default it will look for whole words, but you can use special characters '*', '+', and '.'. '*' matches any character, '+' matches at least 1 character and '.' matches only 1 character. So if you are looking for words similar to "example" then you can search for it as "example", "*ample", "examp*", "*amp*", "e.ample", "+amp+", etc. You can add one word per line. If you would like to ignore a word from searching then delete it or write '#' before it like "#example".
+NotificatorHelpText=Уведомитель ищет слова в сообщениях, именах их отправителей, именах хостеров, названиях игр и сообщениях о входе. По умолчанию он будет искать целые слова, но вы можете использовать специальные символы '*', '+' и '.'. Символ '*' соответствует любому символу, '+' соответствует, по крайней мере, одному символу, а '.' соответствует только одному символу. Так, если вы ищете слова схожие с "example", то вы можете искать их, как "example", "*ample", "examp*", "*amp*", "e.ample", "+amp+" и т.д. Если вы хотите исключить слово из поиска, то удалите его или напишите '#' перед ним, то есть "#example".
 
-# Join this game label when you right click on a game using alternative WA.exe
-JoinGameText2=Join this game (Alternative WA.exe)
+#Метка присоединения к игре, когда вы кликаете правой кнопкой на игре используя альтернативный WA.exe
+JoinGameText2=Войти в эту игру (Альтернативный WA.exe)
 
 # Silent join label when you right click on a game using alternative WA.exe
-SilentJoinText2=Silent join (Alternative WA.exe)
+SilentJoinText2=Тихий вход (Альтернативный WA.exe)
 
 # Join and close snooper label when you right click on a game using alternative WA.exe
-JoinCloseText2=Join and close snooper (Alternative WA.exe)
+JoinCloseText2=Вход и закрыть снупер (Альтернативный WA.exe)
 
 # Silent join and close snooper label when you right click on a game using alternative WA.exe
-SilentJoinCloseText2=Silent join and close snooper (Alternative WA.exe)
+SilentJoinCloseText2=Тихий вход и закрытие снупера (Альтернативный WA.exe)
 
 #Italic font style for Great Snooper users
-ItalicForGSUsers=Italic font style for Great Snooper users:
+ItalicForGSUsers=Курсивный шрифт для пользователей Great Snooper:
 
-# When hoster fails to get local ip address
-HosterFailedToGetLocalIP=Failed to get local IP address. Please try hosting using WormNat2!
+#Когда хостеру не удаётся получить локальный ip адрес
+HosterFailedToGetLocalIP=Не удалось получить локальный IP адрес. Пожалуйста, попробуйте хостить, используя WormNat2!
 
 # Load games
-LoadGamesText=Load games:
+LoadGamesText=Загружать игры
 
 # Load TUS users
-LoadTUSUsersText=Load TUS users:
+LoadTUSUsersText=Загружать пользователей TUS
 
 #Load common settings
-LoadCommonSettingsText=Load common settings (required for league searcher, updater and news):
+LoadCommonSettingsText=Загружать общие настройки (необходимо для поискоа игр, обновлений и новостей)
 
-# Load channel scheme
-LoadChannelSchemeText=Load channel scheme (required for hosting and loading games):
+#Загрузить схему канала
+LoadChannelSchemeText=Загрузить схему канала (необходимо для хостинга и загрузки игр):
 
 # Use who messages
-UseWhoMessagesText=Use WHO requests (required for country, rank, user info):
+UseWhoMessagesText=Использовать WHO-сообщение (необходимо для получения информации о странах, рангах, инфо о пользователях)
 
 # View clan profile
-# {0} will be the name of the clan
-ViewClanProfileText={0}'s profile
+# {0} will be the name of the clan    
+ViewClanProfileText=Профиль {0}
 
 # Polish translation by text in settings / About
-PolishTranslationText=Polish translation by:
+PolishTranslationText=Польский перевод:
 
 # Russian translation by text in settings / About
-RussianTranslationText=Russian translation by:
+RussianTranslationText=Русский перевод:
 
 # Export settings button label in General Settings
-ExportSettingsButtonContent=Export settings
+ExportSettingsButtonContent=Экспорт настроек
 
 # Import settings button label in General Settings
-ImportSettingsButtonContent=Import settings
+ImportSettingsButtonContent=Импорт настроек
 
 # Reset settings button label in General Settings
-ResetSettingsButtonContent=Reset settings
+ResetSettingsButtonContent=Сброс настроек
 
-# Reset settings button label in General Settings
-ResetSettingsConfirm=Are you sure to reset settings? All informations will be lost.
+# Метка кнопки сброса настроек в Гланых настройках
+ResetSettingsConfirm=Уверены, что хотите сбросить настройки? Вся информация будет утеряна.
 
 # Please restart to apply changes text
-RestartToApplyChanges=Please restart Great Snooper to apply changes!
+RestartToApplyChanges=Пожалуйста, перезапустите снупер, чтобы изменения вступили в силу!
 
 # Load games and TUS accounts only if window is active settings option
-LoadGamesTUSActiveWindow=Load games and TUS accounts only if window is active:
+LoadGamesTUSActiveWindow=Загрузка игр и TUS аккаунтов, только если окно активно:
 
 # Network settings
-NetworkText=Network
+NetworkText=Сетевые настройки

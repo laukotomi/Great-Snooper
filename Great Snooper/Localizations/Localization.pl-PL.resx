@@ -1270,11 +1270,11 @@
     <comment>Please restart to apply changes text</comment>
   </data>
   <data name="LoadGamesTUSActiveWindow" xml:space="preserve">
-    <value>Load games and TUS accounts only if window is active:</value>
+    <value>Wczytuj gry i konta TUS tylko, gdy okno jest aktywne:</value>
     <comment>Load games and TUS accounts only if window is active settings option</comment>
   </data>
   <data name="NetworkText" xml:space="preserve">
-    <value>Network</value>
+    <value>Sieć</value>
     <comment>Network settings</comment>
   </data>
 </root>

@@ -965,7 +965,7 @@ ResetSettingsConfirm=Czy jesteś pewien, aby zresetować ustawienia? Wszystkie i
 RestartToApplyChanges=Proszę ponownie uruchomić program Great Snooper, aby zastosować zmiany!
 
 # Load games and TUS accounts only if window is active settings option
-LoadGamesTUSActiveWindow=Load games and TUS accounts only if window is active:
+LoadGamesTUSActiveWindow=Wczytuj gry i konta TUS tylko, gdy okno jest aktywne:
 
 # Network settings
-NetworkText=Network
+NetworkText=Sieć
