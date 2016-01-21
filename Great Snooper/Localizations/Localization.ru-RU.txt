@@ -594,7 +594,7 @@ EnterTextText=Введите текст здесь...
 ListEditorInfoTitle=Помощь
 
 # The text of the popup message when you click ? in the top right corner in the list editor
-ListEditorInfoText=Чтобы добавить элемент в список, введите текст в поле ввода и нажмите Enter. Чтобы удалить элемент из списка, щёлкните правой кнопкой мыши по элементу и выберите пункт "Удалить").
+ListEditorInfoText=Чтобы добавить элемент в список, введите текст в поле ввода и нажмите Enter. Чтобы удалить элемент из списка, щёлкните правой кнопкой мыши по элементу и выберите пункт "Удалить".
 
 
 

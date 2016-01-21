@@ -123,7 +123,7 @@ namespace GreatSnooper.ViewModel
                 {
                     _filterText = value;
                     filterTimer.Stop();
-                    if (_filterText.Length > 1 && _filterText != Localizations.GSLocalization.Instance.FilterText)
+                    if (_filterText.Trim().Length > 0 && _filterText != Localizations.GSLocalization.Instance.FilterText)
                         filterTimer.Start();
                     else
                         this.SelectedGLChannel.UserListDG.SetUserListDGView();
@@ -907,7 +907,10 @@ namespace GreatSnooper.ViewModel
                 }
 
                 if (Channels.Count == 1)
+                {
                     this.SelectedChannelIndex = 0;
+                    RaisePropertyChanged("SelectedChannelIndex");
+                }
             }
             else
             {
@@ -997,6 +1000,7 @@ namespace GreatSnooper.ViewModel
             }
             else
             {
+                chvm.Log(chvm.Messages.Count, true);
                 chvm.ClearUsers();
                 chvm.Server.Channels.Remove(chvm.Name);
             }
@@ -1235,7 +1239,7 @@ namespace GreatSnooper.ViewModel
             for (int i = 0; i < filtersTemp.Length; i++)
             {
                 string temp = filtersTemp[i].Trim();
-                if (temp.Length >= 2)
+                if (temp.Length >= 1)
                     words.Add(temp);
             }
 
@@ -1254,7 +1258,13 @@ namespace GreatSnooper.ViewModel
 
                         foreach (string word in words)
                         {
-                            if (
+                            if (word.Length == 1)
+                            {
+                                if (u.Name.StartsWith(word, StringComparison.OrdinalIgnoreCase)
+                                    || u.TusAccount != null && u.TusAccount.TusNick.StartsWith(word, StringComparison.OrdinalIgnoreCase))
+                                    return true;
+                            }
+                            else if (
                                 u.Name.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1
                                 || u.Clan.StartsWith(word, StringComparison.OrdinalIgnoreCase)
                                 || u.TusAccount != null && (
@@ -2070,6 +2080,14 @@ namespace GreatSnooper.ViewModel
         {
             this.AwayText = (awayText != null && awayText.Length > 0) ? awayText : Properties.Settings.Default.AwayText;
             this.IsAway = true;
+            foreach (var server in servers)
+            {
+                foreach (var chvm in server.Channels)
+                {
+                    if (chvm.Value is PMChannelViewModel)
+                        ((PMChannelViewModel)chvm.Value).AwayMsgSent = false;
+                }
+            }
         }
 
         public void SetBack()

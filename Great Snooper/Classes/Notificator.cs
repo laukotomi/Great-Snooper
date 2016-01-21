@@ -214,7 +214,7 @@ namespace GreatSnooper.Classes
             for (int i = 0; i < words.Count; i++)
                 words[i] = GetRegexStr(words[i]);
 
-            return new Regex(@"\b(" + string.Join("|", words) + @")\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            return new Regex(@"(" + string.Join("|", words) + @")", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         }
 
         #region Dispose

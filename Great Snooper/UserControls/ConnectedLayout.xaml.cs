@@ -10,5 +10,12 @@ namespace GreatSnooper.UserControls
             this.DataContext = chvm;
             InitializeComponent();
         }
+
+        private void TextBox_PreviewKeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        {
+            ((AbstractChannelViewModel)this.DataContext).MsgPreviewKeyDownCommand.Execute(e);
+            if (e.Handled)
+                ((TextBox)sender).SelectAll();
+        }
     }
 }

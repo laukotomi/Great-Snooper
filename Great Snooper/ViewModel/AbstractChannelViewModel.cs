@@ -26,7 +26,9 @@ namespace GreatSnooper.ViewModel
     {
         #region Static
         private static Regex dateRegex = new Regex(@"[^0-9]");
-        protected static Regex urlRegex = new Regex(@"\b(http|ftp)s?://\S+\b/?", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private static Regex leftSideRegex = new Regex(@"\b\w", RegexOptions.Compiled);
+        private static Regex rightSideRegex = new Regex(@"\w\b", RegexOptions.Compiled);
+        protected static Regex urlRegex = new Regex(@"(http|ftp)s?://\S+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         #endregion
 
         #region Members
@@ -440,9 +442,12 @@ namespace GreatSnooper.ViewModel
                 for (int i = 0; i < matches.Count; i++)
                 {
                     var groups = matches[i].Groups;
-                    Uri uri;
-                    if (Uri.TryCreate(groups[0].Value, UriKind.RelativeOrAbsolute, out uri))
-                        msg.AddHighlightWord(groups[0].Index, groups[0].Length, Message.HightLightTypes.URI);
+                    if (CheckSides(groups[0], msg.Text))
+                    {
+                        Uri uri;
+                        if (Uri.TryCreate(groups[0].Value, UriKind.RelativeOrAbsolute, out uri))
+                            msg.AddHighlightWord(groups[0].Index, groups[0].Length, Message.HightLightTypes.URI);
+                    }
                 }
             }
 
@@ -700,20 +705,27 @@ namespace GreatSnooper.ViewModel
 
         public void LoadNewMessages()
         {
-            for (int i = 0; i < this.NewMessagesCount; i++)
+            try
             {
-                if (this.lastMessageLoaded == null)
-                    this.lastMessageLoaded = this.Messages.First;
-                else
-                    this.lastMessageLoaded = this.lastMessageLoaded.Next;
-                
-                var msg = lastMessageLoaded.Value;
-                if (!msg.Sender.IsBanned || Properties.Settings.Default.ShowBannedMessages)
-                    AddMessageToUI(msg);
-                if (this.lastMessageLoaded.Next == null)
-                    break;
-            }
+                for (int i = 0; i < this.NewMessagesCount; i++)
+                {
+                    if (this.lastMessageLoaded == null || lastMessageLoaded.Previous == null && lastMessageLoaded.Next == null) // or is removed
+                        this.lastMessageLoaded = this.Messages.First;
+                    else
+                        this.lastMessageLoaded = this.lastMessageLoaded.Next;
+                    
+                    if (this.lastMessageLoaded == null)
+                        break;
 
+                    var msg = lastMessageLoaded.Value;
+                    if (!msg.Sender.IsBanned || Properties.Settings.Default.ShowBannedMessages)
+                        AddMessageToUI(msg);
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+            }
             this.NewMessagesCount = 0;
         }
 
@@ -777,6 +789,17 @@ namespace GreatSnooper.ViewModel
                     ((PMChannelViewModel)this).GenerateHeader();
             }
         }
+
+        protected bool CheckSides(Group group, string text)
+        {
+            if (group.Index > 0 && !leftSideRegex.IsMatch(text[group.Index - 1] + "a"))
+                return false;
+            if (group.Index + group.Length < text.Length && !rightSideRegex.IsMatch("a" + text[group.Index + group.Length]))
+                return false;
+
+            return true;
+        }
+
 
         #region Instant colors
         private void InstantColorMenu(object sender, MouseButtonEventArgs e)

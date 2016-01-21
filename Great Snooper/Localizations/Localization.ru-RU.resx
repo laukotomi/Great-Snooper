@@ -774,7 +774,7 @@
     <comment>The title of the popup message when you click ? in the top right corner in the list editor</comment>
   </data>
   <data name="ListEditorInfoText" xml:space="preserve">
-    <value>Чтобы добавить элемент в список, введите текст в поле ввода и нажмите Enter. Чтобы удалить элемент из списка, щёлкните правой кнопкой мыши по элементу и выберите пункт "Удалить").</value>
+    <value>Чтобы добавить элемент в список, введите текст в поле ввода и нажмите Enter. Чтобы удалить элемент из списка, щёлкните правой кнопкой мыши по элементу и выберите пункт "Удалить".</value>
     <comment>The text of the popup message when you click ? in the top right corner in the list editor</comment>
   </data>
   <data name="SettingsTitle" xml:space="preserve">

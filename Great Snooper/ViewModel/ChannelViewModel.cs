@@ -314,13 +314,13 @@ namespace GreatSnooper.ViewModel
             var sb = new StringBuilder();
 
             // URLs
-            sb.Append(@"(\b(http|ftp)s?://\S+\b/?)");
+            sb.Append(@"((http|ftp)s?://\S+)");
 
             if (Properties.Settings.Default.HBeepEnabled)
             {
                 isHighlightInRegex = true;
                 helper.Add(this.Server.User.Name);
-                sb.Append(@"|(\b" + Regex.Escape(this.Server.User.Name) + @"\b)");
+                sb.Append(@"|(" + Regex.Escape(this.Server.User.Name) + @")");
             }
             else
                 isHighlightInRegex = false;
@@ -328,7 +328,7 @@ namespace GreatSnooper.ViewModel
             if (leagueSearcher.ChannelToSearch == this)
             {
                 isLeagueSearcherInRegex = true;
-                sb.Append(@"|(\b");
+                sb.Append(@"|(");
                 bool first = true;
                 foreach (string word in leagueSearcher.SearchData.Keys)
                 {
@@ -343,7 +343,7 @@ namespace GreatSnooper.ViewModel
                         first = false;
                     }
                 }
-                sb.Append(@"\b)");
+                sb.Append(@")");
             }
             else
                 isLeagueSearcherInRegex = false;
@@ -379,13 +379,13 @@ namespace GreatSnooper.ViewModel
                 for (int i = 0; i < matches.Count; i++)
                 {
                     var groups = matches[i].Groups;
-                    if (groups[1].Length > 0)
+                    if (groups[1].Length > 0 && CheckSides(groups[1], msg.Text))
                     {
                         Uri uri;
                         if (Uri.TryCreate(groups[1].Value, UriKind.RelativeOrAbsolute, out uri))
                             msg.AddHighlightWord(groups[1].Index, groups[1].Length, Message.HightLightTypes.URI);
                     }
-                    else if (isHighlightInRegex && groups[hIdx].Value.Length > 0)
+                    else if (isHighlightInRegex && groups[hIdx].Value.Length > 0 && CheckSides(groups[hIdx], msg.Text))
                     {
                         if (groups[hIdx].Value == this.Server.User.Name) // Check case sensitive
                         {
@@ -398,7 +398,7 @@ namespace GreatSnooper.ViewModel
                                 Sounds.PlaySoundByName("HBeep");
                         }
                     }
-                    else if (isLeagueSearcherInRegex && groups[lIdx].Value.Length > 0)
+                    else if (isLeagueSearcherInRegex && groups[lIdx].Value.Length > 0 && CheckSides(groups[lIdx], msg.Text))
                     {
                         msg.AddHighlightWord(groups[lIdx].Index, groups[lIdx].Length, Message.HightLightTypes.LeagueFound);
                         var leagueName = groups[lIdx].Value;
@@ -432,9 +432,12 @@ namespace GreatSnooper.ViewModel
                 for (int i = 0; i < matches.Count; i++)
                 {
                     var groups = matches[i].Groups;
-                    Uri uri;
-                    if (Uri.TryCreate(groups[0].Value, UriKind.RelativeOrAbsolute, out uri))
-                        msg.AddHighlightWord(groups[0].Index, groups[0].Length, Message.HightLightTypes.URI);
+                    if (CheckSides(groups[0], msg.Text))
+                    {
+                        Uri uri;
+                        if (Uri.TryCreate(groups[0].Value, UriKind.RelativeOrAbsolute, out uri))
+                            msg.AddHighlightWord(groups[0].Index, groups[0].Length, Message.HightLightTypes.URI);
+                    }
                 }
             }
 

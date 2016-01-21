@@ -32,13 +32,10 @@
         <TextBox Grid.Row="1" Margin="0,8,0,2" MaxLength="495"
                  ui:FocusExtension.IsFocused="{Binding Path=IsTBFocused, Mode=OneWay}"
                  IsEnabled="{Binding Path=Disabled, Mode=OneWay, Converter={StaticResource invertBoolConverter}}"
-                 Text="{Binding Path=MessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                 Text="{Binding Path=MessageText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" PreviewKeyDown="TextBox_PreviewKeyDown">
             <i:Interaction.Triggers>
                 <i:EventTrigger EventName="KeyDown">
                     <cmd:EventToCommand Command="{Binding Path=MsgKeyDownCommand, Mode=OneTime}" PassEventArgsToCommand="True" />
-                </i:EventTrigger>
-                <i:EventTrigger EventName="PreviewKeyDown">
-                    <cmd:EventToCommand Command="{Binding Path=MsgPreviewKeyDownCommand, Mode=OneTime}" PassEventArgsToCommand="True" />
                 </i:EventTrigger>
             </i:Interaction.Triggers>
         </TextBox>
