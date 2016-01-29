@@ -46,9 +46,9 @@
             <ComboBoxItem Content="Alternative WA.exe" Visibility="{Binding Path=MVM.ShowWAExe2, Mode=OneTime, Converter={StaticResource boolToVisibilityConverter}}" />
         </ComboBox>
         <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=GameNameLabel, Mode=OneWay}" />
-        <TextBox Grid.Row="2" Grid.Column="1" MaxLength="29" Text="{Binding Path=GameName, Mode=TwoWay}" />
+        <TextBox Grid.Row="2" Grid.Column="1" MaxLength="29" Text="{Binding Path=GameName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=HostingPasswordLabel, Mode=OneWay}" />
-        <TextBox Grid.Row="4" Grid.Column="1" MaxLength="16" Text="{Binding Path=GamePassword, Mode=TwoWay}" />
+        <TextBox Grid.Row="4" Grid.Column="1" MaxLength="16" Text="{Binding Path=GamePassword, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
         <TextBlock Grid.Row="6" Grid.Column="0" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=UsingWormNat2, Mode=OneWay}" />
         <Grid Grid.Row="6" Grid.Column="1">
             <Grid.ColumnDefinitions>

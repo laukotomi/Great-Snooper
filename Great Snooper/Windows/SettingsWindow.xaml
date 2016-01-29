@@ -35,7 +35,7 @@
                 </Grid.ColumnDefinitions>
 
                 <TextBlock VerticalAlignment="Center" Text="{Binding Path=Text, Mode=OneTime}" Grid.Column="0" />
-                <TextBox Text="{Binding Path=Value, Mode=TwoWay}" Grid.Column="1" Margin="0,5" />
+                <TextBox Text="{Binding Path=Value, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Column="1" Margin="0,5" />
             </Grid>
         </DataTemplate>
 
@@ -105,7 +105,7 @@
                     <ColumnDefinition Width="100" />
                 </Grid.ColumnDefinitions>
 
-                <TextBox VerticalAlignment="Center" Grid.Column="0" Text="{Binding Path=GroupName, Mode=TwoWay}" />
+                <TextBox VerticalAlignment="Center" Grid.Column="0" Text="{Binding Path=GroupName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
                 <xctk:ColorPicker VerticalAlignment="Center" Grid.Column="2" Focusable="False"
                                   SelectedColor="{Binding Path=GroupColor, Mode=TwoWay}" Margin="0,5" />
                 <Button Grid.Column="4" VerticalAlignment="Center" Margin="0,5"
