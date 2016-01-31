@@ -1645,10 +1645,8 @@ namespace GreatSnooper.ViewModel
             foreach (var server in this.servers)
             {
                 if (server.State != AbstractCommunicator.ConnectionStates.Disconnected)
-                {
-                    server.CancelAsync();
                     e.Cancel = true;
-                }
+                server.CancelAsync();
                 foreach (var chvm in server.Channels)
                 {
                     if (chvm.Value is ChannelViewModel && ((ChannelViewModel)chvm.Value).ChannelSchemeTask != null && !((ChannelViewModel)chvm.Value).ChannelSchemeTask.IsCompleted)

@@ -126,6 +126,12 @@ namespace GreatSnooper.Classes
             if (this.State != ConnectionStates.Disconnected)
                 return;
 
+            if (this.State == ConnectionStates.Disconnecting)
+            {
+                Stop(ErrorStates.None);
+                return;
+            }
+
             try
             {
                 // Reset things
@@ -147,14 +153,14 @@ namespace GreatSnooper.Classes
         {
             try
             {
-                if (this.State != ConnectionStates.ReConnecting)
-                    return;
-
                 if (this.State == ConnectionStates.Disconnecting)
                 {
                     Stop(ErrorStates.None);
                     return;
                 }
+
+                if (this.State != ConnectionStates.ReConnecting)
+                    return;
 
                 if (DateTime.Now - lastReconnectAttempt > reconnectTimeout)
                     Connect();
