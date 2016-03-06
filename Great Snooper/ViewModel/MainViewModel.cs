@@ -350,11 +350,11 @@ namespace GreatSnooper.ViewModel
         }
         public bool ShowWAExe1
         {
-            get { return Properties.Settings.Default.WaExe.Length != 0; }
+            get { return Properties.Settings.Default.WaExe.Length != 0 && File.Exists(Properties.Settings.Default.WaExe); }
         }
         public bool ShowWAExe2
         {
-            get { return Properties.Settings.Default.WaExe2.Length != 0; }
+            get { return Properties.Settings.Default.WaExe2.Length != 0 && File.Exists(Properties.Settings.Default.WaExe2); }
         }
         public bool BatLogo
         {
@@ -1804,6 +1804,12 @@ namespace GreatSnooper.ViewModel
 
         private void StartGame(string path, string args = null)
         {
+            if (!File.Exists(path))
+            {
+                this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.WAExeNotExistsText);
+                return;
+            }
+
             this.GameProcess = new Process();
             this.GameProcess.StartInfo.UseShellExecute = false;
             this.GameProcess.StartInfo.FileName = path;

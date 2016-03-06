@@ -73,7 +73,7 @@ namespace GreatSnooper
                 save = true;
             }
 
-            if (settings.WaExe.Length == 0)
+            if (settings.WaExe.Length == 0 || !File.Exists(settings.WaExe))
             {
                 object WALoc = Registry.GetValue(@"HKEY_CURRENT_USER\Software\Team17SoftwareLTD\WormsArmageddon", "PATH", null);
                 if (WALoc != null)

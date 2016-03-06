@@ -326,7 +326,7 @@ namespace GreatSnooper.ViewModel
             var o = (MetroWindow)sender;
             o.ContentRendered -= this.ContentRendered;
 
-            if (Properties.Settings.Default.WaExe.Length == 0 && !Properties.Settings.Default.WAExeAsked)
+            if (!Properties.Settings.Default.WAExeAsked && (Properties.Settings.Default.WaExe.Length == 0 || !File.Exists(Properties.Settings.Default.WaExe)))
             {
                 Properties.Settings.Default.WAExeAsked = true;
                 Properties.Settings.Default.Save();
