@@ -123,10 +123,13 @@ namespace GreatSnooper.ViewModel
                 {
                     _filterText = value;
                     filterTimer.Stop();
-                    if (_filterText.Trim().Length > 0 && _filterText != Localizations.GSLocalization.Instance.FilterText)
-                        filterTimer.Start();
-                    else
-                        this.SelectedGLChannel.UserListDG.SetUserListDGView();
+                    if (this.SelectedGLChannel != null)
+                    {
+                        if (_filterText.Trim().Length > 0 && _filterText != Localizations.GSLocalization.Instance.FilterText)
+                            filterTimer.Start();
+                        else
+                            this.SelectedGLChannel.UserListDG.SetUserListDGView();
+                    }
                 }
             }
         }

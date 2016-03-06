@@ -114,13 +114,7 @@ namespace GreatSnooper.ViewModel
             get
             {
                 if (_connectedLayout == null)
-                {
-                    _connectedLayout = new ConnectedLayout(this);
-                    var sw = (ScrollViewer)((Border)((Grid)_connectedLayout.Child).Children[0]).Child;
-                    sw.ScrollChanged += MessageScrollChanged;
-                    rtb = (RichTextBox)sw.Content;
-                    rtbDocument = rtb.Document;
-                }
+                    this.InitConnectedLayout();
                 return _connectedLayout;
             }
         }
@@ -150,6 +144,8 @@ namespace GreatSnooper.ViewModel
                         this.tempMessage = string.Empty;
                         this.lastMessages.Clear();
                     }
+                    else if (this._connectedLayout == null)
+                        this.InitConnectedLayout();
                     this.JoinedChanged();
                     RaisePropertyChanged("Joined");
                 }
@@ -798,6 +794,15 @@ namespace GreatSnooper.ViewModel
                 return false;
 
             return true;
+        }
+
+        private void InitConnectedLayout()
+        {
+            _connectedLayout = new ConnectedLayout(this);
+            var sw = (ScrollViewer)((Border)((Grid)_connectedLayout.Child).Children[0]).Child;
+            sw.ScrollChanged += MessageScrollChanged;
+            rtb = (RichTextBox)sw.Content;
+            rtbDocument = rtb.Document;
         }
 
 
