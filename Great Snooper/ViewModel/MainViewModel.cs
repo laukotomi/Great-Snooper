@@ -545,7 +545,10 @@ namespace GreatSnooper.ViewModel
             {
                 if (this.closing)
                 {
-                    this.CloseCommand.Execute(null);
+                    this.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        this.CloseCommand.Execute(null);
+                    }));
                     return;
                 }
 
@@ -843,7 +846,10 @@ namespace GreatSnooper.ViewModel
             {
                 if (this.closing)
                 {
-                    this.CloseCommand.Execute(null);
+                    this.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        this.CloseCommand.Execute(null);
+                    }));
                     return;
                 }
 
@@ -875,7 +881,10 @@ namespace GreatSnooper.ViewModel
                                     }
                                     p.StartInfo.FileName = "Updater2.exe";
                                     p.Start();
-                                    this.CloseCommand.Execute(null);
+                                    this.Dispatcher.BeginInvoke(new Action(() =>
+                                    {
+                                        this.CloseCommand.Execute(null);
+                                    }));
                                     return;
                                 }
                                 catch (Exception ex)
@@ -1364,7 +1373,10 @@ namespace GreatSnooper.ViewModel
                 {
                     if (closing)
                     {
-                        this.CloseCommand.Execute(null);
+                        this.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            this.CloseCommand.Execute(null);
+                        }));
                         return;
                     }
 

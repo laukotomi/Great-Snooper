@@ -876,7 +876,10 @@ namespace GreatSnooper.ViewModel
             {
                 if (this.MainViewModel.closing)
                 {
-                    this.MainViewModel.CloseCommand.Execute(null);
+                    this.MainViewModel.Dispatcher.BeginInvoke(new Action(() =>
+                    {
+                        this.MainViewModel.CloseCommand.Execute(null);
+                    }));
                     return;
                 }
 
