@@ -109,6 +109,15 @@ namespace GreatSnooper
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             ErrorLog.Log(e.Exception);
+
+            foreach (var server in GreatSnooper.ViewModel.MainViewModel.Instance.Servers)
+            {
+                foreach (var item in server.Channels)
+                {
+                    if (item.Value.Joined)
+                        item.Value.Log(item.Value.Messages.Count, true);
+                }
+            }
         }
     }
 }

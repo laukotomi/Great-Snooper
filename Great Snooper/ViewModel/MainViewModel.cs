@@ -56,7 +56,6 @@ namespace GreatSnooper.ViewModel
         private AbstractChannelViewModel _selectedChannel;
         private string _filterText = Localizations.GSLocalization.Instance.FilterText;
 
-        private AbstractCommunicator[] servers;
         private int procId = Process.GetCurrentProcess().Id;
         private readonly List<int> visitedChannels = new List<int>();
         private readonly DispatcherTimer filterTimer = new DispatcherTimer();
@@ -82,6 +81,8 @@ namespace GreatSnooper.ViewModel
         #endregion
 
         #region Properties
+        public static MainViewModel Instance { get; private set; }
+        public AbstractCommunicator[] Servers { get; private set; }
         public Dispatcher Dispatcher { get; private set; }
         public IMetroDialogService DialogService { get; private set; }
         public ITaskbarIconService TaskbarIconService { get; private set; }
@@ -342,11 +343,11 @@ namespace GreatSnooper.ViewModel
         public Dictionary<string, SolidColorBrush> InstantColors { get; private set; }
         public WormNetCommunicator WormNet
         {
-            get { return (WormNetCommunicator)this.servers[0]; }
+            get { return (WormNetCommunicator)this.Servers[0]; }
         }
         public GameSurgeCommunicator GameSurge
         {
-            get { return (GameSurgeCommunicator)this.servers[1]; }
+            get { return (GameSurgeCommunicator)this.Servers[1]; }
         }
         public bool ShowWAExe1
         {
@@ -389,6 +390,7 @@ namespace GreatSnooper.ViewModel
         #region Constructor
         public MainViewModel(IMetroDialogService dialogService, ITaskbarIconService taskbarIconService, WormNetCommunicator wormNetC)
         {
+            Instance = this;
             GlobalManager.MainWindowInit();
             Properties.Settings.Default.PropertyChanged += SettingsChanged;
 
@@ -397,13 +399,13 @@ namespace GreatSnooper.ViewModel
             this.TaskbarIconService = taskbarIconService;
             this.Dispatcher = Dispatcher.CurrentDispatcher;
 
-            this.servers = new AbstractCommunicator[2];
-            this.servers[0] = wormNetC;
+            this.Servers = new AbstractCommunicator[2];
+            this.Servers[0] = wormNetC;
             wormNetC.ConnectionState += ConnectionState;
             wormNetC.MVM = this;
-            this.servers[1] = new GameSurgeCommunicator("irc.gamesurge.net", 6667);
-            this.servers[1].ConnectionState += ConnectionState;
-            this.servers[1].MVM = this;
+            this.Servers[1] = new GameSurgeCommunicator("irc.gamesurge.net", 6667);
+            this.Servers[1].ConnectionState += ConnectionState;
+            this.Servers[1].MVM = this;
 
             this.Channels = new SortedObservableCollection<AbstractChannelViewModel>();
             this.Channels.CollectionChanged += Channels_CollectionChanged;
@@ -672,9 +674,9 @@ namespace GreatSnooper.ViewModel
             }
             */
             this.IsEnergySaveMode = true;
-            for (int i = 0; i < this.servers.Length; i++)
+            for (int i = 0; i < this.Servers.Length; i++)
             {
-                foreach (var item in this.servers[i].Channels)
+                foreach (var item in this.Servers[i].Channels)
                 {
                     if (item.Value is ChannelViewModel)
                     {
@@ -701,11 +703,11 @@ namespace GreatSnooper.ViewModel
 
             this.IsEnergySaveMode = false;
 
-            for (int i = 0; i < this.servers.Length; i++)
+            for (int i = 0; i < this.Servers.Length; i++)
             {
-                if (this.servers[i].State == AbstractCommunicator.ConnectionStates.Connected)
+                if (this.Servers[i].State == AbstractCommunicator.ConnectionStates.Connected)
                 {
-                    foreach (var item in this.servers[i].Channels)
+                    foreach (var item in this.Servers[i].Channels)
                     {
                         if (item.Value is ChannelViewModel)
                         {
@@ -1059,7 +1061,7 @@ namespace GreatSnooper.ViewModel
                 var group = UserGroups.Groups["Group" + m.Groups[1].Value];
                 foreach (var user in group.Users.Except(userList))
                 {
-                    foreach (var server in this.servers)
+                    foreach (var server in this.Servers)
                     {
                         User u;
                         if (server.Users.TryGetValue(user, out u))
@@ -1072,7 +1074,7 @@ namespace GreatSnooper.ViewModel
                 
                 foreach (string user in userList.Except(group.Users))
                 {
-                    foreach (var server in this.servers)
+                    foreach (var server in this.Servers)
                     {
                         User u;
                         if (server.Users.TryGetValue(user, out u))
@@ -1096,7 +1098,7 @@ namespace GreatSnooper.ViewModel
                 case "Group6":
                     var group = UserGroups.Groups[e.PropertyName];
                     group.ReloadData();
-                    foreach (var server in this.servers)
+                    foreach (var server in this.Servers)
                     {
                         foreach (var chvm in server.Channels)
                         {
@@ -1111,7 +1113,7 @@ namespace GreatSnooper.ViewModel
                     break;
 
                 case "CultureName":
-                    foreach (var server in this.servers)
+                    foreach (var server in this.Servers)
                     {
                         foreach (var chvm in server.Channels)
                         {
@@ -1147,7 +1149,7 @@ namespace GreatSnooper.ViewModel
                     GlobalManager.HiddenChannels = new HashSet<string>(
                         Properties.Settings.Default.HiddenChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
                         StringComparer.OrdinalIgnoreCase); 
-                    foreach (var server in this.servers)
+                    foreach (var server in this.Servers)
                     {
                         if (server.State == AbstractCommunicator.ConnectionStates.Connected)
                         {
@@ -1180,11 +1182,11 @@ namespace GreatSnooper.ViewModel
                 case "HyperLinkStyle":
                 case "LeagueFoundMessageStyle":
                 case "ShowBannedMessages":
-                    for (int i = 0; i < this.servers.Length; i++)
+                    for (int i = 0; i < this.Servers.Length; i++)
                     {
-                        if (this.servers[i].State == AbstractCommunicator.ConnectionStates.Connected)
+                        if (this.Servers[i].State == AbstractCommunicator.ConnectionStates.Connected)
                         {
-                            foreach (var item in this.servers[i].Channels)
+                            foreach (var item in this.Servers[i].Channels)
                             {
                                 if (item.Value.Joined)
                                     item.Value.LoadMessages(GlobalManager.MaxMessagesDisplayed, true);
@@ -1194,9 +1196,9 @@ namespace GreatSnooper.ViewModel
                     break;
 
                 case "ShowBannedUsers":
-                    for (int i = 0; i < this.servers.Length; i++)
+                    for (int i = 0; i < this.Servers.Length; i++)
                     {
-                        foreach (var item in this.servers[i].Channels)
+                        foreach (var item in this.Servers[i].Channels)
                         {
                             if (item.Value is ChannelViewModel && ((ChannelViewModel)item.Value).UserListDG != null)
                                 ((ChannelViewModel)item.Value).UserListDG.SetUserListDGView();
@@ -1205,9 +1207,9 @@ namespace GreatSnooper.ViewModel
                     break;
 
                 case "ShowInfoColumn":
-                    for (int i = 0; i < this.servers.Length; i++)
+                    for (int i = 0; i < this.Servers.Length; i++)
                     {
-                        foreach (var item in this.servers[i].Channels)
+                        foreach (var item in this.Servers[i].Channels)
                         {
                             if (item.Value is ChannelViewModel && ((ChannelViewModel)item.Value).UserListDG != null)
                                 ((ChannelViewModel)item.Value).UserListDG.Columns[4].Visibility = (Properties.Settings.Default.ShowInfoColumn) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
@@ -1216,11 +1218,11 @@ namespace GreatSnooper.ViewModel
                     break;
 
                 case "ItalicForGSUsers":
-                    for (int i = 0; i < this.servers.Length; i++)
+                    for (int i = 0; i < this.Servers.Length; i++)
                     {
-                        if (this.servers[i].State == AbstractCommunicator.ConnectionStates.Connected)
+                        if (this.Servers[i].State == AbstractCommunicator.ConnectionStates.Connected)
                         {
-                            foreach (var item in this.servers[i].Channels)
+                            foreach (var item in this.Servers[i].Channels)
                             {
                                 if (item.Value is ChannelViewModel && item.Value.Joined)
                                 {
@@ -1665,7 +1667,7 @@ namespace GreatSnooper.ViewModel
             if (loadGamesTask != null && !loadGamesTask.IsCompleted)
                 e.Cancel = true;
 
-            foreach (var server in this.servers)
+            foreach (var server in this.Servers)
             {
                 if (server.State != AbstractCommunicator.ConnectionStates.Disconnected)
                     e.Cancel = true;
@@ -1682,7 +1684,7 @@ namespace GreatSnooper.ViewModel
 
             GlobalManager.TusAccounts.Clear();
 
-            foreach (var server in this.servers)
+            foreach (var server in this.Servers)
             {
                 foreach (var item in server.Channels)
                 {
@@ -1751,7 +1753,7 @@ namespace GreatSnooper.ViewModel
                     TaskbarIconService = null;
                 }
 
-                foreach (var server in this.servers)
+                foreach (var server in this.Servers)
                 {
                     server.ConnectionState -= ConnectionState;
                     server.Dispose();
@@ -2062,7 +2064,7 @@ namespace GreatSnooper.ViewModel
 
         private void AddOrRemoveBan(string userName)
         {
-            foreach (var server in this.servers)
+            foreach (var server in this.Servers)
             {
                 if (server.State == AbstractCommunicator.ConnectionStates.Connected)
                 {
@@ -2114,7 +2116,7 @@ namespace GreatSnooper.ViewModel
         {
             this.AwayText = (awayText != null && awayText.Length > 0) ? awayText : Properties.Settings.Default.AwayText;
             this.IsAway = true;
-            foreach (var server in servers)
+            foreach (var server in Servers)
             {
                 foreach (var chvm in server.Channels)
                 {
