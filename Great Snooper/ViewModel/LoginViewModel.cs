@@ -709,10 +709,6 @@ namespace GreatSnooper.ViewModel
                         return new TusResult(TusResult.TusStates.UserError);
                 }
             }
-            catch (OperationCanceledException)
-            {
-                throw;
-            }
             catch (Exception ex)
             {
                 ErrorLog.Log(ex);

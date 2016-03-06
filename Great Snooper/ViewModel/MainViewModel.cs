@@ -511,7 +511,7 @@ namespace GreatSnooper.ViewModel
 
         private void LoadGames(ChannelViewModel chvm)
         {
-            loadGamesTask = Task.Factory.StartNew(() =>
+            loadGamesTask = Task.Factory.StartNew<bool>(() =>
             {
                 try
                 {
@@ -532,12 +532,13 @@ namespace GreatSnooper.ViewModel
                         }
 
                         gameRecvSB.Replace("\n", "");
+                        return true;
                     }
                 }
                 catch (Exception ex)
                 {
                     ErrorLog.Log(ex);
-                    throw;
+                    return false;
                 }
             })
             .ContinueWith((t) =>
@@ -548,7 +549,7 @@ namespace GreatSnooper.ViewModel
                     return;
                 }
 
-                if (t.IsFaulted || !chvm.Joined) // we already left the channel
+                if (t.Result == false || !chvm.Joined) // we already left the channel
                     return;
 
                 try
@@ -1356,8 +1357,8 @@ namespace GreatSnooper.ViewModel
                     catch (Exception ex)
                     {
                         ErrorLog.Log(ex);
-                        throw;
                     }
+                    return null;
                 });
                 loadTUSAccountsTask.ContinueWith((t) =>
                 {
@@ -1367,7 +1368,7 @@ namespace GreatSnooper.ViewModel
                         return;
                     }
 
-                    if (t.IsFaulted)
+                    if (t.Result == null)
                         return;
 
                     TusAccounts.SetTusAccounts(t.Result, this.WormNet);
