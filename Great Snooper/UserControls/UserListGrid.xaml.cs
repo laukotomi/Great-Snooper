@@ -94,7 +94,10 @@ namespace GreatSnooper.UserControls
                 foreach (var channel in this.chvm.MainViewModel.Channels)
                 {
                     if (channel is ChannelViewModel)
-                        ((ChannelViewModel)channel).UserListDG.SetUserListDGColumnWidths();
+                    {
+                        if (((ChannelViewModel)channel).UserListDG != null)
+                            ((ChannelViewModel)channel).UserListDG.SetUserListDGColumnWidths();
+                    }
                     else
                         break;
                 }
@@ -139,7 +142,7 @@ namespace GreatSnooper.UserControls
 
             foreach (var item in this.chvm.Server.Channels)
             {
-                if (item.Value is ChannelViewModel)
+                if (item.Value is ChannelViewModel && ((ChannelViewModel)item.Value).UserListDG != null)
                     ((ChannelViewModel)item.Value).UserListDG.SetOrderForDataGrid(columnName, dir);
             }
         }

@@ -1185,7 +1185,7 @@ namespace GreatSnooper.ViewModel
                     {
                         foreach (var item in this.servers[i].Channels)
                         {
-                            if (item.Value is ChannelViewModel)
+                            if (item.Value is ChannelViewModel && ((ChannelViewModel)item.Value).UserListDG != null)
                                 ((ChannelViewModel)item.Value).UserListDG.SetUserListDGView();
                         }
                     }
@@ -1196,7 +1196,7 @@ namespace GreatSnooper.ViewModel
                     {
                         foreach (var item in this.servers[i].Channels)
                         {
-                            if (item.Value is ChannelViewModel)
+                            if (item.Value is ChannelViewModel && ((ChannelViewModel)item.Value).UserListDG != null)
                                 ((ChannelViewModel)item.Value).UserListDG.Columns[4].Visibility = (Properties.Settings.Default.ShowInfoColumn) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
                         }
                     }
