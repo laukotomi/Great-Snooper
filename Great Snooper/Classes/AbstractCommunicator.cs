@@ -729,7 +729,8 @@ namespace GreatSnooper.Classes
                         //if (!this.IsWormNet)
                         //    Send("authserv auth " + this.User.Name + " " + Properties.Settings.Default.WormsPassword);
 
-                        this.State = ConnectionStates.Connected;
+                        if (this.State == ConnectionStates.Connecting)
+                            this.State = ConnectionStates.Connected;
                     }
                     break;
 
