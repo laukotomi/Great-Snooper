@@ -10,7 +10,7 @@
         xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:cmd="clr-namespace:GalaSoft.MvvmLight.Command;assembly=GalaSoft.MvvmLight.Extras"
         Title="Great Snooper" Height="600" Width="1024" Style="{StaticResource MyDialogWindow}"
-        WindowState="Maximized" BorderBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanResize"
+        BorderBrush="{DynamicResource AccentColorBrush}" ResizeMode="CanResize"
         BorderThickness="1" ShowIconOnTitleBar="False" ShowInTaskbar="True" Background="#111111" WindowStartupLocation="CenterScreen">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Activated">

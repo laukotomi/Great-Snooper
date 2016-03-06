@@ -26,6 +26,12 @@ namespace GreatSnooper.Windows
         {
             InitializeComponent();
 
+            this.WindowState = (WindowState)Properties.Settings.Default.WindowState;
+            if (Properties.Settings.Default.WindowWidth != 0)
+                this.Width = Properties.Settings.Default.WindowWidth;
+            if (Properties.Settings.Default.WindowHeight != 0)
+                this.Height = Properties.Settings.Default.WindowHeight;
+
             this.vm = new MainViewModel(new MetroDialogService(this), taskbarIconService, wormNetC);
             taskbarIconService.Icon.DataContext = this.vm;
             taskbarIconService.Icon.ContextMenu = (ContextMenu)this.FindResource("taskbarContextMenu");

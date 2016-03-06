@@ -1514,13 +1514,20 @@ namespace GreatSnooper.ViewModel
 
         private void WindowStateChanged()
         {
-            if (this.DialogService.GetView().WindowState == WindowState.Minimized)
+            var window = this.DialogService.GetView();
+            if (window.WindowState == WindowState.Minimized)
             {
                 if (Properties.Settings.Default.EnergySaveModeWin && !IsEnergySaveMode)
                     EnterEnergySaveMode();
             }
-            else if (IsEnergySaveMode)
-                this.shouldLeaveEnergySaveMode = true; // Somehow leaving energysave mode doesn't work
+            else
+            {
+                if (IsEnergySaveMode)
+                    this.shouldLeaveEnergySaveMode = true; // Somehow leaving energysave mode doesn't work
+
+                // save window state
+                Properties.Settings.Default.WindowState = (int)window.WindowState;
+            }
         }
         #endregion
 
@@ -1667,6 +1674,13 @@ namespace GreatSnooper.ViewModel
                         item.Value.Log(item.Value.Messages.Count, true);
                 }
             }
+
+            // Save window width, state
+            var window = this.DialogService.GetView();
+            Properties.Settings.Default.WindowHeight = window.Height;
+            Properties.Settings.Default.WindowWidth = window.Width;
+            Properties.Settings.Default.Save();
+
             this.Dispose();
         }
         #endregion
