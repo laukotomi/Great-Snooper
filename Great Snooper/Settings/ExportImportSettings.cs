@@ -71,6 +71,8 @@ namespace GreatSnooper.Settings
                     try
                     {
                         Properties.Settings.Default.Reset();
+                        Properties.Settings.Default.SettingsUpgraded = true;
+                        Properties.Settings.Default.Save();
                         this.dialogService.ShowDialog(Localizations.GSLocalization.Instance.InformationText, Localizations.GSLocalization.Instance.RestartToApplyChanges);
                     }
                     catch (Exception ex)
