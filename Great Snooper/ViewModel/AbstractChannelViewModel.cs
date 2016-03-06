@@ -26,8 +26,8 @@ namespace GreatSnooper.ViewModel
     {
         #region Static
         private static Regex dateRegex = new Regex(@"[^0-9]");
-        private static Regex leftSideRegex = new Regex(@"\b\w", RegexOptions.Compiled);
-        private static Regex rightSideRegex = new Regex(@"\w\b", RegexOptions.Compiled);
+        private static Regex leftSideRegex = new Regex(@"^\b\w$", RegexOptions.Compiled);
+        private static Regex rightSideRegex = new Regex(@"^\w\b$", RegexOptions.Compiled);
         protected static Regex urlRegex = new Regex(@"(http|ftp)s?://\S+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         #endregion
 
