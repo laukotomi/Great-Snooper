@@ -965,3 +965,12 @@ LoadGamesTUSActiveWindow=Játék lista és TUS felhasználók betöltése csak a
 
 # Network settings
 NetworkText=Hálózat
+
+# Save changes question when closing notificator
+SaveChangesQuestion=El szeretnéd menteni a változtatásokat?
+
+# Losing changes question when closing font chooser
+LosingChangesQuestion=Biztos be akarod zárni ezt az ablakot? A módosítások el fognak veszni.
+
+# German translation by text in settings / About
+GermanTranslationText=Német fordítás:

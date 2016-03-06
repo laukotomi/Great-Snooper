@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:Dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
         xmlns:l="clr-namespace:GreatSnooper.Localizations"
         xmlns:u="clr-namespace:GreatSnooper.UserControls"
         xmlns:c="clr-namespace:GreatSnooper.Converters"
@@ -18,6 +19,7 @@
         <c:SolidColorBrushConverter x:Key="solidColorBrushConverter" />
         <c:BoolToBoldConverter x:Key="boolToBoldConverter" />
         <c:BoolToItalicConverter x:Key="boolToItalicConverter" />
+        <Style TargetType="{x:Type Dialogs:MessageDialog}" BasedOn="{StaticResource NewCustomDialogStyle}" />
     </controls:MetroWindow.Resources>
     <DockPanel Grid.Row="1">
         <Border DockPanel.Dock="Top" Background="#33373f">

@@ -965,3 +965,12 @@ LoadGamesTUSActiveWindow=Load games and TUS accounts only if window is active:
 
 # Network settings
 NetworkText=Network
+
+# Save changes question when closing notificator
+SaveChangesQuestion=Would you like to save changes?
+
+# Losing changes question when closing font chooser
+LosingChangesQuestion=Are you sure you would like to close this window and lose your changes?
+
+# German translation by text in settings / About
+GermanTranslationText=German translation by:

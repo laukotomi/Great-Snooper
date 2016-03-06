@@ -1298,4 +1298,16 @@
     <value>Hálózat</value>
     <comment>Network settings</comment>
   </data>
+  <data name="SaveChangesQuestion" xml:space="preserve">
+    <value>El szeretnéd menteni a változtatásokat?</value>
+    <comment>Save changes question when closing notificator</comment>
+  </data>
+  <data name="LosingChangesQuestion" xml:space="preserve">
+    <value>Biztos be akarod zárni ezt az ablakot? A módosítások el fognak veszni.</value>
+    <comment>Losing changes question when closing font chooser</comment>
+  </data>
+  <data name="GermanTranslationText" xml:space="preserve">
+    <value>Német fordítás:</value>
+    <comment>German translation by text in settings / About</comment>
+  </data>
 </root>

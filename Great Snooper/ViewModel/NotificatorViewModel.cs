@@ -196,7 +196,7 @@ namespace GreatSnooper.ViewModel
                 return;
             }
 
-            DialogService.ShowDialog(Localizations.GSLocalization.Instance.QuestionText, "Would you like to save changes", MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative, GlobalManager.YesNoDialogSetting, (t) =>
+            DialogService.ShowDialog(Localizations.GSLocalization.Instance.QuestionText, Localizations.GSLocalization.Instance.SaveChangesQuestion, MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative, GlobalManager.YesNoDialogSetting, (t) =>
             {
                 if (t.Result == MessageDialogResult.Affirmative)
                     this.SaveChanges();

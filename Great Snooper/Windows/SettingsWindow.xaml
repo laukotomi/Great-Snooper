@@ -318,6 +318,8 @@
                     <TextBlock Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ContactText, Mode=OneWay}" />
                     <TextBlock Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=LicenseText, Mode=OneWay}" />
                     <TextBlock />
+                    <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=GermanTranslationText, Mode=OneWay}" />
+                    <TextBlock Text="chakkman" />
                     <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=PolishTranslationText, Mode=OneWay}" />
                     <TextBlock Text="ArtecTheFox" />
                     <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Source={x:Static l:GSLocalization.Instance}, Path=RussianTranslationText, Mode=OneWay}" />

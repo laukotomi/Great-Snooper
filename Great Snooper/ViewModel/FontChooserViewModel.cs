@@ -86,7 +86,7 @@ namespace GreatSnooper.ViewModel
                 return;
             }
 
-            DialogService.ShowDialog(Localizations.GSLocalization.Instance.QuestionText, "Are you sure you would like to close this window and lose your changes?", MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative, GlobalManager.YesNoDialogSetting, (t) =>
+            DialogService.ShowDialog(Localizations.GSLocalization.Instance.QuestionText, Localizations.GSLocalization.Instance.LosingChangesQuestion, MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative, GlobalManager.YesNoDialogSetting, (t) =>
             {
                 if (t.Result == MessageDialogResult.Affirmative)
                 {

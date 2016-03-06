@@ -840,6 +840,17 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to German translation by:.
+        /// </summary>
+        public string GermanTranslationText
+        {
+            get
+            {
+                return _rm.GetString("GermanTranslationText");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to {0} players.
         /// </summary>
         public string GroupPlayersEditTitle
@@ -1573,6 +1584,17 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("LoadChannelSchemeText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you would like to close this window and lose your changes?.
+        /// </summary>
+        public string LosingChangesQuestion
+        {
+            get
+            {
+                return _rm.GetString("LosingChangesQuestion");
             }
         }
 
@@ -2355,6 +2377,17 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("RussianTranslationText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Save.
+        /// </summary>
+        public string SaveChangesQuestion
+        {
+            get
+            {
+                return _rm.GetString("SaveChangesQuestion");
             }
         }
 

@@ -3,9 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:c="clr-namespace:GreatSnooper.Converters"
         xmlns:controls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:Dialogs="clr-namespace:MahApps.Metro.Controls.Dialogs;assembly=MahApps.Metro"
         xmlns:l="clr-namespace:GreatSnooper.Localizations"
         Title="{Binding Source={x:Static l:GSLocalization.Instance}, Path=NotificatorTooltip, Mode=OneWay}"
         Style="{StaticResource MyDialogWindow}" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+    <controls:MetroWindow.Resources>
+        <Style TargetType="Hyperlink">
+            <Setter Property="Foreground" Value="#5DB0FF" />
+            <Setter Property="IsEnabled" Value="{Binding IsEnabled, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type FrameworkElement}}}" />
+            <!-- Hyperlinks won't be enabled after it's parent were disabled without this line -->
+            <Setter Property="Focusable" Value="False" />
+        </Style>
+        <Style TargetType="{x:Type Dialogs:MessageDialog}" BasedOn="{StaticResource NewCustomDialogStyle}" />
+    </controls:MetroWindow.Resources>
     <Grid>
         <Grid.Resources>
             <Style TargetType="TextBlock">

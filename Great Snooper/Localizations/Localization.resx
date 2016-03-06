@@ -1297,4 +1297,16 @@
     <value>Network</value>
     <comment>Network settings</comment>
   </data>
+  <data name="SaveChangesQuestion" xml:space="preserve">
+    <value>Would you like to save changes?</value>
+    <comment>Save changes question when closing notificator</comment>
+  </data>
+  <data name="LosingChangesQuestion" xml:space="preserve">
+    <value>Are you sure you would like to close this window and lose your changes?</value>
+    <comment>Losing changes question when closing font chooser</comment>
+  </data>
+  <data name="GermanTranslationText" xml:space="preserve">
+    <value>German translation by:</value>
+    <comment>German translation by text in settings / About</comment>
+  </data>
 </root>
