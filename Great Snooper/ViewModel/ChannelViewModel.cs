@@ -361,11 +361,12 @@ namespace GreatSnooper.ViewModel
         public override void ProcessMessage(IRCTasks.MessageTask msgTask)
         {
             var msg = new Message(msgTask.User, msgTask.Message, msgTask.Setting);
+            bool displayed = !msg.Sender.IsBanned || this.GetType() == typeof(ChannelViewModel) && Properties.Settings.Default.ShowBannedMessages;
 
             // Search for league or hightlight or notification
             if (msgTask.Setting.Type == Message.MessageTypes.Channel)
             {
-                if (this.notificator.SearchInSenderNamesEnabled && this.notificator.SenderNamesRegex.IsMatch(msg.Sender.Name))
+                if (displayed && this.notificator.SearchInSenderNamesEnabled && this.notificator.SenderNamesRegex.IsMatch(msg.Sender.Name))
                 {
                     msg.AddHighlightWord(0, msg.Text.Length, Message.HightLightTypes.NotificatorFound);
                     this.MainViewModel.NotificatorFound(msg, this);
@@ -385,7 +386,7 @@ namespace GreatSnooper.ViewModel
                         if (Uri.TryCreate(groups[1].Value, UriKind.RelativeOrAbsolute, out uri))
                             msg.AddHighlightWord(groups[1].Index, groups[1].Length, Message.HightLightTypes.URI);
                     }
-                    else if (isHighlightInRegex && groups[hIdx].Value.Length > 0 && CheckSides(groups[hIdx], msg.Text))
+                    else if (displayed && isHighlightInRegex && groups[hIdx].Value.Length > 0 && CheckSides(groups[hIdx], msg.Text))
                     {
                         if (groups[hIdx].Value == this.Server.User.Name) // Check case sensitive
                         {
@@ -398,7 +399,7 @@ namespace GreatSnooper.ViewModel
                                 Sounds.PlaySoundByName("HBeep");
                         }
                     }
-                    else if (isLeagueSearcherInRegex && groups[lIdx].Value.Length > 0 && CheckSides(groups[lIdx], msg.Text))
+                    else if (displayed && isLeagueSearcherInRegex && groups[lIdx].Value.Length > 0 && CheckSides(groups[lIdx], msg.Text))
                     {
                         msg.AddHighlightWord(groups[lIdx].Index, groups[lIdx].Length, Message.HightLightTypes.LeagueFound);
                         var leagueName = groups[lIdx].Value;
@@ -414,7 +415,7 @@ namespace GreatSnooper.ViewModel
                     }
                 }
 
-                if (this.notificator.SearchInMessagesEnabled)
+                if (displayed && this.notificator.SearchInMessagesEnabled)
                 {
                     var nmatches = this.notificator.InMessagesRegex.Matches(msg.Text);
                     for (int i = 0; i < nmatches.Count; i++)

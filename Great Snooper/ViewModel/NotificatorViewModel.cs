@@ -1,7 +1,9 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GreatSnooper.Classes;
+using GreatSnooper.Helpers;
 using GreatSnooper.Services;
+using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +15,12 @@ namespace GreatSnooper.ViewModel
     class NotificatorViewModel : ViewModelBase
     {
         #region Members
+        private bool changed;
+        private string _inMessages;
+        private string _inSenderNames;
+        private string _inGameNames;
+        private string _inHosterNames;
+        private string _inJoinMessages;
         #endregion
 
         #region Properties
@@ -36,15 +44,70 @@ namespace GreatSnooper.ViewModel
             }
         }
 
-        public string InMessages { get; set; }
+        public string InMessages
+        {
+            get { return _inMessages; }
+            set
+            {
+                if (_inMessages != value)
+                {
+                    _inMessages = value;
+                    this.changed = true;
+                }
+            }
+        }
 
-        public string InSenderNames { get; set; }
+        public string InSenderNames
+        {
+            get { return _inSenderNames; }
+            set
+            {
+                if (_inSenderNames != value)
+                {
+                    _inSenderNames = value;
+                    this.changed = true;
+                }
+            }
+        }
 
-        public string InGameNames { get; set; }
+        public string InGameNames
+        {
+            get { return _inGameNames; }
+            set
+            {
+                if (_inGameNames != value)
+                {
+                    _inGameNames = value;
+                    this.changed = true;
+                }
+            }
+        }
 
-        public string InHosterNames { get; set; }
+        public string InHosterNames
+        {
+            get { return _inHosterNames; }
+            set
+            {
+                if (_inHosterNames != value)
+                {
+                    _inHosterNames = value;
+                    this.changed = true;
+                }
+            }
+        }
 
-        public string InJoinMessages { get; set; }
+        public string InJoinMessages
+        {
+            get { return _inJoinMessages; }
+            set
+            {
+                if (_inJoinMessages != value)
+                {
+                    _inJoinMessages = value;
+                    this.changed = true;
+                }
+            }
+        }
 
         public bool? StartNotifWithSnooper
         {
@@ -72,11 +135,11 @@ namespace GreatSnooper.ViewModel
 
         public NotificatorViewModel()
         {
-            this.InGameNames = Properties.Settings.Default.NotificatorInGameNames;
-            this.InHosterNames = Properties.Settings.Default.NotificatorInHosterNames;
-            this.InJoinMessages = Properties.Settings.Default.NotificatorInJoinMessages;
-            this.InMessages = Properties.Settings.Default.NotificatorInMessages;
-            this.InSenderNames = Properties.Settings.Default.NotificatorInSenderNames;
+            this._inGameNames = Properties.Settings.Default.NotificatorInGameNames;
+            this._inHosterNames = Properties.Settings.Default.NotificatorInHosterNames;
+            this._inJoinMessages = Properties.Settings.Default.NotificatorInJoinMessages;
+            this._inMessages = Properties.Settings.Default.NotificatorInMessages;
+            this._inSenderNames = Properties.Settings.Default.NotificatorInSenderNames;
         }
 
         #region StartStopCommand
@@ -85,23 +148,30 @@ namespace GreatSnooper.ViewModel
             get { return new RelayCommand(StartStop); }
         }
 
+        private void SaveChanges()
+        {
+            if (Properties.Settings.Default.NotificatorInGameNames != this.InGameNames)
+                Properties.Settings.Default.NotificatorInGameNames = this.InGameNames;
+            if (Properties.Settings.Default.NotificatorInHosterNames != this.InHosterNames)
+                Properties.Settings.Default.NotificatorInHosterNames = this.InHosterNames;
+            if (Properties.Settings.Default.NotificatorInJoinMessages != this.InJoinMessages)
+                Properties.Settings.Default.NotificatorInJoinMessages = this.InJoinMessages;
+            if (Properties.Settings.Default.NotificatorInMessages != this.InMessages)
+                Properties.Settings.Default.NotificatorInMessages = this.InMessages;
+            if (Properties.Settings.Default.NotificatorInSenderNames != this.InSenderNames)
+                Properties.Settings.Default.NotificatorInSenderNames = this.InSenderNames;
+            Properties.Settings.Default.Save();
+            this.changed = false;
+        }
+
         private void StartStop()
         {
             if (Notificator.Instance.IsEnabled == false)
             {
                 Notificator.Instance.IsEnabled = true;
-                if (Properties.Settings.Default.NotificatorInGameNames != this.InGameNames)
-                    Properties.Settings.Default.NotificatorInGameNames = this.InGameNames;
-                if (Properties.Settings.Default.NotificatorInHosterNames != this.InHosterNames)
-                    Properties.Settings.Default.NotificatorInHosterNames = this.InHosterNames;
-                if (Properties.Settings.Default.NotificatorInJoinMessages != this.InJoinMessages)
-                    Properties.Settings.Default.NotificatorInJoinMessages = this.InJoinMessages;
-                if (Properties.Settings.Default.NotificatorInMessages != this.InMessages)
-                    Properties.Settings.Default.NotificatorInMessages = this.InMessages;
-                if (Properties.Settings.Default.NotificatorInSenderNames != this.InSenderNames)
-                    Properties.Settings.Default.NotificatorInSenderNames = this.InSenderNames;
-                Properties.Settings.Default.Save();
-                CloseCommand.Execute(null);
+                if (this.changed)
+                    this.SaveChanges();
+                this.DialogService.CloseRequest();
             }
             else
             {
@@ -120,8 +190,29 @@ namespace GreatSnooper.ViewModel
 
         private void Close()
         {
-            this.DialogService.CloseRequest();
+            if (this.changed == false)
+            {
+                DialogService.CloseRequest();
+                return;
+            }
+
+            DialogService.ShowDialog(Localizations.GSLocalization.Instance.QuestionText, "Would you like to save changes", MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative, GlobalManager.YesNoDialogSetting, (t) =>
+            {
+                if (t.Result == MessageDialogResult.Affirmative)
+                    this.SaveChanges();
+                this.changed = false;
+                DialogService.CloseRequest();
+            });
         }
         #endregion
+
+        internal void ClosingRequest(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            if (this.changed)
+            {
+                e.Cancel = true;
+                this.CloseCommand.Execute(null);
+            }
+        }
     }
 }

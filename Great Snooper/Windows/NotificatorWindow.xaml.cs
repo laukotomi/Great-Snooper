@@ -15,6 +15,7 @@ namespace GreatSnooper.Windows
             this.vm = new NotificatorViewModel();
             this.vm.DialogService = new MetroDialogService(this);
             this.DataContext = vm;
+            this.Closing += this.vm.ClosingRequest;
             InitializeComponent();
         }
 
