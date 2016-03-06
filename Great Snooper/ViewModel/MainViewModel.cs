@@ -980,7 +980,7 @@ namespace GreatSnooper.ViewModel
                 ? this.SelectedChannelIndex
                 : this.Channels.IndexOf(chvm);
 
-            if (this.SelectedChannel == chvm && visitedChannels.Count > 2) // Channel was selected
+            if (this.SelectedChannel == chvm && visitedChannels.Count >= 2) // Channel was selected
             {
                 int lastindex = visitedChannels[visitedChannels.Count - 2];
                 this.SelectChannel(lastindex);
