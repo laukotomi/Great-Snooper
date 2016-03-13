@@ -106,7 +106,7 @@ TusPasswordText=Hasło TUS:
 WhatIsTusLoginLabel=Czym jest logowanie przez TUS?
 
 # The text of the popup message when What is TUS login? link is clicked
-WhatIsTusLoginText=TUS to skrót od The Ultimate Site. Jest to strona internetowa poświęcona grze Worms: Armageddon posiadająca mnóstwo rzeczy z nią związanych, takich jak: ligi, puchary, turnieje, schematy, mapy, forum, itd.. Wspiera ona również Snoopery. Jeżeli zalogujesz się za pomocą swojego konta TUS w Snooperze, to ranga będzie odzwierciedlała Twoją obecną rangę z lig TUS, nazwa Twojego klanu również będzie odczytana z owej bazy danych oraz otrzymasz status online na stronie. . Możesz także ustawić inny pseudonim i hasło do logowania w Snooperze na stronie TUS-a w Twoich ustawieniach konta.
+WhatIsTusLoginText=TUS to skrót od The Ultimate Site. Jest to strona internetowa poświęcona grze Worms: Armageddon posiadająca mnóstwo rzeczy z nią związanych, takich jak: ligi, puchary, turnieje, schematy, mapy, forum itd.. Wspiera ona również Snoopery. Jeżeli zalogujesz się za pomocą swojego konta TUS w Snooperze, to ranga będzie odzwierciedlała Twoją obecną rangę z lig TUS, nazwa Twojego klanu również będzie odczytana z owej bazy danych oraz otrzymasz status online na stronie. . Możesz także ustawić inny pseudonim i hasło do logowania w Snooperze na stronie TUS-a w Twoich ustawieniach konta.
 
 # The label of the login button in the login window
 LogInText=Zaloguj się
@@ -403,7 +403,7 @@ CommonSettingFailText=Załadowanie ustawień wspólnych nie powiodło się! Nie 
 NewVersionText=Dostępna jest nowa aktualizacja dla programu Great Snooper! Czy chcesz już ją pobrać?
 
 # The text of the popup message when starting of the updater fails
-UpdaterFailText=Uruchomienie aktualizatora nie powiodło się! Proszę spróbować uruchomić go ręcznie z katalogu instalacyjnego programu Great Snooper!
+UpdaterFailText=Uruchomienie Aktualizatora nie powiodło się! Proszę spróbować uruchomić go ręcznie z katalogu instalacyjnego programu Great Snooper!
 
 # The message when great snooper stops spamming
 SpamStopMessage=Great Snooper przestał zaśmiecać kanał i poszukuje gier ligowych!
@@ -959,7 +959,7 @@ ImportSettingsButtonContent=Importuj ustawienia
 ResetSettingsButtonContent=Resetuj ustawienia
 
 # Reset settings button label in General Settings
-ResetSettingsConfirm=Czy jesteś pewien, aby zresetować ustawienia? Wszystkie informacje zostaną utracone.
+ResetSettingsConfirm=Czy na pewno zresetować ustawienia? Wszystkie informacje zostaną utracone.
 
 # Please restart to apply changes text
 RestartToApplyChanges=Proszę ponownie uruchomić program Great Snooper, aby zastosować zmiany!
@@ -969,3 +969,13 @@ LoadGamesTUSActiveWindow=Wczytuj gry i konta TUS tylko, gdy okno jest aktywne:
 
 # Network settings
 NetworkText=Sieć
+
+# Save changes question when closing notificator
+SaveChangesQuestion=Czy chcesz zapisać zmiany?
+
+# Losing changes question when closing font chooser
+LosingChangesQuestion=Czy na pewno chcesz zamknąć to okno i utracić swoje zmiany?
+
+# German translation by text in settings / About
+GermanTranslationText=Niemieckie tłumaczenie:
+

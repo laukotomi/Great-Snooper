@@ -993,3 +993,12 @@ LoadGamesTUSActiveWindow=Загрузка игр и TUS аккаунтов, то
 
 # Network settings
 NetworkText=Сетевые настройки
+
+# Save changes question when closing notificator
+SaveChangesQuestion=Сохранить изменения?
+
+# Losing changes question when closing font chooser
+LosingChangesQuestion=Закрыть, отменив изменения?
+
+# German translation by text in settings / About
+GermanTranslationText=Немецкий перевод:

@@ -718,10 +718,10 @@ EnergySaveModeWinText=Energiesparmodus während der Snooper versteckt ist:
 WaHighPriorityText=Setze den W:A Prozess auf hohe Priorität:
 
 # Notify when notificator is on when hosting/joining a game
-AskNotificatorOffText=Frage nach ob der Benachrichtiger abgeschaltet werden soll wenn ich hoste oder einem Spiel beitrete:
+AskNotificatorOffText=Nachfrage ob der Benachrichtiger abgeschaltet werden soll wenn ich hoste oder einem Spiel beitrete:
 
 # Notify when league searcher is on when hosting/joining a game
-AskLeagueSOffText=Frage nach ob der Liga-Spiel-Finder abgeschaltet werden soll wenn ich hoste oder einem Spiel beitrete:
+AskLeagueSOffText=Nachfrage ob der Liga-Spiel-Finder abgeschaltet werden soll wenn ich hoste oder einem Spiel beitrete:
 
 # Enable tray balloon messages option
 TrayNotificationsText=System-Tray Benachrichtigungen aktivieren:
@@ -739,7 +739,7 @@ WormsNickLabel=#worms Channel Nickname:
 ChangeWormsNickText=WormNet Nickname als #worms Nickname setzen beim Programmstart:
 
 # Show the time when message arrived option
-MessageTimeText=Zeige Nachrichten Zeitstempel:
+MessageTimeText=Zeige Nachrichten-Zeitstempel:
 
 # Action message using > character option
 ActionMessageGTText=Benutze '>' für Aktions-Nachricht:
@@ -915,7 +915,7 @@ JoinCloseText2=Beitreten und Snooper schließen (Alternative WA.exe)
 SilentJoinCloseText2=Leise beitreten und Snooper schließen (Alternative WA.exe)
 
 #Italic font style for Great Snooper users
-ItalicForGSUsers=Kursivschrift für Great Snooper Nutzer:
+ItalicForGSUsers=Great Snooper Nutzer Namen in Kursivschrift:
 
 # When hoster fails to get local ip address
 HosterFailedToGetLocalIP=Konnte die lokale IP-Adresse nicht ermitteln. Bitte versuche mit WomNat2 zu hosten!
@@ -927,13 +927,13 @@ LoadGamesText=Lade Spiele:
 LoadTUSUsersText=Lade TUS Nutzer:
 
 #Load common settings
-LoadCommonSettingsText=Lade allgemeiner Einstellungen (erforderlich für die Liga-Spiel-Suche, den Updater, und die News):
+LoadCommonSettingsText=Lade allgemeine Einstellungen (erforderlich für die Liga-Spiel-Suche, den Updater, und die News):
 
 # Load channel scheme
 LoadChannelSchemeText=Lade das Channel-Schema (erforderlich für das Hosten und Laden von Spielen):
 
 # Use who messages
-UseWhoMessagesText=Verwende WHO Anfragen (erforderlich für die Länder, Rang und Nutzer Info):
+UseWhoMessagesText=Verwende WHO-Anfragen (erforderlich für die Länder, Rang und Nutzer Info):
 
 # View clan profile
 # {0} will be the name of the clan
@@ -965,3 +965,12 @@ LoadGamesTUSActiveWindow=Lade Spiele und TUS Nutzer nur wenn das Programmfenster
 
 # Network settings
 NetworkText=Netzwerk
+
+# Save changes question when closing notificator
+SaveChangesQuestion=Möchtest du die Änderungen übernehmen?
+
+# Losing changes question when closing font chooser
+LosingChangesQuestion=Bist du dir sicher dass du das Fenster schließen und die Änderungen nicht übernehmen möchtest?
+
+# German translation by text in settings / About
+GermanTranslationText=Deutsche Übersetzung von:
