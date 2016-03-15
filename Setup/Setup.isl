@@ -339,25 +339,27 @@
 		<col def="S0">ISDotNetInstallerArgsCommit</col>
 		<col def="S0">ISDotNetInstallerArgsUninstall</col>
 		<col def="S0">ISDotNetInstallerArgsRollback</col>
-		<row><td>GalaSoft.MvvmLight.Extras.dll</td><td>{6EAFD56C-7B15-48D9-AEFA-C49D9E0AC8BE}</td><td>INSTALLDIR</td><td>2</td><td/><td>galasoft.mvvmlight.extras.dl</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>GalaSoft.MvvmLight.dll</td><td>{95B162F3-EC73-43BE-B113-DF035A8D5A94}</td><td>INSTALLDIR</td><td>2</td><td/><td>galasoft.mvvmlight.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Great_Snooper.exe</td><td>{A8998028-DC63-446C-887C-FEA28FAE537B}</td><td>INSTALLDIR</td><td>2</td><td/><td>great_snooper.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Great_Snooper.resources.dll</td><td>{FBBB3624-B22A-469B-B790-8838CAF14198}</td><td>HU_HU</td><td>2</td><td/><td>great_snooper.resources.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Great_Snooper.resources.dll1</td><td>{D4E286D5-930E-4C28-A422-21D7B38FC9F2}</td><td>PL_PL</td><td>2</td><td/><td>great_snooper.resources.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Great_Snooper.resources.dll2</td><td>{48A34593-05C9-4393-B1D9-F6DBF02BE4F9}</td><td>RU_RU</td><td>2</td><td/><td>great_snooper.resources.dll2</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Hardcodet.Wpf.TaskbarNotification.dll</td><td>{46042CE7-8D08-4770-B7A3-F81792F10F83}</td><td>INSTALLDIR</td><td>2</td><td/><td>hardcodet.wpf.taskbarnotific</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Hoster.exe</td><td>{F92639B9-B7FE-4831-A88C-9D04981F4982}</td><td>INSTALLDIR</td><td>2</td><td/><td>hoster.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>GalaSoft.MvvmLight.Extras.dll</td><td>{E280B639-01A3-4B0C-A846-A8BB96BE324F}</td><td>INSTALLDIR</td><td>2</td><td/><td>galasoft.mvvmlight.extras.dl</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>GalaSoft.MvvmLight.dll</td><td>{01B3E839-422C-408A-B7E2-76828D52E727}</td><td>INSTALLDIR</td><td>2</td><td/><td>galasoft.mvvmlight.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Great_Snooper.exe</td><td>{48D7E32B-3F06-4F29-8263-05FB80470593}</td><td>INSTALLDIR</td><td>2</td><td/><td>great_snooper.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Great_Snooper.resources.dll</td><td>{89DA20BC-47C2-4D27-8F27-ED816B92387B}</td><td>HU_HU</td><td>2</td><td/><td>great_snooper.resources.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Great_Snooper.resources.dll1</td><td>{FB3DE4FB-A5B2-410A-BAA0-D1850E25995A}</td><td>PL_PL</td><td>2</td><td/><td>great_snooper.resources.dll1</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Great_Snooper.resources.dll2</td><td>{9BC723DD-8461-4833-AC04-339B7F685BD4}</td><td>RU_RU</td><td>2</td><td/><td>great_snooper.resources.dll2</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Great_Snooper.resources.dll3</td><td>{1491C618-9D9E-4168-9026-5DD0DEBA7889}</td><td>DE_DE</td><td>2</td><td/><td>great_snooper.resources.dll3</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Hardcodet.Wpf.TaskbarNotification.dll</td><td>{6D5A890C-2689-48FE-A60D-CA68A9FA5240}</td><td>INSTALLDIR</td><td>2</td><td/><td>hardcodet.wpf.taskbarnotific</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Hoster.exe</td><td>{C6DC4D43-EEC6-4546-907C-E8F26C986752}</td><td>INSTALLDIR</td><td>2</td><td/><td>hoster.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td>{9C96F052-0317-4FD8-A566-03A0DF9A183A}</td><td>INSTALLDIR</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td>{8BA3C882-6621-4D9F-A884-27C1BE053678}</td><td>SOUNDS</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td>{3DD96E00-C13B-4E55-83DA-ACAF61DD771A}</td><td>HU_HU</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT3</td><td>{0F3F4051-613B-4626-9617-9369A11B35F4}</td><td>PL_PL</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 		<row><td>ISX_DEFAULTCOMPONENT4</td><td>{C362F536-79EC-494B-A1F8-7B4306AC2FFD}</td><td>RU_RU</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>MahApps.Metro.dll</td><td>{3FE47B60-B7BA-4197-BB47-A15BF41888DF}</td><td>INSTALLDIR</td><td>2</td><td/><td>mahapps.metro.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Microsoft.Practices.ServiceLocation.dll</td><td>{A310C67E-A225-4220-B0E4-24423C04392D}</td><td>INSTALLDIR</td><td>2</td><td/><td>microsoft.practices.servicel</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Newtonsoft.Json.dll</td><td>{A6F4E88E-0F53-4A28-BF6E-E815336E1175}</td><td>INSTALLDIR</td><td>2</td><td/><td>newtonsoft.json.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>System.Windows.Interactivity.dll</td><td>{41639E79-7147-47FA-91B5-8370F4E91F3D}</td><td>INSTALLDIR</td><td>2</td><td/><td>system.windows.interactivity</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Updater.exe</td><td>{4F77CC1A-05E6-4B46-A54B-602562F11FE0}</td><td>INSTALLDIR</td><td>2</td><td/><td>updater.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
-		<row><td>Xceed.Wpf.Toolkit.dll</td><td>{DCF76501-8A10-47DD-84C3-FC15162C12DB}</td><td>INSTALLDIR</td><td>2</td><td/><td>xceed.wpf.toolkit.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>ISX_DEFAULTCOMPONENT5</td><td>{D094F7A3-57ED-4C0A-A0D2-B1439D5F7F39}</td><td>DE_DE</td><td>2</td><td/><td/><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>MahApps.Metro.dll</td><td>{8A74F7FA-47F9-4EC4-8FFA-1D3112316380}</td><td>INSTALLDIR</td><td>2</td><td/><td>mahapps.metro.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Microsoft.Practices.ServiceLocation.dll</td><td>{296F010D-5A84-4D59-8F09-14E3260FC98F}</td><td>INSTALLDIR</td><td>2</td><td/><td>microsoft.practices.servicel</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Newtonsoft.Json.dll</td><td>{79D47405-A9DF-4C21-A0AA-AEDBDC8DC021}</td><td>INSTALLDIR</td><td>2</td><td/><td>newtonsoft.json.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>System.Windows.Interactivity.dll</td><td>{8B51558B-35BD-4601-A87D-792AA1F3DD49}</td><td>INSTALLDIR</td><td>2</td><td/><td>system.windows.interactivity</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Updater.exe</td><td>{D303A306-3B38-40AF-8732-A753472496FC}</td><td>INSTALLDIR</td><td>2</td><td/><td>updater.exe</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
+		<row><td>Xceed.Wpf.Toolkit.dll</td><td>{C072C6CF-FD94-450A-BB66-8BAA9421E429}</td><td>INSTALLDIR</td><td>2</td><td/><td>xceed.wpf.toolkit.dll</td><td>17</td><td/><td/><td/><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td><td>/LogFile=</td></row>
 	</table>
 
 	<table name="Condition">
@@ -1066,6 +1068,8 @@
 	<table name="CreateFolder">
 		<col key="yes" def="s72">Directory_</col>
 		<col key="yes" def="s72">Component_</col>
+		<row><td>DE_DE</td><td>Great_Snooper.resources.dll3</td></row>
+		<row><td>DE_DE</td><td>ISX_DEFAULTCOMPONENT5</td></row>
 		<row><td>HU_HU</td><td>Great_Snooper.resources.dll</td></row>
 		<row><td>HU_HU</td><td>ISX_DEFAULTCOMPONENT2</td></row>
 		<row><td>INSTALLDIR</td><td>GalaSoft.MvvmLight.Extras.dll</td></row>
@@ -1074,12 +1078,14 @@
 		<row><td>INSTALLDIR</td><td>Great_Snooper.resources.dll</td></row>
 		<row><td>INSTALLDIR</td><td>Great_Snooper.resources.dll1</td></row>
 		<row><td>INSTALLDIR</td><td>Great_Snooper.resources.dll2</td></row>
+		<row><td>INSTALLDIR</td><td>Great_Snooper.resources.dll3</td></row>
 		<row><td>INSTALLDIR</td><td>Hardcodet.Wpf.TaskbarNotification.dll</td></row>
 		<row><td>INSTALLDIR</td><td>Hoster.exe</td></row>
 		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT</td></row>
 		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT2</td></row>
 		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT3</td></row>
 		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT4</td></row>
+		<row><td>INSTALLDIR</td><td>ISX_DEFAULTCOMPONENT5</td></row>
 		<row><td>INSTALLDIR</td><td>MahApps.Metro.dll</td></row>
 		<row><td>INSTALLDIR</td><td>Microsoft.Practices.ServiceLocation.dll</td></row>
 		<row><td>INSTALLDIR</td><td>Newtonsoft.Json.dll</td></row>
@@ -1176,6 +1182,7 @@
 		<row><td>CommonFiles64Folder</td><td>TARGETDIR</td><td>.:Common64</td><td/><td>0</td><td/></row>
 		<row><td>CommonFilesFolder</td><td>TARGETDIR</td><td>.:Common</td><td/><td>0</td><td/></row>
 		<row><td>DATABASEDIR</td><td>ISYourDataBaseDir</td><td>.</td><td/><td>0</td><td/></row>
+		<row><td>DE_DE</td><td>INSTALLDIR</td><td>de-DE</td><td/><td>0</td><td/></row>
 		<row><td>DesktopFolder</td><td>TARGETDIR</td><td>.:Desktop</td><td/><td>3</td><td/></row>
 		<row><td>FavoritesFolder</td><td>TARGETDIR</td><td>.:FAVORI~1|Favorites</td><td/><td>0</td><td/></row>
 		<row><td>FontsFolder</td><td>TARGETDIR</td><td>.:Fonts</td><td/><td>0</td><td/></row>
@@ -1915,6 +1922,7 @@
 		<row><td>AlwaysInstall</td><td>Great_Snooper.resources.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Great_Snooper.resources.dll1</td></row>
 		<row><td>AlwaysInstall</td><td>Great_Snooper.resources.dll2</td></row>
+		<row><td>AlwaysInstall</td><td>Great_Snooper.resources.dll3</td></row>
 		<row><td>AlwaysInstall</td><td>Hardcodet.Wpf.TaskbarNotification.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Hoster.exe</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT</td></row>
@@ -1922,6 +1930,7 @@
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT2</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT3</td></row>
 		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT4</td></row>
+		<row><td>AlwaysInstall</td><td>ISX_DEFAULTCOMPONENT5</td></row>
 		<row><td>AlwaysInstall</td><td>MahApps.Metro.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Microsoft.Practices.ServiceLocation.dll</td></row>
 		<row><td>AlwaysInstall</td><td>Newtonsoft.Json.dll</td></row>
@@ -1942,35 +1951,36 @@
 		<col def="S255">ISBuildSourcePath</col>
 		<col def="I4">ISAttributes</col>
 		<col def="S72">ISComponentSubFolder_</col>
-		<row><td>buddyjoined.wav</td><td>ISX_DEFAULTCOMPONENT1</td><td>BUDDYJ~1.WAV|buddyjoined.wav</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Sounds\buddyjoined.wav</td><td>1</td><td/></row>
-		<row><td>galasoft.mvvmlight.dll</td><td>GalaSoft.MvvmLight.dll</td><td>GALASO~1.DLL|GalaSoft.MvvmLight.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\GalaSoft.MvvmLight.dll</td><td>1</td><td/></row>
-		<row><td>galasoft.mvvmlight.extras.dl</td><td>GalaSoft.MvvmLight.Extras.dll</td><td>GALASO~1.DLL|GalaSoft.MvvmLight.Extras.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\GalaSoft.MvvmLight.Extras.dll</td><td>1</td><td/></row>
-		<row><td>galasoft.mvvmlight.extras.pd</td><td>ISX_DEFAULTCOMPONENT</td><td>GALASO~1.PDB|GalaSoft.MvvmLight.Extras.pdb</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\GalaSoft.MvvmLight.Extras.pdb</td><td>1</td><td/></row>
-		<row><td>galasoft.mvvmlight.extras.xm</td><td>ISX_DEFAULTCOMPONENT</td><td>GALASO~1.XML|GalaSoft.MvvmLight.Extras.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\GalaSoft.MvvmLight.Extras.xml</td><td>1</td><td/></row>
-		<row><td>galasoft.mvvmlight.pdb</td><td>ISX_DEFAULTCOMPONENT</td><td>GALASO~1.PDB|GalaSoft.MvvmLight.pdb</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\GalaSoft.MvvmLight.pdb</td><td>1</td><td/></row>
-		<row><td>galasoft.mvvmlight.xml</td><td>ISX_DEFAULTCOMPONENT</td><td>GALASO~1.XML|GalaSoft.MvvmLight.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\GalaSoft.MvvmLight.xml</td><td>1</td><td/></row>
-		<row><td>great_snooper.exe</td><td>Great_Snooper.exe</td><td>GREATS~1.EXE|Great Snooper.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Great Snooper.exe</td><td>1</td><td/></row>
-		<row><td>great_snooper.exe.config</td><td>ISX_DEFAULTCOMPONENT</td><td>GREATS~1.CON|Great Snooper.exe.config</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Great Snooper.exe.config</td><td>1</td><td/></row>
-		<row><td>great_snooper.pdb</td><td>ISX_DEFAULTCOMPONENT</td><td>GREATS~1.PDB|Great Snooper.pdb</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Great Snooper.pdb</td><td>1</td><td/></row>
-		<row><td>great_snooper.resources.dll</td><td>Great_Snooper.resources.dll</td><td>GREATS~1.DLL|Great Snooper.resources.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\hu-HU\Great Snooper.resources.dll</td><td>1</td><td/></row>
-		<row><td>great_snooper.resources.dll1</td><td>Great_Snooper.resources.dll1</td><td>GREATS~1.DLL|Great Snooper.resources.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\pl-PL\Great Snooper.resources.dll</td><td>1</td><td/></row>
-		<row><td>great_snooper.resources.dll2</td><td>Great_Snooper.resources.dll2</td><td>GREATS~1.DLL|Great Snooper.resources.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\ru-RU\Great Snooper.resources.dll</td><td>1</td><td/></row>
-		<row><td>hardcodet.wpf.taskbarnotific</td><td>Hardcodet.Wpf.TaskbarNotification.dll</td><td>HARDCO~1.DLL|Hardcodet.Wpf.TaskbarNotification.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Hardcodet.Wpf.TaskbarNotification.dll</td><td>1</td><td/></row>
-		<row><td>hoster.exe</td><td>Hoster.exe</td><td>Hoster.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Hoster.exe</td><td>1</td><td/></row>
-		<row><td>leaguefail.wav</td><td>ISX_DEFAULTCOMPONENT1</td><td>LEAGUE~1.WAV|LeagueFail.wav</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Sounds\LeagueFail.wav</td><td>1</td><td/></row>
-		<row><td>leaguefound.wav</td><td>ISX_DEFAULTCOMPONENT1</td><td>LEAGUE~1.WAV|LeagueFound.wav</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Sounds\LeagueFound.wav</td><td>1</td><td/></row>
-		<row><td>mahapps.metro.dll</td><td>MahApps.Metro.dll</td><td>MAHAPP~1.DLL|MahApps.Metro.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\MahApps.Metro.dll</td><td>1</td><td/></row>
-		<row><td>mahapps.metro.xml</td><td>ISX_DEFAULTCOMPONENT</td><td>MAHAPP~1.XML|MahApps.Metro.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\MahApps.Metro.xml</td><td>1</td><td/></row>
-		<row><td>microsoft.practices.servicel</td><td>Microsoft.Practices.ServiceLocation.dll</td><td>MICROS~1.DLL|Microsoft.Practices.ServiceLocation.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Microsoft.Practices.ServiceLocation.dll</td><td>1</td><td/></row>
-		<row><td>microsoft.practices.servicel1</td><td>ISX_DEFAULTCOMPONENT</td><td>MICROS~1.PDB|Microsoft.Practices.ServiceLocation.pdb</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Microsoft.Practices.ServiceLocation.pdb</td><td>1</td><td/></row>
-		<row><td>microsoft.practices.servicel2</td><td>ISX_DEFAULTCOMPONENT</td><td>MICROS~1.XML|Microsoft.Practices.ServiceLocation.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Microsoft.Practices.ServiceLocation.xml</td><td>1</td><td/></row>
-		<row><td>newtonsoft.json.dll</td><td>Newtonsoft.Json.dll</td><td>NEWTON~1.DLL|Newtonsoft.Json.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Newtonsoft.Json.dll</td><td>1</td><td/></row>
-		<row><td>newtonsoft.json.xml</td><td>ISX_DEFAULTCOMPONENT</td><td>NEWTON~1.XML|Newtonsoft.Json.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Newtonsoft.Json.xml</td><td>1</td><td/></row>
-		<row><td>pmbeep.wav</td><td>ISX_DEFAULTCOMPONENT1</td><td>pmbeep.wav</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Sounds\pmbeep.wav</td><td>1</td><td/></row>
-		<row><td>pmbeepold.wav</td><td>ISX_DEFAULTCOMPONENT1</td><td>PMBEEP~1.WAV|pmbeepold.wav</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Sounds\pmbeepold.wav</td><td>1</td><td/></row>
-		<row><td>system.windows.interactivity</td><td>System.Windows.Interactivity.dll</td><td>SYSTEM~1.DLL|System.Windows.Interactivity.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\System.Windows.Interactivity.dll</td><td>1</td><td/></row>
-		<row><td>updater.exe</td><td>Updater.exe</td><td>Updater.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Updater.exe</td><td>1</td><td/></row>
-		<row><td>xceed.wpf.toolkit.dll</td><td>Xceed.Wpf.Toolkit.dll</td><td>XCEEDW~1.DLL|Xceed.Wpf.Toolkit.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelase\Xceed.Wpf.Toolkit.dll</td><td>1</td><td/></row>
+		<row><td>buddyjoined.wav</td><td>ISX_DEFAULTCOMPONENT1</td><td>BUDDYJ~1.WAV|buddyjoined.wav</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Sounds\buddyjoined.wav</td><td>1</td><td/></row>
+		<row><td>galasoft.mvvmlight.dll</td><td>GalaSoft.MvvmLight.dll</td><td>GALASO~1.DLL|GalaSoft.MvvmLight.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\GalaSoft.MvvmLight.dll</td><td>1</td><td/></row>
+		<row><td>galasoft.mvvmlight.extras.dl</td><td>GalaSoft.MvvmLight.Extras.dll</td><td>GALASO~1.DLL|GalaSoft.MvvmLight.Extras.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\GalaSoft.MvvmLight.Extras.dll</td><td>1</td><td/></row>
+		<row><td>galasoft.mvvmlight.extras.pd</td><td>ISX_DEFAULTCOMPONENT</td><td>GALASO~1.PDB|GalaSoft.MvvmLight.Extras.pdb</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\GalaSoft.MvvmLight.Extras.pdb</td><td>1</td><td/></row>
+		<row><td>galasoft.mvvmlight.extras.xm</td><td>ISX_DEFAULTCOMPONENT</td><td>GALASO~1.XML|GalaSoft.MvvmLight.Extras.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\GalaSoft.MvvmLight.Extras.xml</td><td>1</td><td/></row>
+		<row><td>galasoft.mvvmlight.pdb</td><td>ISX_DEFAULTCOMPONENT</td><td>GALASO~1.PDB|GalaSoft.MvvmLight.pdb</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\GalaSoft.MvvmLight.pdb</td><td>1</td><td/></row>
+		<row><td>galasoft.mvvmlight.xml</td><td>ISX_DEFAULTCOMPONENT</td><td>GALASO~1.XML|GalaSoft.MvvmLight.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\GalaSoft.MvvmLight.xml</td><td>1</td><td/></row>
+		<row><td>great_snooper.exe</td><td>Great_Snooper.exe</td><td>GREATS~1.EXE|Great Snooper.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Great Snooper.exe</td><td>1</td><td/></row>
+		<row><td>great_snooper.exe.config</td><td>ISX_DEFAULTCOMPONENT</td><td>GREATS~1.CON|Great Snooper.exe.config</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Great Snooper.exe.config</td><td>1</td><td/></row>
+		<row><td>great_snooper.pdb</td><td>ISX_DEFAULTCOMPONENT</td><td>GREATS~1.PDB|Great Snooper.pdb</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Great Snooper.pdb</td><td>1</td><td/></row>
+		<row><td>great_snooper.resources.dll</td><td>Great_Snooper.resources.dll</td><td>GREATS~1.DLL|Great Snooper.resources.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\hu-HU\Great Snooper.resources.dll</td><td>1</td><td/></row>
+		<row><td>great_snooper.resources.dll1</td><td>Great_Snooper.resources.dll1</td><td>GREATS~1.DLL|Great Snooper.resources.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\pl-PL\Great Snooper.resources.dll</td><td>1</td><td/></row>
+		<row><td>great_snooper.resources.dll2</td><td>Great_Snooper.resources.dll2</td><td>GREATS~1.DLL|Great Snooper.resources.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\ru-RU\Great Snooper.resources.dll</td><td>1</td><td/></row>
+		<row><td>great_snooper.resources.dll3</td><td>Great_Snooper.resources.dll3</td><td>GREATS~1.DLL|Great Snooper.resources.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\de-DE\Great Snooper.resources.dll</td><td>1</td><td/></row>
+		<row><td>hardcodet.wpf.taskbarnotific</td><td>Hardcodet.Wpf.TaskbarNotification.dll</td><td>HARDCO~1.DLL|Hardcodet.Wpf.TaskbarNotification.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Hardcodet.Wpf.TaskbarNotification.dll</td><td>1</td><td/></row>
+		<row><td>hoster.exe</td><td>Hoster.exe</td><td>Hoster.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Hoster.exe</td><td>1</td><td/></row>
+		<row><td>leaguefail.wav</td><td>ISX_DEFAULTCOMPONENT1</td><td>LEAGUE~1.WAV|LeagueFail.wav</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Sounds\LeagueFail.wav</td><td>1</td><td/></row>
+		<row><td>leaguefound.wav</td><td>ISX_DEFAULTCOMPONENT1</td><td>LEAGUE~1.WAV|LeagueFound.wav</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Sounds\LeagueFound.wav</td><td>1</td><td/></row>
+		<row><td>mahapps.metro.dll</td><td>MahApps.Metro.dll</td><td>MAHAPP~1.DLL|MahApps.Metro.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\MahApps.Metro.dll</td><td>1</td><td/></row>
+		<row><td>mahapps.metro.xml</td><td>ISX_DEFAULTCOMPONENT</td><td>MAHAPP~1.XML|MahApps.Metro.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\MahApps.Metro.xml</td><td>1</td><td/></row>
+		<row><td>microsoft.practices.servicel</td><td>Microsoft.Practices.ServiceLocation.dll</td><td>MICROS~1.DLL|Microsoft.Practices.ServiceLocation.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Microsoft.Practices.ServiceLocation.dll</td><td>1</td><td/></row>
+		<row><td>microsoft.practices.servicel1</td><td>ISX_DEFAULTCOMPONENT</td><td>MICROS~1.PDB|Microsoft.Practices.ServiceLocation.pdb</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Microsoft.Practices.ServiceLocation.pdb</td><td>1</td><td/></row>
+		<row><td>microsoft.practices.servicel2</td><td>ISX_DEFAULTCOMPONENT</td><td>MICROS~1.XML|Microsoft.Practices.ServiceLocation.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Microsoft.Practices.ServiceLocation.xml</td><td>1</td><td/></row>
+		<row><td>newtonsoft.json.dll</td><td>Newtonsoft.Json.dll</td><td>NEWTON~1.DLL|Newtonsoft.Json.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Newtonsoft.Json.dll</td><td>1</td><td/></row>
+		<row><td>newtonsoft.json.xml</td><td>ISX_DEFAULTCOMPONENT</td><td>NEWTON~1.XML|Newtonsoft.Json.xml</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Newtonsoft.Json.xml</td><td>1</td><td/></row>
+		<row><td>pmbeep.wav</td><td>ISX_DEFAULTCOMPONENT1</td><td>pmbeep.wav</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Sounds\pmbeep.wav</td><td>1</td><td/></row>
+		<row><td>pmbeepold.wav</td><td>ISX_DEFAULTCOMPONENT1</td><td>PMBEEP~1.WAV|pmbeepold.wav</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Sounds\pmbeepold.wav</td><td>1</td><td/></row>
+		<row><td>system.windows.interactivity</td><td>System.Windows.Interactivity.dll</td><td>SYSTEM~1.DLL|System.Windows.Interactivity.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\System.Windows.Interactivity.dll</td><td>1</td><td/></row>
+		<row><td>updater.exe</td><td>Updater.exe</td><td>Updater.exe</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Updater.exe</td><td>1</td><td/></row>
+		<row><td>xceed.wpf.toolkit.dll</td><td>Xceed.Wpf.Toolkit.dll</td><td>XCEEDW~1.DLL|Xceed.Wpf.Toolkit.dll</td><td>0</td><td/><td/><td/><td>1</td><td>C:\GSRelease\Xceed.Wpf.Toolkit.dll</td><td>1</td><td/></row>
 	</table>
 
 	<table name="FileSFPCatalog">
@@ -2115,25 +2125,27 @@
 		<col def="S0">FTPLocation</col>
 		<col def="S0">HTTPLocation</col>
 		<col def="S0">Miscellaneous</col>
-		<row><td>GalaSoft.MvvmLight.Extras.dll</td><td/><td/><td>_64F24FA9_A4C6_433A_A542_CEC775F532CA_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>GalaSoft.MvvmLight.dll</td><td/><td/><td>_37FA6EEA_0531_4F84_AC78_A659AFC1212C_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Great_Snooper.exe</td><td/><td/><td>_F00813E2_6D0E_4DB9_A612_4E9D1E348DA1_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Great_Snooper.resources.dll</td><td/><td/><td>_E0FD72B6_C5AD_4A6C_9F92_F267C96499E0_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Great_Snooper.resources.dll1</td><td/><td/><td>_C4C82FEA_8479_497D_B605_6A99288280FF_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Great_Snooper.resources.dll2</td><td/><td/><td>_F03C53C5_C7D5_4ECA_90DD_4F67C383E9E7_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Hardcodet.Wpf.TaskbarNotification.dll</td><td/><td/><td>_3E79A481_D9B5_4901_9185_7ABFC6D6A73D_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Hoster.exe</td><td/><td/><td>_747E975A_BD72_4DEE_804D_0EE3E6346857_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>GalaSoft.MvvmLight.Extras.dll</td><td/><td/><td>_1CA7504A_AB6A_4375_8285_99C4F332C68B_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>GalaSoft.MvvmLight.dll</td><td/><td/><td>_CC9E7D17_0AB0_443B_BE95_1030AE4C0E8E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Great_Snooper.exe</td><td/><td/><td>_18643A96_7376_4F05_B4FB_398A1871F8C6_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Great_Snooper.resources.dll</td><td/><td/><td>_95F1EF3A_C893_425F_B671_1DC51FC03012_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Great_Snooper.resources.dll1</td><td/><td/><td>_FD523E53_9692_477A_8A8B_B139D1AD34ED_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Great_Snooper.resources.dll2</td><td/><td/><td>_718E52CF_E234_48CF_A374_82A511DA86C5_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Great_Snooper.resources.dll3</td><td/><td/><td>_1244DCE8_8892_4FB4_90E3_0A0BAAC5EB5D_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Hardcodet.Wpf.TaskbarNotification.dll</td><td/><td/><td>_FB629F40_41B4_456F_8448_1C3C9188ED1E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Hoster.exe</td><td/><td/><td>_0D74055E_0710_4DB3_A1A3_A65B98D917F2_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT</td><td/><td/><td>_F1A6B242_0B47_48B1_9160_C1BF6B36CCF0_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT1</td><td/><td/><td>_A698FBE8_742E_47CB_B6AE_B6D76E2FA891_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT2</td><td/><td/><td>_46CA6FB2_07D0_4048_865C_D0EC850CA70B_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT3</td><td/><td/><td>_1A14826F_1E94_42FA_8715_030997829DCE_FILTER</td><td/><td/><td/><td/></row>
 		<row><td>ISX_DEFAULTCOMPONENT4</td><td/><td/><td>_7C2A2E01_C39B_4293_96ED_D66A55F2323A_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>MahApps.Metro.dll</td><td/><td/><td>_AEC02C0C_D73B_463F_A54C_A1059E076418_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Microsoft.Practices.ServiceLocation.dll</td><td/><td/><td>_184D778A_8B55_4E6E_943B_D21987C72B8A_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Newtonsoft.Json.dll</td><td/><td/><td>_52F7522E_CB2A_4DBB_9557_8138B6962785_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>System.Windows.Interactivity.dll</td><td/><td/><td>_5B2C84BE_8AB3_4378_9B08_00563B267487_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Updater.exe</td><td/><td/><td>_BC9B43F6_FEC1_496C_909D_61745E3B9A61_FILTER</td><td/><td/><td/><td/></row>
-		<row><td>Xceed.Wpf.Toolkit.dll</td><td/><td/><td>_ED642E37_9AFA_4E68_9890_003263B964EB_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>ISX_DEFAULTCOMPONENT5</td><td/><td/><td>_129B6575_CC17_4324_AA99_1691E68581BB_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>MahApps.Metro.dll</td><td/><td/><td>_2876A840_00DD_4A91_8E6A_0DCE57A4A192_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Microsoft.Practices.ServiceLocation.dll</td><td/><td/><td>_A5CF8C62_A061_4E35_9584_79EC9DA16B64_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Newtonsoft.Json.dll</td><td/><td/><td>_F4DD3E63_3999_4A54_ADBA_E1E96356291E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>System.Windows.Interactivity.dll</td><td/><td/><td>_83BEB4A0_D494_4F6A_B3DE_F9EFF761D22E_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Updater.exe</td><td/><td/><td>_1EFA0E91_4C8F_44A4_879D_2EDD91DBBAB3_FILTER</td><td/><td/><td/><td/></row>
+		<row><td>Xceed.Wpf.Toolkit.dll</td><td/><td/><td>_E9C80488_4D48_4AE9_98C5_B621DCE43586_FILTER</td><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="ISCustomActionReference">
@@ -3561,6 +3573,9 @@
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME11</td><td>1033</td><td>Great Snooper.exe</td><td>0</td><td/><td>-123431083</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME12</td><td>1033</td><td>LAUNCH~1.EXE|Launch Hoster.exe</td><td>0</td><td/><td>-123427019</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME13</td><td>1033</td><td>LAUNCH~1.EXE|Launch Updater.exe</td><td>0</td><td/><td>-123427019</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME14</td><td>1033</td><td>LAUNCH~1.EXE|Launch Great Snooper.exe</td><td>0</td><td/><td>2040838603</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME15</td><td>1033</td><td>LAUNCH~1.EXE|Launch Hoster.exe</td><td>0</td><td/><td>2040840651</td></row>
+		<row><td>IDS_SHORTCUT_DISPLAY_NAME16</td><td>1033</td><td>LAUNCH~1.EXE|Launch Updater.exe</td><td>0</td><td/><td>2040850891</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME2</td><td>1033</td><td>LAUNCH~1.EXE|Launch Hoster.exe</td><td>0</td><td/><td>-1054643505</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME3</td><td>1033</td><td>LAUNCH~1.EXE|Launch Updater.exe</td><td>0</td><td/><td>-1054647569</td></row>
 		<row><td>IDS_SHORTCUT_DISPLAY_NAME4</td><td>1033</td><td>LAUNCH~1.EXE|Launch Updater2.exe</td><td>0</td><td/><td>161699275</td></row>
@@ -3987,8 +4002,11 @@
 		<row><td>Great_Snooper.exe1_3DD80C28B56E4567B15AE6ABF5CE98FB.exe</td><td/><td>C:\VS\Great-Snooper\MySnooper\bin\Release\Great Snooper.exe</td><td>0</td></row>
 		<row><td>Great_Snooper.exe1_F922274A91BE4A54A54223B7DD36E544.exe</td><td/><td>C:\GSRelase\Great Snooper.exe</td><td>0</td></row>
 		<row><td>Great_Snooper.exe_078A1B48D2264664AB2E59D28D8D09DC.exe</td><td/><td>C:\GSRelase\Great Snooper.exe</td><td>0</td></row>
+		<row><td>Great_Snooper.exe_388738A4B4CB4737A189FCB9F07D3AB0.exe</td><td/><td>C:\GSRelease\Great Snooper.exe</td><td>0</td></row>
 		<row><td>Great_Snooper.exe_8F1A1F2D28A34D0799CDAFC2F8685109.exe</td><td/><td>D:\VS\Great-Snooper\MySnooper\bin\Release\Great Snooper.exe</td><td>0</td></row>
 		<row><td>Great_Snooper.exe_CEF6E5FD20B0486B82D38A3EC27E6F1B.exe</td><td/><td>C:\VS\Great-Snooper\MySnooper\bin\Release\Great Snooper.exe</td><td>0</td></row>
+		<row><td>Hoster.exe_715F061689A142D9B3D8868D381A4FB7.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\GenericExe.ico</td><td>0</td></row>
+		<row><td>Updater.exe_0F92BB9E60044D83A7622497840C4614.exe</td><td/><td>&lt;ISProductFolder&gt;\redist\Language Independent\OS Independent\GenericExe.ico</td><td>0</td></row>
 	</table>
 
 	<table name="IniFile">
@@ -4499,7 +4517,7 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<row><td>PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS</td><td>##IDS_PROGMSG_IIS_ROLLBACKWEBSERVICEEXTENSIONS##</td><td/></row>
 		<row><td>ProductCode</td><td>{A65AA4F2-6053-4251-8421-DCCD960E307B}</td><td/></row>
 		<row><td>ProductName</td><td>Great Snooper</td><td/></row>
-		<row><td>ProductVersion</td><td>2.01.0000</td><td/></row>
+		<row><td>ProductVersion</td><td>2.02.0000</td><td/></row>
 		<row><td>ProgressType0</td><td>install</td><td/></row>
 		<row><td>ProgressType1</td><td>Installing</td><td/></row>
 		<row><td>ProgressType2</td><td>installed</td><td/></row>
@@ -4576,6 +4594,8 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="s72">DirProperty</col>
 		<col def="i2">InstallMode</col>
 		<row><td>Great_Snooper.exe</td><td>Great_Snooper.exe</td><td/><td>greats_1_great_snooper1</td><td>2</td></row>
+		<row><td>Hoster.exe</td><td>Hoster.exe</td><td/><td>greats_1_great_snooper1</td><td>2</td></row>
+		<row><td>Updater.exe</td><td>Updater.exe</td><td/><td>greats_1_great_snooper1</td><td>2</td></row>
 	</table>
 
 	<table name="RemoveIniFile">
@@ -4661,8 +4681,9 @@ UwBpAG4AZwBsAGUASQBtAGEAZwBlAAEARQB4AHAAcgBlAHMAcwA=
 		<col def="S255">ISComments</col>
 		<col def="S255">ISShortcutName</col>
 		<col def="I4">ISAttributes</col>
-		<row><td>Great_Snooper.exe</td><td>greats_1_great_snooper1</td><td>##IDS_SHORTCUT_DISPLAY_NAME11##</td><td>Great_Snooper.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Great_Snooper.exe_078A1B48D2264664AB2E59D28D8D09DC.exe</td><td>1</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
-		<row><td>Great_Snooper.exe1</td><td>DesktopFolder</td><td>##IDS_SHORTCUT_DISPLAY_NAME11##</td><td>Great_Snooper.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Great_Snooper.exe1_F922274A91BE4A54A54223B7DD36E544.exe</td><td>1</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>Great_Snooper.exe</td><td>greats_1_great_snooper1</td><td>##IDS_SHORTCUT_DISPLAY_NAME14##</td><td>Great_Snooper.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Great_Snooper.exe_388738A4B4CB4737A189FCB9F07D3AB0.exe</td><td>1</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>Hoster.exe</td><td>greats_1_great_snooper1</td><td>##IDS_SHORTCUT_DISPLAY_NAME15##</td><td>Hoster.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Hoster.exe_715F061689A142D9B3D8868D381A4FB7.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
+		<row><td>Updater.exe</td><td>greats_1_great_snooper1</td><td>##IDS_SHORTCUT_DISPLAY_NAME16##</td><td>Updater.exe</td><td>AlwaysInstall</td><td/><td/><td/><td>Updater.exe_0F92BB9E60044D83A7622497840C4614.exe</td><td>0</td><td>1</td><td>INSTALLDIR</td><td/><td/><td/><td/><td/><td/><td/></row>
 	</table>
 
 	<table name="Signature">
