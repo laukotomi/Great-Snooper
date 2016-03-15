@@ -1277,4 +1277,16 @@
     <value>Сетевые настройки</value>
     <comment>Network settings</comment>
   </data>
+  <data name="SaveChangesQuestion" xml:space="preserve">
+    <value>Сохранить изменения?</value>
+    <comment>Save changes question when closing notificator</comment>
+  </data>
+  <data name="LosingChangesQuestion" xml:space="preserve">
+    <value>Закрыть, отменив изменения?</value>
+    <comment>Losing changes question when closing font chooser</comment>
+  </data>
+  <data name="GermanTranslationText" xml:space="preserve">
+    <value>Немецкий перевод:</value>
+    <comment>German translation by text in settings / About</comment>
+  </data>
 </root>

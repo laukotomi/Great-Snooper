@@ -14,7 +14,7 @@ namespace GreatSnooper.Helpers
         public const int MaxMessagesInMemory = 1000;
         public const int MaxMessagesDisplayed = 100;
         public const int NumOfOldMessagesToBeLoaded = 50;
-        public const int WebRequestTimeout = 15000;
+        public const int WebRequestTimeout = 60000;
         public const int LastMessageCapacity = 10;
 
 

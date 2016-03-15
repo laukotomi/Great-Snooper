@@ -123,10 +123,7 @@ namespace GreatSnooper.Classes
 
         public void Reconnect()
         {
-            if (this.State != ConnectionStates.Disconnected)
-                return;
-
-            if (this.State == ConnectionStates.Disconnecting)
+            if (this.State != ConnectionStates.Disconnected || this.State == ConnectionStates.Disconnecting)
             {
                 Stop(ErrorStates.None);
                 return;
@@ -153,14 +150,11 @@ namespace GreatSnooper.Classes
         {
             try
             {
-                if (this.State == ConnectionStates.Disconnecting)
+                if (this.State == ConnectionStates.Disconnecting || this.State != ConnectionStates.ReConnecting)
                 {
                     Stop(ErrorStates.None);
                     return;
                 }
-
-                if (this.State != ConnectionStates.ReConnecting)
-                    return;
 
                 if (DateTime.Now - lastReconnectAttempt > reconnectTimeout)
                     Connect();
@@ -177,7 +171,10 @@ namespace GreatSnooper.Classes
         public void Connect()
         {
             if (this.State != ConnectionStates.Disconnected && this.State != ConnectionStates.ReConnecting)
+            {
+                Stop(ErrorStates.None);
                 return;
+            }
             if (this.State == ConnectionStates.Disconnected)
                 this.State = ConnectionStates.Connecting;
 
@@ -201,13 +198,6 @@ namespace GreatSnooper.Classes
                         ircServer = null;
                     }
 
-                    // Connect to server
-                    ircServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    ircServer.SendTimeout = 15000;
-                    ircServer.ReceiveBufferSize = 10240;
-                    Debug.WriteLine("Trying to connect " + this.ServerAddress + ":" + serverPort.ToString());
-                    ircServer.Connect(System.Net.Dns.GetHostAddresses(ServerAddress), serverPort);
-
                     // Reset things
                     lastServerAction = DateTime.Now;
                     pingSent = false;
@@ -216,6 +206,13 @@ namespace GreatSnooper.Classes
                     string message;
                     while (messages.TryDequeue(out message)) ;
                     recvMessage.Clear();
+
+                    // Connect to server
+                    ircServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    ircServer.SendTimeout = 60000;
+                    ircServer.ReceiveBufferSize = 10240;
+                    Debug.WriteLine("Trying to connect " + this.ServerAddress + ":" + serverPort.ToString());
+                    ircServer.Connect(System.Net.Dns.GetHostAddresses(ServerAddress), serverPort);
 
                     // Let's log in
                     SendLoginMessages();
@@ -258,7 +255,7 @@ namespace GreatSnooper.Classes
 
         private void TrySendQuitMessage()
         {
-            ircServer.SendTimeout = 3000;
+            ircServer.SendTimeout = 5000;
             if (Properties.Settings.Default.QuitMessagee.Length > 0)
                 Send(this, "QUIT :" + Properties.Settings.Default.QuitMessagee);
             else
@@ -269,7 +266,10 @@ namespace GreatSnooper.Classes
         private void timer_Elapsed(object state)
         {
             if (this.State == ConnectionStates.Disconnected)
+            {
+                Stop(ErrorStates.None);
                 return;
+            }
 
             try
             {
@@ -729,7 +729,7 @@ namespace GreatSnooper.Classes
                         //if (!this.IsWormNet)
                         //    Send("authserv auth " + this.User.Name + " " + Properties.Settings.Default.WormsPassword);
 
-                        if (this.State == ConnectionStates.Connecting)
+                        if (this.State == ConnectionStates.Connecting || this.State == ConnectionStates.ReConnecting)
                             this.State = ConnectionStates.Connected;
                     }
                     break;

@@ -520,6 +520,7 @@
                         <Setter Property="Background" Value="Transparent" />
                         <Setter Property="SnapsToDevicePixels" Value="True" />
                         <Setter Property="Foreground" Value="{DynamicResource GrayNormalBrush}" />
+                        <Setter Property="FontWeight" Value="Normal" />
                     </Style>
                     
                     <Style TargetType="TabItem" BasedOn="{StaticResource baseTabItem}" x:Key="channelTabItem">
@@ -538,7 +539,7 @@
                                               VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
                                               TextElement.FontSize="15"
                                               TextElement.FontStretch="{TemplateBinding controls:ControlsHelper.HeaderFontStretch}"
-                                              TextElement.FontWeight="{TemplateBinding controls:ControlsHelper.HeaderFontWeight}"
+                                              TextElement.FontWeight="{TemplateBinding FontWeight}"
                                               TextElement.Foreground="{TemplateBinding Foreground}"
                                               Content="{Binding Path=Name, Mode=OneTime}"
                                               RecognizesAccessKey="True"
@@ -553,15 +554,15 @@
                                         </Border.ContextMenu>
                                     </Border>
                                     <ControlTemplate.Triggers>
-                                        <DataTrigger Binding="{Binding IsHighlighted}" Value="True">
-                                            <Setter Property="FontWeight" Value="Bold" />
-                                        </DataTrigger>
                                         <Trigger Property="IsMouseOver" Value="True" SourceName="ContentSite">
                                             <Setter Property="Foreground" Value="{DynamicResource GrayHoverBrush}" />
                                         </Trigger>
                                         <Trigger Property="IsSelected" Value="True">
                                             <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
                                         </Trigger>
+                                        <DataTrigger Binding="{Binding Path=IsHighlighted, Mode=OneWay}" Value="True">
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                        </DataTrigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
                             </Setter.Value>

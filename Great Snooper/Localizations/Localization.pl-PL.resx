@@ -226,7 +226,7 @@
     <comment>What is TUS login? question in the login window when TUS login is selected</comment>
   </data>
   <data name="WhatIsTusLoginText" xml:space="preserve">
-    <value>TUS to skrót od The Ultimate Site. Jest to strona internetowa poświęcona grze Worms: Armageddon posiadająca mnóstwo rzeczy z nią związanych, takich jak: ligi, puchary, turnieje, schematy, mapy, forum, itd.. Wspiera ona również Snoopery. Jeżeli zalogujesz się za pomocą swojego konta TUS w Snooperze, to ranga będzie odzwierciedlała Twoją obecną rangę z lig TUS, nazwa Twojego klanu również będzie odczytana z owej bazy danych oraz otrzymasz status online na stronie. . Możesz także ustawić inny pseudonim i hasło do logowania w Snooperze na stronie TUS-a w Twoich ustawieniach konta.</value>
+    <value>TUS to skrót od The Ultimate Site. Jest to strona internetowa poświęcona grze Worms: Armageddon posiadająca mnóstwo rzeczy z nią związanych, takich jak: ligi, puchary, turnieje, schematy, mapy, forum itd.. Wspiera ona również Snoopery. Jeżeli zalogujesz się za pomocą swojego konta TUS w Snooperze, to ranga będzie odzwierciedlała Twoją obecną rangę z lig TUS, nazwa Twojego klanu również będzie odczytana z owej bazy danych oraz otrzymasz status online na stronie. . Możesz także ustawić inny pseudonim i hasło do logowania w Snooperze na stronie TUS-a w Twoich ustawieniach konta.</value>
     <comment>The text of the popup message when What is TUS login? link is clicked</comment>
   </data>
   <data name="LogInText" xml:space="preserve">
@@ -578,7 +578,7 @@
     <comment>The text of the popup message when there is new version of the snooper available</comment>
   </data>
   <data name="UpdaterFailText" xml:space="preserve">
-    <value>Uruchomienie aktualizatora nie powiodło się! Proszę spróbować uruchomić go ręcznie z katalogu instalacyjnego programu Great Snooper!</value>
+    <value>Uruchomienie Aktualizatora nie powiodło się! Proszę spróbować uruchomić go ręcznie z katalogu instalacyjnego programu Great Snooper!</value>
     <comment>The text of the popup message when starting of the updater fails</comment>
   </data>
   <data name="SpamStopMessage" xml:space="preserve">
@@ -1262,7 +1262,7 @@
     <comment>Reset settings button label in General Settings</comment>
   </data>
   <data name="ResetSettingsConfirm" xml:space="preserve">
-    <value>Czy jesteś pewien, aby zresetować ustawienia? Wszystkie informacje zostaną utracone.</value>
+    <value>Czy na pewno zresetować ustawienia? Wszystkie informacje zostaną utracone.</value>
     <comment>Reset settings button label in General Settings</comment>
   </data>
   <data name="RestartToApplyChanges" xml:space="preserve">
@@ -1276,5 +1276,17 @@
   <data name="NetworkText" xml:space="preserve">
     <value>Sieć</value>
     <comment>Network settings</comment>
+  </data>
+  <data name="SaveChangesQuestion" xml:space="preserve">
+    <value>Czy chcesz zapisać zmiany?</value>
+    <comment>Save changes question when closing notificator</comment>
+  </data>
+  <data name="LosingChangesQuestion" xml:space="preserve">
+    <value>Czy na pewno chcesz zamknąć to okno i utracić swoje zmiany?</value>
+    <comment>Losing changes question when closing font chooser</comment>
+  </data>
+  <data name="GermanTranslationText" xml:space="preserve">
+    <value>Niemieckie tłumaczenie:</value>
+    <comment>German translation by text in settings / About</comment>
   </data>
 </root>

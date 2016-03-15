@@ -77,7 +77,7 @@ namespace GreatSnooper.ViewModel
                 if (_isHighlighted != value)
                 {
                     _isHighlighted = value;
-                    RaisePropertyChanged("IsHightlighted");
+                    RaisePropertyChanged("IsHighlighted");
                 }
             }
         }
