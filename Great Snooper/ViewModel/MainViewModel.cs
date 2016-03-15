@@ -705,24 +705,21 @@ namespace GreatSnooper.ViewModel
 
             for (int i = 0; i < this.Servers.Length; i++)
             {
-                if (this.Servers[i].State == AbstractCommunicator.ConnectionStates.Connected)
+                foreach (var item in this.Servers[i].Channels)
                 {
-                    foreach (var item in this.Servers[i].Channels)
+                    if (item.Value is ChannelViewModel)
                     {
-                        if (item.Value is ChannelViewModel)
+                        var chvm = (ChannelViewModel)item.Value;
+                        if (chvm.UserListDG != null)
                         {
-                            var chvm = (ChannelViewModel)item.Value;
-                            if (chvm.UserListDG != null)
-                            {
-                                chvm.UserListDG.ItemsSource = chvm.Users;
-                                chvm.UserListDG.SetDefaultOrderForGrid();
-                            }
-                            if (chvm.GameListGrid != null)
-                                chvm.GameListGrid.DataContext = chvm;
+                            chvm.UserListDG.ItemsSource = chvm.Users;
+                            chvm.UserListDG.SetDefaultOrderForGrid();
                         }
-                        if (item.Value.Joined && item.Value.NewMessagesCount != 0)
-                            item.Value.LoadNewMessages();
+                        if (chvm.GameListGrid != null)
+                            chvm.GameListGrid.DataContext = chvm;
                     }
+                    if (item.Value.Joined && item.Value.NewMessagesCount != 0)
+                        item.Value.LoadNewMessages();
                 }
             }
         }
@@ -1151,13 +1148,10 @@ namespace GreatSnooper.ViewModel
                         StringComparer.OrdinalIgnoreCase); 
                     foreach (var server in this.Servers)
                     {
-                        if (server.State == AbstractCommunicator.ConnectionStates.Connected)
+                        foreach (var chvm in server.Channels)
                         {
-                            foreach (var chvm in server.Channels)
-                            {
-                                if (this.Channels.Any(x => x.Name.Equals(chvm.Key, StringComparison.OrdinalIgnoreCase)) == false && GlobalManager.HiddenChannels.Contains(chvm.Key) == false)
-                                    this.Channels.Add(chvm.Value);
-                            }
+                            if (this.Channels.Any(x => x.Name.Equals(chvm.Key, StringComparison.OrdinalIgnoreCase)) == false && GlobalManager.HiddenChannels.Contains(chvm.Key) == false)
+                                this.Channels.Add(chvm.Value);
                         }
                     }
                     break;
@@ -1184,13 +1178,10 @@ namespace GreatSnooper.ViewModel
                 case "ShowBannedMessages":
                     for (int i = 0; i < this.Servers.Length; i++)
                     {
-                        if (this.Servers[i].State == AbstractCommunicator.ConnectionStates.Connected)
+                        foreach (var item in this.Servers[i].Channels)
                         {
-                            foreach (var item in this.Servers[i].Channels)
-                            {
-                                if (item.Value.Joined)
-                                    item.Value.LoadMessages(GlobalManager.MaxMessagesDisplayed, true);
-                            }
+                            if (item.Value.Joined)
+                                item.Value.LoadMessages(GlobalManager.MaxMessagesDisplayed, true);
                         }
                     }
                     break;
@@ -1220,19 +1211,10 @@ namespace GreatSnooper.ViewModel
                 case "ItalicForGSUsers":
                     for (int i = 0; i < this.Servers.Length; i++)
                     {
-                        if (this.Servers[i].State == AbstractCommunicator.ConnectionStates.Connected)
+                        foreach (var item in this.Servers[i].Users)
                         {
-                            foreach (var item in this.Servers[i].Channels)
-                            {
-                                if (item.Value is ChannelViewModel && item.Value.Joined)
-                                {
-                                    foreach (var user in item.Value.Users)
-                                    {
-                                        if (user.UsingGreatSnooper)
-                                            user.RaisePropertyChangedPublic("UsingGreatSnooperItalic");
-                                    }
-                                }
-                            }
+                            if (item.Value.UsingGreatSnooper && item.Value.Channels.Count > 0)
+                                item.Value.RaisePropertyChangedPublic("UsingGreatSnooperItalic");
                         }
                     }
                     break;
@@ -2066,42 +2048,39 @@ namespace GreatSnooper.ViewModel
         {
             foreach (var server in this.Servers)
             {
-                if (server.State == AbstractCommunicator.ConnectionStates.Connected)
+                User u;
+                if (server.Users.TryGetValue(userName, out u))
                 {
-                    User u;
-                    if (server.Users.TryGetValue(userName, out u))
+                    u.IsBanned = !u.IsBanned;
+                    if (u.IsBanned)
+                        GlobalManager.BanList.Add(u.Name);
+                    else
+                        GlobalManager.BanList.Remove(u.Name);
+                    SettingsHelper.Save("BanList", GlobalManager.BanList);
+
+                    // Reload channel messages where this user was active
+                    if (!Properties.Settings.Default.ShowBannedMessages)
                     {
-                        u.IsBanned = !u.IsBanned;
-                        if (u.IsBanned)
-                            GlobalManager.BanList.Add(u.Name);
-                        else
-                            GlobalManager.BanList.Remove(u.Name);
-                        SettingsHelper.Save("BanList", GlobalManager.BanList);
-
-                        // Reload channel messages where this user was active
-                        if (!Properties.Settings.Default.ShowBannedMessages)
+                        foreach (var chvm in u.Channels)
                         {
-                            foreach (var chvm in u.Channels)
+                            if (chvm.Joined)
                             {
-                                if (chvm.Joined)
-                                {
-                                    chvm.LoadMessages(GlobalManager.MaxMessagesDisplayed, true);
+                                chvm.LoadMessages(GlobalManager.MaxMessagesDisplayed, true);
 
-                                    // Refresh sorting
-                                    chvm.Users.Remove(u);
-                                    chvm.Users.Add(u);
-                                }
+                                // Refresh sorting
+                                chvm.Users.Remove(u);
+                                chvm.Users.Add(u);
                             }
                         }
-                        else
+                    }
+                    else
+                    {
+                        foreach (var chvm in u.Channels)
                         {
-                            foreach (var chvm in u.Channels)
+                            if (chvm.Joined)
                             {
-                                if (chvm.Joined)
-                                {
-                                    chvm.Users.Remove(u);
-                                    chvm.Users.Add(u);
-                                }
+                                chvm.Users.Remove(u);
+                                chvm.Users.Add(u);
                             }
                         }
                     }

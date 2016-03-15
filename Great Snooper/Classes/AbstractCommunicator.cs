@@ -123,7 +123,7 @@ namespace GreatSnooper.Classes
 
         public void Reconnect()
         {
-            if (this.State != ConnectionStates.Disconnected || this.State == ConnectionStates.Disconnecting)
+            if (this.State != ConnectionStates.Disconnected)
             {
                 Stop(ErrorStates.None);
                 return;
@@ -150,7 +150,7 @@ namespace GreatSnooper.Classes
         {
             try
             {
-                if (this.State == ConnectionStates.Disconnecting || this.State != ConnectionStates.ReConnecting)
+                if (this.State != ConnectionStates.ReConnecting)
                 {
                     Stop(ErrorStates.None);
                     return;
