@@ -85,7 +85,11 @@ namespace GreatSnooper.ViewModel
         {
             if (!this.IsSearching)
             {
-                var selectedLeagues = this.LeaguesToSearch.Where(x => x.IsSearching.HasValue && x.IsSearching.Value).Select(x => x.League.ShortName).ToList();
+                List<string> selectedLeagues = this.LeaguesToSearch
+                    .Where(x => x.IsSearching.HasValue && x.IsSearching.Value)
+                    .Select(x => x.League.ShortName)
+                    .ToList();
+
                 if (selectedLeagues.Count == 0)
                 {
                     this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.MissingValueText, Localizations.GSLocalization.Instance.NoLeaguesSelectedError);
