@@ -1,7 +1,6 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GreatSnooper.Classes;
-using GreatSnooper.EventArguments;
 using GreatSnooper.Helpers;
 using GreatSnooper.Model;
 using GreatSnooper.Services;
@@ -18,10 +17,8 @@ using System.Net;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -214,7 +211,7 @@ namespace GreatSnooper.ViewModel
                     _isWindowFlashing = value;
 
                     var h = new WindowInteropHelper(this.DialogService.GetView());
-                    
+
                     FLASHWINFO info = new FLASHWINFO
                     {
                         hwnd = h.Handle,
@@ -275,7 +272,7 @@ namespace GreatSnooper.ViewModel
                     {
                         visitedChannels.Remove(value);
                         visitedChannels.Add(value);
-                        
+
                         _selectedChannel = Channels[value];
                         if (_selectedChannel.IsHighlighted)
                             _selectedChannel.IsHighlighted = false;
@@ -475,7 +472,7 @@ namespace GreatSnooper.ViewModel
             // gameProcess = wa.exe (JOIN)
             if (GameProcess.HasExited)
             {
-                SetBack(); 
+                SetBack();
                 this.FreeGameProcess();
                 return;
             }
@@ -1068,7 +1065,7 @@ namespace GreatSnooper.ViewModel
                         }
                     }
                 }
-                
+
                 foreach (string user in userList.Except(group.Users))
                 {
                     foreach (var server in this.Servers)
@@ -1145,7 +1142,7 @@ namespace GreatSnooper.ViewModel
                 case "HiddenChannels":
                     GlobalManager.HiddenChannels = new HashSet<string>(
                         Properties.Settings.Default.HiddenChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
-                        StringComparer.OrdinalIgnoreCase); 
+                        StringComparer.OrdinalIgnoreCase);
                     foreach (var server in this.Servers)
                     {
                         foreach (var chvm in server.Channels)
@@ -2093,7 +2090,7 @@ namespace GreatSnooper.ViewModel
         #region Away set / Back
         public void SetAway(string awayText = null)
         {
-            this.AwayText = (awayText != null && awayText.Length > 0) ? awayText : Properties.Settings.Default.AwayText;
+            this.AwayText = string.IsNullOrEmpty(awayText) ? Properties.Settings.Default.AwayText : awayText;
             this.IsAway = true;
             foreach (var server in Servers)
             {
@@ -2109,6 +2106,19 @@ namespace GreatSnooper.ViewModel
         {
             this.AwayText = string.Empty;
             this.IsAway = false;
+        }
+
+        public ICommand AwayShortkeyCommand
+        {
+            get { return new RelayCommand(AwayShortkey); }
+        }
+
+        private void AwayShortkey()
+        {
+            if (this.IsAway)
+                this.SetBack();
+            else
+                this.SetAway();
         }
         #endregion
 
