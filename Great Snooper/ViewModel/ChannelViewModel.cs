@@ -314,22 +314,20 @@ namespace GreatSnooper.ViewModel
             var sb = new StringBuilder();
 
             // URLs
-            sb.Append(@"(?<uri>(http|ftp)s?://\S+)");
+            sb.Append(@"(?<uri>" + urlRegexText + @")");
 
-            if (Properties.Settings.Default.HBeepEnabled)
+            this.isHighlightInRegex = Properties.Settings.Default.HBeepEnabled;
+            if (this.isHighlightInRegex)
             {
-                isHighlightInRegex = true;
                 helper.Add(this.Server.User.Name);
-                sb.Append(@"|(?<hbeep>" + Regex.Escape(this.Server.User.Name) + @")");
+                sb.Append(@"|(?<hbeep>\b" + Regex.Escape(this.Server.User.Name) + @"\b)");
             }
-            else
-                isHighlightInRegex = false;
 
-            if (leagueSearcher.ChannelToSearch == this)
+            this.isLeagueSearcherInRegex = this.leagueSearcher.ChannelToSearch == this;
+            if (this.isLeagueSearcherInRegex)
             {
-                isLeagueSearcherInRegex = true;
-                List<string> words = new List<string>(leagueSearcher.SearchData.Count);
-                foreach (string word in leagueSearcher.SearchData.Keys)
+                List<string> words = new List<string>(this.leagueSearcher.SearchData.Count);
+                foreach (string word in this.leagueSearcher.SearchData.Keys)
                 {
                     if (helper.Contains(word) == false)
                     {
@@ -339,13 +337,11 @@ namespace GreatSnooper.ViewModel
                 }
                 if (words.Count != 0)
                 {
-                    sb.Append(@"|(?<league>");
-                    sb.Append(string.Join("|", words));
-                    sb.Append(@")");
+                    sb.Append(@"|(?<league>\b(");
+                    sb.Append(string.Join(")|(", words));
+                    sb.Append(@")\b)");
                 }
             }
-            else
-                isLeagueSearcherInRegex = false;
 
             this.messageRegex = new Regex(sb.ToString(), RegexOptions.IgnoreCase | RegexOptions.Compiled);
         }
@@ -370,7 +366,7 @@ namespace GreatSnooper.ViewModel
                     msg.AddHighlightWord(0, msg.Text.Length, Message.HightLightTypes.NotificatorFound);
                     this.MainViewModel.NotificatorFound(msg, this);
                 }
- 
+
                 if (messageRegex == null)
                     GenerateMessageRegex();
                 MatchCollection matches = messageRegex.Matches(msg.Text);
@@ -378,16 +374,14 @@ namespace GreatSnooper.ViewModel
                 {
                     GroupCollection groups = matches[i].Groups;
                     Group uriGroup = groups["uri"];
-                    if (uriGroup.Length > 0 && CheckSides(uriGroup, msg.Text))
+                    if (uriGroup.Length > 0)
                     {
-                        Uri uri;
-                        if (Uri.TryCreate(uriGroup.Value, UriKind.RelativeOrAbsolute, out uri))
-                            msg.AddHighlightWord(uriGroup.Index, uriGroup.Length, Message.HightLightTypes.URI);
+                        this.HandleUriMatch(uriGroup, msg);
                         continue;
                     }
 
                     Group hGroup = groups["hbeep"];
-                    if (canDisplay && isHighlightInRegex && hGroup.Length > 0 && CheckSides(hGroup, msg.Text))
+                    if (canDisplay && isHighlightInRegex && hGroup.Length > 0)
                     {
                         if (hGroup.Value == this.Server.User.Name) // Check case sensitive
                         {
@@ -403,19 +397,14 @@ namespace GreatSnooper.ViewModel
                     }
 
                     Group leagueGroup = groups["league"];
-                    if (canDisplay && isLeagueSearcherInRegex && leagueGroup.Length > 0 && CheckSides(leagueGroup, msg.Text))
+                    if (canDisplay && isLeagueSearcherInRegex && leagueGroup.Length > 0 && this.leagueSearcher.HandleMatch(leagueGroup, msg))
                     {
-                        msg.AddHighlightWord(leagueGroup.Index, leagueGroup.Length, Message.HightLightTypes.LeagueFound);
-                        string leagueName = leagueGroup.Value;
-                        if (leagueSearcher.SearchData[leagueName].Contains(msg.Sender.Name) == false)
-                        {
-                            leagueSearcher.SearchData[leagueName].Add(msg.Sender.Name);
-                            this.MainViewModel.FlashWindow();
-                            if (Properties.Settings.Default.TrayNotifications)
-                                this.MainViewModel.ShowTrayMessage(msg.Sender.Name + ": " + msg.Text);
-                            if (Properties.Settings.Default.LeagueFoundBeepEnabled)
-                                Sounds.PlaySoundByName("LeagueFoundBeep");
-                        }
+                        this.MainViewModel.FlashWindow();
+
+                        if (Properties.Settings.Default.TrayNotifications)
+                            this.MainViewModel.ShowTrayMessage(msg.Sender.Name + ": " + msg.Text);
+                        if (Properties.Settings.Default.LeagueFoundBeepEnabled)
+                            Sounds.PlaySoundByName("LeagueFoundBeep");
                     }
                 }
 
@@ -436,13 +425,7 @@ namespace GreatSnooper.ViewModel
                 var matches = urlRegex.Matches(msg.Text);
                 for (int i = 0; i < matches.Count; i++)
                 {
-                    var groups = matches[i].Groups;
-                    if (CheckSides(groups[0], msg.Text))
-                    {
-                        Uri uri;
-                        if (Uri.TryCreate(groups[0].Value, UriKind.RelativeOrAbsolute, out uri))
-                            msg.AddHighlightWord(groups[0].Index, groups[0].Length, Message.HightLightTypes.URI);
-                    }
+                    this.HandleUriMatch(matches[i].Groups[0], msg);
                 }
             }
 

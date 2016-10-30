@@ -133,13 +133,7 @@ namespace GreatSnooper.ViewModel
                 var matches = urlRegex.Matches(msgTask.Message);
                 for (int i = 0; i < matches.Count; i++)
                 {
-                    var groups = matches[i].Groups;
-                    if (CheckSides(groups[0], msgTask.Message))
-                    {
-                        Uri uri;
-                        if (Uri.TryCreate(groups[0].Value, UriKind.RelativeOrAbsolute, out uri))
-                            msg.AddHighlightWord(groups[0].Index, groups[0].Length, Message.HightLightTypes.URI);
-                    }
+                    this.HandleUriMatch(matches[i].Groups[0], msg);
                 }
             }
 

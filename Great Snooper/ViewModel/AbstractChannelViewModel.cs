@@ -26,9 +26,8 @@ namespace GreatSnooper.ViewModel
     {
         #region Static
         private static Regex dateRegex = new Regex(@"[^0-9]");
-        private static Regex leftSideRegex = new Regex(@"^\b\w$", RegexOptions.Compiled);
-        private static Regex rightSideRegex = new Regex(@"^\w\b$", RegexOptions.Compiled);
-        protected static Regex urlRegex = new Regex(@"(http|ftp)s?://\S+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        protected static string urlRegexText = @"(ht|f)tps?://\S+";
+        protected static Regex urlRegex = new Regex(urlRegexText, RegexOptions.IgnoreCase | RegexOptions.Compiled);
         #endregion
 
         #region Members
@@ -437,17 +436,18 @@ namespace GreatSnooper.ViewModel
                 var matches = urlRegex.Matches(msg.Text);
                 for (int i = 0; i < matches.Count; i++)
                 {
-                    var groups = matches[i].Groups;
-                    if (CheckSides(groups[0], msg.Text))
-                    {
-                        Uri uri;
-                        if (Uri.TryCreate(groups[0].Value, UriKind.RelativeOrAbsolute, out uri))
-                            msg.AddHighlightWord(groups[0].Index, groups[0].Length, Message.HightLightTypes.URI);
-                    }
+                    this.HandleUriMatch(matches[i].Groups[0], msg);
                 }
             }
 
             this.AddMessage(msg);
+        }
+
+        protected void HandleUriMatch(Group group, Message message)
+        {
+            Uri uri;
+            if (Uri.TryCreate(group.Value, UriKind.RelativeOrAbsolute, out uri))
+                message.AddHighlightWord(group.Index, group.Length, Message.HightLightTypes.URI);
         }
 
         public void AddMessage(Message msg)
@@ -784,16 +784,6 @@ namespace GreatSnooper.ViewModel
                 if (this is PMChannelViewModel)
                     ((PMChannelViewModel)this).GenerateHeader();
             }
-        }
-
-        protected bool CheckSides(Group group, string text)
-        {
-            if (group.Index > 0 && !leftSideRegex.IsMatch(text[group.Index - 1] + "a"))
-                return false;
-            if (group.Index + group.Length < text.Length && !rightSideRegex.IsMatch("a" + text[group.Index + group.Length]))
-                return false;
-
-            return true;
         }
 
         private void InitConnectedLayout()

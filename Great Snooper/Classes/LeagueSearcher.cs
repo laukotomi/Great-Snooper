@@ -33,7 +33,7 @@ namespace GreatSnooper.Classes
             get { return ChannelToSearch != null; }
         }
         public ChannelViewModel ChannelToSearch { get; private set; }
-        public Dictionary<string, HashSet<string>> SearchData { get; private set; }
+        public Dictionary<string, Dictionary<string, DateTime>> SearchData { get; private set; }
         public int SpamLeft { get; set; }
         public int Counter { get; set; }
         public string SearchingText { get; private set; }
@@ -45,7 +45,7 @@ namespace GreatSnooper.Classes
 
         private LeagueSearcher()
         {
-            SearchData = new Dictionary<string, HashSet<string>>(StringComparer.OrdinalIgnoreCase);
+            SearchData = new Dictionary<string, Dictionary<string, DateTime>>(StringComparer.OrdinalIgnoreCase);
         }
 
         public void ChangeSearching(ChannelViewModel channel, bool spamming = false)
@@ -55,9 +55,9 @@ namespace GreatSnooper.Classes
             SearchData.Clear();
             if (channel != null)
             {
-                var leaguesToSearch = Properties.Settings.Default.SearchForThese.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var league in leaguesToSearch)
-                    SearchData.Add(league, new HashSet<string>());
+                string[] leaguesToSearch = Properties.Settings.Default.SearchForThese.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (string league in leaguesToSearch)
+                    SearchData.Add(league, new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase));
                 SearchingText = string.Join(" or ", leaguesToSearch) + " anyone?";
             }
 
@@ -83,6 +83,26 @@ namespace GreatSnooper.Classes
                 if (Properties.Settings.Default.LeagueFailBeepEnabled)
                     Sounds.PlaySoundByName("LeagueFailBeep");
             }
+        }
+
+        internal bool HandleMatch(System.Text.RegularExpressions.Group leagueGroup, Message msg)
+        {
+            msg.AddHighlightWord(leagueGroup.Index, leagueGroup.Length, Message.HightLightTypes.LeagueFound);
+
+            Dictionary<string, DateTime> foundValues = this.SearchData[leagueGroup.Value];
+            DateTime now = DateTime.Now;
+            if (!foundValues.ContainsKey(msg.Sender.Name))
+            {
+                foundValues.Add(msg.Sender.Name, now);
+                return true;
+            }
+            else if (foundValues[msg.Sender.Name] + new TimeSpan(0, 15, 0) < now)
+            {
+                foundValues[msg.Sender.Name] = now;
+                return true;
+            }
+
+            return false;
         }
     }
 }
