@@ -173,7 +173,7 @@
     <Compile Include="Helpers\NativeMethods.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Helpers\TusAccounts.cs" />
-    <Compile Include="Helpers\Users.cs" />
+    <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="IRCTasks\ChannelListTask.cs" />
     <Compile Include="IRCTasks\ClientAddTask.cs" />
     <Compile Include="IRCTasks\ClientLeftTask.cs" />

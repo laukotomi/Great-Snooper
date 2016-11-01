@@ -1309,4 +1309,7 @@
     <value>German translation by:</value>
     <comment>German translation by text in settings / About</comment>
   </data>
+  <data name="EndOfConversation" xml:space="preserve">
+    <value>End of conversation.</value>
+  </data>
 </root>

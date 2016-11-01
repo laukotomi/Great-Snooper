@@ -241,15 +241,6 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Back message:.
-        /// </summary>
-        public static string BackMessageText {
-            get {
-                return ResourceManager.GetString("BackMessageText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Bold:.
         /// </summary>
         public static string BoldLabel {
@@ -309,15 +300,6 @@ namespace GreatSnooper.Localizations {
         public static string ChannelOfflineText {
             get {
                 return ResourceManager.GetString("ChannelOfflineText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Failed to load the scheme of the channel. Try to rejoin the channel!.
-        /// </summary>
-        public static string ChannelSchemeText {
-            get {
-                return ResourceManager.GetString("ChannelSchemeText", resourceCulture);
             }
         }
         
@@ -565,6 +547,15 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to End of conversation..
+        /// </summary>
+        public static string EndOfConversation {
+            get {
+                return ResourceManager.GetString("EndOfConversation", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Energy save mode while playing:.
         /// </summary>
         public static string EnergySaveModeGameText {
@@ -637,6 +628,15 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Export settings.
+        /// </summary>
+        public static string ExportSettingsButtonContent {
+            get {
+                return ResourceManager.GetString("ExportSettingsButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Filter...
         /// </summary>
         public static string FilterText {
@@ -705,6 +705,15 @@ namespace GreatSnooper.Localizations {
         public static string GeneralText {
             get {
                 return ResourceManager.GetString("GeneralText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to German translation by:.
+        /// </summary>
+        public static string GermanTranslationText {
+            get {
+                return ResourceManager.GetString("GermanTranslationText", resourceCulture);
             }
         }
         
@@ -898,6 +907,15 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Failed to get local IP address. Please try hosting using WormNat2!.
+        /// </summary>
+        public static string HosterFailedToGetLocalIP {
+            get {
+                return ResourceManager.GetString("HosterFailedToGetLocalIP", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Failed to host a game. Probably you have hosted too many games recently. Please wait a while!.
         /// </summary>
         public static string HosterNoGameIDError {
@@ -975,6 +993,15 @@ namespace GreatSnooper.Localizations {
         public static string IgnoreListTitle {
             get {
                 return ResourceManager.GetString("IgnoreListTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Import settings.
+        /// </summary>
+        public static string ImportSettingsButtonContent {
+            get {
+                return ResourceManager.GetString("ImportSettingsButtonContent", resourceCulture);
             }
         }
         
@@ -1060,6 +1087,15 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Italic font style for Great Snooper users:.
+        /// </summary>
+        public static string ItalicForGSUsers {
+            get {
+                return ResourceManager.GetString("ItalicForGSUsers", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Italic:.
         /// </summary>
         public static string ItalicLabel {
@@ -1078,11 +1114,29 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Join and close snooper (Alternative WA.exe).
+        /// </summary>
+        public static string JoinCloseText2 {
+            get {
+                return ResourceManager.GetString("JoinCloseText2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Join this game.
         /// </summary>
         public static string JoinGameText {
             get {
                 return ResourceManager.GetString("JoinGameText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Join this game (Alternative WA.exe).
+        /// </summary>
+        public static string JoinGameText2 {
+            get {
+                return ResourceManager.GetString("JoinGameText2", resourceCulture);
             }
         }
         
@@ -1258,6 +1312,51 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Load channel scheme (required for hosting and loading games):.
+        /// </summary>
+        public static string LoadChannelSchemeText {
+            get {
+                return ResourceManager.GetString("LoadChannelSchemeText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load common settings (required for league searcher, updater and news):.
+        /// </summary>
+        public static string LoadCommonSettingsText {
+            get {
+                return ResourceManager.GetString("LoadCommonSettingsText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load games:.
+        /// </summary>
+        public static string LoadGamesText {
+            get {
+                return ResourceManager.GetString("LoadGamesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load games and TUS accounts only if window is active:.
+        /// </summary>
+        public static string LoadGamesTUSActiveWindow {
+            get {
+                return ResourceManager.GetString("LoadGamesTUSActiveWindow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Load TUS users:.
+        /// </summary>
+        public static string LoadTUSUsersText {
+            get {
+                return ResourceManager.GetString("LoadTUSUsersText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Log in.
         /// </summary>
         public static string LogInText {
@@ -1272,6 +1371,15 @@ namespace GreatSnooper.Localizations {
         public static string LogOutText {
             get {
                 return ResourceManager.GetString("LogOutText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you would like to close this window and lose your changes?.
+        /// </summary>
+        public static string LosingChangesQuestion {
+            get {
+                return ResourceManager.GetString("LosingChangesQuestion", resourceCulture);
             }
         }
         
@@ -1384,6 +1492,15 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Network.
+        /// </summary>
+        public static string NetworkText {
+            get {
+                return ResourceManager.GetString("NetworkText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to News.
         /// </summary>
         public static string NewsWindowTitle {
@@ -1393,7 +1510,7 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to There is a new update available for Great Snooper! Would you like to download it now?.
+        ///   Looks up a localized string similar to There is a new update available for Great Snooper! Would you like to update it now?.
         /// </summary>
         public static string NewVersionText {
             get {
@@ -1528,7 +1645,7 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Notificator can look for words in messages, sender names, hoster names, game names and join messages. By default it will look for whole words, but you can use special characters &apos;*&apos;, &apos;+&apos;, &apos;.&apos;. &apos;*&apos; matches any character, &apos;+&apos; matches at least 1 character and &apos;.&apos; matches only 1 character. So if you are looking for words similar to &quot;example&quot; then you can search for it as &quot;example&quot;, &quot;*ample&quot;, &quot;examp*&quot;, &quot;*amp*&quot;, &quot;e.ample&quot;, &quot;+amp+&quot;, etc..
+        ///   Looks up a localized string similar to Notificator can look for words in messages, sender names, hoster names, game names and join messages. By default it will look for whole words, but you can use special characters &apos;*&apos;, &apos;+&apos;, and &apos;.&apos;. &apos;*&apos; matches any character, &apos;+&apos; matches at least 1 character and &apos;.&apos; matches only 1 character. So if you are looking for words similar to &quot;example&quot; then you can search for it as &quot;example&quot;, &quot;*ample&quot;, &quot;examp*&quot;, &quot;*amp*&quot;, &quot;e.ample&quot;, &quot;+amp+&quot;, etc. You can add one word per line. If you would like to ignore a word from se [rest of string was truncated]&quot;;.
         /// </summary>
         public static string NotificatorHelpText {
             get {
@@ -1708,6 +1825,15 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Polish translation by:.
+        /// </summary>
+        public static string PolishTranslationText {
+            get {
+                return ResourceManager.GetString("PolishTranslationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to ?.
         /// </summary>
         public static string QuestionMark {
@@ -1807,20 +1933,56 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Reset settings.
+        /// </summary>
+        public static string ResetSettingsButtonContent {
+            get {
+                return ResourceManager.GetString("ResetSettingsButtonContent", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure to reset settings? All informations will be lost..
+        /// </summary>
+        public static string ResetSettingsConfirm {
+            get {
+                return ResourceManager.GetString("ResetSettingsConfirm", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please restart Great Snooper to apply changes!.
+        /// </summary>
+        public static string RestartToApplyChanges {
+            get {
+                return ResourceManager.GetString("RestartToApplyChanges", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Russian translation by:.
+        /// </summary>
+        public static string RussianTranslationText {
+            get {
+                return ResourceManager.GetString("RussianTranslationText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Would you like to save changes?.
+        /// </summary>
+        public static string SaveChangesQuestion {
+            get {
+                return ResourceManager.GetString("SaveChangesQuestion", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Save.
         /// </summary>
         public static string SaveText {
             get {
                 return ResourceManager.GetString("SaveText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Send back message in private chats if I am back:.
-        /// </summary>
-        public static string SendBackText {
-            get {
-                return ResourceManager.GetString("SendBackText", resourceCulture);
             }
         }
         
@@ -1839,15 +2001,6 @@ namespace GreatSnooper.Localizations {
         public static string ServerInfoText {
             get {
                 return ResourceManager.GetString("ServerInfoText", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to About servers.
-        /// </summary>
-        public static string ServerInfoTitle {
-            get {
-                return ResourceManager.GetString("ServerInfoTitle", resourceCulture);
             }
         }
         
@@ -1969,11 +2122,29 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Silent join and close snooper (Alternative WA.exe).
+        /// </summary>
+        public static string SilentJoinCloseText2 {
+            get {
+                return ResourceManager.GetString("SilentJoinCloseText2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Silent join.
         /// </summary>
         public static string SilentJoinText {
             get {
                 return ResourceManager.GetString("SilentJoinText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Silent join (Alternative WA.exe).
+        /// </summary>
+        public static string SilentJoinText2 {
+            get {
+                return ResourceManager.GetString("SilentJoinText2", resourceCulture);
             }
         }
         
@@ -2374,6 +2545,15 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Use WHO requests (required for country, rank, user info):.
+        /// </summary>
+        public static string UseWhoMessagesText {
+            get {
+                return ResourceManager.GetString("UseWhoMessagesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Using WormNat2?.
         /// </summary>
         public static string UsingWormNat2 {
@@ -2388,6 +2568,15 @@ namespace GreatSnooper.Localizations {
         public static string VersionText {
             get {
                 return ResourceManager.GetString("VersionText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0}&apos;s profile.
+        /// </summary>
+        public static string ViewClanProfileText {
+            get {
+                return ResourceManager.GetString("ViewClanProfileText", resourceCulture);
             }
         }
         
@@ -2500,7 +2689,7 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to TUS is The Ultimate Site. It is a website for Worms: Armageddon, which has a lot of things for the game, such as: leagues, cups, tournaments, schemes, maps, forum, etc. It also supports snoopers. If you login with your TUS account into the snooper, then your rank will be your TUS league rank, your clan will also be set and you will be marked online on the website. . You can also set a different nickname and a password for snooper login on TUS site in your Account Settings..
+        ///   Looks up a localized string similar to TUS is The Ultimate Site. It is a website for Worms: Armageddon, which has a lot of things for the game, such as: leagues, cups, tournaments, schemes, maps, forum, etc. It also supports snoopers. If you login with your TUS account into the snooper, then your rank will be your TUS league rank, your clan will also be set and you will be marked online on the website. You can also set a different nickname and a password for snooper login on TUS site in your Account Settings..
         /// </summary>
         public static string WhatIsTusLoginText {
             get {
@@ -2541,15 +2730,6 @@ namespace GreatSnooper.Localizations {
         public static string WNQuitWOMessage {
             get {
                 return ResourceManager.GetString("WNQuitWOMessage", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized string similar to Greetings WormNAT2 user! This is a reminder message to remind you that WormNAT2 is a free service. Using WormNAT2 tunnels all data through a proxy server hosted by the community, thus consuming bandwidth and other resources. Therefore, we would like to ask you to only use WormNAT2 when you have already tried configuring hosting the proper way. Don&apos;t forget that you can find instructions on how to set up hosting here: http://worms2d.info/Hosting.
-        /// </summary>
-        public static string WormNat2GreetingText {
-            get {
-                return ResourceManager.GetString("WormNat2GreetingText", resourceCulture);
             }
         }
         

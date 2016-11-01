@@ -22,7 +22,7 @@ namespace GreatSnooper.Helpers
 
                     using (StreamWriter w = new StreamWriter(filename, true))
                     {
-                        w.WriteLine(DateTime.Now.ToString("U"));
+                        w.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                         w.WriteLine(ex.GetType().FullName);
                         w.WriteLine(ex.Message);
                         w.WriteLine(ex.StackTrace);

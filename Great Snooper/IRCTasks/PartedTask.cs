@@ -46,7 +46,7 @@ namespace GreatSnooper.IRCTasks
                         if (u.PMChannels.Count > 0)
                             u.OnlineStatus = User.Status.Unknown;
                         else
-                            Users.FinalizeUser(Sender, u);
+                            UserHelper.FinalizeUser(Sender, u);
                     }
                 }
             }

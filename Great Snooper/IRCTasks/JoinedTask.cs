@@ -37,10 +37,7 @@ namespace GreatSnooper.IRCTasks
             {
                 if (chvm.Joined)
                 {
-                    User u;
-                    if (!Sender.Users.TryGetValue(ClientName, out u))// Register the new client
-                        u = Users.CreateUser(Sender, ClientName, Clan);
-
+                    User u = UserHelper.GetUser(Sender, ClientName, Clan);
                     if (u.OnlineStatus != User.Status.Online)
                     {
                         u.OnlineStatus = User.Status.Online;
@@ -51,7 +48,7 @@ namespace GreatSnooper.IRCTasks
                         }
                         else
                         {
-                            Message msg = new Message(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage);
+                            Message msg = new Message(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage, DateTime.Now);
 
                             if (Notificator.Instance.SearchInJoinMessagesEnabled && Notificator.Instance.JoinMessagesRegex.IsMatch(u.Name))
                             {

@@ -122,5 +122,45 @@ namespace GreatSnooper.Helpers
                 p.TextDecorations = setting.Textdecorations;
             }
         }
+
+        public static MessageSetting GetByMessageType(Message.MessageTypes messageType)
+        {
+            switch (messageType)
+            {
+                case Message.MessageTypes.Action:
+                    return ActionMessage;
+
+                case Message.MessageTypes.Channel:
+                    return ChannelMessage;
+
+                case Message.MessageTypes.Hyperlink:
+                    return HyperLinkStyle;
+
+                case Message.MessageTypes.Join:
+                    return JoinMessage;
+
+                case Message.MessageTypes.League:
+                    return LeagueFoundMessage;
+
+                case Message.MessageTypes.Notice:
+                    return NoticeMessage;
+
+                case Message.MessageTypes.Offline:
+                    return SystemMessage;
+
+                case Message.MessageTypes.Part:
+                    return PartMessage;
+
+                case Message.MessageTypes.Quit:
+                    return QuitMessage;
+
+                case Message.MessageTypes.Time:
+                    return MessageTimeStyle;
+
+                case Message.MessageTypes.User:
+                    return UserMessage;
+            }
+            return ChannelMessage;
+        }
     }
 }

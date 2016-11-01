@@ -53,7 +53,7 @@ namespace GreatSnooper.IRCTasks
                 u.Channels.Clear();
 
                 if (u.PMChannels.Count == 0)
-                    Users.FinalizeUser(Sender, u);
+                    UserHelper.FinalizeUser(Sender, u);
                 // If we had a private chat with the user
                 else
                 {

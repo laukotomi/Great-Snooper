@@ -31,17 +31,15 @@ namespace GreatSnooper.IRCTasks
                 {
                     string userName = (name.StartsWith("@") || name.StartsWith("+")) ? name.Substring(1) : name;
 
-                    User u;
-                    if (!Sender.Users.TryGetValue(userName, out u))// Register the new client
-                        u = Users.CreateUser(Sender, userName);
+                    User user = UserHelper.GetUser(Sender, userName);
 
-                    if (u.OnlineStatus != User.Status.Online)
+                    if (user.OnlineStatus != User.Status.Online)
                     {
-                        u.OnlineStatus = User.Status.Online;
-                        chvm.AddUser(u);
+                        user.OnlineStatus = User.Status.Online;
+                        chvm.AddUser(user);
                     }
-                    else if (u.Channels.Contains(chvm) == false)
-                        chvm.AddUser(u);
+                    else if (user.Channels.Contains(chvm) == false)
+                        chvm.AddUser(user);
                 }
             }
         }

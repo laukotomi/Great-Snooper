@@ -653,6 +653,17 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to End of conversation..
+        /// </summary>
+        public string EndOfConversation
+        {
+            get
+            {
+                return _rm.GetString("EndOfConversation");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Energy save mode while playing:.
         /// </summary>
         public string EnergySaveModeGameText

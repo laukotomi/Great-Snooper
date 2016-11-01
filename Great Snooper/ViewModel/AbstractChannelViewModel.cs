@@ -18,6 +18,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Markup;
 using System.Windows.Media;
+using System.Globalization;
 
 namespace GreatSnooper.ViewModel
 {
@@ -429,7 +430,7 @@ namespace GreatSnooper.ViewModel
         #region Add message
         public void AddMessage(User sender, string message, MessageSetting messageSetting, bool userMessage = false)
         {
-            var msg = new Message(sender, message, messageSetting);
+            var msg = new Message(sender, message, messageSetting, DateTime.Now);
 
             if (userMessage || msg.Style.Type == Message.MessageTypes.Quit)
             {
@@ -735,14 +736,20 @@ namespace GreatSnooper.ViewModel
                 if (!Directory.Exists(dirPath))
                     Directory.CreateDirectory(dirPath);
 
-                string logFile = dirPath + "\\" + dateRegex.Replace(DateTime.Now.ToString("d"), "-") + ".log";
+                string logFile = dirPath + "\\" + dateRegex.Replace(DateTime.Now.ToString("yyyy-MM-dd"), "-") + ".log";
+                bool loggedAnything = false;
 
                 using (StreamWriter writer = new StreamWriter(logFile, true))
                 {
                     for (int i = 0; i < count && this.Messages.Count > 0; i++)
                     {
-                        var msg = this.Messages.First.Value;
-                        writer.WriteLine("(" + msg.Style.Type.ToString() + ") " + msg.Time.ToString("G") + " " + msg.Sender.Name + ": " + msg.Text);
+                        Message msg = this.Messages.First.Value;
+                        if (!msg.IsLogged)
+                        {
+                            writer.WriteLine("(" + msg.Style.Type.ToString() + ") " + msg.Time.ToString("yyyy-MM-dd HH:mm:ss") + " " + msg.Sender.Name + ": " + msg.Text);
+                            loggedAnything = true;
+                        }
+
                         this.Messages.RemoveFirst();
                         if (this.messagesLoadedFrom != null && messagesLoadedFrom.Value == msg)
                         {
@@ -761,9 +768,9 @@ namespace GreatSnooper.ViewModel
                         }
                     }
 
-                    if (makeEnd)
+                    if (makeEnd && loggedAnything)
                     {
-                        writer.WriteLine(DateTime.Now.ToString("G") + " - Channel closed.");
+                        writer.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " Channel closed.");
                         writer.WriteLine("-----------------------------------------------------------------------------------------");
                         writer.WriteLine(Environment.NewLine + Environment.NewLine);
                     }

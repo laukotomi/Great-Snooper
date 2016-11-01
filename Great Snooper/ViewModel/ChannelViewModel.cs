@@ -355,7 +355,7 @@ namespace GreatSnooper.ViewModel
 
         public override void ProcessMessage(IRCTasks.MessageTask msgTask)
         {
-            var msg = new Message(msgTask.User, msgTask.Message, msgTask.Setting);
+            var msg = new Message(msgTask.User, msgTask.Message, msgTask.Setting, DateTime.Now);
             bool canDisplay = !msg.Sender.IsBanned || this.GetType() == typeof(ChannelViewModel) && Properties.Settings.Default.ShowBannedMessages;
 
             // Search for league or hightlight or notification
@@ -613,7 +613,7 @@ namespace GreatSnooper.ViewModel
                     if (u.PMChannels.Count > 0)
                         u.OnlineStatus = User.Status.Unknown;
                     else
-                        GreatSnooper.Helpers.Users.FinalizeUser(this.Server, u);
+                        GreatSnooper.Helpers.UserHelper.FinalizeUser(this.Server, u);
                 }
             }
         }

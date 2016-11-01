@@ -1,12 +1,17 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using GreatSnooper.Classes;
 using GreatSnooper.Helpers;
+using GreatSnooper.Localizations;
 using GreatSnooper.Model;
 using GreatSnooper.Windows;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
+using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -17,6 +22,11 @@ namespace GreatSnooper.ViewModel
 {
     public class PMChannelViewModel : AbstractChannelViewModel
     {
+        #region Static
+        private static Regex logMessageRegex = new Regex(@"^\((?<type>\w+)\) (?<date>\d+\-\d+\-\d+ \d+:\d+:\d+) (?<sender>[^:]+):(?<text>.*)", RegexOptions.Compiled);
+        private static Regex logChannelClosedRegex = new Regex(@"^(?<date>\d+\-\d+\-\d+ \d+:\d+:\d+) Channel closed\.$", RegexOptions.Compiled);
+        #endregion
+
         #region Members
         private TextBlock headerTB;
         #endregion
@@ -41,9 +51,7 @@ namespace GreatSnooper.ViewModel
             string[] users = channelName.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string userName in users)
             {
-                User u = null;
-                if (!this.Server.Users.TryGetValue(userName, out u))
-                    u = GreatSnooper.Helpers.Users.CreateUser(this.Server, userName);
+                User u = GreatSnooper.Helpers.UserHelper.GetUser(this.Server, userName);
 
                 this.Users.Add(u);
                 u.PMChannels.Add(this);
@@ -57,6 +65,76 @@ namespace GreatSnooper.ViewModel
             {
                 this.GenerateHeader();
                 mainViewModel.Channels.Add(this);
+            }
+
+            if (Properties.Settings.Default.LoadOldChannelMessages)
+            {
+                DirectoryInfo logDirectory = new DirectoryInfo(GlobalManager.SettingsPath + @"\Logs\" + this.Name);
+                if (logDirectory.Exists)
+                {
+                    List<string> oldMessages = new List<string>();
+                    bool done = false;
+                    foreach (FileInfo file in logDirectory.GetFiles().OrderByDescending(f => f.LastWriteTime))
+                    {
+                        string[] lines = File.ReadAllLines(file.FullName);
+                        for (int i = lines.Length - 1; i >= 0; i--)
+                        {
+                            string line = lines[i];
+                            if (!string.IsNullOrEmpty(line) && !line.StartsWith("---"))
+                            {
+                                oldMessages.Add(line);
+                                if (oldMessages.Count == GlobalManager.MaxMessagesDisplayed)
+                                {
+                                    done = true;
+                                    break;
+                                }
+                            }
+                        }
+                        if (done)
+                            break;
+                    }
+
+                    for (int i = oldMessages.Count - 1; i >= 0; i--)
+                    {
+                        Match m = logMessageRegex.Match(oldMessages[i]);
+                        if (m.Success)
+                        {
+                            Message.MessageTypes messageType;
+                            DateTime time;
+                            if (Enum.TryParse(m.Groups["type"].Value, true, out messageType)
+                                && DateTime.TryParseExact(m.Groups["date"].Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+                            {
+                                this.AddMessage(
+                                    new Message(
+                                        UserHelper.GetUser(server, m.Groups["sender"].Value),
+                                        m.Groups["text"].Value,
+                                        MessageSettings.GetByMessageType(messageType),
+                                        time,
+                                        true
+                                    )
+                                );
+                            }
+                            continue;
+                        }
+                        m = logChannelClosedRegex.Match(oldMessages[i]);
+                        if (m.Success)
+                        {
+                            DateTime time;
+                            if (DateTime.TryParseExact(m.Groups["date"].Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+                            {
+                                this.AddMessage(
+                                    new Message(
+                                        GlobalManager.SystemUser,
+                                        GSLocalization.Instance.EndOfConversation,
+                                        MessageSettings.SystemMessage,
+                                        time,
+                                        true
+                                    )
+                                );
+                            }
+                        }
+                    }
+                }
             }
         }
 
@@ -127,7 +205,7 @@ namespace GreatSnooper.ViewModel
             if (this.Disabled)
                 this.Disabled = false;
 
-            var msg = new Message(msgTask.User, msgTask.Message, msgTask.Setting);
+            var msg = new Message(msgTask.User, msgTask.Message, msgTask.Setting, DateTime.Now);
             if (msgTask.Setting.Type == Message.MessageTypes.Channel || msgTask.Setting.Type == Message.MessageTypes.Quit || msgTask.Setting.Type == Message.MessageTypes.Action || msgTask.Setting.Type == Message.MessageTypes.Notice)
             {
                 var matches = urlRegex.Matches(msgTask.Message);
@@ -394,7 +472,7 @@ namespace GreatSnooper.ViewModel
                 }
 
                 if (u.Channels.Count == 0 && u.PMChannels.Count == 0)
-                    GreatSnooper.Helpers.Users.FinalizeUser(this.Server, u);
+                    GreatSnooper.Helpers.UserHelper.FinalizeUser(this.Server, u);
             }
 
             if (broadcast && this.Messages.Count > 0)

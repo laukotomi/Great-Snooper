@@ -434,7 +434,7 @@ namespace Hoster
 
                         using (StreamWriter w = new StreamWriter(filename, true))
                         {
-                            w.WriteLine(DateTime.Now.ToString("U"));
+                            w.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"));
                             w.WriteLine(this.error.ToString());
                             w.WriteLine(this.exception.GetType().FullName);
                             w.WriteLine(this.exception.Message);

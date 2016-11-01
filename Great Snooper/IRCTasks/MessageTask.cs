@@ -27,7 +27,6 @@ namespace GreatSnooper.IRCTasks
 
         public override void DoTask(MainViewModel mvm)
         {
-            User u = null;
             AbstractChannelViewModel chvm = null;
 
             // If the message arrived in a closed channel
@@ -35,9 +34,7 @@ namespace GreatSnooper.IRCTasks
                 return;
 
             // If the user doesn't exists we create one
-            if (!Sender.Users.TryGetValue(ClientName, out u))
-                u = Users.CreateUser(Sender, ClientName);
-            this.User = u;
+            this.User = UserHelper.GetUser(Sender, ClientName);
 
             if (chvm == null) // New private message arrived for us
                 chvm = new PMChannelViewModel(mvm, Sender, ChannelHash);

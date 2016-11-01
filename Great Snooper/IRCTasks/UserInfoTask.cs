@@ -2,6 +2,7 @@
 using GreatSnooper.Helpers;
 using GreatSnooper.Model;
 using GreatSnooper.ViewModel;
+using System;
 using System.Linq;
 
 namespace GreatSnooper.IRCTasks
@@ -35,7 +36,7 @@ namespace GreatSnooper.IRCTasks
             if (!Sender.Users.TryGetValue(ClientName, out u))
             {
                 if (channelOK)
-                    u = Users.CreateUser(Sender, ClientName, Clan);
+                    u = UserHelper.CreateUser(Sender, ClientName, Clan);
                 else // we don't have any common channel with this client
                     return;
             }
@@ -47,7 +48,7 @@ namespace GreatSnooper.IRCTasks
 
             if (u.AddToChannel.Count > 0)
             {
-                Message msg = new Message(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage);
+                Message msg = new Message(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage, DateTime.Now);
 
                 if (Notificator.Instance.SearchInJoinMessagesEnabled && Notificator.Instance.JoinMessagesRegex.IsMatch(u.Name))
                 {
