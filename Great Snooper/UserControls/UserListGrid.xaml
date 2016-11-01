@@ -34,7 +34,7 @@
         <DataGridTemplateColumn Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CountryHeaderLabel, Mode=OneWay}" IsReadOnly="True" SortMemberPath="Country" Width="32">
             <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
-                    <Image HorizontalAlignment="Left" Margin="4,0,0,0" VerticalAlignment="Center" ToolTip="{Binding Path=Country.Name, Mode=OneTime}" Source="{Binding Path=Country.Flag, Mode=OneTime}" Width="22" Height="18" />
+                    <Image HorizontalAlignment="Left" Margin="4,0,0,0" VerticalAlignment="Center" ToolTip="{Binding Path=Country.Name, Mode=OneWay}" Source="{Binding Path=Country.Flag, Mode=OneWay}" Width="22" Height="18" />
                 </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
@@ -42,7 +42,7 @@
         <DataGridTemplateColumn Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=RankHeaderLabel, Mode=OneWay}" IsReadOnly="True" SortMemberPath="Rank" Width="58">
             <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
-                    <Image HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{Binding Path=Rank.Name, Mode=OneTime}" Margin="0" Source="{Binding Path=Rank.Picture, Mode=OneTime}" Width="48" Height="17" />
+                    <Image HorizontalAlignment="Left" VerticalAlignment="Center" ToolTip="{Binding Path=Rank.Name, Mode=OneWay}" Margin="0" Source="{Binding Path=Rank.Picture, Mode=OneWay}" Width="48" Height="17" />
                 </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
@@ -72,7 +72,7 @@
         <DataGridTemplateColumn Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ClanHeaderLabel, Mode=OneWay}" IsReadOnly="True" SortMemberPath="Clan" Width="2*">
             <DataGridTemplateColumn.CellTemplate>
                 <DataTemplate>
-                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12" Text="{Binding Path=Clan, Mode=OneTime}" />
+                    <TextBlock HorizontalAlignment="Left" VerticalAlignment="Center" FontSize="12" Text="{Binding Path=Clan, Mode=OneWay}" />
                 </DataTemplate>
             </DataGridTemplateColumn.CellTemplate>
         </DataGridTemplateColumn>
