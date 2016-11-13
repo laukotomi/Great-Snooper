@@ -8,17 +8,15 @@ using GreatSnooper.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup;
 using System.Windows.Media;
-using System.Globalization;
 
 namespace GreatSnooper.ViewModel
 {
@@ -480,7 +478,7 @@ namespace GreatSnooper.ViewModel
                 msg.Style.Type == Message.MessageTypes.Quit)
             )
                 return false;
-            
+
             try
             {
                 Paragraph p = new Paragraph();
@@ -545,7 +543,7 @@ namespace GreatSnooper.ViewModel
                             Hyperlink word = new Hyperlink(new Run(hword));
                             MessageSettings.LoadSettingsFor(word, MessageSettings.HyperLinkStyle);
                             word.Foreground = MessageSettings.HyperLinkStyle.NickColor;
-                            word.Click += OpenLickClick;
+                            word.Click += OpenLinkClick;
                             word.CommandParameter = hword;
                             p.Inlines.Add(word);
                         }
@@ -582,7 +580,7 @@ namespace GreatSnooper.ViewModel
             return false;
         }
 
-        private void OpenLickClick(object sender, RoutedEventArgs e)
+        private void OpenLinkClick(object sender, RoutedEventArgs e)
         {
             var link = (Hyperlink)sender;
             try
@@ -710,7 +708,7 @@ namespace GreatSnooper.ViewModel
                         this.lastMessageLoaded = this.Messages.First;
                     else
                         this.lastMessageLoaded = this.lastMessageLoaded.Next;
-                    
+
                     if (this.lastMessageLoaded == null)
                         break;
 
@@ -726,7 +724,7 @@ namespace GreatSnooper.ViewModel
             this.NewMessagesCount = 0;
         }
 
-        public void Log(int count, bool makeEnd = false)
+        public virtual void Log(int count, bool makeEnd = false)
         {
             if (count == 0) return;
 

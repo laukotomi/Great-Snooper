@@ -75,7 +75,7 @@ namespace GreatSnooper.IRCTasks
             }
 
             // This is needed, because when we join a channel we get information about the channel users using the WHO command
-            if (channelOK && !u.Channels.Contains(chvm))
+            if (channelOK && !u.Channels.Contains(chvm) && chvm is ChannelViewModel)
                 ((ChannelViewModel)chvm).AddUser(u);
         }
     }

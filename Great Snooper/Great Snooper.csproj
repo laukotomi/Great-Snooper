@@ -260,6 +260,7 @@
     <Compile Include="ViewModel\HostingViewModel.cs" />
     <Compile Include="ViewModel\LeagueSearcherViewModel.cs" />
     <Compile Include="ViewModel\ListEditorViewModel.cs" />
+    <Compile Include="ViewModel\LogChannelViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\NewsViewModel.cs" />
     <Compile Include="ViewModel\NotificatorViewModel.cs" />

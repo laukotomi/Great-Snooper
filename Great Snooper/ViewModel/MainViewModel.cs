@@ -261,7 +261,7 @@ namespace GreatSnooper.ViewModel
                         RaisePropertyChanged("FilterText");
                     }
 
-                    var pmChannel = (_selectedChannel != null && _selectedChannel is PMChannelViewModel)
+                    PMChannelViewModel oldPMChannel = (_selectedChannel != null && _selectedChannel is PMChannelViewModel)
                         ? (PMChannelViewModel)_selectedChannel : null;
 
                     if (value == -1)
@@ -276,28 +276,32 @@ namespace GreatSnooper.ViewModel
                         _selectedChannel = Channels[value];
                         if (_selectedChannel.IsHighlighted)
                             _selectedChannel.IsHighlighted = false;
-                        if (_selectedChannel is ChannelViewModel)
+                        ChannelViewModel channel = _selectedChannel as ChannelViewModel;
+                        if (channel != null)
                         {
-                            SelectedGLChannel = (ChannelViewModel)_selectedChannel;
+                            SelectedGLChannel = channel;
                             GameListForce = true;
                             RaisePropertyChanged("SelectedTabIndex2");
                         }
                         else
                         {
-                            ((PMChannelViewModel)_selectedChannel).GenerateHeader();
+                            PMChannelViewModel pmChannel = _selectedChannel as PMChannelViewModel;
+                            if (pmChannel != null)
+                                pmChannel.GenerateHeader();
                         }
                         if (_selectedChannel.Joined)
                         {
                             this.Dispatcher.BeginInvoke(new Action(() =>
                             {
                                 this.DialogService.GetView().UpdateLayout();
-                                _selectedChannel.IsTBFocused = true;
+                                if (!_selectedChannel.Disabled)
+                                    _selectedChannel.IsTBFocused = true;
                             }));
                         }
                     }
 
-                    if (pmChannel != null)
-                        pmChannel.GenerateHeader();
+                    if (oldPMChannel != null)
+                        oldPMChannel.GenerateHeader();
                 }
             }
         }
@@ -675,9 +679,9 @@ namespace GreatSnooper.ViewModel
             {
                 foreach (var item in this.Servers[i].Channels)
                 {
-                    if (item.Value is ChannelViewModel)
+                    ChannelViewModel chvm = item.Value as ChannelViewModel;
+                    if (chvm != null)
                     {
-                        var chvm = (ChannelViewModel)item.Value;
                         if (chvm.UserListDG != null)
                             chvm.UserListDG.ItemsSource = null;
                         if (chvm.GameListGrid != null)
@@ -704,9 +708,9 @@ namespace GreatSnooper.ViewModel
             {
                 foreach (var item in this.Servers[i].Channels)
                 {
-                    if (item.Value is ChannelViewModel)
+                    ChannelViewModel chvm = item.Value as ChannelViewModel;
+                    if (chvm != null)
                     {
-                        var chvm = (ChannelViewModel)item.Value;
                         if (chvm.UserListDG != null)
                         {
                             chvm.UserListDG.ItemsSource = chvm.Users;
@@ -1002,10 +1006,11 @@ namespace GreatSnooper.ViewModel
                     visitedChannels[i]--;
             }
 
-            if (chvm is ChannelViewModel)
+            ChannelViewModel channel = chvm as ChannelViewModel;
+            if (channel != null)
             {
-                if (chvm.Joined)
-                    ((ChannelViewModel)chvm).LeaveChannelCommand.Execute(null);
+                if (channel.Joined)
+                    channel.LeaveChannelCommand.Execute(null);
             }
             else
             {
@@ -2119,6 +2124,21 @@ namespace GreatSnooper.ViewModel
                 this.SetBack();
             else
                 this.SetAway();
+        }
+        #endregion
+
+        #region ShowHistoryCommand
+        public ICommand ShowHistoryCommand
+        {
+            get { return new RelayCommand(ShowHistory); }
+        }
+
+        private void ShowHistory()
+        {
+            if (this.SelectedChannel != null)
+            {
+                new LogChannelViewModel(this, this.SelectedChannel.Server, this.SelectedChannel.Name);
+            }
         }
         #endregion
 

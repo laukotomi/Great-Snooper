@@ -25,10 +25,12 @@ namespace GreatSnooper.IRCTasks
         public override void DoTask(MainViewModel mvm)
         {
             AbstractChannelViewModel temp;
-            if (!Sender.Channels.TryGetValue(ChannelHash, out temp) || !temp.Joined || temp.GetType() != typeof(ChannelViewModel))
+            if (!Sender.Channels.TryGetValue(ChannelHash, out temp) || !temp.Joined)
                 return;
 
-            var chvm = (ChannelViewModel)temp;
+            ChannelViewModel chvm = temp as ChannelViewModel;
+            if (chvm == null)
+                return;
 
             // This can reagate for force PART - this was the old way to PART a channel (was waiting for a PART message from the server as an answer for the PART command sent by the client)
             if (ClientName.Equals(Sender.User.Name, StringComparison.OrdinalIgnoreCase))

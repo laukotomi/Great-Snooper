@@ -1,5 +1,4 @@
 ﻿using GalaSoft.MvvmLight;
-using GreatSnooper.EventArguments;
 using GreatSnooper.Helpers;
 using GreatSnooper.IRCTasks;
 using GreatSnooper.Model;
@@ -8,7 +7,6 @@ using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -1006,8 +1004,9 @@ namespace GreatSnooper.Classes
 
                 foreach (var chvm in this.Channels)
                 {
-                    if (chvm.Value is ChannelViewModel && ((ChannelViewModel)chvm.Value).ChannelSchemeTask != null)
-                        ((ChannelViewModel)chvm.Value).ChannelSchemeTask.Dispose();
+                    ChannelViewModel channel = chvm.Value as ChannelViewModel;
+                    if (channel != null && channel.ChannelSchemeTask != null)
+                        channel.ChannelSchemeTask.Dispose();
                 }
             }
         }

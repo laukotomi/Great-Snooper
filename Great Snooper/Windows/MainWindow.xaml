@@ -189,6 +189,7 @@
         <KeyBinding Command="{Binding Path=CloseActualChannelCommand, Mode=OneTime}" Key="W" Modifiers="Control" />
         <KeyBinding Command="{Binding Path=FilterCommand, Mode=OneTime}" Key="F" Modifiers="Control" />
         <KeyBinding Command="{Binding Path=AwayShortkeyCommand, Mode=OneTime}" Key="A" Modifiers="Control+Shift" />
+        <KeyBinding Command="{Binding Path=ShowHistoryCommand, Mode=OneTime}" Key="H" Modifiers="Control" />
     </controls:MetroWindow.InputBindings>
 
     <!-- Application Icon -->

@@ -31,7 +31,9 @@ namespace GreatSnooper.IRCTasks
                     return;
             }
 
-            var chvm = (ChannelViewModel)temp;
+            ChannelViewModel chvm = temp as ChannelViewModel;
+            if (chvm == null)
+                return;
 
             if (ClientName.Equals(Sender.User.Name, StringComparison.OrdinalIgnoreCase) == false)
             {
