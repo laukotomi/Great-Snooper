@@ -940,12 +940,12 @@ namespace GreatSnooper.ViewModel
         #endregion
 
         #region CloseChannelCommand (right click)
-        public RelayCommand<PMChannelViewModel> CloseChannelCommand
+        public RelayCommand<AbstractChannelViewModel> CloseChannelCommand
         {
-            get { return new RelayCommand<PMChannelViewModel>(CloseChannel); }
+            get { return new RelayCommand<AbstractChannelViewModel>(CloseChannel); }
         }
 
-        private void CloseChannel(PMChannelViewModel chvm)
+        private void CloseChannel(AbstractChannelViewModel chvm)
         {
             this.CloseChannelTab(chvm);
         }

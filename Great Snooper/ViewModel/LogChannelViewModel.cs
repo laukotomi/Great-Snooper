@@ -31,7 +31,7 @@ namespace GreatSnooper.ViewModel
             var mainWindow = (MainWindow)mainViewModel.DialogService.GetView();
             tabitem = new TabItem();
             tabitem.DataContext = this;
-            tabitem.Style = (Style)mainWindow.ChannelsTabControl.FindResource("channelTabItem");
+            tabitem.Style = (Style)mainWindow.ChannelsTabControl.FindResource("logChannelTabItem");
             tabitem.ApplyTemplate();
             tabitem.Content = ConnectedLayout;
 
