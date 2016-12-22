@@ -26,7 +26,6 @@ namespace GreatSnooper.ViewModel
         #region Static
         private static Regex dateRegex = new Regex(@"[^0-9]");
         protected static string urlRegexText = @"(ht|f)tps?://\S+";
-        protected static Regex urlRegex = new Regex(urlRegexText, RegexOptions.IgnoreCase | RegexOptions.Compiled);
         #endregion
 
         #region Members
@@ -153,9 +152,9 @@ namespace GreatSnooper.ViewModel
 
         #region Abstract methods
         public abstract void ClearUsers();
-        public abstract void SendMessage(string message, bool userMessage = false);
-        public abstract void SendNotice(string message, bool userMessage = false);
-        public abstract void SendActionMessage(string message, bool userMessage = false);
+        public abstract void SendMessage(string message);
+        public abstract void SendNotice(string message);
+        public abstract void SendActionMessage(string message);
         public abstract void SendCTCPMessage(string ctcpCommand, string ctcpText, User except = null);
         public abstract void ProcessMessage(MessageTask msgTask);
         protected virtual void JoinedChanged() { }
@@ -217,12 +216,12 @@ namespace GreatSnooper.ViewModel
                 if (command.Equals("me", StringComparison.OrdinalIgnoreCase))
                 {
                     if (text.Length > 0)
-                        SendActionMessage(text, true);
+                        SendActionMessage(text);
                 }
                 else if (command.Equals("notice", StringComparison.OrdinalIgnoreCase))
                 {
                     if (text.Length > 0)
-                        SendNotice(text, true);
+                        SendNotice(text);
                 }
                 else if (command.Equals("nick", StringComparison.OrdinalIgnoreCase))
                 {
@@ -362,7 +361,7 @@ namespace GreatSnooper.ViewModel
             {
                 message = message.Trim();
                 if (message.Length > 0)
-                    SendMessage(message, true);
+                    SendMessage(message);
             }
         }
 
@@ -426,27 +425,10 @@ namespace GreatSnooper.ViewModel
         #endregion
 
         #region Add message
-        public void AddMessage(User sender, string message, MessageSetting messageSetting, bool userMessage = false)
+        public void AddMessage(User sender, string message, MessageSetting messageSetting)
         {
             var msg = new Message(sender, message, messageSetting, DateTime.Now);
-
-            if (userMessage || msg.Style.Type == Message.MessageTypes.Quit)
-            {
-                var matches = urlRegex.Matches(msg.Text);
-                for (int i = 0; i < matches.Count; i++)
-                {
-                    this.HandleUriMatch(matches[i].Groups[0], msg);
-                }
-            }
-
             this.AddMessage(msg);
-        }
-
-        protected void HandleUriMatch(Group group, Message message)
-        {
-            Uri uri;
-            if (Uri.TryCreate(group.Value, UriKind.RelativeOrAbsolute, out uri))
-                message.AddHighlightWord(group.Index, group.Length, Message.HightLightTypes.URI);
         }
 
         public void AddMessage(Message msg)

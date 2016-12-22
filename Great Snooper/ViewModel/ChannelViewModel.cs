@@ -273,22 +273,22 @@ namespace GreatSnooper.ViewModel
         }
         #endregion
 
-        public override void SendMessage(string message, bool userMessage = false)
+        public override void SendMessage(string message)
         {
             Server.SendMessage(this, this.Name, message);
-            AddMessage(Server.User, message, MessageSettings.UserMessage, userMessage);
+            AddMessage(Server.User, message, MessageSettings.UserMessage);
         }
 
-        public override void SendNotice(string message, bool userMessage = false)
+        public override void SendNotice(string message)
         {
             Server.SendNotice(this, this.Name, message);
-            AddMessage(Server.User, message, MessageSettings.NoticeMessage, userMessage);
+            AddMessage(Server.User, message, MessageSettings.NoticeMessage);
         }
 
-        public override void SendActionMessage(string message, bool userMessage = false)
+        public override void SendActionMessage(string message)
         {
             Server.SendCTCPMessage(this, this.Name, "ACTION", message);
-            AddMessage(Server.User, message, MessageSettings.ActionMessage, userMessage);
+            AddMessage(Server.User, message, MessageSettings.ActionMessage);
         }
 
         public override void SendCTCPMessage(string ctcpCommand, string ctcpText, User except = null)
@@ -313,14 +313,11 @@ namespace GreatSnooper.ViewModel
             var helper = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             var sb = new StringBuilder();
 
-            // URLs
-            sb.Append(@"(?<uri>" + urlRegexText + @")");
-
             this.isHighlightInRegex = Properties.Settings.Default.HBeepEnabled;
             if (this.isHighlightInRegex)
             {
                 helper.Add(this.Server.User.Name);
-                sb.Append(@"|(?<hbeep>\b" + Regex.Escape(this.Server.User.Name) + @"\b)");
+                sb.Append(@"(?<hbeep>\b" + Regex.Escape(this.Server.User.Name) + @"\b)");
             }
 
             this.isLeagueSearcherInRegex = this.leagueSearcher.ChannelToSearch == this;
@@ -369,42 +366,38 @@ namespace GreatSnooper.ViewModel
 
                 if (messageRegex == null)
                     GenerateMessageRegex();
-                MatchCollection matches = messageRegex.Matches(msg.Text);
-                for (int i = 0; i < matches.Count; i++)
+                if (isHighlightInRegex || isLeagueSearcherInRegex)
                 {
-                    GroupCollection groups = matches[i].Groups;
-                    Group uriGroup = groups["uri"];
-                    if (uriGroup.Length > 0)
+                    MatchCollection matches = messageRegex.Matches(msg.Text);
+                    for (int i = 0; i < matches.Count; i++)
                     {
-                        this.HandleUriMatch(uriGroup, msg);
-                        continue;
-                    }
-
-                    Group hGroup = groups["hbeep"];
-                    if (canDisplay && isHighlightInRegex && hGroup.Length > 0)
-                    {
-                        if (hGroup.Value == this.Server.User.Name) // Check case sensitive
+                        GroupCollection groups = matches[i].Groups;
+                        Group hGroup = groups["hbeep"];
+                        if (canDisplay && isHighlightInRegex && hGroup.Length > 0)
                         {
-                            msg.AddHighlightWord(hGroup.Index, hGroup.Length, Message.HightLightTypes.Highlight);
-                            this.Highlight();
-                            this.MainViewModel.FlashWindow();
-                            if (Properties.Settings.Default.TrayNotifications)
-                                this.MainViewModel.ShowTrayMessage(string.Format(Localizations.GSLocalization.Instance.HightLightMessage, this.Name));
-                            if (Properties.Settings.Default.HBeepEnabled)
-                                Sounds.PlaySoundByName("HBeep");
+                            if (hGroup.Value == this.Server.User.Name) // Check case sensitive
+                            {
+                                msg.AddHighlightWord(hGroup.Index, hGroup.Length, Message.HightLightTypes.Highlight);
+                                this.Highlight();
+                                this.MainViewModel.FlashWindow();
+                                if (Properties.Settings.Default.TrayNotifications)
+                                    this.MainViewModel.ShowTrayMessage(string.Format(Localizations.GSLocalization.Instance.HightLightMessage, this.Name));
+                                if (Properties.Settings.Default.HBeepEnabled)
+                                    Sounds.PlaySoundByName("HBeep");
+                            }
+                            continue;
                         }
-                        continue;
-                    }
 
-                    Group leagueGroup = groups["league"];
-                    if (canDisplay && isLeagueSearcherInRegex && leagueGroup.Length > 0 && this.leagueSearcher.HandleMatch(leagueGroup, msg))
-                    {
-                        this.MainViewModel.FlashWindow();
+                        Group leagueGroup = groups["league"];
+                        if (canDisplay && isLeagueSearcherInRegex && leagueGroup.Length > 0 && this.leagueSearcher.HandleMatch(leagueGroup, msg))
+                        {
+                            this.MainViewModel.FlashWindow();
 
-                        if (Properties.Settings.Default.TrayNotifications)
-                            this.MainViewModel.ShowTrayMessage(msg.Sender.Name + ": " + msg.Text);
-                        if (Properties.Settings.Default.LeagueFoundBeepEnabled)
-                            Sounds.PlaySoundByName("LeagueFoundBeep");
+                            if (Properties.Settings.Default.TrayNotifications)
+                                this.MainViewModel.ShowTrayMessage(msg.Sender.Name + ": " + msg.Text);
+                            if (Properties.Settings.Default.LeagueFoundBeepEnabled)
+                                Sounds.PlaySoundByName("LeagueFoundBeep");
+                        }
                     }
                 }
 
@@ -418,14 +411,6 @@ namespace GreatSnooper.ViewModel
                     }
                     if (nmatches.Count > 0)
                         this.MainViewModel.NotificatorFound(msg, this);
-                }
-            }
-            else if (msgTask.Setting.Type == Message.MessageTypes.Action || msgTask.Setting.Type == Message.MessageTypes.Notice)
-            {
-                var matches = urlRegex.Matches(msg.Text);
-                for (int i = 0; i < matches.Count; i++)
-                {
-                    this.HandleUriMatch(matches[i].Groups[0], msg);
                 }
             }
 

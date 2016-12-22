@@ -63,7 +63,7 @@ namespace GreatSnooper.ViewModel
             new LogChannelViewModel(this.MainViewModel, this.Server, "Log: " + this.Name);
         }
 
-        public override void SendMessage(string message, bool userMessage = false)
+        public override void SendMessage(string message)
         {
             if (this.Users.Count > 1)
             {
@@ -77,10 +77,10 @@ namespace GreatSnooper.ViewModel
             else if (this.Users[0].OnlineStatus != User.Status.Offline)
                 Server.SendMessage(this, this.Users[0].Name, message);
 
-            AddMessage(Server.User, message, MessageSettings.UserMessage, userMessage);
+            AddMessage(Server.User, message, MessageSettings.UserMessage);
         }
 
-        public override void SendNotice(string message, bool userMessage = false)
+        public override void SendNotice(string message)
         {
             if (this.Users.Count > 1)
             {
@@ -94,10 +94,10 @@ namespace GreatSnooper.ViewModel
             else if (this.Users[0].OnlineStatus != User.Status.Offline)
                 Server.SendNotice(this, this.Users[0].Name, message);
 
-            AddMessage(Server.User, message, MessageSettings.NoticeMessage, userMessage);
+            AddMessage(Server.User, message, MessageSettings.NoticeMessage);
         }
 
-        public override void SendActionMessage(string message, bool userMessage = false)
+        public override void SendActionMessage(string message)
         {
             if (this.Users.Count > 1)
             {
@@ -111,7 +111,7 @@ namespace GreatSnooper.ViewModel
             else if (this.Users[0].OnlineStatus != User.Status.Offline)
                 Server.SendCTCPMessage(this, this.Users[0].Name, "ACTION", message);
 
-            AddMessage(Server.User, message, MessageSettings.ActionMessage, userMessage);
+            AddMessage(Server.User, message, MessageSettings.ActionMessage);
         }
 
         public override void SendCTCPMessage(string ctcpCommand, string ctcpText, User except = null)
@@ -131,14 +131,6 @@ namespace GreatSnooper.ViewModel
                 this.Disabled = false;
 
             var msg = new Message(msgTask.User, msgTask.Message, msgTask.Setting, DateTime.Now);
-            if (msgTask.Setting.Type == Message.MessageTypes.Channel || msgTask.Setting.Type == Message.MessageTypes.Quit || msgTask.Setting.Type == Message.MessageTypes.Action || msgTask.Setting.Type == Message.MessageTypes.Notice)
-            {
-                var matches = urlRegex.Matches(msgTask.Message);
-                for (int i = 0; i < matches.Count; i++)
-                {
-                    this.HandleUriMatch(matches[i].Groups[0], msg);
-                }
-            }
 
             // This way away message will be added to the channel later than the arrived message
             this.AddMessage(msg);

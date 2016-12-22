@@ -1,12 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace GreatSnooper.Model
 {
     [DebuggerDisplay("{Sender.Name}: {Text}")]
     public class Message
     {
+        #region Static
+        protected static Regex urlRegex = new Regex(@"(ht|f)tps?://\S+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        #endregion
+
         #region Enums
         public enum MessageTypes { Channel, Join, Quit, Part, Offline, Action, User, Notice, Hyperlink, Time, League }
         public enum HightLightTypes { Highlight, LeagueFound, NotificatorFound, URI }
@@ -28,6 +33,22 @@ namespace GreatSnooper.Model
             this.Style = setting;
             this.Time = time;
             this.IsLogged = isLogged;
+
+            if (setting.Type == MessageTypes.Action ||
+                setting.Type == MessageTypes.Channel ||
+                setting.Type == MessageTypes.Notice ||
+                setting.Type == MessageTypes.User ||
+                setting.Type == MessageTypes.Quit)
+            {
+                MatchCollection matches = urlRegex.Matches(text);
+                for (int i = 0; i < matches.Count; i++)
+                {
+                    Group group = matches[i].Groups[0];
+                    Uri uri;
+                    if (Uri.TryCreate(group.Value, UriKind.RelativeOrAbsolute, out uri))
+                        this.AddHighlightWord(group.Index, group.Length, Message.HightLightTypes.URI);
+                }
+            }
         }
 
         public void AddHighlightWord(int idx, int length, HightLightTypes type)
