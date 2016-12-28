@@ -36,13 +36,12 @@ namespace GreatSnooper.ViewModel
             tabitem.Content = ConnectedLayout;
 
             server.Channels.Add(this.Name, this);
-
-            //this.GenerateHeader();
             mainViewModel.Channels.Add(this);
 
-            DirectoryInfo logDirectory = new DirectoryInfo(GlobalManager.SettingsPath + @"\Logs\" + channelName);
-            if (logDirectory.Exists)
+            string path = GlobalManager.SettingsPath + @"\Logs\" + channelName;
+            if (Directory.Exists(path))
             {
+                DirectoryInfo logDirectory = new DirectoryInfo(path);
                 List<string> oldMessages = new List<string>();
                 bool done = false;
                 foreach (FileInfo file in logDirectory.GetFiles().OrderByDescending(f => f.LastWriteTime))
@@ -123,7 +122,7 @@ namespace GreatSnooper.ViewModel
 
         }
 
-        public override void SendActionMessage(string message, bool userMessage = false)
+        public override void SendActionMessage(string message)
         {
 
         }
@@ -133,12 +132,12 @@ namespace GreatSnooper.ViewModel
 
         }
 
-        public override void SendMessage(string message, bool userMessage = false)
+        public override void SendMessage(string message)
         {
 
         }
 
-        public override void SendNotice(string message, bool userMessage = false)
+        public override void SendNotice(string message)
         {
 
         }

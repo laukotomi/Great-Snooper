@@ -542,7 +542,10 @@ namespace GreatSnooper.ViewModel
                 else
                     ignore.Header = Localizations.GSLocalization.Instance.AddIgnoreText;
 
-                var tusInfo = (MenuItem)obj.ContextMenu.Items[4];
+                var history = (MenuItem)obj.ContextMenu.Items[4];
+                history.CommandParameter = u;
+
+                var tusInfo = (MenuItem)obj.ContextMenu.Items[5];
                 if (u.TusAccount != null)
                 {
                     tusInfo.CommandParameter = u.TusAccount.TusLink;
@@ -552,7 +555,7 @@ namespace GreatSnooper.ViewModel
                 else
                     tusInfo.Visibility = System.Windows.Visibility.Collapsed;
 
-                var tusClanInfo = (MenuItem)obj.ContextMenu.Items[5];
+                var tusClanInfo = (MenuItem)obj.ContextMenu.Items[6];
                 if (u.TusAccount != null && string.IsNullOrWhiteSpace(u.TusAccount.Clan) == false)
                 {
                     tusClanInfo.CommandParameter = "http://www.tus-wa.com/groups/" + u.TusAccount.Clan + "/";
@@ -562,7 +565,7 @@ namespace GreatSnooper.ViewModel
                 else
                     tusClanInfo.Visibility = System.Windows.Visibility.Collapsed;
 
-                var appinfo = (MenuItem)obj.ContextMenu.Items[6];
+                var appinfo = (MenuItem)obj.ContextMenu.Items[7];
                 if (string.IsNullOrWhiteSpace(u.ClientName) == false)
                 {
                     appinfo.Header = string.Format(Localizations.GSLocalization.Instance.InfoText, u.ClientName);

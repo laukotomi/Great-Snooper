@@ -1310,4 +1310,8 @@
     <value>Német fordítás:</value>
     <comment>German translation by text in settings / About</comment>
   </data>
+  <data name="ShowHistoryText" xml:space="preserve">
+    <value>Előzmények mutatása</value>
+    <comment>When right click on the name of a channel</comment>
+  </data>
 </root>

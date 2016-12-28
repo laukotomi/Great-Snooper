@@ -2130,14 +2130,38 @@ namespace GreatSnooper.ViewModel
         #region ShowHistoryCommand
         public ICommand ShowHistoryCommand
         {
-            get { return new RelayCommand(ShowHistory); }
+            get { return new RelayCommand<AbstractChannelViewModel>(ShowHistory); }
         }
 
-        private void ShowHistory()
+        private void ShowHistory(AbstractChannelViewModel channel = null)
+        {
+            if (channel == null)
+                channel = this.SelectedChannel;
+
+            if (channel != null)
+            {
+                AbstractChannelViewModel temp;
+                if (!channel.Server.Channels.TryGetValue("Log: " + channel.Name, out temp))
+                    temp = new LogChannelViewModel(this, channel.Server, channel.Name);
+                this.SelectChannel(temp);
+            }
+        }
+        #endregion
+
+        #region ShowUserHistoryCommand
+        public RelayCommand<User> ShowUserHistoryCommand
+        {
+            get { return new RelayCommand<User>(ShowUserHistory); }
+        }
+
+        private void ShowUserHistory(User user)
         {
             if (this.SelectedChannel != null)
             {
-                new LogChannelViewModel(this, this.SelectedChannel.Server, this.SelectedChannel.Name);
+                AbstractChannelViewModel temp;
+                if (!this.SelectedChannel.Server.Channels.TryGetValue("Log: " + user.Name, out temp))
+                    temp = new LogChannelViewModel(this, this.SelectedChannel.Server, user.Name);
+                this.SelectChannel(temp);
             }
         }
         #endregion
