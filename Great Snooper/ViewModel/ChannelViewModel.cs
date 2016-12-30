@@ -310,7 +310,7 @@ namespace GreatSnooper.ViewModel
 
         private void GenerateMessageRegex()
         {
-            var helper = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var helper = new HashSet<string>(GlobalManager.CIStringComparer);
             var sb = new StringBuilder();
 
             this.isHighlightInRegex = Properties.Settings.Default.HBeepEnabled;

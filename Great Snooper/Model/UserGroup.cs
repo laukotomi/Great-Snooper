@@ -19,7 +19,8 @@ namespace GreatSnooper.Model
 
         #region Properties
         public int ID { get; private set; }
-        public string Name {
+        public string Name
+        {
             get { return _name; }
             set
             {
@@ -88,7 +89,7 @@ namespace GreatSnooper.Model
                 string userList = SettingsHelper.Load<string>(this.SettingName + "List");
                 this.Users = new HashSet<string>(
                     userList.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
-                    StringComparer.OrdinalIgnoreCase);
+                    GlobalManager.CIStringComparer);
 
                 Sound = null; // Load sound settings
             }

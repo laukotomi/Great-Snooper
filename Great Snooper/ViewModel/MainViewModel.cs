@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using GreatSnooper.Classes;
 using GreatSnooper.Helpers;
+using GreatSnooper.IRCTasks;
 using GreatSnooper.Model;
 using GreatSnooper.Services;
 using GreatSnooper.Validators;
@@ -410,7 +411,7 @@ namespace GreatSnooper.ViewModel
 
             this.Channels = new SortedObservableCollection<AbstractChannelViewModel>();
             this.Channels.CollectionChanged += Channels_CollectionChanged;
-            this.InstantColors = new Dictionary<string, SolidColorBrush>(StringComparer.OrdinalIgnoreCase);
+            this.InstantColors = new Dictionary<string, SolidColorBrush>(GlobalManager.CIStringComparer);
             this.notificator = Notificator.Instance;
             this.notificator.IsEnabledChanged += notificator_IsEnabledChanged;
             this.LeagueSearcher = LeagueSearcher.Instance;
@@ -426,6 +427,21 @@ namespace GreatSnooper.ViewModel
             wormNetC.GetChannelList(this);
         }
         #endregion
+
+        public void HandleTask(IRCTask task)
+        {
+            this.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                try
+                {
+                    task.DoTask(this);
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex);
+                }
+            }));
+        }
 
         #region Load Games + League searcher spam
         void secondTimer_Tick(object sender, EventArgs e)
@@ -771,7 +787,7 @@ namespace GreatSnooper.ViewModel
                 {
                     HashSet<string> serverList = new HashSet<string>(
                         Properties.Settings.Default.ServerAddresses.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                        , StringComparer.OrdinalIgnoreCase);
+                        , GlobalManager.CIStringComparer);
                     bool updateServers = false;
 
                     using (XmlReader xml = XmlReader.Create(settingsXMLPath))
@@ -1147,7 +1163,7 @@ namespace GreatSnooper.ViewModel
                 case "HiddenChannels":
                     GlobalManager.HiddenChannels = new HashSet<string>(
                         Properties.Settings.Default.HiddenChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
-                        StringComparer.OrdinalIgnoreCase);
+                        GlobalManager.CIStringComparer);
                     foreach (var server in this.Servers)
                     {
                         foreach (var chvm in server.Channels)

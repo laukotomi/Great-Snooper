@@ -72,10 +72,17 @@ namespace GreatSnooper.IRCTasks
                         foreach (var channel in u.PMChannels)
                             channel.AddMessage(u, Localizations.GSLocalization.Instance.PMOnlineMessage, MessageSettings.JoinMessage);
                     }
-                    else if (u.Channels.Contains(chvm) == false)
+                    else
                     {
-                        chvm.AddUser(u);
-                        chvm.AddMessage(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage);
+                        if (u.AddToChannel.Count > 0)
+                        {
+                            u.AddToChannel.Add(chvm); // Client will be added to the channel if information is arrived to keep the client list sorted properly
+                        }
+                        else if (u.Channels.Contains(chvm) == false)
+                        {
+                            chvm.AddUser(u);
+                            chvm.AddMessage(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage);
+                        }
                     }
                 }
             }

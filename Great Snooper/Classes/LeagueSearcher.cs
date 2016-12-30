@@ -45,7 +45,7 @@ namespace GreatSnooper.Classes
 
         private LeagueSearcher()
         {
-            SearchData = new Dictionary<string, Dictionary<string, DateTime>>(StringComparer.OrdinalIgnoreCase);
+            SearchData = new Dictionary<string, Dictionary<string, DateTime>>(GlobalManager.CIStringComparer);
         }
 
         public void ChangeSearching(ChannelViewModel channel, bool spamming = false)
@@ -57,7 +57,7 @@ namespace GreatSnooper.Classes
             {
                 string[] leaguesToSearch = Properties.Settings.Default.SearchForThese.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string league in leaguesToSearch)
-                    SearchData.Add(league, new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase));
+                    SearchData.Add(league, new Dictionary<string, DateTime>(GlobalManager.CIStringComparer));
                 SearchingText = string.Join(" or ", leaguesToSearch) + " anyone?";
             }
 

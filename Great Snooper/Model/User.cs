@@ -253,7 +253,7 @@ namespace GreatSnooper.Model
         public int CompareTo(object obj)
         {
             var o = obj as User;
-            return StringComparer.OrdinalIgnoreCase.Compare(this.Name, o.Name);
+            return GlobalManager.CIStringComparer.Compare(this.Name, o.Name);
         }
         #endregion
 
@@ -266,6 +266,33 @@ namespace GreatSnooper.Model
         public void RaisePropertyChangedPublic(string propertyName)
         {
             this.RaisePropertyChanged(propertyName);
+        }
+
+        public override bool Equals(object obj)
+        {
+            var item = obj as User;
+
+            if (item == null)
+            {
+                return false;
+            }
+
+            return this.Name.Equals(item.Name);
+        }
+
+        public static bool operator ==(User user1, User user2)
+        {
+            if (object.ReferenceEquals(user1, null))
+            {
+                return object.ReferenceEquals(user2, null);
+            }
+
+            return user1.Equals(user2);
+        }
+
+        public static bool operator !=(User user1, User user2)
+        {
+            return !(user1 == user2);
         }
     }
 }
