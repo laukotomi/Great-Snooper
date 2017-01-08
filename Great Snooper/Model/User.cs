@@ -294,13 +294,10 @@ namespace GreatSnooper.Model
         {
             return !(user1 == user2);
         }
-<<<<<<< HEAD
 
         public override int GetHashCode()
         {
             return this.Name.GetHashCode();
         }
-=======
->>>>>>> origin/Save-My-Work
     }
 }
