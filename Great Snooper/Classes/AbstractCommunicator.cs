@@ -418,6 +418,7 @@ namespace GreatSnooper.Classes
             // PART <channel> *( "," <channel> ) [ <Part Message> ]
             if (command.Equals("PART", StringComparison.OrdinalIgnoreCase))
             {
+<<<<<<< HEAD
                 if (this.MVM != null)
                 {
                     string clientName = m.Groups[1].Value;
@@ -430,6 +431,17 @@ namespace GreatSnooper.Classes
 
                     MVM.HandleTask(new PartedTask(this, channelHash, clientName, message));
                 }
+=======
+                string clientName = m.Groups[1].Value;
+                var param = m.Groups[4].Value;
+                int spacePos = param.IndexOf(' ');
+                string channelHash = (spacePos != -1) ? param.Substring(0, spacePos) : param;
+                string message = string.Empty;
+                if (spacePos != -1 && param.Length > spacePos + 1)
+                    message = (param[spacePos + 1] == ':') ? param.Substring(spacePos + 2) : param.Substring(spacePos + 1);
+                if (MVM != null)
+                    MVM.HandleTask(new PartedTask(this, channelHash, clientName, message));
+>>>>>>> origin/Save-My-Work
             }
 
             // :sToOMiToO!~AeF@no.address.for.you JOIN :#RopersHeaven
@@ -437,6 +449,7 @@ namespace GreatSnooper.Classes
             else if (command.Equals("JOIN", StringComparison.OrdinalIgnoreCase))
             {
                 if (MVM != null)
+<<<<<<< HEAD
                 {
                     string clientName = m.Groups[1].Value;
                     string param = m.Groups[4].Value;
@@ -446,6 +459,9 @@ namespace GreatSnooper.Classes
 
                     MVM.HandleTask(new JoinedTask(this, channelHash, clientName, clan));
                 }
+=======
+                    MVM.HandleTask(new JoinedTask(this, channelHash, clientName, clan));
+>>>>>>> origin/Save-My-Work
             }
 
             // :Snaker!Username@no.address.for.you QUIT :Joined Game
@@ -520,9 +536,12 @@ namespace GreatSnooper.Classes
                                     int vertBarPos = message.IndexOf('|');
                                     if (vertBarPos != -1)
                                     {
+<<<<<<< HEAD
                                         channelHash = SplitUserAndSenderName(message.Substring(0, vertBarPos), clientName);
                                         string msg = message.Substring(vertBarPos + 1);
 
+=======
+>>>>>>> origin/Save-My-Work
                                         MessageSetting setting = (ctcpCommand.Equals("CMESSAGE", StringComparison.OrdinalIgnoreCase)) ? MessageSettings.ChannelMessage : MessageSettings.NoticeMessage;
                                         MVM.HandleTask(new MessageTask(this, clientName, channelHash, msg, setting));
                                     }
@@ -532,6 +551,7 @@ namespace GreatSnooper.Classes
                             {
                                 if (MVM != null)
                                 {
+<<<<<<< HEAD
                                     int vertBarPos = message.IndexOf('|');
                                     if (vertBarPos != -1)
                                     {
@@ -539,12 +559,19 @@ namespace GreatSnooper.Classes
                                         string msg = message.Substring(vertBarPos + 1);
                                         MVM.HandleTask(new MessageTask(this, clientName, channelHash, msg, MessageSettings.ActionMessage));
                                     }
+=======
+                                    channelHash = SplitUserAndSenderName(message.Substring(0, vertBarPos), clientName);
+                                    string msg = message.Substring(vertBarPos + 1);
+                                    if (MVM != null)
+                                        MVM.HandleTask(new MessageTask(this, clientName, channelHash, msg, MessageSettings.ActionMessage));
+>>>>>>> origin/Save-My-Work
                                 }
                             }
                             else if (ctcpCommand.Equals("CLIENTADD", StringComparison.OrdinalIgnoreCase))
                             {
                                 if (MVM != null)
                                 {
+<<<<<<< HEAD
                                     int vertBarPos = message.IndexOf('|');
                                     if (vertBarPos != -1)
                                     {
@@ -552,12 +579,19 @@ namespace GreatSnooper.Classes
                                         string clientNameToAdd = message.Substring(vertBarPos + 1);
                                         MVM.HandleTask(new ClientAddTask(this, channelHash, clientName, clientNameToAdd));
                                     }
+=======
+                                    channelHash = SplitUserAndSenderName(message.Substring(0, vertBarPos), clientName);
+                                    string clientNameToAdd = message.Substring(vertBarPos + 1);
+                                    if (MVM != null)
+                                        MVM.HandleTask(new ClientAddTask(this, channelHash, clientName, clientNameToAdd));
+>>>>>>> origin/Save-My-Work
                                 }
                             }
                             else if (ctcpCommand.Equals("CLIENTREM", StringComparison.OrdinalIgnoreCase))
                             {
                                 if (MVM != null)
                                 {
+<<<<<<< HEAD
                                     int vertBarPos = message.IndexOf('|');
                                     if (vertBarPos != -1)
                                     {
@@ -565,15 +599,25 @@ namespace GreatSnooper.Classes
                                         string clientNameToRemove = message.Substring(vertBarPos + 1);
                                         MVM.HandleTask(new ClientRemoveTask(this, channelHash, clientName, clientNameToRemove));
                                     }
+=======
+                                    channelHash = SplitUserAndSenderName(message.Substring(0, vertBarPos), clientName);
+                                    string clientNameToRemove = message.Substring(vertBarPos + 1);
+                                    if (MVM != null)
+                                        MVM.HandleTask(new ClientRemoveTask(this, channelHash, clientName, clientNameToRemove));
+>>>>>>> origin/Save-My-Work
                                 }
                             }
                             else if (ctcpCommand.Equals("CLEAVING", StringComparison.OrdinalIgnoreCase))
                             {
                                 if (MVM != null)
+<<<<<<< HEAD
                                 {
                                     channelHash = SplitUserAndSenderName(message, clientName);
                                     MVM.HandleTask(new ClientLeftTask(this, channelHash, clientName));
                                 }
+=======
+                                    MVM.HandleTask(new ClientLeftTask(this, channelHash, clientName));
+>>>>>>> origin/Save-My-Work
                             }
                         }
                         else // ctcp command without message
@@ -598,43 +642,60 @@ namespace GreatSnooper.Classes
             // :Tomi!~Tomi@irc.org NICK :Tomi3
             else if (command.Equals("NICK", StringComparison.OrdinalIgnoreCase) && HandleNickChange)
             {
+<<<<<<< HEAD
                 if (MVM != null)
                 {
                     string oldClientName = m.Groups[1].Value;
                     string newClientName = m.Groups[4].Value;
                     MVM.HandleTask(new NickChangeTask(this, oldClientName, newClientName));
                 }
+=======
+                string oldClientName = m.Groups[1].Value;
+                string newClientName = m.Groups[4].Value;
+                if (MVM != null)
+                    MVM.HandleTask(new NickChangeTask(this, oldClientName, newClientName));
+>>>>>>> origin/Save-My-Work
             }
             // :Angel!wings@irc.org INVITE Wiz #Dust
-            else if (command.Equals("INVITE", StringComparison.OrdinalIgnoreCase))
+            else if (command.Equals("INVITE", StringComparison.OrdinalIgnoreCase) && MVM != null)
             {
                 if (MVM != null)
                 {
+<<<<<<< HEAD
                     string[] data = m.Groups[4].Value.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (data.Length == 2 && data[0].Equals(this.User.Name, StringComparison.OrdinalIgnoreCase))
                     {
                         MVM.HandleTask(new JoinedTask(this, data[1], this.User.Name, this.User.Clan));
                     }
+=======
+                    MVM.HandleTask(new JoinedTask(this, data[1], this.User.Name, this.User.Clan));
+>>>>>>> origin/Save-My-Work
                 }
             }
             // :WiZ!jto@tolsun.oulu.fi KICK #Finnish John
-            else if (command.Equals("KICK", StringComparison.OrdinalIgnoreCase))
+            else if (command.Equals("KICK", StringComparison.OrdinalIgnoreCase) && MVM != null)
             {
                 if (MVM != null)
                 {
+<<<<<<< HEAD
                     string[] data = m.Groups[4].Value.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (data.Length == 2)
                     {
                         string clientName = m.Groups[1].Value;
                         MVM.HandleTask(new PartedTask(this, data[0], data[1], string.Format(Localizations.GSLocalization.Instance.KickMessage, clientName)));
                     }
+=======
+                    string clientName = m.Groups[1].Value;
+                    MVM.HandleTask(new PartedTask(this, data[0], data[1], string.Format(Localizations.GSLocalization.Instance.KickMessage, clientName)));
+>>>>>>> origin/Save-My-Work
                 }
             }
             // :WiZ!jto@tolsun.oulu.fi TOPIC #test :New topic
-            else if (command.Equals("TOPIC", StringComparison.OrdinalIgnoreCase))
+            else if (command.Equals("TOPIC", StringComparison.OrdinalIgnoreCase) && MVM != null)
             {
                 if (MVM != null)
                 {
+<<<<<<< HEAD
                     string[] data = m.Groups[4].Value.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (data.Length == 2)
                     {
@@ -642,6 +703,11 @@ namespace GreatSnooper.Classes
                         string topic = (data[1][0] == ':') ? data[1].Substring(1) : data[1];
                         MVM.HandleTask(new MessageTask(this, GlobalManager.SystemUser.Name, data[0], string.Format(Localizations.GSLocalization.Instance.TopicMessage, clientName, topic), MessageSettings.SystemMessage));
                     }
+=======
+                    string clientName = m.Groups[1].Value;
+                    string topic = (data[1][0] == ':') ? data[1].Substring(1) : data[1];
+                    MVM.HandleTask(new MessageTask(this, GlobalManager.SystemUser.Name, data[0], string.Format(Localizations.GSLocalization.Instance.TopicMessage, clientName, topic), MessageSettings.SystemMessage));
+>>>>>>> origin/Save-My-Work
                 }
             }
 
