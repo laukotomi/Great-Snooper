@@ -1,8 +1,6 @@
-﻿using GreatSnooper.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace GreatSnooper.Classes
@@ -16,18 +14,6 @@ namespace GreatSnooper.Classes
         #endregion
 
         #region Members
-        private Regex _inMessagesRegex;
-        private Regex _senderNamesRegex;
-        private Regex _gameNamesRegex;
-        private Regex _hosterNamesRegex;
-        private Regex _joinMessagesRegex;
-
-        private MySortedList<string> searchInSenderNames;
-        private MySortedList<string> searchInMessages;
-        private MySortedList<string> searchInGameNames;
-        private MySortedList<string> searchInHosterNames;
-        private MySortedList<string> searchInJoinMessages;
-
         public bool _searchInMessagesEnabled;
         public bool _searchInSenderNamesEnabled;
         public bool _searchInGameNamesEnabled;
@@ -48,55 +34,15 @@ namespace GreatSnooper.Classes
         }
 
 
-        public Regex InMessagesRegex
-        {
-            get
-            {
-                if (_inMessagesRegex == null)
-                    _inMessagesRegex = GenerateRegex(searchInMessages);
-                return _inMessagesRegex;
-            }
-        }
+        public List<NotificatorEntry> InMessages { get; private set; }
 
-        public Regex GameNamesRegex
-        {
-            get
-            {
-                if (_gameNamesRegex == null)
-                    _gameNamesRegex = GenerateRegex(searchInGameNames);
-                return _gameNamesRegex;
-            }
-        }
+        public List<NotificatorEntry> GameNames { get; private set; }
 
-        public Regex HosterNamesRegex
-        {
-            get
-            {
-                if (_hosterNamesRegex == null)
-                    _hosterNamesRegex = GenerateRegex(searchInHosterNames);
-                return _hosterNamesRegex;
-            }
-        }
+        public List<NotificatorEntry> HosterNames { get; private set; }
 
-        public Regex JoinMessagesRegex
-        {
-            get
-            {
-                if (_joinMessagesRegex == null)
-                    _joinMessagesRegex = GenerateRegex(searchInJoinMessages);
-                return _joinMessagesRegex;
-            }
-        }
+        public List<NotificatorEntry> JoinMessages { get; private set; }
 
-        public Regex SenderNamesRegex
-        {
-            get
-            {
-                if (_senderNamesRegex == null)
-                    _senderNamesRegex = GenerateRegex(searchInSenderNames);
-                return _senderNamesRegex;
-            }
-        }
+        public List<NotificatorEntry> SenderNames { get; private set; }
 
         public bool IsEnabled
         {
@@ -112,7 +58,7 @@ namespace GreatSnooper.Classes
             }
         }
         public bool SearchInMessagesEnabled
-        { 
+        {
             get { return this.IsEnabled && _searchInMessagesEnabled; }
         }
         public bool SearchInSenderNamesEnabled
@@ -140,11 +86,11 @@ namespace GreatSnooper.Classes
         private Notificator()
         {
             this._isEnabled = Properties.Settings.Default.NotificatorStartWithSnooper;
-            LoadList(Properties.Settings.Default.NotificatorInGameNames, ref this.searchInGameNames, ref this._searchInGameNamesEnabled);
-            LoadList(Properties.Settings.Default.NotificatorInHosterNames, ref this.searchInHosterNames, ref this._searchInHosterNamesEnabled);
-            LoadList(Properties.Settings.Default.NotificatorInJoinMessages, ref this.searchInJoinMessages, ref this._searchInJoinMessagesEnabled);
-            LoadList(Properties.Settings.Default.NotificatorInMessages, ref this.searchInMessages, ref this._searchInMessagesEnabled);
-            LoadList(Properties.Settings.Default.NotificatorInSenderNames, ref this.searchInSenderNames, ref this._searchInSenderNamesEnabled);
+            this.GameNames = LoadList(Properties.Settings.Default.NotificatorInGameNames, out this._searchInGameNamesEnabled);
+            this.HosterNames = LoadList(Properties.Settings.Default.NotificatorInHosterNames, out this._searchInHosterNamesEnabled);
+            this.JoinMessages = LoadList(Properties.Settings.Default.NotificatorInJoinMessages, out this._searchInJoinMessagesEnabled);
+            this.InMessages = LoadList(Properties.Settings.Default.NotificatorInMessages, out this._searchInMessagesEnabled);
+            this.SenderNames = LoadList(Properties.Settings.Default.NotificatorInSenderNames, out this._searchInSenderNamesEnabled);
 
             Properties.Settings.Default.PropertyChanged += Default_PropertyChanged;
         }
@@ -154,67 +100,45 @@ namespace GreatSnooper.Classes
             switch (e.PropertyName)
             {
                 case "NotificatorInGameNames":
-                    LoadList(Properties.Settings.Default.NotificatorInGameNames, ref this.searchInGameNames, ref this._searchInGameNamesEnabled);
-                    this._gameNamesRegex = null;
+                    this.GameNames = LoadList(Properties.Settings.Default.NotificatorInGameNames, out this._searchInGameNamesEnabled);
                     break;
 
                 case "NotificatorInHosterNames":
-                    LoadList(Properties.Settings.Default.NotificatorInHosterNames, ref this.searchInHosterNames, ref this._searchInHosterNamesEnabled);
-                    this._hosterNamesRegex = null;
+                    this.HosterNames = LoadList(Properties.Settings.Default.NotificatorInHosterNames, out this._searchInHosterNamesEnabled);
                     break;
 
                 case "NotificatorInJoinMessages":
-                    LoadList(Properties.Settings.Default.NotificatorInJoinMessages, ref this.searchInJoinMessages, ref this._searchInJoinMessagesEnabled);
-                    this._joinMessagesRegex = null;
+                    this.JoinMessages = LoadList(Properties.Settings.Default.NotificatorInJoinMessages, out this._searchInJoinMessagesEnabled);
                     break;
 
                 case "NotificatorInMessages":
-                    LoadList(Properties.Settings.Default.NotificatorInMessages, ref this.searchInMessages, ref this._searchInMessagesEnabled);
-                    this._inMessagesRegex = null;
+                    this.InMessages = LoadList(Properties.Settings.Default.NotificatorInMessages, out this._searchInMessagesEnabled);
                     break;
 
                 case "NotificatorInSenderNames":
-                    LoadList(Properties.Settings.Default.NotificatorInSenderNames, ref this.searchInSenderNames, ref this._searchInSenderNamesEnabled);
-                    this._senderNamesRegex = null;
+                    this.SenderNames = LoadList(Properties.Settings.Default.NotificatorInSenderNames, out this._searchInSenderNamesEnabled);
                     break;
             }
         }
 
-        private void LoadList(string value, ref MySortedList<string> list, ref bool enabled)
+        private List<NotificatorEntry> LoadList(string value, out bool enabled)
         {
-            list = new MySortedList<string>();
+            List<NotificatorEntry> list = new List<NotificatorEntry>();
+            HashSet<string> temp = new HashSet<string>();
+
             var words = value.Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
-            enabled = false;
             foreach (string word in words)
             {
-                if (!list.Contains(word))
+                string entryWord = word.Trim();
+                if (!entryWord.StartsWith("#") && !temp.Contains(entryWord))
                 {
-                    list.Add(word);
-                    if (enabled == false && !word.StartsWith("#"))
-                        enabled = true;
+                    temp.Add(entryWord);
+                    list.Add(new NotificatorEntry(entryWord));
                 }
             }
-        }
 
-        public string GetRegexStr(string str)
-        {
-            return Regex.Escape(str)
-                .Replace(@"\.", @".")
-                .Replace(@"\\.", @"\.")
-                .Replace(@"\*", @".*")
-                .Replace(@"\\.*", @"\*")
-                .Replace(@"\+", @".+")
-                .Replace(@"\\.+", @"\+")
-                .Replace(@"\\\\", @"\\");
-        }
-
-        private Regex GenerateRegex(IEnumerable<string> collection)
-        {
-            var words = collection.Where(x => x.StartsWith("#") == false).ToList();
-            for (int i = 0; i < words.Count; i++)
-                words[i] = GetRegexStr(words[i]);
-
-            return new Regex(@"(" + string.Join("|", words) + @")", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+            enabled = list.Count != 0;
+            return list;
         }
 
         #region Dispose
