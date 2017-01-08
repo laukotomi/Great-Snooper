@@ -3,6 +3,7 @@ using GreatSnooper.Helpers;
 using GreatSnooper.Model;
 using GreatSnooper.ViewModel;
 using System;
+using System.Linq;
 
 namespace GreatSnooper.IRCTasks
 {
@@ -52,7 +53,8 @@ namespace GreatSnooper.IRCTasks
                         {
                             Message msg = new Message(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage, DateTime.Now);
 
-                            if (Notificator.Instance.SearchInJoinMessagesEnabled && Notificator.Instance.JoinMessagesRegex.IsMatch(u.Name))
+                            if (Notificator.Instance.SearchInJoinMessagesEnabled &&
+                                Notificator.Instance.JoinMessages.Any(r => r.IsMatch(u.Name, u.Name, chvm.Name)))
                             {
                                 msg.AddHighlightWord(0, msg.Text.Length, Message.HightLightTypes.NotificatorFound);
                                 chvm.MainViewModel.NotificatorFound(string.Format(Localizations.GSLocalization.Instance.NotifOnlineMessage, u.Name, chvm.Name));
@@ -72,10 +74,17 @@ namespace GreatSnooper.IRCTasks
                         foreach (var channel in u.PMChannels)
                             channel.AddMessage(u, Localizations.GSLocalization.Instance.PMOnlineMessage, MessageSettings.JoinMessage);
                     }
-                    else if (u.Channels.Contains(chvm) == false)
+                    else
                     {
-                        chvm.AddUser(u);
-                        chvm.AddMessage(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage);
+                        if (u.AddToChannel.Count > 0)
+                        {
+                            u.AddToChannel.Add(chvm); // Client will be added to the channel if information is arrived to keep the client list sorted properly
+                        }
+                        else if (u.Channels.Contains(chvm) == false)
+                        {
+                            chvm.AddUser(u);
+                            chvm.AddMessage(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage);
+                        }
                     }
                 }
             }

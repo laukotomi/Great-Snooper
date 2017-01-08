@@ -310,7 +310,7 @@ namespace GreatSnooper.ViewModel
 
         private void GenerateMessageRegex()
         {
-            var helper = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var helper = new HashSet<string>(GlobalManager.CIStringComparer);
             var sb = new StringBuilder();
 
             this.isHighlightInRegex = Properties.Settings.Default.HBeepEnabled;
@@ -358,7 +358,8 @@ namespace GreatSnooper.ViewModel
             // Search for league or hightlight or notification
             if (msgTask.Setting.Type == Message.MessageTypes.Channel)
             {
-                if (canDisplay && this.notificator.SearchInSenderNamesEnabled && this.notificator.SenderNamesRegex.IsMatch(msg.Sender.Name))
+                if (canDisplay && this.notificator.SearchInSenderNamesEnabled && 
+                    this.notificator.SenderNames.Any(r => r.IsMatch(msg.Sender.Name, msg.Sender.Name, this.Name)))
                 {
                     msg.AddHighlightWord(0, msg.Text.Length, Message.HightLightTypes.NotificatorFound);
                     this.MainViewModel.NotificatorFound(msg, this);
@@ -403,14 +404,20 @@ namespace GreatSnooper.ViewModel
 
                 if (canDisplay && this.notificator.SearchInMessagesEnabled)
                 {
-                    var nmatches = this.notificator.InMessagesRegex.Matches(msg.Text);
-                    for (int i = 0; i < nmatches.Count; i++)
+                    foreach (NotificatorEntry entry in this.notificator.InMessages)
                     {
-                        var groups = nmatches[i].Groups;
-                        msg.AddHighlightWord(groups[0].Index, groups[0].Length, Message.HightLightTypes.NotificatorFound);
+                        var nmatches = entry.Matches(msg.Text, msg.Sender.Name, this.Name);
+                        if (nmatches != null)
+                        {
+                            for (int i = 0; i < nmatches.Count; i++)
+                            {
+                                var groups = nmatches[i].Groups;
+                                msg.AddHighlightWord(groups[0].Index, groups[0].Length, Message.HightLightTypes.NotificatorFound);
+                            }
+                            if (nmatches.Count > 0)
+                                this.MainViewModel.NotificatorFound(msg, this);
+                        }
                     }
-                    if (nmatches.Count > 0)
-                        this.MainViewModel.NotificatorFound(msg, this);
                 }
             }
 
@@ -542,7 +549,10 @@ namespace GreatSnooper.ViewModel
                 else
                     ignore.Header = Localizations.GSLocalization.Instance.AddIgnoreText;
 
-                var tusInfo = (MenuItem)obj.ContextMenu.Items[4];
+                var history = (MenuItem)obj.ContextMenu.Items[4];
+                history.CommandParameter = u;
+
+                var tusInfo = (MenuItem)obj.ContextMenu.Items[5];
                 if (u.TusAccount != null)
                 {
                     tusInfo.CommandParameter = u.TusAccount.TusLink;
@@ -552,7 +562,7 @@ namespace GreatSnooper.ViewModel
                 else
                     tusInfo.Visibility = System.Windows.Visibility.Collapsed;
 
-                var tusClanInfo = (MenuItem)obj.ContextMenu.Items[5];
+                var tusClanInfo = (MenuItem)obj.ContextMenu.Items[6];
                 if (u.TusAccount != null && string.IsNullOrWhiteSpace(u.TusAccount.Clan) == false)
                 {
                     tusClanInfo.CommandParameter = "http://www.tus-wa.com/groups/" + u.TusAccount.Clan + "/";
@@ -562,7 +572,7 @@ namespace GreatSnooper.ViewModel
                 else
                     tusClanInfo.Visibility = System.Windows.Visibility.Collapsed;
 
-                var appinfo = (MenuItem)obj.ContextMenu.Items[6];
+                var appinfo = (MenuItem)obj.ContextMenu.Items[7];
                 if (string.IsNullOrWhiteSpace(u.ClientName) == false)
                 {
                     appinfo.Header = string.Format(Localizations.GSLocalization.Instance.InfoText, u.ClientName);

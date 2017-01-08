@@ -552,6 +552,9 @@
                                                 <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=HideChannelText, Mode=OneWay}"
                                                           Command="{Binding Path=MainViewModel.HideChannelCommand, Mode=OneTime}"
                                                           CommandParameter="{Binding}" />
+                                                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ShowHistoryText, Mode=OneWay}"
+                                                          Command="{Binding Path=MainViewModel.ShowHistoryCommand, Mode=OneTime}"
+                                                          CommandParameter="{Binding}" />
                                             </ContextMenu>
                                         </Border.ContextMenu>
                                     </Border>
@@ -630,6 +633,9 @@
                                             <ContextMenu>
                                                 <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CloseChatText, Mode=OneWay}"
                                                           Command="{Binding Path=MainViewModel.CloseChannelCommand, Mode=OneTime}"
+                                                          CommandParameter="{Binding}" />
+                                                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ShowHistoryText, Mode=OneWay}"
+                                                          Command="{Binding Path=MainViewModel.ShowHistoryCommand, Mode=OneTime}"
                                                           CommandParameter="{Binding}" />
                                             </ContextMenu>
                                         </Border.ContextMenu>

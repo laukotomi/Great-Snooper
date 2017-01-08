@@ -154,6 +154,7 @@
     <Compile Include="Classes\GameSurgeCommunicator.cs" />
     <Compile Include="Classes\LeagueSearcher.cs" />
     <Compile Include="Classes\Notificator.cs" />
+    <Compile Include="Classes\NotificatorEntry.cs" />
     <Compile Include="Classes\TusResult.cs" />
     <Compile Include="Classes\WebDownload.cs">
       <SubType>Component</SubType>
@@ -191,6 +192,7 @@
     <Compile Include="Model\LeagueToSearch.cs" />
     <Compile Include="Model\News.cs" />
     <Compile Include="Model\TusAccount.cs" />
+    <Compile Include="Services\RegexService.cs" />
     <Compile Include="Settings\AbstractSetting.cs" />
     <Compile Include="Settings\BoolSetting.cs" />
     <Compile Include="Settings\ComboboxSetting.cs" />

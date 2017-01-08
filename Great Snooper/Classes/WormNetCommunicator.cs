@@ -1,5 +1,4 @@
 ﻿using GreatSnooper.Helpers;
-using System;
 using System.Collections.Generic;
 
 namespace GreatSnooper.Classes
@@ -43,7 +42,7 @@ namespace GreatSnooper.Classes
         protected override int DecodeMessage(string message)
         {
             if (message == "LIST")
-                channelListHelper = new SortedDictionary<string, string>(StringComparer.OrdinalIgnoreCase);
+                channelListHelper = new SortedDictionary<string, string>(GlobalManager.CIStringComparer);
 
             int i = 0;
             for (; i < message.Length; i++)

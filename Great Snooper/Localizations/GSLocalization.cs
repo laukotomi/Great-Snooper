@@ -1091,7 +1091,7 @@ namespace GreatSnooper.Localizations
                 return _rm.GetString("HosterExeText");
             }
         }
-        
+
         /// <summary>
         ///   Looks up a localized string similar to Failed to get local IP address. Please try hosting using WormNat2!.
         /// </summary>
@@ -2520,6 +2520,17 @@ namespace GreatSnooper.Localizations
             get
             {
                 return _rm.GetString("ShowBannedUsersText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to When right click on the name of a channel.
+        /// </summary>
+        public string ShowHistoryText
+        {
+            get
+            {
+                return _rm.GetString("ShowHistoryText");
             }
         }
 

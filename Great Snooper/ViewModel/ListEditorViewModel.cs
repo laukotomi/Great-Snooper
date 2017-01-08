@@ -112,7 +112,7 @@ namespace GreatSnooper.ViewModel
         private void Add()
         {
             string text = Text.Trim();
-            if (text.Length > 0 && this.List.Contains(text, StringComparer.OrdinalIgnoreCase) == false)
+            if (text.Length > 0 && this.List.Contains(text, GlobalManager.CIStringComparer) == false)
             {
                 if (validator != null)
                 {
@@ -122,8 +122,8 @@ namespace GreatSnooper.ViewModel
                         DialogService.ShowDialog(Localizations.GSLocalization.Instance.InvalidValueText, errorText);
                         return;
                     }
-                } 
-                    
+                }
+
                 this.List.Add(text);
 
                 if (this.settingName != string.Empty)

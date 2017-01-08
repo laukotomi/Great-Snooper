@@ -2,6 +2,7 @@
 using GalaSoft.MvvmLight.Command;
 using GreatSnooper.Classes;
 using GreatSnooper.Helpers;
+using GreatSnooper.IRCTasks;
 using GreatSnooper.Model;
 using GreatSnooper.Services;
 using GreatSnooper.Validators;
@@ -410,7 +411,7 @@ namespace GreatSnooper.ViewModel
 
             this.Channels = new SortedObservableCollection<AbstractChannelViewModel>();
             this.Channels.CollectionChanged += Channels_CollectionChanged;
-            this.InstantColors = new Dictionary<string, SolidColorBrush>(StringComparer.OrdinalIgnoreCase);
+            this.InstantColors = new Dictionary<string, SolidColorBrush>(GlobalManager.CIStringComparer);
             this.notificator = Notificator.Instance;
             this.notificator.IsEnabledChanged += notificator_IsEnabledChanged;
             this.LeagueSearcher = LeagueSearcher.Instance;
@@ -426,6 +427,21 @@ namespace GreatSnooper.ViewModel
             wormNetC.GetChannelList(this);
         }
         #endregion
+
+        public void HandleTask(IRCTask task)
+        {
+            this.Dispatcher.BeginInvoke(new Action(() =>
+            {
+                try
+                {
+                    task.DoTask(this);
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex);
+                }
+            }));
+        }
 
         #region Load Games + League searcher spam
         void secondTimer_Tick(object sender, EventArgs e)
@@ -632,8 +648,10 @@ namespace GreatSnooper.ViewModel
                                 else
                                 {
                                     chvm.Games.Add(new Game(gameID, name, address, country, hoster, password));
-                                    if (this.notificator.SearchInGameNamesEnabled && this.notificator.GameNamesRegex.IsMatch(name)
-                                        || this.notificator.SearchInHosterNamesEnabled && this.notificator.HosterNamesRegex.IsMatch(hoster))
+                                    if (this.notificator.SearchInGameNamesEnabled &&
+                                        this.notificator.GameNames.Any(r => r.IsMatch(name, hoster, chvm.Name)) ||
+                                        this.notificator.SearchInHosterNamesEnabled &&
+                                        this.notificator.HosterNames.Any(r => r.IsMatch(hoster, hoster, chvm.Name)))
                                     {
                                         NotificatorFound(string.Format(Localizations.GSLocalization.Instance.NotificatorGameText, hoster, name));
                                     }
@@ -771,7 +789,7 @@ namespace GreatSnooper.ViewModel
                 {
                     HashSet<string> serverList = new HashSet<string>(
                         Properties.Settings.Default.ServerAddresses.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                        , StringComparer.OrdinalIgnoreCase);
+                        , GlobalManager.CIStringComparer);
                     bool updateServers = false;
 
                     using (XmlReader xml = XmlReader.Create(settingsXMLPath))
@@ -1147,7 +1165,7 @@ namespace GreatSnooper.ViewModel
                 case "HiddenChannels":
                     GlobalManager.HiddenChannels = new HashSet<string>(
                         Properties.Settings.Default.HiddenChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
-                        StringComparer.OrdinalIgnoreCase);
+                        GlobalManager.CIStringComparer);
                     foreach (var server in this.Servers)
                     {
                         foreach (var chvm in server.Channels)
@@ -2130,14 +2148,38 @@ namespace GreatSnooper.ViewModel
         #region ShowHistoryCommand
         public ICommand ShowHistoryCommand
         {
-            get { return new RelayCommand(ShowHistory); }
+            get { return new RelayCommand<AbstractChannelViewModel>(ShowHistory); }
         }
 
-        private void ShowHistory()
+        private void ShowHistory(AbstractChannelViewModel channel = null)
+        {
+            if (channel == null)
+                channel = this.SelectedChannel;
+
+            if (channel != null)
+            {
+                AbstractChannelViewModel temp;
+                if (!channel.Server.Channels.TryGetValue("Log: " + channel.Name, out temp))
+                    temp = new LogChannelViewModel(this, channel.Server, channel.Name);
+                this.SelectChannel(temp);
+            }
+        }
+        #endregion
+
+        #region ShowUserHistoryCommand
+        public RelayCommand<User> ShowUserHistoryCommand
+        {
+            get { return new RelayCommand<User>(ShowUserHistory); }
+        }
+
+        private void ShowUserHistory(User user)
         {
             if (this.SelectedChannel != null)
             {
-                new LogChannelViewModel(this, this.SelectedChannel.Server, this.SelectedChannel.Name);
+                AbstractChannelViewModel temp;
+                if (!this.SelectedChannel.Server.Channels.TryGetValue("Log: " + user.Name, out temp))
+                    temp = new LogChannelViewModel(this, this.SelectedChannel.Server, user.Name);
+                this.SelectChannel(temp);
             }
         }
         #endregion
@@ -2145,6 +2187,7 @@ namespace GreatSnooper.ViewModel
         #region Notificator
         internal void NotificatorFound(Message msg, AbstractChannelViewModel chvm)
         {
+            chvm.Highlight();
             this.FlashWindow();
             if (Properties.Settings.Default.TrayNotifications)
                 this.ShowTrayMessage("(" + chvm.Name + ") " + msg.Sender.Name + ": " + msg.Text);

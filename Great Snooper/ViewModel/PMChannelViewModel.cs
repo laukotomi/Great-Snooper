@@ -57,12 +57,6 @@ namespace GreatSnooper.ViewModel
             }
         }
 
-        private void LoadLoggedMessages(object sender, RoutedEventArgs e)
-        {
-            this.rtbDocument.Blocks.Remove(this.rtbDocument.Blocks.FirstBlock);
-            new LogChannelViewModel(this.MainViewModel, this.Server, "Log: " + this.Name);
-        }
-
         public override void SendMessage(string message)
         {
             if (this.Users.Count > 1)

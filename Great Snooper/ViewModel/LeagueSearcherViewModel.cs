@@ -60,7 +60,7 @@ namespace GreatSnooper.ViewModel
 
             var lookingForThese = new HashSet<string>(
                 Properties.Settings.Default.SearchForThese.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
-                StringComparer.OrdinalIgnoreCase
+                GlobalManager.CIStringComparer
             );
 
             this.LeaguesToSearch = new List<LeagueToSearch>();

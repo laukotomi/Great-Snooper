@@ -868,7 +868,7 @@ namespace GreatSnooper.ViewModel
                         {
                             if (Properties.Settings.Default.MessageTime)
                             {
-                                p.Inlines.FirstInline.Foreground = (color != null) ? color : MessageSettings.MessageTimeStyle.NickColor;
+                                //p.Inlines.FirstInline.Foreground = (color != null) ? color : MessageSettings.MessageTimeStyle.NickColor;
                                 p.Inlines.FirstInline.NextInline.Foreground = (color != null) ? color : msg.Style.NickColor;
                                 p.Inlines.FirstInline.NextInline.FontStyle = (italic) ? FontStyles.Italic : FontStyles.Normal;
                             }
