@@ -1,4 +1,5 @@
-﻿using Hardcodet.Wpf.TaskbarNotification;
+﻿using GreatSnooper.ViewModel;
+using Hardcodet.Wpf.TaskbarNotification;
 using System;
 using System.Threading;
 using System.Windows;
@@ -17,12 +18,14 @@ namespace GreatSnooper.UserControls
         private bool isClosing = false;
         private Dispatcher dispatcher;
         private Timer timer;
+        private AbstractChannelViewModel chvm;
         public string BalloonText { get; set; }
 
-        public GSBalloon()
+        public GSBalloon(AbstractChannelViewModel chvm = null)
         {
             InitializeComponent();
             this.DataContext = this;
+            this.chvm = chvm;
             dispatcher = Dispatcher.CurrentDispatcher;
             TaskbarIcon.AddBalloonClosingHandler(this, OnBalloonClosing);
         }
@@ -134,5 +137,14 @@ namespace GreatSnooper.UserControls
         }
 
         #endregion
+
+        private void grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.chvm != null && e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
+            {
+                chvm.MainViewModel.SelectChannel(chvm);
+                chvm.MainViewModel.ActivationCommand.Execute(null);
+            }
+        }
     }
 }

@@ -653,7 +653,7 @@ namespace GreatSnooper.ViewModel
                                         this.notificator.SearchInHosterNamesEnabled &&
                                         this.notificator.HosterNames.Any(r => r.IsMatch(hoster, hoster, chvm.Name)))
                                     {
-                                        NotificatorFound(string.Format(Localizations.GSLocalization.Instance.NotificatorGameText, hoster, name));
+                                        NotificatorFound(string.Format(Localizations.GSLocalization.Instance.NotificatorGameText, hoster, name), chvm);
                                     }
                                 }
                             }
@@ -2006,6 +2006,7 @@ namespace GreatSnooper.ViewModel
             if (IsEnergySaveMode)
                 this.LeaveEnergySaveMode();
 
+            this.IsWindowFlashing = false;
             DialogService.ActivationRequest();
         }
         #endregion
@@ -2190,16 +2191,16 @@ namespace GreatSnooper.ViewModel
             chvm.Highlight();
             this.FlashWindow();
             if (Properties.Settings.Default.TrayNotifications)
-                this.ShowTrayMessage("(" + chvm.Name + ") " + msg.Sender.Name + ": " + msg.Text);
+                this.ShowTrayMessage("(" + chvm.Name + ") " + msg.Sender.Name + ": " + msg.Text, chvm);
             if (Properties.Settings.Default.NotificatorSoundEnabled)
                 Sounds.PlaySoundByName("NotificatorSound");
         }
 
-        internal void NotificatorFound(string msg)
+        internal void NotificatorFound(string msg, AbstractChannelViewModel chvm)
         {
             this.FlashWindow();
             if (Properties.Settings.Default.TrayNotifications)
-                this.ShowTrayMessage(msg);
+                this.ShowTrayMessage(msg, chvm);
             if (Properties.Settings.Default.NotificatorSoundEnabled)
                 Sounds.PlaySoundByName("NotificatorSound");
         }
@@ -2210,10 +2211,10 @@ namespace GreatSnooper.ViewModel
         }
         #endregion
 
-        internal void ShowTrayMessage(string message)
+        internal void ShowTrayMessage(string message, AbstractChannelViewModel chvm = null)
         {
             if (this.GameProcess == null && !IsGameWindowOn())
-                this.TaskbarIconService.ShowMessage(message);
+                this.TaskbarIconService.ShowMessage(message, chvm);
         }
 
         public bool IsGameWindowOn()

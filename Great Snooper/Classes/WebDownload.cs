@@ -1,5 +1,6 @@
 ﻿using GreatSnooper.Helpers;
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Cache;
 
@@ -20,6 +21,13 @@ namespace GreatSnooper.Classes
             if (request != null)
                 request.Timeout = GlobalManager.WebRequestTimeout;
             return request;
+        }
+
+        protected override WebResponse GetWebResponse(WebRequest request)
+        {
+            WebResponse response = base.GetWebResponse(request);
+            Debug.WriteLine("REQUEST: " + request.Method + " " + request.RequestUri);
+            return response;
         }
     }
 }

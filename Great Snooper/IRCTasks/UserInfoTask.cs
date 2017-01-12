@@ -54,12 +54,12 @@ namespace GreatSnooper.IRCTasks
                     Notificator.Instance.JoinMessages.Any(r => r.IsMatch(u.Name, u.Name, chvm.Name)))
                 {
                     msg.AddHighlightWord(0, msg.Text.Length, Message.HightLightTypes.NotificatorFound);
-                    chvm.MainViewModel.NotificatorFound(string.Format(Localizations.GSLocalization.Instance.NotifOnlineMessage, u.Name, chvm.Name));
+                    chvm.MainViewModel.NotificatorFound(string.Format(Localizations.GSLocalization.Instance.NotifOnlineMessage, u.Name, chvm.Name), chvm);
                 }
                 else if (u.Group.ID != UserGroups.SystemGroupID)
                 {
                     if (Properties.Settings.Default.TrayNotifications)
-                        mvm.ShowTrayMessage(string.Format(Localizations.GSLocalization.Instance.OnlineMessage, u.Name));
+                        mvm.ShowTrayMessage(string.Format(Localizations.GSLocalization.Instance.OnlineMessage, u.Name), chvm);
                     if (u.Group.SoundEnabled)
                         Sounds.PlaySound(u.Group.Sound);
                 }

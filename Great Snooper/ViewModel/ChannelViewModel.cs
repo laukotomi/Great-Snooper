@@ -382,7 +382,7 @@ namespace GreatSnooper.ViewModel
                                 this.Highlight();
                                 this.MainViewModel.FlashWindow();
                                 if (Properties.Settings.Default.TrayNotifications)
-                                    this.MainViewModel.ShowTrayMessage(string.Format(Localizations.GSLocalization.Instance.HightLightMessage, this.Name));
+                                    this.MainViewModel.ShowTrayMessage(string.Format(Localizations.GSLocalization.Instance.HightLightMessage, this.Name), this);
                                 if (Properties.Settings.Default.HBeepEnabled)
                                     Sounds.PlaySoundByName("HBeep");
                             }
@@ -395,7 +395,7 @@ namespace GreatSnooper.ViewModel
                             this.MainViewModel.FlashWindow();
 
                             if (Properties.Settings.Default.TrayNotifications)
-                                this.MainViewModel.ShowTrayMessage(msg.Sender.Name + ": " + msg.Text);
+                                this.MainViewModel.ShowTrayMessage(msg.Sender.Name + ": " + msg.Text, this);
                             if (Properties.Settings.Default.LeagueFoundBeepEnabled)
                                 Sounds.PlaySoundByName("LeagueFoundBeep");
                         }

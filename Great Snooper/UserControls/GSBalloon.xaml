@@ -80,7 +80,7 @@
                              x:Name="FadeOut_BeginStoryboard" />
         </EventTrigger>
     </UserControl.Triggers>
-    <Grid x:Name="grid" MouseEnter="grid_MouseEnter" MouseLeave="grid_MouseLeave">
+    <Grid x:Name="grid" MouseEnter="grid_MouseEnter" MouseLeave="grid_MouseLeave" MouseDown="grid_MouseDown">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
