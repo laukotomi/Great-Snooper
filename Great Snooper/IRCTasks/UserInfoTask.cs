@@ -2,7 +2,6 @@
 using GreatSnooper.Helpers;
 using GreatSnooper.Model;
 using GreatSnooper.ViewModel;
-using System;
 using System.Linq;
 
 namespace GreatSnooper.IRCTasks
@@ -48,28 +47,11 @@ namespace GreatSnooper.IRCTasks
 
             if (u.AddToChannel.Count > 0)
             {
-                Message msg = new Message(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage, DateTime.Now);
-
-                if (Notificator.Instance.SearchInJoinMessagesEnabled &&
-                    Notificator.Instance.JoinMessages.Any(r => r.IsMatch(u.Name, u.Name, chvm.Name)))
-                {
-                    msg.AddHighlightWord(0, msg.Text.Length, Message.HightLightTypes.NotificatorFound);
-                    chvm.MainViewModel.NotificatorFound(string.Format(Localizations.GSLocalization.Instance.NotifOnlineMessage, u.Name, chvm.Name), chvm);
-                }
-                else if (u.Group.ID != UserGroups.SystemGroupID)
-                {
-                    if (Properties.Settings.Default.TrayNotifications)
-                        mvm.ShowTrayMessage(string.Format(Localizations.GSLocalization.Instance.OnlineMessage, u.Name), chvm);
-                    if (u.Group.SoundEnabled)
-                        Sounds.PlaySound(u.Group.Sound);
-                }
-
                 foreach (var channel in u.AddToChannel)
                 {
                     if (channel.Joined && !u.Channels.Contains(chvm))
                     {
                         channel.AddUser(u);
-                        channel.AddMessage(msg);
                     }
                 }
                 u.AddToChannel.Clear();
