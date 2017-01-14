@@ -252,7 +252,6 @@ namespace GreatSnooper.ViewModel
             get { return _selectedChannelIndex; }
             set
             {
-                if (_selectedChannelIndex != value)
                 {
                     _selectedChannelIndex = value;
 
@@ -983,6 +982,11 @@ namespace GreatSnooper.ViewModel
                 GlobalManager.HiddenChannels.Add(chvm.Name);
                 SettingsHelper.Save("HiddenChannels", GlobalManager.HiddenChannels);
             }
+            if (GlobalManager.AutoJoinList.ContainsKey(chvm.Name))
+            {
+                GlobalManager.AutoJoinList.Remove(chvm.Name);
+                SettingsHelper.Save("AutoJoinChannels", GlobalManager.AutoJoinList);
+            }
         }
         #endregion
 
@@ -1041,6 +1045,10 @@ namespace GreatSnooper.ViewModel
                 chvm.Server.CancelAsync();
 
             this.Channels.Remove(chvm);
+
+            // Refresh selected channel, because selected item will be lost
+            if (visitedChannels.Count > 0)
+                this.SelectChannel(visitedChannels[visitedChannels.Count - 1]);
         }
         #endregion
 
@@ -1171,7 +1179,9 @@ namespace GreatSnooper.ViewModel
                         foreach (var chvm in server.Channels)
                         {
                             if (this.Channels.Any(x => x.Name.Equals(chvm.Key, StringComparison.OrdinalIgnoreCase)) == false && GlobalManager.HiddenChannels.Contains(chvm.Key) == false)
+                            {
                                 this.Channels.Add(chvm.Value);
+                            }
                         }
                     }
                     break;
