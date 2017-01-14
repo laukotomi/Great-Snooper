@@ -62,13 +62,16 @@ namespace GreatSnooper.Model
             KeyValuePair<int, int> tempRange = new KeyValuePair<int, int>(idx, length);
             foreach (var item in this.HighlightWords)
             {
-                if (item.Key > tempRange.Key && tempRange.Key + tempRange.Value > item.Key)
+                if (item.Key >= tempRange.Key && tempRange.Key + tempRange.Value >= item.Key)
                 {
                     int newLength = item.Key - tempRange.Key;
-                    if (tempRange.Value < newLength)
-                        newLength = tempRange.Value;
-                    addRanges.Add(tempRange.Key, newLength);
-                    tempRange = new KeyValuePair<int, int>(item.Key + item.Value.Key, this.Text.Length - item.Key - item.Value.Key);
+                    if (newLength > 0)
+                    {
+                        if (tempRange.Value < newLength)
+                            newLength = tempRange.Value;
+                        addRanges.Add(tempRange.Key, newLength);
+                    }
+                    tempRange = new KeyValuePair<int, int>(item.Key + item.Value.Key, length - item.Key - item.Value.Key);
                 }
             }
             if (tempRange.Value > 0)
