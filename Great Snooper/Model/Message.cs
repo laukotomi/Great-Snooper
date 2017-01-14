@@ -22,7 +22,7 @@ namespace GreatSnooper.Model
         public string Text { get; private set; }
         public DateTime Time { get; private set; }
         public MessageSetting Style { get; private set; }
-        public Dictionary<int, KeyValuePair<int, HightLightTypes>> HighlightWords { get; private set; }
+        public SortedDictionary<int, KeyValuePair<int, HightLightTypes>> HighlightWords { get; private set; }
         public bool IsLogged { get; private set; }
         #endregion
 
@@ -53,9 +53,29 @@ namespace GreatSnooper.Model
 
         public void AddHighlightWord(int idx, int length, HightLightTypes type)
         {
-            if (HighlightWords == null)
-                HighlightWords = new Dictionary<int, KeyValuePair<int, HightLightTypes>>();
-            HighlightWords[idx] = new KeyValuePair<int,HightLightTypes>(length, type);
+            if (this.HighlightWords == null)
+                this.HighlightWords = new SortedDictionary<int, KeyValuePair<int, HightLightTypes>>();
+
+            // Handling overlapping.. eg. when notificator finds *, but the message contains url (#Help -> !port)
+            // The logic is that newly added item can not conflict with already added item
+            Dictionary<int, int> addRanges = new Dictionary<int, int>();
+            KeyValuePair<int, int> tempRange = new KeyValuePair<int, int>(idx, length);
+            foreach (var item in this.HighlightWords)
+            {
+                if (item.Key > tempRange.Key && tempRange.Key + tempRange.Value > item.Key)
+                {
+                    int newLength = item.Key - tempRange.Key;
+                    if (tempRange.Value < newLength)
+                        newLength = tempRange.Value;
+                    addRanges.Add(tempRange.Key, newLength);
+                    tempRange = new KeyValuePair<int, int>(item.Key + item.Value.Key, this.Text.Length - item.Key - item.Value.Key);
+                }
+            }
+            if (tempRange.Value > 0)
+                addRanges.Add(tempRange.Key, tempRange.Value);
+
+            foreach (var item in addRanges)
+                this.HighlightWords[item.Key] = new KeyValuePair<int, HightLightTypes>(item.Value, type);
         }
     }
 }

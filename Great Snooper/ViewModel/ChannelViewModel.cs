@@ -358,7 +358,7 @@ namespace GreatSnooper.ViewModel
             // Search for league or hightlight or notification
             if (msgTask.Setting.Type == Message.MessageTypes.Channel)
             {
-                if (canDisplay && this.notificator.SearchInSenderNamesEnabled && 
+                if (canDisplay && this.notificator.SearchInSenderNamesEnabled &&
                     this.notificator.SenderNames.Any(r => r.IsMatch(msg.Sender.Name, msg.Sender.Name, this.Name)))
                 {
                     msg.AddHighlightWord(0, msg.Text.Length, Message.HightLightTypes.NotificatorFound);
@@ -412,7 +412,8 @@ namespace GreatSnooper.ViewModel
                             for (int i = 0; i < nmatches.Count; i++)
                             {
                                 var groups = nmatches[i].Groups;
-                                msg.AddHighlightWord(groups[0].Index, groups[0].Length, Message.HightLightTypes.NotificatorFound);
+                                if (groups[0].Length > 0)
+                                    msg.AddHighlightWord(groups[0].Index, groups[0].Length, Message.HightLightTypes.NotificatorFound);
                             }
                             if (nmatches.Count > 0)
                                 this.MainViewModel.NotificatorFound(msg, this);

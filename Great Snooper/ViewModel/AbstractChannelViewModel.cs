@@ -11,7 +11,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -23,11 +22,6 @@ namespace GreatSnooper.ViewModel
     [DebuggerDisplay("{Name}")]
     public abstract class AbstractChannelViewModel : ViewModelBase, IComparable
     {
-        #region Static
-        private static Regex dateRegex = new Regex(@"[^0-9]");
-        protected static string urlRegexText = @"(ht|f)tps?://\S+";
-        #endregion
-
         #region Members
         private bool _loading;
         private bool _isHighlighted;
@@ -115,7 +109,7 @@ namespace GreatSnooper.ViewModel
                 return _connectedLayout;
             }
         }
-        public int NewMessagesCount { get; private set; }
+        public bool HiddenMessagesInEnergySaveMode { get; private set; }
         public bool Joined
         {
             get { return _joined; }
@@ -136,7 +130,7 @@ namespace GreatSnooper.ViewModel
                         this.lastMessageIterator = null;
                         this.lastMessageLoaded = null;
                         this.MessageText = string.Empty;
-                        this.NewMessagesCount = 0;
+                        this.HiddenMessagesInEnergySaveMode = false;
                         this.stopLoadingMessages = false;
                         this.tempMessage = string.Empty;
                         this.lastMessages.Clear();
@@ -441,7 +435,7 @@ namespace GreatSnooper.ViewModel
             if (!msg.Sender.IsBanned || this.GetType() == typeof(ChannelViewModel) && Properties.Settings.Default.ShowBannedMessages)
             {
                 if (this.MainViewModel.IsEnergySaveMode)
-                    this.NewMessagesCount++;
+                    this.HiddenMessagesInEnergySaveMode = true;
                 else
                 {
                     this.lastMessageLoaded = this.Messages.Last;
@@ -684,7 +678,7 @@ namespace GreatSnooper.ViewModel
         {
             try
             {
-                for (int i = 0; i < this.NewMessagesCount; i++)
+                while (true)
                 {
                     if (this.lastMessageLoaded == null || lastMessageLoaded.Previous == null && lastMessageLoaded.Next == null) // or is removed
                         this.lastMessageLoaded = this.Messages.First;
@@ -703,7 +697,7 @@ namespace GreatSnooper.ViewModel
             {
                 ErrorLog.Log(ex);
             }
-            this.NewMessagesCount = 0;
+            this.HiddenMessagesInEnergySaveMode = false;
         }
 
         public virtual void Log(int count, bool makeEnd = false)
@@ -716,7 +710,7 @@ namespace GreatSnooper.ViewModel
                 if (!Directory.Exists(dirPath))
                     Directory.CreateDirectory(dirPath);
 
-                string logFile = dirPath + "\\" + dateRegex.Replace(DateTime.Now.ToString("yyyy-MM-dd"), "-") + ".log";
+                string logFile = dirPath + "\\" + DateTime.Now.ToString("yyyy-MM-dd") + ".log";
                 bool loggedAnything = false;
 
                 using (StreamWriter writer = new StreamWriter(logFile, true))

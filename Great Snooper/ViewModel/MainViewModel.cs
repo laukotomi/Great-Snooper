@@ -737,7 +737,7 @@ namespace GreatSnooper.ViewModel
                         if (chvm.GameListGrid != null)
                             chvm.GameListGrid.DataContext = chvm;
                     }
-                    if (item.Value.Joined && item.Value.NewMessagesCount != 0)
+                    if (item.Value.Joined && item.Value.HiddenMessagesInEnergySaveMode)
                         item.Value.LoadNewMessages();
                 }
             }
