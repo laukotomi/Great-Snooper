@@ -10,6 +10,7 @@ using GreatSnooper.Windows;
 using MahApps.Metro.Controls.Dialogs;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
@@ -49,13 +50,10 @@ namespace GreatSnooper.ViewModel
         private bool _volumeChanging;
         private bool _isWindowFlashing;
         public bool _isFilterFocused;
-        private int _selectedChannelIndex = -1;
         private bool _isEnergySaveMode;
-        private AbstractChannelViewModel _selectedChannel;
         private string _filterText = Localizations.GSLocalization.Instance.FilterText;
 
         private int procId = Process.GetCurrentProcess().Id;
-        private readonly List<int> visitedChannels = new List<int>();
         private readonly DispatcherTimer filterTimer = new DispatcherTimer();
         private Task loadSettingsTask;
         private Task loadGamesTask;
@@ -76,6 +74,12 @@ namespace GreatSnooper.ViewModel
         private bool isHidden;
         private bool shouldLeaveEnergySaveMode;
         public volatile bool closing;
+
+        private readonly MainWindow view;
+        private readonly ChannelTabControlViewModel channelTabControl1;
+        private readonly ChannelTabControlViewModel channelTabControl2;
+        private readonly ObservableCollection<ChannelViewModel> gameListAndUserListChannels =
+            new ObservableCollection<ChannelViewModel>();
         #endregion
 
         #region Properties
@@ -141,17 +145,6 @@ namespace GreatSnooper.ViewModel
                 {
                     Properties.Settings.Default.ChatMode = value;
                     Properties.Settings.Default.Save();
-
-                    foreach (var chvm in this.Channels)
-                    {
-                        if (chvm is ChannelViewModel)
-                        {
-                            if (chvm.Joined)
-                                chvm.LoadMessages(GlobalManager.MaxMessagesDisplayed, true);
-                        }
-                        else
-                            break;
-                    }
                     RaisePropertyChanged("ChatModeEnabled");
                 }
             }
@@ -246,74 +239,21 @@ namespace GreatSnooper.ViewModel
             get { return new GridLength(Properties.Settings.Default.BottomRowHeight, GridUnitType.Star); }
             set { Properties.Settings.Default.BottomRowHeight = value.Value; }
         }
-        public SortedObservableCollection<AbstractChannelViewModel> Channels { get; private set; }
-        public int SelectedChannelIndex
+
+        private int _selectedTabIndex2 = -1;
+        public int SelectedTabIndex2
         {
-            get { return _selectedChannelIndex; }
-            set
+            get { return this._selectedTabIndex2; }
+            private set
             {
-                //if (_selectedChannelIndex != value) to allow refreshing when a channel will be removed
+                if (this._selectedTabIndex2 != value)
                 {
-                    _selectedChannelIndex = value;
-
-                    if (FilterText != Localizations.GSLocalization.Instance.FilterText)
-                    {
-                        FilterText = Localizations.GSLocalization.Instance.FilterText;
-                        RaisePropertyChanged("FilterText");
-                    }
-
-                    PMChannelViewModel oldPMChannel = (_selectedChannel != null && _selectedChannel is PMChannelViewModel)
-                        ? (PMChannelViewModel)_selectedChannel : null;
-
-                    if (value == -1)
-                    {
-                        _selectedChannel = null;
-                    }
-                    else
-                    {
-                        visitedChannels.Remove(value);
-                        visitedChannels.Add(value);
-
-                        _selectedChannel = Channels[value];
-                        if (_selectedChannel.IsHighlighted)
-                            _selectedChannel.IsHighlighted = false;
-                        ChannelViewModel channel = _selectedChannel as ChannelViewModel;
-                        if (channel != null)
-                        {
-                            SelectedGLChannel = channel;
-                            GameListForce = true;
-                            RaisePropertyChanged("SelectedTabIndex2");
-                        }
-                        else
-                        {
-                            PMChannelViewModel pmChannel = _selectedChannel as PMChannelViewModel;
-                            if (pmChannel != null)
-                                pmChannel.GenerateHeader();
-                        }
-                        if (_selectedChannel.Joined)
-                        {
-                            this.Dispatcher.BeginInvoke(new Action(() =>
-                            {
-                                this.DialogService.GetView().UpdateLayout();
-                                if (!_selectedChannel.Disabled)
-                                    _selectedChannel.IsTBFocused = true;
-                            }));
-                        }
-                    }
-
-                    if (oldPMChannel != null)
-                        oldPMChannel.GenerateHeader();
+                    this._selectedTabIndex2 = value;
+                    this.RaisePropertyChanged("SelectedTabIndex2");
                 }
             }
         }
-        public int SelectedTabIndex2
-        {
-            get { return _selectedChannelIndex; }
-        }
-        public AbstractChannelViewModel SelectedChannel
-        {
-            get { return _selectedChannel; }
-        }
+
         public ChannelViewModel SelectedGLChannel { get; private set; }
         public bool IsWindowActive
         {
@@ -395,6 +335,14 @@ namespace GreatSnooper.ViewModel
             Instance = this;
             GlobalManager.MainWindowInit();
             Properties.Settings.Default.PropertyChanged += SettingsChanged;
+            this.gameListAndUserListChannels.CollectionChanged += GameListAndUserListChannels_CollectionChanged;
+            this.view = (MainWindow)dialogService.GetView();
+            this.channelTabControl1 = this.view.ChannelTabControl1.ViewModel;
+            this.channelTabControl2 = this.view.ChannelTabControl2.ViewModel;
+            this.channelTabControl1.Channels.CollectionChanged += Channels_CollectionChanged;
+            this.channelTabControl2.Channels.CollectionChanged += Channels_CollectionChanged;
+            this.channelTabControl1.PropertyChanged += ChannelChanged;
+            this.channelTabControl2.PropertyChanged += ChannelChanged;
 
             this.AwayText = string.Empty;
             this.DialogService = dialogService;
@@ -409,8 +357,6 @@ namespace GreatSnooper.ViewModel
             this.Servers[1].ConnectionState += ConnectionState;
             this.Servers[1].MVM = this;
 
-            this.Channels = new SortedObservableCollection<AbstractChannelViewModel>();
-            this.Channels.CollectionChanged += Channels_CollectionChanged;
             this.InstantColors = new Dictionary<string, SolidColorBrush>(GlobalManager.CIStringComparer);
             this.notificator = Notificator.Instance;
             this.notificator.IsEnabledChanged += notificator_IsEnabledChanged;
@@ -425,6 +371,40 @@ namespace GreatSnooper.ViewModel
             filterTimer.Tick += filterTimer_Tick;
 
             wormNetC.GetChannelList(this);
+        }
+
+        private void ChannelChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "SelectedChannelIndex")
+            {
+                if (FilterText != Localizations.GSLocalization.Instance.FilterText)
+                {
+                    FilterText = Localizations.GSLocalization.Instance.FilterText;
+                    RaisePropertyChanged("FilterText");
+                }
+
+                ChannelTabControlViewModel vm = (ChannelTabControlViewModel)sender;
+                if (vm.SelectedChannel != null)
+                {
+                    ChannelViewModel channel = vm.SelectedChannel as ChannelViewModel;
+                    if (channel != null)
+                    {
+                        SelectedGLChannel = channel;
+                        GameListForce = true;
+                        this.SelectedTabIndex2 = this.gameListAndUserListChannels.IndexOf(channel);
+                    }
+
+                    if (vm.SelectedChannel.Joined)
+                    {
+                        this.Dispatcher.BeginInvoke(new Action(() =>
+                        {
+                            this.view.UpdateLayout();
+                            if (!vm.SelectedChannel.Disabled)
+                                vm.SelectedChannel.IsTBFocused = true;
+                        }));
+                    }
+                }
+            }
         }
         #endregion
 
@@ -923,36 +903,38 @@ namespace GreatSnooper.ViewModel
 
         #region Channel things
         #region Channel collection changed
-        void Channels_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        private void Channels_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
-                var mw = (MainWindow)this.DialogService.GetView();
-                var chvm = (AbstractChannelViewModel)e.NewItems[0];
-                mw.ChannelsTabControl.Items.Insert(e.NewStartingIndex, chvm.GetLayout());
-                if (chvm is ChannelViewModel)
+                ChannelViewModel chvm = e.NewItems[0] as ChannelViewModel;
+                if (chvm != null)
                 {
-                    var temp = (ChannelViewModel)chvm;
-                    mw.GameList.Items.Insert(e.NewStartingIndex, temp.GetGameListLayout());
-                    mw.UserList.Items.Insert(e.NewStartingIndex, temp.GetUserListLayout());
-                }
-
-                if (Channels.Count == 1)
-                {
-                    this.SelectedChannelIndex = 0;
-                    RaisePropertyChanged("SelectedChannelIndex");
+                    this.gameListAndUserListChannels.Add(chvm);
                 }
             }
             else
             {
-                var mw = (MainWindow)this.DialogService.GetView();
-                var chvm = (AbstractChannelViewModel)e.OldItems[0];
-                mw.ChannelsTabControl.Items.RemoveAt(e.OldStartingIndex);
-                if (chvm is ChannelViewModel)
+                ChannelViewModel chvm = e.OldItems[0] as ChannelViewModel;
+                if (chvm != null)
                 {
-                    mw.GameList.Items.RemoveAt(e.OldStartingIndex);
-                    mw.UserList.Items.RemoveAt(e.OldStartingIndex);
+                    this.gameListAndUserListChannels.Remove(chvm);
                 }
+            }
+        }
+
+        private void GameListAndUserListChannels_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                ChannelViewModel chvm = (ChannelViewModel)e.NewItems[0];
+                this.view.GameList.Items.Insert(e.NewStartingIndex, chvm.GetGameListLayout());
+                this.view.UserList.Items.Insert(e.NewStartingIndex, chvm.GetUserListLayout());
+            }
+            else
+            {
+                this.view.GameList.Items.RemoveAt(e.OldStartingIndex);
+                this.view.UserList.Items.RemoveAt(e.OldStartingIndex);
             }
         }
         #endregion
@@ -991,66 +973,6 @@ namespace GreatSnooper.ViewModel
         }
         #endregion
 
-
-        public void SelectChannel(int i)
-        {
-            this.SelectedChannelIndex = i;
-            RaisePropertyChanged("SelectedChannelIndex");
-        }
-
-        public void SelectChannel(AbstractChannelViewModel chvm)
-        {
-            for (int i = 0; i < this.Channels.Count; i++)
-            {
-                if (this.Channels[i] == chvm)
-                {
-                    this.SelectChannel(i);
-                    return;
-                }
-            }
-        }
-
-        public void CloseChannelTab(AbstractChannelViewModel chvm)
-        {
-            int index = (this.SelectedChannel == chvm)
-                ? this.SelectedChannelIndex
-                : this.Channels.IndexOf(chvm);
-
-            if (this.SelectedChannel == chvm && visitedChannels.Count >= 2) // Channel was selected
-            {
-                int lastindex = visitedChannels[visitedChannels.Count - 2];
-                this.SelectChannel(lastindex);
-            }
-
-            visitedChannels.Remove(index);
-            for (int i = 0; i < visitedChannels.Count; i++)
-            {
-                if (visitedChannels[i] > index)
-                    visitedChannels[i]--;
-            }
-
-            ChannelViewModel channel = chvm as ChannelViewModel;
-            if (channel != null)
-            {
-                if (channel.Joined)
-                    channel.LeaveChannelCommand.Execute(null);
-            }
-            else
-            {
-                chvm.Log(chvm.Messages.Count, true);
-                chvm.ClearUsers();
-                chvm.Server.Channels.Remove(chvm.Name);
-            }
-
-            if (chvm.Server is GameSurgeCommunicator && chvm.Server.Channels.Any(x => x.Value.Joined) == false)
-                chvm.Server.CancelAsync();
-
-            this.Channels.Remove(chvm);
-
-            // Refresh selected channel, because selected item will be lost
-            if (visitedChannels.Count > 0)
-                this.SelectChannel(visitedChannels[visitedChannels.Count - 1]);
-        }
         #endregion
 
         #region GameList

@@ -156,6 +156,7 @@
     <Compile Include="Classes\Notificator.cs" />
     <Compile Include="Classes\NotificatorEntry.cs" />
     <Compile Include="Classes\TusResult.cs" />
+    <Compile Include="Classes\VisitedChannels.cs" />
     <Compile Include="Classes\WebDownload.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -205,6 +206,9 @@
     <Compile Include="Settings\UserGroupSetting.cs" />
     <Compile Include="Settings\WAExeSetting.cs" />
     <Compile Include="IRCTasks\QuitTask.cs" />
+    <Compile Include="UserControls\ChannelTabControl.xaml.cs">
+      <DependentUpon>ChannelTabControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ConnectedLayout.xaml.cs">
       <DependentUpon>ConnectedLayout.xaml</DependentUpon>
     </Compile>
@@ -257,6 +261,7 @@
     <Compile Include="Validators\NotEmptyValidator.cs" />
     <Compile Include="ViewModel\AbstractChannelViewModel.cs" />
     <Compile Include="ViewModel\AwayViewModel.cs" />
+    <Compile Include="ViewModel\ChannelTabControlViewModel.cs" />
     <Compile Include="ViewModel\ChannelViewModel.cs" />
     <Compile Include="ViewModel\FontChooserViewModel.cs" />
     <Compile Include="ViewModel\HostingViewModel.cs" />
@@ -309,6 +314,10 @@
     <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="UserControls\ChannelTabControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\ConnectedLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

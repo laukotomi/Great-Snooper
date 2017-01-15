@@ -507,167 +507,17 @@
 
 
             <!-- The tabcontrol to list channels and messages -->
-            <TabControl Name="ChannelsTabControl" Grid.Row="2" SelectedIndex="{Binding Path=SelectedChannelIndex, Mode=TwoWay}">
-                <TabControl.Resources>
-                    <Style TargetType="TabItem" x:Key="baseTabItem">
-                        <Setter Property="FocusVisualStyle" Value="{x:Null}" />
-                        <Setter Property="IsTabStop" Value="False" />
-                        <Setter Property="Padding" Value="6,2,6,2" />
-                        <Setter Property="HorizontalContentAlignment" Value="Stretch" />
-                        <Setter Property="VerticalContentAlignment" Value="Stretch" />
-                        <Setter Property="MinWidth" Value="5" />
-                        <Setter Property="MinHeight" Value="5" />
-                        <Setter Property="BorderThickness" Value="0" />
-                        <Setter Property="BorderBrush" Value="{DynamicResource AccentColorBrush}" />
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="SnapsToDevicePixels" Value="True" />
-                        <Setter Property="Foreground" Value="{DynamicResource GrayNormalBrush}" />
-                        <Setter Property="FontWeight" Value="Normal" />
-                    </Style>
-                    
-                    <Style TargetType="TabItem" BasedOn="{StaticResource baseTabItem}" x:Key="channelTabItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="TabItem">
-                                    <Border x:Name="Border" HorizontalAlignment="Stretch"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            Background="{TemplateBinding Background}"
-                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                                        <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                            <ContentPresenter x:Name="ContentSite"
-                                              Margin="{TemplateBinding Padding}"
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              TextElement.FontSize="15"
-                                              TextElement.FontStretch="{TemplateBinding controls:ControlsHelper.HeaderFontStretch}"
-                                              TextElement.FontWeight="{TemplateBinding FontWeight}"
-                                              TextElement.Foreground="{TemplateBinding Foreground}"
-                                              Content="{Binding Path=Name, Mode=OneTime}"
-                                              RecognizesAccessKey="True"
-                                              DockPanel.Dock="Top"/>
-                                        </DockPanel>
-                                        <Border.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=HideChannelText, Mode=OneWay}"
-                                                          Command="{Binding Path=MainViewModel.HideChannelCommand, Mode=OneTime}"
-                                                          CommandParameter="{Binding}" />
-                                                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ShowHistoryText, Mode=OneWay}"
-                                                          Command="{Binding Path=MainViewModel.ShowHistoryCommand, Mode=OneTime}"
-                                                          CommandParameter="{Binding}" />
-                                            </ContextMenu>
-                                        </Border.ContextMenu>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True" SourceName="ContentSite">
-                                            <Setter Property="Foreground" Value="{DynamicResource GrayHoverBrush}" />
-                                        </Trigger>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
-                                        </Trigger>
-                                        <DataTrigger Binding="{Binding Path=IsHighlighted, Mode=OneWay}" Value="True">
-                                            <Setter Property="FontWeight" Value="Bold" />
-                                        </DataTrigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
+            <Grid Grid.Row="2">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
 
-                    <Style TargetType="TabItem" BasedOn="{StaticResource baseTabItem}" x:Key="logChannelTabItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="TabItem">
-                                    <Border x:Name="Border" HorizontalAlignment="Stretch"
-                                            BorderThickness="{TemplateBinding BorderThickness}"
-                                            BorderBrush="{TemplateBinding BorderBrush}"
-                                            Background="{TemplateBinding Background}"
-                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                                        <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                            <ContentPresenter x:Name="ContentSite"
-                                              Margin="{TemplateBinding Padding}"
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              TextElement.FontSize="15"
-                                              TextElement.FontStretch="{TemplateBinding controls:ControlsHelper.HeaderFontStretch}"
-                                              TextElement.FontWeight="{TemplateBinding FontWeight}"
-                                              TextElement.Foreground="{TemplateBinding Foreground}"
-                                              Content="{Binding Path=Name, Mode=OneTime}"
-                                              RecognizesAccessKey="True"
-                                              DockPanel.Dock="Top"/>
-                                        </DockPanel>
-                                        <Border.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CloseChatText, Mode=OneWay}"
-                                                          Command="{Binding Path=MainViewModel.CloseChannelCommand, Mode=OneTime}"
-                                                          CommandParameter="{Binding}" />
-                                            </ContextMenu>
-                                        </Border.ContextMenu>
-                                    </Border>
-                                    <ControlTemplate.Triggers>
-                                        <Trigger Property="IsMouseOver" Value="True" SourceName="ContentSite">
-                                            <Setter Property="Foreground" Value="{DynamicResource GrayHoverBrush}" />
-                                        </Trigger>
-                                        <Trigger Property="IsSelected" Value="True">
-                                            <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
-                                        </Trigger>
-                                        <DataTrigger Binding="{Binding Path=IsHighlighted, Mode=OneWay}" Value="True">
-                                            <Setter Property="FontWeight" Value="Bold" />
-                                        </DataTrigger>
-                                    </ControlTemplate.Triggers>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-
-                    <Style TargetType="TabItem" BasedOn="{StaticResource baseTabItem}" x:Key="pmChannelTabItem">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="TabItem">
-                                    <Border x:Name="Border" HorizontalAlignment="Stretch"
-                                        BorderThickness="{TemplateBinding BorderThickness}"
-                                        BorderBrush="{TemplateBinding BorderBrush}"
-                                        Background="{TemplateBinding Background}"
-                                        SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
-                                        <Border.ContextMenu>
-                                            <ContextMenu>
-                                                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CloseChatText, Mode=OneWay}"
-                                                          Command="{Binding Path=MainViewModel.CloseChannelCommand, Mode=OneTime}"
-                                                          CommandParameter="{Binding}" />
-                                                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ShowHistoryText, Mode=OneWay}"
-                                                          Command="{Binding Path=MainViewModel.ShowHistoryCommand, Mode=OneTime}"
-                                                          CommandParameter="{Binding}" />
-                                            </ContextMenu>
-                                        </Border.ContextMenu>
-                                        <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-                                            <TextBlock x:Name="ContentSite"
-                                              Margin="{TemplateBinding Padding}"
-                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
-                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
-                                              TextElement.FontSize="15"
-                                              TextElement.FontStretch="{TemplateBinding controls:ControlsHelper.HeaderFontStretch}"
-                                              TextElement.FontWeight="{TemplateBinding controls:ControlsHelper.HeaderFontWeight}"
-                                              TextElement.Foreground="{TemplateBinding Foreground}"
-                                              DockPanel.Dock="Top"/>
-                                        </DockPanel>
-                                        <i:Interaction.Triggers>
-                                            <i:EventTrigger EventName="MouseDown">
-                                                <cmd:EventToCommand Command="{Binding Path=CloseChannelMBCommand, Mode=OneTime}" PassEventArgsToCommand="True" />
-                                            </i:EventTrigger>
-                                            <i:EventTrigger EventName="MouseEnter">
-                                                <cmd:EventToCommand Command="{Binding Path=MouseEnteredHeaderCommand, Mode=OneTime}" PassEventArgsToCommand="False" />
-                                            </i:EventTrigger>
-                                            <i:EventTrigger EventName="MouseLeave">
-                                                <cmd:EventToCommand Command="{Binding Path=MouseLeftHeaderCommand, Mode=OneTime}" PassEventArgsToCommand="False" />
-                                            </i:EventTrigger>
-                                        </i:Interaction.Triggers>
-                                    </Border>
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </TabControl.Resources>
-            </TabControl>
+                <u:ChannelTabControl Name="ChannelTabcontrol1"
+                                     Grid.Column="0"></u:ChannelTabControl>
+                <u:ChannelTabControl Name="ChannelTabcontrol2"
+                                     Grid.Column="1"></u:ChannelTabControl>
+            </Grid>
         </Grid>
 
         <GridSplitter Grid.Column="1" Background="Black" Width="4" Focusable="False" ResizeBehavior="PreviousAndNext">
