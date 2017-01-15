@@ -93,10 +93,11 @@ namespace GreatSnooper.UserControls
 
                 foreach (var channel in this.chvm.MainViewModel.Channels)
                 {
-                    if (channel is ChannelViewModel)
+                    ChannelViewModel channelVM = channel as ChannelViewModel;
+                    if (channelVM != null)
                     {
-                        if (((ChannelViewModel)channel).UserListDG != null)
-                            ((ChannelViewModel)channel).UserListDG.SetUserListDGColumnWidths();
+                        if (channelVM.UserListDG != null)
+                            channelVM.UserListDG.SetUserListDGColumnWidths();
                     }
                     else
                         break;
@@ -142,8 +143,9 @@ namespace GreatSnooper.UserControls
 
             foreach (var item in this.chvm.Server.Channels)
             {
-                if (item.Value is ChannelViewModel && ((ChannelViewModel)item.Value).UserListDG != null)
-                    ((ChannelViewModel)item.Value).UserListDG.SetOrderForDataGrid(columnName, dir);
+                ChannelViewModel channel = item.Value as ChannelViewModel;
+                if (channel != null && channel.UserListDG != null)
+                    channel.UserListDG.SetOrderForDataGrid(columnName, dir);
             }
         }
 
@@ -222,8 +224,8 @@ namespace GreatSnooper.UserControls
                     view.Filter = null;
             }
         }
-		
-		private bool DefaultBannedView(object o)
+
+        private bool DefaultBannedView(object o)
         {
             return !((User)o).IsBanned;
         }

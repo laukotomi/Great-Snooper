@@ -2077,6 +2077,15 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Show history.
+        /// </summary>
+        public static string ShowHistoryText {
+            get {
+                return ResourceManager.GetString("ShowHistoryText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Show information column in user list:.
         /// </summary>
         public static string ShowInfoColumnText {

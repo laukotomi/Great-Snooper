@@ -1546,17 +1546,5 @@ namespace GreatSnooper.Properties {
                 this["WindowHeight"] = value;
             }
         }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool LoadOldChannelMessages {
-            get {
-                return ((bool)(this["LoadOldChannelMessages"]));
-            }
-            set {
-                this["LoadOldChannelMessages"] = value;
-            }
-        }
     }
 }

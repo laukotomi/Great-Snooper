@@ -19,8 +19,10 @@ namespace GreatSnooper.Classes
         }
 
         public SortedObservableCollection(IEnumerable<T> collection)
-            : base(collection)
+            : base()
         {
+            foreach (T item in collection)
+                this.Add(item);
         }
 
         public new int Add(T item)

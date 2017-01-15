@@ -8,29 +8,20 @@ using GreatSnooper.UserControls;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Linq;
 using System.IO;
+using System.Linq;
 using System.Reflection;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Markup;
 using System.Windows.Media;
-using System.Globalization;
 
 namespace GreatSnooper.ViewModel
 {
     [DebuggerDisplay("{Name}")]
     public abstract class AbstractChannelViewModel : ViewModelBase, IComparable
     {
-        #region Static
-        private static Regex dateRegex = new Regex(@"[^0-9]");
-        protected static string urlRegexText = @"(ht|f)tps?://\S+";
-        protected static Regex urlRegex = new Regex(urlRegexText, RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        #endregion
-
         #region Members
         private bool _loading;
         private bool _isHighlighted;
@@ -118,7 +109,7 @@ namespace GreatSnooper.ViewModel
                 return _connectedLayout;
             }
         }
-        public int NewMessagesCount { get; private set; }
+        public bool HiddenMessagesInEnergySaveMode { get; private set; }
         public bool Joined
         {
             get { return _joined; }
@@ -139,7 +130,7 @@ namespace GreatSnooper.ViewModel
                         this.lastMessageIterator = null;
                         this.lastMessageLoaded = null;
                         this.MessageText = string.Empty;
-                        this.NewMessagesCount = 0;
+                        this.HiddenMessagesInEnergySaveMode = false;
                         this.stopLoadingMessages = false;
                         this.tempMessage = string.Empty;
                         this.lastMessages.Clear();
@@ -155,9 +146,9 @@ namespace GreatSnooper.ViewModel
 
         #region Abstract methods
         public abstract void ClearUsers();
-        public abstract void SendMessage(string message, bool userMessage = false);
-        public abstract void SendNotice(string message, bool userMessage = false);
-        public abstract void SendActionMessage(string message, bool userMessage = false);
+        public abstract void SendMessage(string message);
+        public abstract void SendNotice(string message);
+        public abstract void SendActionMessage(string message);
         public abstract void SendCTCPMessage(string ctcpCommand, string ctcpText, User except = null);
         public abstract void ProcessMessage(MessageTask msgTask);
         protected virtual void JoinedChanged() { }
@@ -219,12 +210,12 @@ namespace GreatSnooper.ViewModel
                 if (command.Equals("me", StringComparison.OrdinalIgnoreCase))
                 {
                     if (text.Length > 0)
-                        SendActionMessage(text, true);
+                        SendActionMessage(text);
                 }
                 else if (command.Equals("notice", StringComparison.OrdinalIgnoreCase))
                 {
                     if (text.Length > 0)
-                        SendNotice(text, true);
+                        SendNotice(text);
                 }
                 else if (command.Equals("nick", StringComparison.OrdinalIgnoreCase))
                 {
@@ -364,7 +355,7 @@ namespace GreatSnooper.ViewModel
             {
                 message = message.Trim();
                 if (message.Length > 0)
-                    SendMessage(message, true);
+                    SendMessage(message);
             }
         }
 
@@ -428,27 +419,10 @@ namespace GreatSnooper.ViewModel
         #endregion
 
         #region Add message
-        public void AddMessage(User sender, string message, MessageSetting messageSetting, bool userMessage = false)
+        public void AddMessage(User sender, string message, MessageSetting messageSetting)
         {
             var msg = new Message(sender, message, messageSetting, DateTime.Now);
-
-            if (userMessage || msg.Style.Type == Message.MessageTypes.Quit)
-            {
-                var matches = urlRegex.Matches(msg.Text);
-                for (int i = 0; i < matches.Count; i++)
-                {
-                    this.HandleUriMatch(matches[i].Groups[0], msg);
-                }
-            }
-
             this.AddMessage(msg);
-        }
-
-        protected void HandleUriMatch(Group group, Message message)
-        {
-            Uri uri;
-            if (Uri.TryCreate(group.Value, UriKind.RelativeOrAbsolute, out uri))
-                message.AddHighlightWord(group.Index, group.Length, Message.HightLightTypes.URI);
         }
 
         public void AddMessage(Message msg)
@@ -461,7 +435,7 @@ namespace GreatSnooper.ViewModel
             if (!msg.Sender.IsBanned || this.GetType() == typeof(ChannelViewModel) && Properties.Settings.Default.ShowBannedMessages)
             {
                 if (this.MainViewModel.IsEnergySaveMode)
-                    this.NewMessagesCount++;
+                    this.HiddenMessagesInEnergySaveMode = true;
                 else
                 {
                     this.lastMessageLoaded = this.Messages.Last;
@@ -480,7 +454,7 @@ namespace GreatSnooper.ViewModel
                 msg.Style.Type == Message.MessageTypes.Quit)
             )
                 return false;
-            
+
             try
             {
                 Paragraph p = new Paragraph();
@@ -545,7 +519,7 @@ namespace GreatSnooper.ViewModel
                             Hyperlink word = new Hyperlink(new Run(hword));
                             MessageSettings.LoadSettingsFor(word, MessageSettings.HyperLinkStyle);
                             word.Foreground = MessageSettings.HyperLinkStyle.NickColor;
-                            word.Click += OpenLickClick;
+                            word.Click += OpenLinkClick;
                             word.CommandParameter = hword;
                             p.Inlines.Add(word);
                         }
@@ -582,7 +556,7 @@ namespace GreatSnooper.ViewModel
             return false;
         }
 
-        private void OpenLickClick(object sender, RoutedEventArgs e)
+        private void OpenLinkClick(object sender, RoutedEventArgs e)
         {
             var link = (Hyperlink)sender;
             try
@@ -704,13 +678,13 @@ namespace GreatSnooper.ViewModel
         {
             try
             {
-                for (int i = 0; i < this.NewMessagesCount; i++)
+                while (true)
                 {
                     if (this.lastMessageLoaded == null || lastMessageLoaded.Previous == null && lastMessageLoaded.Next == null) // or is removed
                         this.lastMessageLoaded = this.Messages.First;
                     else
                         this.lastMessageLoaded = this.lastMessageLoaded.Next;
-                    
+
                     if (this.lastMessageLoaded == null)
                         break;
 
@@ -723,10 +697,10 @@ namespace GreatSnooper.ViewModel
             {
                 ErrorLog.Log(ex);
             }
-            this.NewMessagesCount = 0;
+            this.HiddenMessagesInEnergySaveMode = false;
         }
 
-        public void Log(int count, bool makeEnd = false)
+        public virtual void Log(int count, bool makeEnd = false)
         {
             if (count == 0) return;
 
@@ -736,7 +710,7 @@ namespace GreatSnooper.ViewModel
                 if (!Directory.Exists(dirPath))
                     Directory.CreateDirectory(dirPath);
 
-                string logFile = dirPath + "\\" + dateRegex.Replace(DateTime.Now.ToString("yyyy-MM-dd"), "-") + ".log";
+                string logFile = dirPath + "\\" + DateTime.Now.ToString("yyyy-MM-dd") + ".log";
                 bool loggedAnything = false;
 
                 using (StreamWriter writer = new StreamWriter(logFile, true))
@@ -888,7 +862,7 @@ namespace GreatSnooper.ViewModel
                         {
                             if (Properties.Settings.Default.MessageTime)
                             {
-                                p.Inlines.FirstInline.Foreground = (color != null) ? color : MessageSettings.MessageTimeStyle.NickColor;
+                                //p.Inlines.FirstInline.Foreground = (color != null) ? color : MessageSettings.MessageTimeStyle.NickColor;
                                 p.Inlines.FirstInline.NextInline.Foreground = (color != null) ? color : msg.Style.NickColor;
                                 p.Inlines.FirstInline.NextInline.FontStyle = (italic) ? FontStyles.Italic : FontStyles.Normal;
                             }

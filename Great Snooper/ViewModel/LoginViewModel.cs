@@ -1,13 +1,11 @@
 ﻿using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GreatSnooper.Classes;
-using GreatSnooper.EventArguments;
 using GreatSnooper.Helpers;
 using GreatSnooper.Model;
 using GreatSnooper.Services;
 using GreatSnooper.Validators;
 using GreatSnooper.Windows;
-using Hardcodet.Wpf.TaskbarNotification;
 using MahApps.Metro;
 using MahApps.Metro.Controls;
 using MahApps.Metro.Controls.Dialogs;
@@ -603,7 +601,7 @@ namespace GreatSnooper.ViewModel
                 Properties.Settings.Default.Save();
 
                 if (GlobalManager.TusAccounts == null)
-                    GlobalManager.TusAccounts = new Dictionary<string, TusAccount>(StringComparer.OrdinalIgnoreCase);
+                    GlobalManager.TusAccounts = new Dictionary<string, TusAccount>(GlobalManager.CIStringComparer);
                 else
                     GlobalManager.TusAccounts.Clear();
 
@@ -735,7 +733,8 @@ namespace GreatSnooper.ViewModel
                         break;
 
                     case AbstractCommunicator.ConnectionStates.Disconnected:
-                        if (!closing) { 
+                        if (!closing)
+                        {
                             if (wormNetC.ErrorState == AbstractCommunicator.ErrorStates.UsernameInUse)
                                 this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.NicknameInUseText);
                             else
@@ -786,7 +785,7 @@ namespace GreatSnooper.ViewModel
                         {
                             TaskbarIconService.Dispose();
                             TaskbarIconService = null;
-                        } 
+                        }
                         wormNetC.Dispose();
                         wormNetC = null;
                     }

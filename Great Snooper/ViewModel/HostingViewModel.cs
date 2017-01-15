@@ -263,6 +263,7 @@ namespace GreatSnooper.ViewModel
             gameProcess.StartInfo.RedirectStandardInput = true;
             gameProcess.StartInfo.FileName = Path.GetFullPath("Hoster.exe");
             gameProcess.StartInfo.Arguments = arguments;
+            Debug.WriteLine("HOSTER: " + arguments);
             if (gameProcess.Start())
             {
                 using (gameProcess.StandardOutput)

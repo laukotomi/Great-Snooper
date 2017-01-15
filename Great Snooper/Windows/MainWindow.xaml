@@ -189,6 +189,7 @@
         <KeyBinding Command="{Binding Path=CloseActualChannelCommand, Mode=OneTime}" Key="W" Modifiers="Control" />
         <KeyBinding Command="{Binding Path=FilterCommand, Mode=OneTime}" Key="F" Modifiers="Control" />
         <KeyBinding Command="{Binding Path=AwayShortkeyCommand, Mode=OneTime}" Key="A" Modifiers="Control+Shift" />
+        <KeyBinding Command="{Binding Path=ShowHistoryCommand, Mode=OneTime}" Key="H" Modifiers="Control" />
     </controls:MetroWindow.InputBindings>
 
     <!-- Application Icon -->
@@ -551,6 +552,9 @@
                                                 <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=HideChannelText, Mode=OneWay}"
                                                           Command="{Binding Path=MainViewModel.HideChannelCommand, Mode=OneTime}"
                                                           CommandParameter="{Binding}" />
+                                                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ShowHistoryText, Mode=OneWay}"
+                                                          Command="{Binding Path=MainViewModel.ShowHistoryCommand, Mode=OneTime}"
+                                                          CommandParameter="{Binding}" />
                                             </ContextMenu>
                                         </Border.ContextMenu>
                                     </Border>
@@ -569,7 +573,53 @@
                             </Setter.Value>
                         </Setter>
                     </Style>
-                    
+
+                    <Style TargetType="TabItem" BasedOn="{StaticResource baseTabItem}" x:Key="logChannelTabItem">
+                        <Setter Property="Template">
+                            <Setter.Value>
+                                <ControlTemplate TargetType="TabItem">
+                                    <Border x:Name="Border" HorizontalAlignment="Stretch"
+                                            BorderThickness="{TemplateBinding BorderThickness}"
+                                            BorderBrush="{TemplateBinding BorderBrush}"
+                                            Background="{TemplateBinding Background}"
+                                            SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}">
+                                        <DockPanel HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+                                            <ContentPresenter x:Name="ContentSite"
+                                              Margin="{TemplateBinding Padding}"
+                                              HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                              VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                              TextElement.FontSize="15"
+                                              TextElement.FontStretch="{TemplateBinding controls:ControlsHelper.HeaderFontStretch}"
+                                              TextElement.FontWeight="{TemplateBinding FontWeight}"
+                                              TextElement.Foreground="{TemplateBinding Foreground}"
+                                              Content="{Binding Path=Name, Mode=OneTime}"
+                                              RecognizesAccessKey="True"
+                                              DockPanel.Dock="Top"/>
+                                        </DockPanel>
+                                        <Border.ContextMenu>
+                                            <ContextMenu>
+                                                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CloseChatText, Mode=OneWay}"
+                                                          Command="{Binding Path=MainViewModel.CloseChannelCommand, Mode=OneTime}"
+                                                          CommandParameter="{Binding}" />
+                                            </ContextMenu>
+                                        </Border.ContextMenu>
+                                    </Border>
+                                    <ControlTemplate.Triggers>
+                                        <Trigger Property="IsMouseOver" Value="True" SourceName="ContentSite">
+                                            <Setter Property="Foreground" Value="{DynamicResource GrayHoverBrush}" />
+                                        </Trigger>
+                                        <Trigger Property="IsSelected" Value="True">
+                                            <Setter Property="Foreground" Value="{DynamicResource AccentColorBrush}" />
+                                        </Trigger>
+                                        <DataTrigger Binding="{Binding Path=IsHighlighted, Mode=OneWay}" Value="True">
+                                            <Setter Property="FontWeight" Value="Bold" />
+                                        </DataTrigger>
+                                    </ControlTemplate.Triggers>
+                                </ControlTemplate>
+                            </Setter.Value>
+                        </Setter>
+                    </Style>
+
                     <Style TargetType="TabItem" BasedOn="{StaticResource baseTabItem}" x:Key="pmChannelTabItem">
                         <Setter Property="Template">
                             <Setter.Value>
@@ -583,6 +633,9 @@
                                             <ContextMenu>
                                                 <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CloseChatText, Mode=OneWay}"
                                                           Command="{Binding Path=MainViewModel.CloseChannelCommand, Mode=OneTime}"
+                                                          CommandParameter="{Binding}" />
+                                                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ShowHistoryText, Mode=OneWay}"
+                                                          Command="{Binding Path=MainViewModel.ShowHistoryCommand, Mode=OneTime}"
                                                           CommandParameter="{Binding}" />
                                             </ContextMenu>
                                         </Border.ContextMenu>

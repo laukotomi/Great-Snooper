@@ -1,5 +1,4 @@
 ﻿using GreatSnooper.Model;
-using System;
 using System.Collections.Generic;
 
 namespace GreatSnooper.Helpers
@@ -9,8 +8,8 @@ namespace GreatSnooper.Helpers
         public const int BuddiesGroupID = 0;
         public const int SystemGroupID = int.MaxValue;
 
-        public static readonly Dictionary<string, UserGroup> Users = new Dictionary<string, UserGroup>(StringComparer.OrdinalIgnoreCase);
-        public static readonly Dictionary<string, UserGroup> Groups = new Dictionary<string, UserGroup>(StringComparer.OrdinalIgnoreCase);
+        public static readonly Dictionary<string, UserGroup> Users = new Dictionary<string, UserGroup>(GlobalManager.CIStringComparer);
+        public static readonly Dictionary<string, UserGroup> Groups = new Dictionary<string, UserGroup>(GlobalManager.CIStringComparer);
 
         public static void Initialize()
         {

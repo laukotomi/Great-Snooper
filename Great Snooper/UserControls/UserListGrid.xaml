@@ -20,10 +20,11 @@
         <ContextMenu>
             <MenuItem Name="Chat" Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ChatText, Mode=OneWay}"
                       Command="{Binding Path=OpenChatCommand, Mode=OneTime}" />
-            <MenuItem Name="Conversation" Command="{Binding Path=MainViewModel.AddOrRemoveUserCommand, Mode=OneTime}"
-                      CommandParameter="{Binding}" />
+            <MenuItem Name="Conversation" Command="{Binding Path=MainViewModel.AddOrRemoveUserCommand, Mode=OneTime}" />
             <MenuItem Name="Group" Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=GroupText, Mode=OneWay}" />
             <MenuItem Name="Ignore" Command="{Binding Path=MainViewModel.AddOrRemoveBanCommand, Mode=OneTime}" />
+            <MenuItem Name="History" Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=ShowHistoryText, Mode=OneWay}"
+                      Command="{Binding Path=MainViewModel.ShowUserHistoryCommand, Mode=OneTime}" />
             <MenuItem Name="TUS" Command="{Binding Path=MainViewModel.OpenLinkCommand, Mode=OneTime}" />
             <MenuItem Name="TUSClan" Command="{Binding Path=MainViewModel.OpenLinkCommand, Mode=OneTime}" />
             <MenuItem Name="Info" />

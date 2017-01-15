@@ -1,4 +1,5 @@
 ﻿using GreatSnooper.UserControls;
+using GreatSnooper.ViewModel;
 using Hardcodet.Wpf.TaskbarNotification;
 using System;
 
@@ -13,9 +14,9 @@ namespace GreatSnooper.Services
             this.Icon = icon;
         }
 
-        public void ShowMessage(string message)
+        public void ShowMessage(string message, AbstractChannelViewModel chvm = null)
         {
-            this.Icon.ShowCustomBalloon(new GSBalloon() { BalloonText = message }, System.Windows.Controls.Primitives.PopupAnimation.None, 5000);
+            this.Icon.ShowCustomBalloon(new GSBalloon(chvm) { BalloonText = message }, System.Windows.Controls.Primitives.PopupAnimation.None, 5000);
         }
 
         #region IDisposable

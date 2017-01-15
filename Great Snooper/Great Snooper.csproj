@@ -154,6 +154,7 @@
     <Compile Include="Classes\GameSurgeCommunicator.cs" />
     <Compile Include="Classes\LeagueSearcher.cs" />
     <Compile Include="Classes\Notificator.cs" />
+    <Compile Include="Classes\NotificatorEntry.cs" />
     <Compile Include="Classes\TusResult.cs" />
     <Compile Include="Classes\WebDownload.cs">
       <SubType>Component</SubType>
@@ -191,6 +192,7 @@
     <Compile Include="Model\LeagueToSearch.cs" />
     <Compile Include="Model\News.cs" />
     <Compile Include="Model\TusAccount.cs" />
+    <Compile Include="Services\RegexService.cs" />
     <Compile Include="Settings\AbstractSetting.cs" />
     <Compile Include="Settings\BoolSetting.cs" />
     <Compile Include="Settings\ComboboxSetting.cs" />
@@ -260,6 +262,7 @@
     <Compile Include="ViewModel\HostingViewModel.cs" />
     <Compile Include="ViewModel\LeagueSearcherViewModel.cs" />
     <Compile Include="ViewModel\ListEditorViewModel.cs" />
+    <Compile Include="ViewModel\LogChannelViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\NewsViewModel.cs" />
     <Compile Include="ViewModel\NotificatorViewModel.cs" />
@@ -393,11 +396,15 @@
       <DependentUpon>Settings.settings</DependentUpon>
       <DesignTimeSharedInput>True</DesignTimeSharedInput>
     </Compile>
-    <EmbeddedResource Include="Localizations\Localization.de-DE.resx" />
+    <EmbeddedResource Include="Localizations\Localization.de-DE.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localizations\Localization.hu-HU.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <EmbeddedResource Include="Localizations\Localization.pl-PL.resx" />
+    <EmbeddedResource Include="Localizations\Localization.pl-PL.resx">
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
     <EmbeddedResource Include="Localizations\Localization.resx">
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Localization.Designer.cs</LastGenOutput>

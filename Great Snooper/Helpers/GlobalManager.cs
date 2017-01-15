@@ -1,11 +1,10 @@
 ﻿using GreatSnooper.Model;
-using GreatSnooper.IRCTasks;
 using MahApps.Metro.Controls.Dialogs;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
 using Newtonsoft.Json;
+using System;
+using System.Collections.Generic;
+using System.Globalization;
+using System.IO;
 
 namespace GreatSnooper.Helpers
 {
@@ -26,6 +25,7 @@ namespace GreatSnooper.Helpers
             DebugMode = false;
             SpamAllowed = false;
             SystemUser = new User(Localizations.GSLocalization.Instance.SystemUserName);
+            CIStringComparer = StringComparer.Create(new CultureInfo("en-US"), true);
 
             OKDialogSetting = new MetroDialogSettings()
             {
@@ -58,12 +58,12 @@ namespace GreatSnooper.Helpers
         {
             BanList = new HashSet<string>(
                 Properties.Settings.Default.BanList.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
-                StringComparer.OrdinalIgnoreCase
+                CIStringComparer
                 );
             // Backwards compatibility
             if (Properties.Settings.Default.AutoJoinChannels.Contains(":") == false)
             {
-                AutoJoinList = new Dictionary<string,string>();
+                AutoJoinList = new Dictionary<string, string>();
                 string[] parts = Properties.Settings.Default.AutoJoinChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (var part in parts)
                     AutoJoinList.Add(part, null);
@@ -73,10 +73,10 @@ namespace GreatSnooper.Helpers
 
             HiddenChannels = new HashSet<string>(
                 Properties.Settings.Default.HiddenChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
-                StringComparer.OrdinalIgnoreCase); 
-            
+                CIStringComparer);
+
             if (TusAccounts == null)
-                TusAccounts = new Dictionary<string, TusAccount>(StringComparer.OrdinalIgnoreCase);
+                TusAccounts = new Dictionary<string, TusAccount>(CIStringComparer);
         }
 
         public static User User { get; set; }
@@ -104,5 +104,7 @@ namespace GreatSnooper.Helpers
         public static MetroDialogSettings MoreInfoDialogSetting { get; private set; }
 
         public static Dictionary<string, TusAccount> TusAccounts { get; set; }
+
+        public static StringComparer CIStringComparer { get; private set; }
     }
 }

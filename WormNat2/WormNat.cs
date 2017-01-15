@@ -192,7 +192,7 @@ namespace Hoster
             {
                 string sURL = "http://" + serverAddress + ":80/wormageddonweb/Game.asp?Cmd=Close&GameID=" + gameID + "&Name=" + hostName + "&HostID=&GuestID=&GameType=0";
                 HttpWebRequest wrGETURL = (HttpWebRequest)WebRequest.Create(sURL);
-                wrGETURL.Method = "HEAD";
+                wrGETURL.Method = "GET";
                 wrGETURL.AllowAutoRedirect = false;
                 wrGETURL.UserAgent = "T17Client/1.2";
                 wrGETURL.Headers.Add("UserServerIdent", "2");
@@ -308,7 +308,7 @@ namespace Hoster
                     // Create the game and get its ID
                     string sURL = "http://" + serverAddress + ":80/wormageddonweb/Game.asp?Cmd=Create&Name=" + hostName + "&HostIP=" + hostIP + "&Nick=" + nickName + "&Pwd=" + passWord + "&Chan=" + channelName + "&Loc=" + location + "&Type=" + cc;
                     HttpWebRequest wrGETURL = (HttpWebRequest)WebRequest.Create(sURL);
-                    wrGETURL.Method = "HEAD";
+                    wrGETURL.Method = "GET";
                     wrGETURL.AllowAutoRedirect = false;
                     wrGETURL.Proxy = null;
                     // We need to set some headers in order to get the proper answer from Game.asp script

@@ -1,17 +1,11 @@
 ﻿using GalaSoft.MvvmLight.Command;
 using GreatSnooper.Classes;
 using GreatSnooper.Helpers;
-using GreatSnooper.Localizations;
 using GreatSnooper.Model;
 using GreatSnooper.Windows;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Globalization;
-using System.IO;
 using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
@@ -22,11 +16,6 @@ namespace GreatSnooper.ViewModel
 {
     public class PMChannelViewModel : AbstractChannelViewModel
     {
-        #region Static
-        private static Regex logMessageRegex = new Regex(@"^\((?<type>\w+)\) (?<date>\d+\-\d+\-\d+ \d+:\d+:\d+) (?<sender>[^:]+):(?<text>.*)", RegexOptions.Compiled);
-        private static Regex logChannelClosedRegex = new Regex(@"^(?<date>\d+\-\d+\-\d+ \d+:\d+:\d+) Channel closed\.$", RegexOptions.Compiled);
-        #endregion
-
         #region Members
         private TextBlock headerTB;
         #endregion
@@ -66,79 +55,9 @@ namespace GreatSnooper.ViewModel
                 this.GenerateHeader();
                 mainViewModel.Channels.Add(this);
             }
-
-            if (Properties.Settings.Default.LoadOldChannelMessages)
-            {
-                DirectoryInfo logDirectory = new DirectoryInfo(GlobalManager.SettingsPath + @"\Logs\" + this.Name);
-                if (logDirectory.Exists)
-                {
-                    List<string> oldMessages = new List<string>();
-                    bool done = false;
-                    foreach (FileInfo file in logDirectory.GetFiles().OrderByDescending(f => f.LastWriteTime))
-                    {
-                        string[] lines = File.ReadAllLines(file.FullName);
-                        for (int i = lines.Length - 1; i >= 0; i--)
-                        {
-                            string line = lines[i];
-                            if (!string.IsNullOrEmpty(line) && !line.StartsWith("---"))
-                            {
-                                oldMessages.Add(line);
-                                if (oldMessages.Count == GlobalManager.MaxMessagesDisplayed)
-                                {
-                                    done = true;
-                                    break;
-                                }
-                            }
-                        }
-                        if (done)
-                            break;
-                    }
-
-                    for (int i = oldMessages.Count - 1; i >= 0; i--)
-                    {
-                        Match m = logMessageRegex.Match(oldMessages[i]);
-                        if (m.Success)
-                        {
-                            Message.MessageTypes messageType;
-                            DateTime time;
-                            if (Enum.TryParse(m.Groups["type"].Value, true, out messageType)
-                                && DateTime.TryParseExact(m.Groups["date"].Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
-                            {
-                                this.AddMessage(
-                                    new Message(
-                                        UserHelper.GetUser(server, m.Groups["sender"].Value),
-                                        m.Groups["text"].Value,
-                                        MessageSettings.GetByMessageType(messageType),
-                                        time,
-                                        true
-                                    )
-                                );
-                            }
-                            continue;
-                        }
-                        m = logChannelClosedRegex.Match(oldMessages[i]);
-                        if (m.Success)
-                        {
-                            DateTime time;
-                            if (DateTime.TryParseExact(m.Groups["date"].Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
-                            {
-                                this.AddMessage(
-                                    new Message(
-                                        GlobalManager.SystemUser,
-                                        GSLocalization.Instance.EndOfConversation,
-                                        MessageSettings.SystemMessage,
-                                        time,
-                                        true
-                                    )
-                                );
-                            }
-                        }
-                    }
-                }
-            }
         }
 
-        public override void SendMessage(string message, bool userMessage = false)
+        public override void SendMessage(string message)
         {
             if (this.Users.Count > 1)
             {
@@ -152,10 +71,10 @@ namespace GreatSnooper.ViewModel
             else if (this.Users[0].OnlineStatus != User.Status.Offline)
                 Server.SendMessage(this, this.Users[0].Name, message);
 
-            AddMessage(Server.User, message, MessageSettings.UserMessage, userMessage);
+            AddMessage(Server.User, message, MessageSettings.UserMessage);
         }
 
-        public override void SendNotice(string message, bool userMessage = false)
+        public override void SendNotice(string message)
         {
             if (this.Users.Count > 1)
             {
@@ -169,10 +88,10 @@ namespace GreatSnooper.ViewModel
             else if (this.Users[0].OnlineStatus != User.Status.Offline)
                 Server.SendNotice(this, this.Users[0].Name, message);
 
-            AddMessage(Server.User, message, MessageSettings.NoticeMessage, userMessage);
+            AddMessage(Server.User, message, MessageSettings.NoticeMessage);
         }
 
-        public override void SendActionMessage(string message, bool userMessage = false)
+        public override void SendActionMessage(string message)
         {
             if (this.Users.Count > 1)
             {
@@ -186,7 +105,7 @@ namespace GreatSnooper.ViewModel
             else if (this.Users[0].OnlineStatus != User.Status.Offline)
                 Server.SendCTCPMessage(this, this.Users[0].Name, "ACTION", message);
 
-            AddMessage(Server.User, message, MessageSettings.ActionMessage, userMessage);
+            AddMessage(Server.User, message, MessageSettings.ActionMessage);
         }
 
         public override void SendCTCPMessage(string ctcpCommand, string ctcpText, User except = null)
@@ -206,14 +125,6 @@ namespace GreatSnooper.ViewModel
                 this.Disabled = false;
 
             var msg = new Message(msgTask.User, msgTask.Message, msgTask.Setting, DateTime.Now);
-            if (msgTask.Setting.Type == Message.MessageTypes.Channel || msgTask.Setting.Type == Message.MessageTypes.Quit || msgTask.Setting.Type == Message.MessageTypes.Action || msgTask.Setting.Type == Message.MessageTypes.Notice)
-            {
-                var matches = urlRegex.Matches(msgTask.Message);
-                for (int i = 0; i < matches.Count; i++)
-                {
-                    this.HandleUriMatch(matches[i].Groups[0], msg);
-                }
-            }
 
             // This way away message will be added to the channel later than the arrived message
             this.AddMessage(msg);
@@ -223,7 +134,7 @@ namespace GreatSnooper.ViewModel
                 this.Highlight();
                 this.MainViewModel.FlashWindow();
                 if (Properties.Settings.Default.TrayNotifications && (this.MainViewModel.SelectedChannel != this || this.MainViewModel.IsWindowActive == false))
-                    this.MainViewModel.ShowTrayMessage(msgTask.User.Name + ": " + msgTask.Message);
+                    this.MainViewModel.ShowTrayMessage(msgTask.User.Name + ": " + msgTask.Message, this);
                 if (Properties.Settings.Default.PMBeepEnabled)
                     Sounds.PlaySoundByName("PMBeep");
 

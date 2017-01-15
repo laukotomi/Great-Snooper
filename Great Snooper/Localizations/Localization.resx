@@ -1312,4 +1312,8 @@
   <data name="EndOfConversation" xml:space="preserve">
     <value>End of conversation.</value>
   </data>
+  <data name="ShowHistoryText" xml:space="preserve">
+    <value>Show history</value>
+    <comment>When right click on the name of a channel</comment>
+  </data>
 </root>

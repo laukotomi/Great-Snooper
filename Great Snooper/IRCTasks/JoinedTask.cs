@@ -3,6 +3,7 @@ using GreatSnooper.Helpers;
 using GreatSnooper.Model;
 using GreatSnooper.ViewModel;
 using System;
+using System.Linq;
 
 namespace GreatSnooper.IRCTasks
 {
@@ -31,7 +32,9 @@ namespace GreatSnooper.IRCTasks
                     return;
             }
 
-            var chvm = (ChannelViewModel)temp;
+            ChannelViewModel chvm = temp as ChannelViewModel;
+            if (chvm == null)
+                return;
 
             if (ClientName.Equals(Sender.User.Name, StringComparison.OrdinalIgnoreCase) == false)
             {
@@ -48,31 +51,39 @@ namespace GreatSnooper.IRCTasks
                         }
                         else
                         {
-                            Message msg = new Message(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage, DateTime.Now);
-
-                            if (Notificator.Instance.SearchInJoinMessagesEnabled && Notificator.Instance.JoinMessagesRegex.IsMatch(u.Name))
-                            {
-                                msg.AddHighlightWord(0, msg.Text.Length, Message.HightLightTypes.NotificatorFound);
-                                chvm.MainViewModel.NotificatorFound(string.Format(Localizations.GSLocalization.Instance.NotifOnlineMessage, u.Name, chvm.Name));
-                            }
-                            else if (u.Group.ID != UserGroups.SystemGroupID)
-                            {
-                                if (Properties.Settings.Default.TrayNotifications)
-                                    mvm.ShowTrayMessage(string.Format(Localizations.GSLocalization.Instance.OnlineMessage, u.Name));
-                                if (u.Group.SoundEnabled)
-                                    Sounds.PlaySound(u.Group.Sound);
-                            }
-
                             chvm.AddUser(u);
-                            chvm.AddMessage(msg);
                         }
+
+                        Message msg = new Message(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage, DateTime.Now);
+
+                        if (Notificator.Instance.SearchInJoinMessagesEnabled &&
+                            Notificator.Instance.JoinMessages.Any(r => r.IsMatch(u.Name, u.Name, chvm.Name)))
+                        {
+                            msg.AddHighlightWord(0, msg.Text.Length, Message.HightLightTypes.NotificatorFound);
+                            chvm.MainViewModel.NotificatorFound(string.Format(Localizations.GSLocalization.Instance.NotifOnlineMessage, u.Name, chvm.Name), chvm);
+                        }
+                        else if (u.Group.ID != UserGroups.SystemGroupID)
+                        {
+                            if (Properties.Settings.Default.TrayNotifications)
+                                mvm.ShowTrayMessage(string.Format(Localizations.GSLocalization.Instance.OnlineMessage, u.Name), chvm);
+                            if (u.Group.SoundEnabled)
+                                Sounds.PlaySound(u.Group.Sound);
+                        }
+                        chvm.AddMessage(msg);
 
                         foreach (var channel in u.PMChannels)
                             channel.AddMessage(u, Localizations.GSLocalization.Instance.PMOnlineMessage, MessageSettings.JoinMessage);
                     }
-                    else if (u.Channels.Contains(chvm) == false)
+                    else
                     {
-                        chvm.AddUser(u);
+                        if (u.AddToChannel.Count > 0)
+                        {
+                            u.AddToChannel.Add(chvm); // Client will be added to the channel if information is arrived to keep the client list sorted properly
+                        }
+                        else if (u.Channels.Contains(chvm) == false)
+                        {
+                            chvm.AddUser(u);
+                        }
                         chvm.AddMessage(u, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage);
                     }
                 }
