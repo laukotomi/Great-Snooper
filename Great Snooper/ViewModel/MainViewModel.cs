@@ -252,6 +252,7 @@ namespace GreatSnooper.ViewModel
             get { return _selectedChannelIndex; }
             set
             {
+                //if (_selectedChannelIndex != value) to allow refreshing when a channel will be removed
                 {
                     _selectedChannelIndex = value;
 
