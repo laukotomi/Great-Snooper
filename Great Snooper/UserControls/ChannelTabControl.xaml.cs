@@ -1,5 +1,5 @@
-﻿using GreatSnooper.ViewModel;
-using System.Windows.Controls;
+﻿using System.Windows.Controls;
+using GreatSnooper.ViewModel;
 
 namespace GreatSnooper.UserControls
 {
@@ -11,6 +11,8 @@ namespace GreatSnooper.UserControls
         {
             get { return this._vm; }
         }
+
+        public int ColumnSpan { get; set; }
 
         public ChannelTabControl()
         {

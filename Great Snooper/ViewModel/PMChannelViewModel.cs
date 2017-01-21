@@ -1,9 +1,4 @@
-﻿using GalaSoft.MvvmLight.Command;
-using GreatSnooper.Classes;
-using GreatSnooper.Helpers;
-using GreatSnooper.Model;
-using GreatSnooper.Windows;
-using System;
+﻿using System;
 using System.ComponentModel;
 using System.Linq;
 using System.Windows;
@@ -11,6 +6,11 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using GalaSoft.MvvmLight.Command;
+using GreatSnooper.Classes;
+using GreatSnooper.Helpers;
+using GreatSnooper.Model;
+using GreatSnooper.Windows;
 
 namespace GreatSnooper.ViewModel
 {
@@ -32,7 +32,7 @@ namespace GreatSnooper.ViewModel
             var mainWindow = (MainWindow)mainViewModel.DialogService.GetView();
             tabitem = new TabItem();
             tabitem.DataContext = this;
-            tabitem.Style = (Style)mainWindow.ChannelsTabControl.FindResource("pmChannelTabItem");
+            tabitem.Style = (Style)mainWindow.FindResource("pmChannelTabItem");
             tabitem.ApplyTemplate();
             this.headerTB = (TextBlock)tabitem.Template.FindName("ContentSite", tabitem);
             tabitem.Content = ConnectedLayout;
@@ -53,7 +53,7 @@ namespace GreatSnooper.ViewModel
             if (this.Users[0].IsBanned == false)
             {
                 this.GenerateHeader();
-                mainViewModel.Channels.Add(this);
+                mainViewModel.CreateChannel(this);
             }
         }
 
@@ -164,9 +164,9 @@ namespace GreatSnooper.ViewModel
                     {
                         var u = (User)sender;
                         if (u.IsBanned)
-                            this.MainViewModel.CloseChannelTab(this);
+                            this.MainViewModel.CloseChannel(this);
                         else
-                            this.MainViewModel.Channels.Add(this);
+                            this.MainViewModel.CreateChannel(this);
                     }
                     else
                         GenerateHeader();
@@ -316,7 +316,7 @@ namespace GreatSnooper.ViewModel
             if (canModifyChannel)
             {
                 // Test if we already have an opened chat with the users
-                var chvm = this.MainViewModel.Channels.FirstOrDefault(x => x.Name == newName && x.Server == this.Server);
+                var chvm = this.MainViewModel.AllChannels.FirstOrDefault(x => x.Name == newName && x.Server == this.Server);
                 if (chvm != null)
                 {
                     if (this.MainViewModel.SelectedChannel != chvm)
@@ -360,7 +360,7 @@ namespace GreatSnooper.ViewModel
             if (canModifyChannel)
             {
                 // Test if we already have an opened chat with the user(s)
-                var chvm = this.MainViewModel.Channels.FirstOrDefault(x => x.Name == newName && x.Server == this.Server);
+                var chvm = this.MainViewModel.AllChannels.FirstOrDefault(x => x.Name == newName && x.Server == this.Server);
                 if (chvm != null)
                 {
                     if (this.MainViewModel.SelectedChannel != chvm)

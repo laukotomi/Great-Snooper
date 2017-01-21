@@ -1,11 +1,4 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GreatSnooper.Classes;
-using GreatSnooper.Helpers;
-using GreatSnooper.IRCTasks;
-using GreatSnooper.Model;
-using GreatSnooper.UserControls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -16,6 +9,13 @@ using System.Windows.Controls;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GreatSnooper.Classes;
+using GreatSnooper.Helpers;
+using GreatSnooper.IRCTasks;
+using GreatSnooper.Model;
+using GreatSnooper.UserControls;
 
 namespace GreatSnooper.ViewModel
 {
@@ -48,6 +48,7 @@ namespace GreatSnooper.ViewModel
         public SortedObservableCollection<User> Users { get; private set; }
         public LinkedList<Message> Messages { get; private set; }
         public AbstractCommunicator Server { get; private set; }
+        public ChannelTabControlViewModel ChannelTabVM { get; set; }
         public bool Loading
         {
             get { return _loading; }
@@ -850,7 +851,7 @@ namespace GreatSnooper.ViewModel
         {
             bool italic = u.Group.ID != UserGroups.SystemGroupID;
 
-            foreach (var chvm in this.MainViewModel.Channels)
+            foreach (var chvm in this.MainViewModel.AllChannels)
             {
                 if (chvm.Joined && chvm.rtbDocument.Blocks.Count > 0)
                 {

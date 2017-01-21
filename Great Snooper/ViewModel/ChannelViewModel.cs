@@ -1,11 +1,4 @@
-﻿using GalaSoft.MvvmLight.Command;
-using GreatSnooper.Classes;
-using GreatSnooper.Helpers;
-using GreatSnooper.Model;
-using GreatSnooper.UserControls;
-using GreatSnooper.Windows;
-using MahApps.Metro.Controls.Dialogs;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -17,6 +10,13 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using GalaSoft.MvvmLight.Command;
+using GreatSnooper.Classes;
+using GreatSnooper.Helpers;
+using GreatSnooper.Model;
+using GreatSnooper.UserControls;
+using GreatSnooper.Windows;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace GreatSnooper.ViewModel
 {
@@ -123,7 +123,7 @@ namespace GreatSnooper.ViewModel
 
             server.Channels.Add(this.Name, this);
             if (GlobalManager.HiddenChannels.Contains(channelName) == false)
-                mainViewModel.Channels.Add(this);
+                mainViewModel.CreateChannel(this);
         }
 
         #region JoinCommand
@@ -251,7 +251,7 @@ namespace GreatSnooper.ViewModel
                 return;
 
             // Test if we already have an opened chat with the user
-            var chvm = this.MainViewModel.Channels.FirstOrDefault(x => x.Name == u.Name && x.Server == this.Server);
+            var chvm = this.MainViewModel.AllChannels.FirstOrDefault(x => x.Name == u.Name && x.Server == this.Server);
             if (chvm != null)
             {
                 if (this.MainViewModel.SelectedChannel != chvm)
@@ -433,7 +433,7 @@ namespace GreatSnooper.ViewModel
                 var mainWindow = (MainWindow)this.MainViewModel.DialogService.GetView();
                 tabitem = new TabItem();
                 tabitem.DataContext = this;
-                tabitem.Style = (Style)mainWindow.ChannelsTabControl.FindResource("channelTabItem");
+                tabitem.Style = (Style)mainWindow.FindResource("channelTabItem");
                 tabitem.Content = (this.Joined) ? ConnectedLayout : DisconnectedLayout;
 
             }

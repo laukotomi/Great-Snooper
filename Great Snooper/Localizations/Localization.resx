@@ -1316,4 +1316,7 @@
     <value>Show history</value>
     <comment>When right click on the name of a channel</comment>
   </data>
+  <data name="ChangeTabText" xml:space="preserve">
+    <value>Send to other tab</value>
+  </data>
 </root>

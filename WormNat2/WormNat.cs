@@ -56,7 +56,9 @@ namespace Hoster
 
         private void ConnectionThread(int proxyPort)
         {
+#pragma warning disable
             Interlocked.Increment(ref threadCounter);
+#pragma warning restore
             Debug.WriteLine("Client joined on port: " + proxyPort);
 
             try
@@ -125,14 +127,18 @@ namespace Hoster
             }
 
             Debug.WriteLine("Client released (" + proxyPort + ")");
+#pragma warning disable
             Interlocked.Decrement(ref threadCounter);
+#pragma warning restore
         }
 
         private void ControlThread()
         {
+#pragma warning disable
             Interlocked.Increment(ref threadCounter);
+#pragma warning restore
             Debug.WriteLine("ControlThread started.");
-            
+
             try
             {
                 using (this.controlSocket)
@@ -169,12 +175,16 @@ namespace Hoster
             }
 
             Debug.WriteLine("ControlThread stopped.");
+#pragma warning disable
             Interlocked.Decrement(ref threadCounter);
+#pragma warning restore
         }
 
         private void CloseGameThread()
         {
+#pragma warning disable
             Interlocked.Increment(ref threadCounter);
+#pragma warning restore
             Debug.WriteLine("CloseGame thread started.");
 
             while (true)
@@ -210,7 +220,9 @@ namespace Hoster
                 }
             }
 
+#pragma warning disable
             Interlocked.Decrement(ref threadCounter);
+#pragma warning restore
         }
 
         public void Start()
@@ -356,8 +368,8 @@ namespace Hoster
                 // Start a Thread that will be responsible to close the game when needed
                 Thread t2 = new Thread(CloseGameThread);
                 t2.Start();
-                
-                
+
+
                 // Start W:A with the proper GameID and Scheme
                 Debug.WriteLine("Starting the game...");
                 try

@@ -1,4 +1,20 @@
-﻿using GalaSoft.MvvmLight;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Runtime.InteropServices;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Interop;
+using System.Windows.Media;
+using System.Windows.Threading;
+using GalaSoft.MvvmLight;
 using GalaSoft.MvvmLight.Command;
 using GreatSnooper.Classes;
 using GreatSnooper.Helpers;
@@ -7,30 +23,10 @@ using GreatSnooper.Model;
 using GreatSnooper.Services;
 using GreatSnooper.Validators;
 using GreatSnooper.Windows;
-using MahApps.Metro.Controls.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Runtime.InteropServices;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Interop;
-using System.Windows.Media;
-using System.Windows.Threading;
-using System.Xml;
 
 namespace GreatSnooper.ViewModel
 {
-    public class MainViewModel : ViewModelBase, IDisposable
+    public partial class MainViewModel : ViewModelBase, IDisposable
     {
         #region Consts
         private const UInt32 FLASHW_STOP = 0; //Stop flashing. The system restores the window to its original state.
@@ -76,10 +72,16 @@ namespace GreatSnooper.ViewModel
         public volatile bool closing;
 
         private readonly MainWindow view;
-        private readonly ChannelTabControlViewModel channelTabControl1;
-        private readonly ChannelTabControlViewModel channelTabControl2;
-        private readonly ObservableCollection<ChannelViewModel> gameListAndUserListChannels =
+        private readonly ChannelTabControlViewModel _channelTabControl1;
+        private readonly ChannelTabControlViewModel _channelTabControl2;
+        private readonly ObservableCollection<ChannelViewModel> _gameListAndUserListChannels =
             new ObservableCollection<ChannelViewModel>();
+        private readonly List<AbstractChannelViewModel> _allChannels =
+            new List<AbstractChannelViewModel>();
+        public List<AbstractChannelViewModel> AllChannels
+        {
+            get { return _allChannels; }
+        }
         #endregion
 
         #region Properties
@@ -254,6 +256,8 @@ namespace GreatSnooper.ViewModel
             }
         }
 
+        public AbstractChannelViewModel SelectedChannel { get; set; }
+
         public ChannelViewModel SelectedGLChannel { get; private set; }
         public bool IsWindowActive
         {
@@ -335,14 +339,14 @@ namespace GreatSnooper.ViewModel
             Instance = this;
             GlobalManager.MainWindowInit();
             Properties.Settings.Default.PropertyChanged += SettingsChanged;
-            this.gameListAndUserListChannels.CollectionChanged += GameListAndUserListChannels_CollectionChanged;
+            this._gameListAndUserListChannels.CollectionChanged += GameListAndUserListChannels_CollectionChanged;
             this.view = (MainWindow)dialogService.GetView();
-            this.channelTabControl1 = this.view.ChannelTabControl1.ViewModel;
-            this.channelTabControl2 = this.view.ChannelTabControl2.ViewModel;
-            this.channelTabControl1.Channels.CollectionChanged += Channels_CollectionChanged;
-            this.channelTabControl2.Channels.CollectionChanged += Channels_CollectionChanged;
-            this.channelTabControl1.PropertyChanged += ChannelChanged;
-            this.channelTabControl2.PropertyChanged += ChannelChanged;
+            this._channelTabControl1 = this.view.ChannelTabcontrol1.ViewModel;
+            this._channelTabControl2 = this.view.ChannelTabcontrol2.ViewModel;
+            this._channelTabControl1.Channels.CollectionChanged += Channels_CollectionChanged;
+            this._channelTabControl2.Channels.CollectionChanged += Channels_CollectionChanged;
+            this._channelTabControl1.PropertyChanged += ChannelChanged;
+            this._channelTabControl2.PropertyChanged += ChannelChanged;
 
             this.AwayText = string.Empty;
             this.DialogService = dialogService;
@@ -377,31 +381,19 @@ namespace GreatSnooper.ViewModel
         {
             if (e.PropertyName == "SelectedChannelIndex")
             {
-                if (FilterText != Localizations.GSLocalization.Instance.FilterText)
-                {
-                    FilterText = Localizations.GSLocalization.Instance.FilterText;
-                    RaisePropertyChanged("FilterText");
-                }
-
                 ChannelTabControlViewModel vm = (ChannelTabControlViewModel)sender;
                 if (vm.SelectedChannel != null)
                 {
-                    ChannelViewModel channel = vm.SelectedChannel as ChannelViewModel;
-                    if (channel != null)
+                    this.SelectedChannel = vm.SelectedChannel;
+                    if (vm == this._channelTabControl1)
                     {
-                        SelectedGLChannel = channel;
-                        GameListForce = true;
-                        this.SelectedTabIndex2 = this.gameListAndUserListChannels.IndexOf(channel);
-                    }
-
-                    if (vm.SelectedChannel.Joined)
-                    {
-                        this.Dispatcher.BeginInvoke(new Action(() =>
+                        ChannelViewModel channel = vm.SelectedChannel as ChannelViewModel;
+                        if (channel != null)
                         {
-                            this.view.UpdateLayout();
-                            if (!vm.SelectedChannel.Disabled)
-                                vm.SelectedChannel.IsTBFocused = true;
-                        }));
+                            SelectedGLChannel = channel;
+                            GameListForce = true;
+                            this.SelectedTabIndex2 = this._gameListAndUserListChannels.IndexOf(channel);
+                        }
                     }
                 }
             }
@@ -465,440 +457,6 @@ namespace GreatSnooper.ViewModel
             if (!this.closing && Properties.Settings.Default.LoadTUSAccounts && DateTime.Now - TusAccounts.tusAccountsLoaded >= this.tusAccountsLoadTime && (Properties.Settings.Default.LoadOnlyIfWindowActive == false || this.IsWindowActive))
                 this.LoadTusAccounts();
         }
-
-        private void HandleGameProcess()
-        {
-            // gameProcess = hoster.exe (HOST)
-            // gameProcess = wa.exe (JOIN)
-            if (GameProcess.HasExited)
-            {
-                SetBack();
-                this.FreeGameProcess();
-                return;
-            }
-
-            gameWindow = NativeMethods.FindWindow(null, "Worms2D");
-            if (StartedGameType == StartedGameTypes.Join && ExitSnooperAfterGameStart && gameWindow != IntPtr.Zero)
-            {
-                this.CloseCommand.Execute(null);
-                return;
-            }
-
-            lobbyWindow = NativeMethods.FindWindow(null, "Worms Armageddon");
-            if (Properties.Settings.Default.EnergySaveModeGame && lobbyWindow != IntPtr.Zero)
-            {
-                if (NativeMethods.GetPlacement(lobbyWindow).showCmd == ShowWindowCommands.Normal)
-                {
-                    if (!IsEnergySaveMode)
-                        this.EnterEnergySaveMode();
-                }
-                else if (IsEnergySaveMode)
-                    LeaveEnergySaveMode();
-            }
-        }
-
-        public void FreeGameProcess()
-        {
-            GameProcess.Dispose();
-            GameProcess = null;
-            lobbyWindow = IntPtr.Zero;
-            gameWindow = IntPtr.Zero;
-            ExitSnooperAfterGameStart = false;
-            if (Properties.Settings.Default.EnergySaveModeGame && IsEnergySaveMode)
-                LeaveEnergySaveMode();
-        }
-
-        private void LoadGames(ChannelViewModel chvm)
-        {
-            loadGamesTask = Task.Factory.StartNew<bool>(() =>
-            {
-                try
-                {
-                    HttpWebRequest myHttpWebRequest = (HttpWebRequest)WebRequest.Create("http://" + this.WormNet.ServerAddress + ":80/wormageddonweb/GameList.asp?Channel=" + chvm.Name.Substring(1));
-                    myHttpWebRequest.UserAgent = "T17Client/1.2";
-                    myHttpWebRequest.Proxy = null;
-                    myHttpWebRequest.AllowAutoRedirect = false;
-                    myHttpWebRequest.Timeout = GlobalManager.WebRequestTimeout;
-                    using (WebResponse myHttpWebResponse = myHttpWebRequest.GetResponse())
-                    using (System.IO.Stream stream = myHttpWebResponse.GetResponseStream())
-                    {
-                        int bytes;
-                        gameRecvSB.Clear();
-                        while ((bytes = stream.Read(gameRecvBuffer, 0, gameRecvBuffer.Length)) > 0)
-                        {
-                            for (int j = 0; j < bytes; j++)
-                                gameRecvSB.Append(WormNetCharTable.Decode[gameRecvBuffer[j]]);
-                        }
-
-                        gameRecvSB.Replace("\n", "");
-                        return true;
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ErrorLog.Log(ex);
-                    return false;
-                }
-            })
-            .ContinueWith((t) =>
-            {
-                if (this.closing)
-                {
-                    this.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        this.CloseCommand.Execute(null);
-                    }));
-                    return;
-                }
-
-                if (t.Result == false || !chvm.Joined) // we already left the channel
-                    return;
-
-                try
-                {
-                    // <GAMELISTSTART><GAME GameName Hoster HosterAddress CountryID 1 PasswordNeeded GameID HEXCC><BR><GAME GameName Hoster HosterAddress CountryID 1 PasswordNeeded GameID HEXCC><BR><GAMELISTEND>
-                    //string start = "<GAMELISTSTART>"; 15 chars
-                    //string end = "<GAMELISTEND>"; 13 chars
-                    if (gameRecvSB.Length > 28)
-                    {
-                        string[] games = gameRecvSB.ToString(15, gameRecvSB.Length - 15 - 13).Split(new string[] { "<BR>" }, StringSplitOptions.RemoveEmptyEntries);
-
-                        // Set all the games we have in !isAlive state (we will know if the game is not active anymore)
-                        foreach (var game in chvm.Games)
-                            game.IsAlive = false;
-
-                        for (int i = 0; i < games.Length; i++)
-                        {
-                            // <GAME GameName Hoster HosterAddress CountryID 1 PasswordNeeded GameID HEXCC><BR>
-                            Match m = GameRegex.Match(games[i].Trim());
-                            if (m.Success)
-                            {
-                                string name = m.Groups[1].Value.Replace('\b', ' ').Replace("#039", "\x12");
-
-                                // Encode the name to decode it with GameDecode
-                                int bytes = 0;
-                                byte b;
-                                for (int j = 0; j < name.Length; j++)
-                                {
-                                    if (WormNetCharTable.Encode.TryGetValue(name[j], out b))
-                                        gameRecvBuffer[bytes++] = b;
-                                }
-                                gameRecvSB.Clear();
-                                for (int j = 0; j < bytes; j++)
-                                    gameRecvSB.Append(WormNetCharTable.DecodeGame[gameRecvBuffer[j]]);
-                                name = gameRecvSB.ToString();
-
-                                string hoster = m.Groups[2].Value;
-                                string address = m.Groups[3].Value;
-
-                                int countryID;
-                                if (!int.TryParse(m.Groups[4].Value, out countryID))
-                                    continue;
-
-                                bool password = m.Groups[5].Value == "1";
-
-                                uint gameID;
-                                if (!uint.TryParse(m.Groups[6].Value, out gameID))
-                                    continue;
-
-                                string hexCC = m.Groups[7].Value;
-
-
-                                // Get the country of the hoster
-                                Country country;
-                                if (hexCC.Length < 9)
-                                    country = Countries.GetCountryByID(countryID);
-                                else
-                                {
-                                    string hexstr = uint.Parse(hexCC).ToString("X");
-                                    if (hexstr.Length == 8 && hexstr.Substring(0, 4) == "6487")
-                                    {
-                                        char c1 = WormNetCharTable.Decode[byte.Parse(hexstr.Substring(6), System.Globalization.NumberStyles.HexNumber)];
-                                        char c2 = WormNetCharTable.Decode[byte.Parse(hexstr.Substring(4, 2), System.Globalization.NumberStyles.HexNumber)];
-                                        country = Countries.GetCountryByCC(c1.ToString() + c2.ToString());
-                                    }
-                                    else
-                                        country = Countries.DefaultCountry;
-                                }
-
-                                // Add the game to the list or set its isAlive state true if it is already in the list
-                                Game game = chvm.Games.Where(x => x.ID == gameID).FirstOrDefault();
-                                if (game != null)
-                                    game.IsAlive = true;
-                                else
-                                {
-                                    chvm.Games.Add(new Game(gameID, name, address, country, hoster, password));
-                                    if (this.notificator.SearchInGameNamesEnabled &&
-                                        this.notificator.GameNames.Any(r => r.IsMatch(name, hoster, chvm.Name)) ||
-                                        this.notificator.SearchInHosterNamesEnabled &&
-                                        this.notificator.HosterNames.Any(r => r.IsMatch(hoster, hoster, chvm.Name)))
-                                    {
-                                        NotificatorFound(string.Format(Localizations.GSLocalization.Instance.NotificatorGameText, hoster, name), chvm);
-                                    }
-                                }
-                            }
-                        }
-
-                        // Delete inactive games from the list
-                        for (int i = 0; i < chvm.Games.Count; i++)
-                        {
-                            if (!chvm.Games[i].IsAlive)
-                            {
-                                chvm.Games.RemoveAt(i);
-                                i--;
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    ErrorLog.Log(ex);
-                }
-
-                chvm.GameListUpdatedTime = DateTime.Now;
-            }, TaskScheduler.FromCurrentSynchronizationContext());
-        }
-        #endregion
-
-        #region EnergySave mode
-        public void EnterEnergySaveMode()
-        {
-            /*
-            this.shouldWindowBeActivated = this.isHidden == false && this.DialogService.GetView().WindowState != WindowState.Minimized;
-            this.shouldWindowBeShowed = this.isHidden == false;
-            if (this.isHidden == false)
-            {
-                this.DialogService.GetView().Hide();
-                this.isHidden = true;
-            }
-            */
-            this.IsEnergySaveMode = true;
-            for (int i = 0; i < this.Servers.Length; i++)
-            {
-                foreach (var item in this.Servers[i].Channels)
-                {
-                    ChannelViewModel chvm = item.Value as ChannelViewModel;
-                    if (chvm != null)
-                    {
-                        if (chvm.UserListDG != null)
-                            chvm.UserListDG.ItemsSource = null;
-                        if (chvm.GameListGrid != null)
-                            chvm.GameListGrid.DataContext = null;
-                    }
-                }
-            }
-        }
-
-        private void LeaveEnergySaveMode()
-        {
-            if (this.isHidden || this.DialogService.GetView().WindowState == WindowState.Minimized)
-                return;
-            var screenBounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
-            if (screenBounds.Height == 480 && screenBounds.Width == 640)
-            {
-                shouldLeaveEnergySaveMode = true;
-                return;
-            }
-
-            this.IsEnergySaveMode = false;
-
-            for (int i = 0; i < this.Servers.Length; i++)
-            {
-                foreach (var item in this.Servers[i].Channels)
-                {
-                    ChannelViewModel chvm = item.Value as ChannelViewModel;
-                    if (chvm != null)
-                    {
-                        if (chvm.UserListDG != null)
-                        {
-                            chvm.UserListDG.ItemsSource = chvm.Users;
-                            chvm.UserListDG.SetDefaultOrderForGrid();
-                        }
-                        if (chvm.GameListGrid != null)
-                            chvm.GameListGrid.DataContext = chvm;
-                    }
-                    if (item.Value.Joined && item.Value.HiddenMessagesInEnergySaveMode)
-                        item.Value.LoadNewMessages();
-                }
-            }
-        }
-        #endregion
-
-        #region News, update
-        internal void ContentRendered(object sender, EventArgs e)
-        {
-            if (this.closing)
-                return;
-
-            string latestVersion = string.Empty;
-            bool openNews = false;
-
-            loadSettingsTask = Task.Factory.StartNew(() =>
-            {
-                string settingsXMLPath = GlobalManager.SettingsPath + @"\Settings.xml";
-
-                if (Properties.Settings.Default.LoadCommonSettings)
-                {
-                    try
-                    {
-                        string settingsXMLPathTemp = GlobalManager.SettingsPath + @"\SettingsTemp.xml";
-
-                        using (WebDownload webClient = new WebDownload() { Proxy = null })
-                        {
-                            webClient.DownloadFile("https://www.dropbox.com/s/5h5boog570q1nap/SnooperSettings.xml?dl=1", settingsXMLPathTemp);
-                        }
-
-                        // If downloading will fail then leagues won't be loaded. If they would, it could be hacked easily.
-                        GlobalManager.SpamAllowed = true;
-
-                        if (File.Exists(settingsXMLPath))
-                            File.Delete(settingsXMLPath);
-
-                        File.Move(settingsXMLPathTemp, settingsXMLPath);
-                    }
-                    catch (Exception ex)
-                    {
-                        ErrorLog.Log(ex);
-                    }
-                }
-
-                if (this.closing)
-                    return;
-
-                if (File.Exists(settingsXMLPath))
-                {
-                    HashSet<string> serverList = new HashSet<string>(
-                        Properties.Settings.Default.ServerAddresses.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                        , GlobalManager.CIStringComparer);
-                    bool updateServers = false;
-
-                    using (XmlReader xml = XmlReader.Create(settingsXMLPath))
-                    {
-                        xml.ReadToFollowing("servers");
-                        using (XmlReader inner = xml.ReadSubtree())
-                        {
-                            while (inner.ReadToFollowing("server"))
-                            {
-                                inner.MoveToFirstAttribute();
-                                string server = inner.Value;
-                                if (!serverList.Contains(server))
-                                {
-                                    serverList.Add(server);
-                                    updateServers = true;
-                                }
-                            }
-                        }
-
-                        xml.ReadToFollowing("leagues");
-                        using (XmlReader inner = xml.ReadSubtree())
-                        {
-                            while (inner.ReadToFollowing("league"))
-                            {
-                                inner.MoveToFirstAttribute();
-                                string name = inner.Value;
-                                inner.MoveToNextAttribute();
-                                leagues.Add(new League(name, inner.Value));
-                            }
-                        }
-
-                        xml.ReadToFollowing("news");
-                        using (XmlReader inner = xml.ReadSubtree())
-                        {
-                            while (inner.ReadToFollowing("bbnews"))
-                            {
-                                Dictionary<string, string> newsThings = new Dictionary<string, string>();
-                                inner.MoveToFirstAttribute();
-                                newsThings.Add(inner.Name, inner.Value);
-                                while (inner.MoveToNextAttribute())
-                                    newsThings.Add(inner.Name, inner.Value);
-
-                                int id;
-                                double fontsize;
-                                if (newsThings.ContainsKey("id") && int.TryParse(newsThings["id"], out id) && newsThings.ContainsKey("show")
-                                    && newsThings.ContainsKey("background") && newsThings.ContainsKey("textcolor")
-                                    && newsThings.ContainsKey("fontsize") && double.TryParse(newsThings["fontsize"], out fontsize) && newsThings.ContainsKey("bbcode"))
-                                {
-                                    if (newsThings["show"] == "1" && id > Properties.Settings.Default.LastNewsID)
-                                        openNews = true;
-
-                                    newsList.Add(new News(id, newsThings["show"] == "1", newsThings["background"], newsThings["textcolor"], fontsize, newsThings["bbcode"]));
-                                }
-                            }
-                        }
-
-                        xml.ReadToFollowing("version");
-                        xml.MoveToFirstAttribute();
-                        latestVersion = xml.Value;
-                    }
-
-                    if (updateServers)
-                        SettingsHelper.Save("ServerAddresses", serverList);
-                }
-                else
-                {
-                    leagues.Add(new League("TUS - Classic", "TUS"));
-                    leagues.Add(new League("Clanner", "Clanner"));
-                }
-            })
-            .ContinueWith((t) =>
-            {
-                if (this.closing)
-                {
-                    this.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        this.CloseCommand.Execute(null);
-                    }));
-                    return;
-                }
-
-                if (!GlobalManager.SpamAllowed && Properties.Settings.Default.LoadCommonSettings)
-                {
-                    if (t.IsFaulted)
-                        ErrorLog.Log(t.Exception);
-                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.CommonSettingFailText);
-                }
-                else if (t.IsFaulted)
-                {
-                    ErrorLog.Log(t.Exception);
-                    return;
-                }
-                else if (Math.Sign(App.GetVersion().CompareTo(latestVersion)) == -1) // we need update only if it is newer than this version
-                {
-                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.InformationText, Localizations.GSLocalization.Instance.NewVersionText,
-                        MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative, GlobalManager.YesNoDialogSetting, (tt) =>
-                        {
-                            if (tt.Result == MessageDialogResult.Affirmative)
-                            {
-                                try
-                                {
-                                    Process p = new Process();
-                                    if (Environment.OSVersion.Version.Major >= 6) // Vista or higher (to get admin rights).. on xp this causes fail!
-                                    {
-                                        p.StartInfo.UseShellExecute = true;
-                                        p.StartInfo.Verb = "runas";
-                                    }
-                                    p.StartInfo.FileName = "Updater2.exe";
-                                    p.Start();
-                                    this.Dispatcher.BeginInvoke(new Action(() =>
-                                    {
-                                        this.CloseCommand.Execute(null);
-                                    }));
-                                    return;
-                                }
-                                catch (Exception ex)
-                                {
-                                    ErrorLog.Log(ex);
-                                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.UpdaterFailText);
-                                }
-                            }
-                            else if (openNews)
-                                OpenNewsCommand.Execute(null);
-                        });
-                }
-                else if (openNews)
-                    OpenNewsCommand.Execute(null);
-            }, TaskScheduler.FromCurrentSynchronizationContext());
-        }
         #endregion
 
         #region Channel things
@@ -907,18 +465,35 @@ namespace GreatSnooper.ViewModel
         {
             if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
             {
-                ChannelViewModel chvm = e.NewItems[0] as ChannelViewModel;
+                var temp = (AbstractChannelViewModel)e.NewItems[0];
+                ChannelViewModel chvm = temp as ChannelViewModel;
                 if (chvm != null)
                 {
-                    this.gameListAndUserListChannels.Add(chvm);
+                    this._gameListAndUserListChannels.Add(chvm);
+                }
+                this._allChannels.Add(temp);
+
+                if (this._channelTabControl2.Channels.Count > 0)
+                {
+                    this.ShowSecondaryTab = true;
                 }
             }
             else
             {
-                ChannelViewModel chvm = e.OldItems[0] as ChannelViewModel;
+                var temp = (AbstractChannelViewModel)e.OldItems[0];
+                ChannelViewModel chvm = temp as ChannelViewModel;
                 if (chvm != null)
                 {
-                    this.gameListAndUserListChannels.Remove(chvm);
+                    this._gameListAndUserListChannels.Remove(chvm);
+                }
+
+                this._allChannels.Remove(temp);
+                if (temp == this.SelectedChannel)
+                    this.SelectedChannel = null;
+
+                if (this._channelTabControl2.Channels.Count == 0)
+                {
+                    this.ShowSecondaryTab = false;
                 }
             }
         }
@@ -939,344 +514,6 @@ namespace GreatSnooper.ViewModel
         }
         #endregion
 
-        #region CloseChannelCommand (right click)
-        public RelayCommand<AbstractChannelViewModel> CloseChannelCommand
-        {
-            get { return new RelayCommand<AbstractChannelViewModel>(CloseChannel); }
-        }
-
-        private void CloseChannel(AbstractChannelViewModel chvm)
-        {
-            this.CloseChannelTab(chvm);
-        }
-        #endregion
-
-        #region HideChannelCommand (right click)
-        public RelayCommand<ChannelViewModel> HideChannelCommand
-        {
-            get { return new RelayCommand<ChannelViewModel>(HideChannel); }
-        }
-
-        private void HideChannel(ChannelViewModel chvm)
-        {
-            this.CloseChannelTab(chvm);
-            if (chvm.Server is WormNetCommunicator)
-            {
-                GlobalManager.HiddenChannels.Add(chvm.Name);
-                SettingsHelper.Save("HiddenChannels", GlobalManager.HiddenChannels);
-            }
-            if (GlobalManager.AutoJoinList.ContainsKey(chvm.Name))
-            {
-                GlobalManager.AutoJoinList.Remove(chvm.Name);
-                SettingsHelper.Save("AutoJoinChannels", GlobalManager.AutoJoinList);
-            }
-        }
-        #endregion
-
-        #endregion
-
-        #region GameList
-        #region RefreshGameListCommand
-        public ICommand RefreshGameListCommand
-        {
-            get { return new RelayCommand(RefreshGameList); }
-        }
-
-        private void RefreshGameList()
-        {
-            this.GameListForce = true;
-        }
-        #endregion
-        #endregion
-
-        #region Settings changed
-        private Regex groupSoundRegex = new Regex(@"^Group(\d+)Sound$", RegexOptions.Compiled);
-        private Regex groupListRegex = new Regex(@"^Group(\d+)List$", RegexOptions.Compiled);
-        private void SettingsChanged(object sender, PropertyChangedEventArgs e)
-        {
-            Match m;
-            m = groupSoundRegex.Match(e.PropertyName);
-            if (m.Success)
-            {
-                UserGroups.Groups["Group" + m.Groups[1].Value].Sound = null;
-                return;
-            }
-
-            m = groupListRegex.Match(e.PropertyName);
-            if (m.Success)
-            {
-                string[] userList = SettingsHelper.Load<string>("Group" + m.Groups[1].Value + "List").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                var group = UserGroups.Groups["Group" + m.Groups[1].Value];
-                foreach (var user in group.Users.Except(userList))
-                {
-                    foreach (var server in this.Servers)
-                    {
-                        User u;
-                        if (server.Users.TryGetValue(user, out u))
-                        {
-                            UserGroups.AddOrRemoveUser(u, null);
-                            break;
-                        }
-                    }
-                }
-
-                foreach (string user in userList.Except(group.Users))
-                {
-                    foreach (var server in this.Servers)
-                    {
-                        User u;
-                        if (server.Users.TryGetValue(user, out u))
-                        {
-                            UserGroups.AddOrRemoveUser(u, group);
-                            break;
-                        }
-                    }
-                }
-                return;
-            }
-
-            switch (e.PropertyName)
-            {
-                case "Group0":
-                case "Group1":
-                case "Group2":
-                case "Group3":
-                case "Group4":
-                case "Group5":
-                case "Group6":
-                    var group = UserGroups.Groups[e.PropertyName];
-                    group.ReloadData();
-                    foreach (var server in this.Servers)
-                    {
-                        foreach (var chvm in server.Channels)
-                        {
-                            if (chvm.Value is ChannelViewModel)
-                            {
-                                ((ChannelViewModel)chvm.Value).RegenerateGroupsMenu = true;
-                                if (chvm.Value.Joined)
-                                    chvm.Value.LoadMessages(GlobalManager.MaxMessagesDisplayed, true);
-                            }
-                        }
-                    }
-                    break;
-
-                case "CultureName":
-                    foreach (var server in this.Servers)
-                    {
-                        foreach (var chvm in server.Channels)
-                        {
-                            if (chvm.Value is ChannelViewModel)
-                                ((ChannelViewModel)chvm.Value).RegenerateGroupsMenu = true;
-                        }
-                    }
-                    break;
-
-                case "ShowWormsChannel":
-                    if (Properties.Settings.Default.ShowWormsChannel)
-                        new ChannelViewModel(this, this.GameSurge, "#worms", "A place for hardcore wormers");
-                    else
-                    {
-                        var chvm = (ChannelViewModel)this.GameSurge.Channels["#worms"];
-                        CloseChannelTab(chvm);
-                    }
-                    break;
-
-                case "WaExe":
-                    RaisePropertyChanged("ShowWAExe1");
-                    break;
-
-                case "WaExe2":
-                    RaisePropertyChanged("ShowWAExe2");
-                    break;
-
-                case "BatLogo":
-                    RaisePropertyChanged("BatLogo");
-                    break;
-
-                case "HiddenChannels":
-                    GlobalManager.HiddenChannels = new HashSet<string>(
-                        Properties.Settings.Default.HiddenChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
-                        GlobalManager.CIStringComparer);
-                    foreach (var server in this.Servers)
-                    {
-                        foreach (var chvm in server.Channels)
-                        {
-                            if (this.Channels.Any(x => x.Name.Equals(chvm.Key, StringComparison.OrdinalIgnoreCase)) == false && GlobalManager.HiddenChannels.Contains(chvm.Key) == false)
-                            {
-                                this.Channels.Add(chvm.Value);
-                            }
-                        }
-                    }
-                    break;
-
-                case "PMBeep":
-                case "HBeep":
-                case "LeagueFoundBeep":
-                case "LeagueFailBeep":
-                case "NotificatorSound":
-                    Sounds.ReloadSound(e.PropertyName);
-                    break;
-
-                case "ChannelMessageStyle":
-                case "JoinMessageStyle":
-                case "PartMessageStyle":
-                case "QuitMessageStyle":
-                case "SystemMessageStyle":
-                case "ActionMessageStyle":
-                case "UserMessageStyle":
-                case "NoticeMessageStyle":
-                case "MessageTimeStyle":
-                case "HyperLinkStyle":
-                case "LeagueFoundMessageStyle":
-                case "ShowBannedMessages":
-                    for (int i = 0; i < this.Servers.Length; i++)
-                    {
-                        foreach (var item in this.Servers[i].Channels)
-                        {
-                            if (item.Value.Joined)
-                                item.Value.LoadMessages(GlobalManager.MaxMessagesDisplayed, true);
-                        }
-                    }
-                    break;
-
-                case "ShowBannedUsers":
-                    for (int i = 0; i < this.Servers.Length; i++)
-                    {
-                        foreach (var item in this.Servers[i].Channels)
-                        {
-                            if (item.Value is ChannelViewModel && ((ChannelViewModel)item.Value).UserListDG != null)
-                                ((ChannelViewModel)item.Value).UserListDG.SetUserListDGView();
-                        }
-                    }
-                    break;
-
-                case "ShowInfoColumn":
-                    for (int i = 0; i < this.Servers.Length; i++)
-                    {
-                        foreach (var item in this.Servers[i].Channels)
-                        {
-                            if (item.Value is ChannelViewModel && ((ChannelViewModel)item.Value).UserListDG != null)
-                                ((ChannelViewModel)item.Value).UserListDG.Columns[4].Visibility = (Properties.Settings.Default.ShowInfoColumn) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
-                        }
-                    }
-                    break;
-
-                case "ItalicForGSUsers":
-                    for (int i = 0; i < this.Servers.Length; i++)
-                    {
-                        foreach (var item in this.Servers[i].Users)
-                        {
-                            if (item.Value.UsingGreatSnooper && item.Value.Channels.Count > 0)
-                                item.Value.RaisePropertyChangedPublic("UsingGreatSnooperItalic");
-                        }
-                    }
-                    break;
-            }
-        }
-        #endregion
-
-        #region Filter
-        #region Filtering
-        void filterTimer_Tick(object sender, EventArgs e)
-        {
-            filterTimer.Stop();
-
-            if (this.SelectedGLChannel == null || !this.SelectedGLChannel.Joined)
-                return;
-
-            List<string> words = new List<string>();
-            string[] filtersTemp = FilterText.Trim().Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-            for (int i = 0; i < filtersTemp.Length; i++)
-            {
-                string temp = filtersTemp[i].Trim();
-                if (temp.Length >= 1)
-                    words.Add(temp);
-            }
-
-            if (words.Count == 0)
-                this.SelectedGLChannel.UserListDG.SetUserListDGView();
-            else
-            {
-                var view = CollectionViewSource.GetDefaultView(this.SelectedGLChannel.Users);
-                if (view != null)
-                {
-                    view.Filter = x =>
-                    {
-                        User u = (User)x;
-                        if (!Properties.Settings.Default.ShowBannedUsers && u.IsBanned)
-                            return false;
-
-                        foreach (string word in words)
-                        {
-                            if (word.Length == 1)
-                            {
-                                if (u.Name.StartsWith(word, StringComparison.OrdinalIgnoreCase)
-                                    || u.TusAccount != null && u.TusAccount.TusNick.StartsWith(word, StringComparison.OrdinalIgnoreCase))
-                                    return true;
-                            }
-                            else if (
-                                u.Name.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1
-                                || u.Clan.StartsWith(word, StringComparison.OrdinalIgnoreCase)
-                                || u.TusAccount != null && (
-                                    u.TusAccount.TusNick.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1
-                                    || u.TusAccount.Clan.StartsWith(word, StringComparison.OrdinalIgnoreCase)
-                                    )
-                                || u.Country != null && u.Country.Name.StartsWith(word, StringComparison.OrdinalIgnoreCase)
-                                || u.Rank != null && u.Rank.Name.StartsWith(word, StringComparison.OrdinalIgnoreCase)
-                                || Properties.Settings.Default.ShowInfoColumn && u.ClientName != null && u.ClientName.IndexOf(word, StringComparison.OrdinalIgnoreCase) != -1
-                            )
-                                return true;
-                        }
-                        return false;
-                    };
-                }
-            }
-        }
-        #endregion
-
-        #region FilterCommand
-        public ICommand FilterCommand
-        {
-            get { return new RelayCommand(Filter); }
-        }
-
-        private void Filter()
-        {
-            IsFilterFocused = true;
-        }
-        #endregion
-
-        #region FilterFocusCommand
-        public ICommand FilterFocusCommand
-        {
-            get { return new RelayCommand(FilterFocus); }
-        }
-
-        private void FilterFocus()
-        {
-            if (FilterText.Trim() == Localizations.GSLocalization.Instance.FilterText)
-            {
-                FilterText = string.Empty;
-                RaisePropertyChanged("FilterText");
-            }
-        }
-        #endregion
-
-        #region FilterLeftCommand
-        public ICommand FilterLeftCommand
-        {
-            get { return new RelayCommand(FilterLeft); }
-        }
-
-        private void FilterLeft()
-        {
-            if (FilterText.Trim() == string.Empty)
-            {
-                FilterText = Localizations.GSLocalization.Instance.FilterText;
-                RaisePropertyChanged("FilterText");
-            }
-        }
-        #endregion
         #endregion
 
         #region TusAccounts
@@ -1430,139 +667,6 @@ namespace GreatSnooper.ViewModel
         }
         #endregion
 
-        #region Window things
-        #region WindowActivatedCommand
-        public ICommand WindowActivatedCommand
-        {
-            get { return new RelayCommand(WindowActivated); }
-        }
-
-        private void WindowActivated()
-        {
-            this.IsWindowFlashing = false;
-            if (this.SelectedChannel != null)
-            {
-                if (this.SelectedChannel.IsHighlighted)
-                {
-                    this.SelectedChannel.IsHighlighted = false;
-                    if (this.SelectedChannel is PMChannelViewModel)
-                        ((PMChannelViewModel)this.SelectedChannel).GenerateHeader();
-                }
-                if (this.SelectedChannel.Joined)
-                {
-                    this.Dispatcher.BeginInvoke(new Action(() =>
-                    {
-                        _selectedChannel.IsTBFocused = true;
-                    }));
-                }
-            }
-        }
-        #endregion
-
-        #region WindowStateChangedCommand
-        public ICommand WindowStateChangedCommand
-        {
-            get { return new RelayCommand(WindowStateChanged); }
-        }
-
-        private void WindowStateChanged()
-        {
-            var window = this.DialogService.GetView();
-            if (window.WindowState == WindowState.Minimized)
-            {
-                if (Properties.Settings.Default.EnergySaveModeWin && !IsEnergySaveMode)
-                    EnterEnergySaveMode();
-            }
-            else
-            {
-                if (IsEnergySaveMode)
-                    this.shouldLeaveEnergySaveMode = true; // Somehow leaving energysave mode doesn't work
-
-                // save window state
-                Properties.Settings.Default.WindowState = (int)window.WindowState;
-            }
-        }
-        #endregion
-
-        #region ColumnsWidthChangedCommand
-        public ICommand ColumnsWidthChangedCommand
-        {
-            get { return new RelayCommand(ColumnsWidthChanged); }
-        }
-
-        private void ColumnsWidthChanged()
-        {
-            this.LeftColumnWidth = ((MainWindow)this.DialogService.GetView()).LeftColumn.Width;
-            this.RightColumnWidth = ((MainWindow)this.DialogService.GetView()).RightColumn.Width;
-        }
-        #endregion
-
-        #region RowsHeightChangedCommand
-        public ICommand RowsHeightChangedCommand
-        {
-            get { return new RelayCommand(RowsHeightChanged); }
-        }
-
-        private void RowsHeightChanged()
-        {
-            this.TopRowHeight = ((MainWindow)this.DialogService.GetView()).TopRow.Height;
-            this.BottomRowHeight = ((MainWindow)this.DialogService.GetView()).BottomRow.Height;
-        }
-        #endregion
-
-        private void HideWindow()
-        {
-            this.DialogService.GetView().Hide();
-            this.isHidden = true;
-
-            if (Properties.Settings.Default.EnergySaveModeWin && !IsEnergySaveMode)
-                EnterEnergySaveMode();
-        }
-
-        internal void FlashWindow()
-        {
-            if (Properties.Settings.Default.TrayFlashing && this.IsWindowActive == false && this.IsWindowFlashing == false)
-                this.IsWindowFlashing = true;
-        }
-        #endregion
-
-        #region Channel Shortkeys
-        #region NextChannelCommand
-        public ICommand NextChannelCommand
-        {
-            get { return new RelayCommand(NextChannel); }
-        }
-
-        private void NextChannel()
-        {
-            if (Channels.Count > 0)
-            {
-                if (SelectedChannelIndex + 1 < Channels.Count)
-                    this.SelectChannel(this.SelectedChannelIndex + 1);
-                else
-                    this.SelectChannel(0);
-            }
-        }
-        #endregion
-
-        #region PrevChannelCommand
-        public ICommand PrevChannelCommand
-        {
-            get { return new RelayCommand(PrevChannel); }
-        }
-
-        private void PrevChannel()
-        {
-            if (Channels.Count > 0)
-            {
-                if (SelectedChannelIndex > 0)
-                    this.SelectChannel(this.SelectedChannelIndex - 1);
-                else
-                    this.SelectChannel(Channels.Count - 1);
-            }
-        }
-        #endregion
-
         #region CloseActualChannelCommand
         public ICommand CloseActualChannelCommand
         {
@@ -1572,9 +676,8 @@ namespace GreatSnooper.ViewModel
         private void CloseActualChannel()
         {
             if (this.SelectedChannel != null && this.SelectedChannel is PMChannelViewModel)
-                this.CloseChannelTab((PMChannelViewModel)this.SelectedChannel);
+                this.CloseChannel(this.SelectedChannel);
         }
-        #endregion
         #endregion
 
         #region Closing
@@ -1978,17 +1081,20 @@ namespace GreatSnooper.ViewModel
 
         private void AddOrRemoveUser(User u)
         {
-            var chvm = (PMChannelViewModel)this.SelectedChannel;
-            if (chvm.IsUserInConversation(u))
-                chvm.RemoveUserFromConversation(u);
-            else
-                chvm.AddUserToConversation(u);
-
-            this.Dispatcher.BeginInvoke(new Action(() =>
+            if (this.SelectedChannel != null)
             {
-                this.DialogService.GetView().UpdateLayout();
-                _selectedChannel.IsTBFocused = true;
-            }));
+                var chvm = this.SelectedChannel as PMChannelViewModel;
+                if (chvm != null)
+                {
+                    if (chvm.IsUserInConversation(u))
+                        chvm.RemoveUserFromConversation(u);
+                    else
+                        chvm.AddUserToConversation(u);
+
+                    if (chvm.ChannelTabVM != null)
+                        chvm.ChannelTabVM.ActivateSelectedChannel();
+                }
+            }
         }
         #endregion
 
@@ -2095,7 +1201,7 @@ namespace GreatSnooper.ViewModel
                 AbstractChannelViewModel temp;
                 if (!channel.Server.Channels.TryGetValue("Log: " + channel.Name, out temp))
                     temp = new LogChannelViewModel(this, channel.Server, channel.Name);
-                this.SelectChannel(temp);
+                //this.SelectChannel(temp);
             }
         }
         #endregion
@@ -2108,12 +1214,12 @@ namespace GreatSnooper.ViewModel
 
         private void ShowUserHistory(User user)
         {
-            if (this.SelectedChannel != null)
+            if (this.SelectedGLChannel != null)
             {
                 AbstractChannelViewModel temp;
-                if (!this.SelectedChannel.Server.Channels.TryGetValue("Log: " + user.Name, out temp))
-                    temp = new LogChannelViewModel(this, this.SelectedChannel.Server, user.Name);
-                this.SelectChannel(temp);
+                if (!this.SelectedGLChannel.Server.Channels.TryGetValue("Log: " + user.Name, out temp))
+                    temp = new LogChannelViewModel(this, this.SelectedGLChannel.Server, user.Name);
+                //this.SelectChannel(temp);
             }
         }
         #endregion
@@ -2150,13 +1256,42 @@ namespace GreatSnooper.ViewModel
                 this.TaskbarIconService.ShowMessage(message, chvm);
         }
 
-        public bool IsGameWindowOn()
+        public void SelectChannel(AbstractChannelViewModel chvm)
         {
-            var lobby = NativeMethods.FindWindow(null, "Worms Armageddon");
-            if (lobby != IntPtr.Zero)
-                return NativeMethods.GetPlacement(lobby).showCmd == ShowWindowCommands.Normal;
-
-            return false;
+            if (chvm.ChannelTabVM != null)
+                chvm.ChannelTabVM.SelectedChannel = chvm;
         }
+
+        public void CreateChannel(AbstractChannelViewModel chvm)
+        {
+            this._channelTabControl1.Channels.Add(chvm);
+        }
+
+        private bool _showSecondaryTab;
+
+        public bool ShowSecondaryTab
+        {
+            get { return this._showSecondaryTab; }
+            set
+            {
+                if (this._showSecondaryTab != value)
+                {
+                    this._showSecondaryTab = value;
+                    if (value)
+                    {
+                        Grid.SetColumnSpan(this._channelTabControl1.View, 1);
+                        this._channelTabControl2.View.Visibility = Visibility.Visible;
+                    }
+                    else
+                    {
+                        Grid.SetColumnSpan(this._channelTabControl1.View, 3);
+                        this._channelTabControl2.View.Visibility = Visibility.Collapsed;
+
+                    }
+                    this.RaisePropertyChanged("ShowSecondaryTab");
+                }
+            }
+        }
+
     }
 }

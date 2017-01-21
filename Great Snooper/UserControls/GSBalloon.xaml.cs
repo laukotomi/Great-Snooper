@@ -1,12 +1,12 @@
-﻿using GreatSnooper.ViewModel;
-using Hardcodet.Wpf.TaskbarNotification;
-using System;
+﻿using System;
 using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
 using System.Windows.Input;
 using System.Windows.Threading;
+using GreatSnooper.ViewModel;
+using Hardcodet.Wpf.TaskbarNotification;
 
 namespace GreatSnooper.UserControls
 {
@@ -20,6 +20,12 @@ namespace GreatSnooper.UserControls
         private Timer timer;
         private AbstractChannelViewModel chvm;
         public string BalloonText { get; set; }
+
+        // Not used!
+        public GSBalloon()
+        {
+            InitializeComponent();
+        }
 
         public GSBalloon(AbstractChannelViewModel chvm = null)
         {
@@ -83,7 +89,7 @@ namespace GreatSnooper.UserControls
         /// </summary>
         private void OnFadeOutCompleted(object sender, EventArgs e)
         {
-            Popup pp = (Popup) Parent;
+            Popup pp = (Popup)Parent;
             pp.IsOpen = false;
         }
 

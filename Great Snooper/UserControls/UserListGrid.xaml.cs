@@ -1,8 +1,4 @@
-﻿using GreatSnooper.Classes;
-using GreatSnooper.Helpers;
-using GreatSnooper.Model;
-using GreatSnooper.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -11,6 +7,10 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using GreatSnooper.Classes;
+using GreatSnooper.Helpers;
+using GreatSnooper.Model;
+using GreatSnooper.ViewModel;
 
 namespace GreatSnooper.UserControls
 {
@@ -91,7 +91,7 @@ namespace GreatSnooper.UserControls
                 Properties.Settings.Default.ClientListDGColumns = sb.ToString();
                 Properties.Settings.Default.Save();
 
-                foreach (var channel in this.chvm.MainViewModel.Channels)
+                foreach (var channel in this.chvm.MainViewModel.AllChannels)
                 {
                     ChannelViewModel channelVM = channel as ChannelViewModel;
                     if (channelVM != null)
@@ -99,8 +99,6 @@ namespace GreatSnooper.UserControls
                         if (channelVM.UserListDG != null)
                             channelVM.UserListDG.SetUserListDGColumnWidths();
                     }
-                    else
-                        break;
                 }
             }
         }
@@ -244,7 +242,7 @@ namespace GreatSnooper.UserControls
                 return;
 
             // Test if we already have an opened chat with the user
-            var oldchvm = this.chvm.MainViewModel.Channels.FirstOrDefault(x => x.Name == u.Name && x.Server == this.chvm.Server);
+            var oldchvm = this.chvm.MainViewModel.AllChannels.FirstOrDefault(x => x.Name == u.Name && x.Server == this.chvm.Server);
             if (oldchvm != null)
             {
                 if (this.chvm.MainViewModel.SelectedChannel != oldchvm)

@@ -268,7 +268,14 @@
     <Compile Include="ViewModel\LeagueSearcherViewModel.cs" />
     <Compile Include="ViewModel\ListEditorViewModel.cs" />
     <Compile Include="ViewModel\LogChannelViewModel.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.CommonServer.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.Base.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.EnergySave.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.Filter.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.GameList.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.Settings.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.Commands.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.Window.cs" />
     <Compile Include="ViewModel\NewsViewModel.cs" />
     <Compile Include="ViewModel\NotificatorViewModel.cs" />
     <Compile Include="ViewModel\PMChannelViewModel.cs" />

@@ -323,6 +323,16 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Send to other tab.
+        /// </summary>
+        public string ChangeTabText
+        {
+            get
+            {
+                return _rm.GetString("ChangeTabText");
+            }
+        }
+        /// <summary>
         ///   Looks up a localized string similar to Set #worms nick to WormNet nick at startup:.
         /// </summary>
         public string ChangeWormsNickText

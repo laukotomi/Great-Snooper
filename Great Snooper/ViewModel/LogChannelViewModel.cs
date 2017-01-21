@@ -1,9 +1,4 @@
-﻿using GreatSnooper.Classes;
-using GreatSnooper.Helpers;
-using GreatSnooper.Localizations;
-using GreatSnooper.Model;
-using GreatSnooper.Windows;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
@@ -11,6 +6,11 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
+using GreatSnooper.Classes;
+using GreatSnooper.Helpers;
+using GreatSnooper.Localizations;
+using GreatSnooper.Model;
+using GreatSnooper.Windows;
 
 namespace GreatSnooper.ViewModel
 {
@@ -31,12 +31,12 @@ namespace GreatSnooper.ViewModel
             var mainWindow = (MainWindow)mainViewModel.DialogService.GetView();
             tabitem = new TabItem();
             tabitem.DataContext = this;
-            tabitem.Style = (Style)mainWindow.ChannelsTabControl.FindResource("logChannelTabItem");
+            tabitem.Style = (Style)mainWindow.FindResource("logChannelTabItem");
             tabitem.ApplyTemplate();
             tabitem.Content = ConnectedLayout;
 
             server.Channels.Add(this.Name, this);
-            mainViewModel.Channels.Add(this);
+            mainViewModel.CreateChannel(this);
 
             string path = GlobalManager.SettingsPath + @"\Logs\" + channelName;
             if (Directory.Exists(path))
