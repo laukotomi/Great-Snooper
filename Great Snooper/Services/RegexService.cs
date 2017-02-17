@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace GreatSnooper.Services
 {
@@ -10,14 +6,15 @@ namespace GreatSnooper.Services
     {
         private static string GetRegexStr(string str)
         {
-            return Regex.Escape(str)
+            str = Regex.Escape(str)
                 .Replace(@"\.", @".")
                 .Replace(@"\\.", @"\.")
-                .Replace(@"\*", @".*")
-                .Replace(@"\\.*", @"\*")
+                .Replace(@"\*", @".*?")
+                .Replace(@"\\.*?", @"\*")
                 .Replace(@"\+", @".+")
                 .Replace(@"\\.+", @"\+")
                 .Replace(@"\\\\", @"\\");
+            return str;
         }
 
         public static Regex GenerateRegex(string word)
