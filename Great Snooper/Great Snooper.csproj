@@ -180,6 +180,7 @@
     <Compile Include="IRCTasks\ClientAddTask.cs" />
     <Compile Include="IRCTasks\ClientLeftTask.cs" />
     <Compile Include="IRCTasks\ClientRemoveTask.cs" />
+    <Compile Include="IRCTasks\InviteTask.cs" />
     <Compile Include="IRCTasks\JoinedTask.cs" />
     <Compile Include="IRCTasks\MessageTask.cs" />
     <Compile Include="IRCTasks\NamesTask.cs" />

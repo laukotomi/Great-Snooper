@@ -1319,4 +1319,10 @@
   <data name="ChangeTabText" xml:space="preserve">
     <value>Send to other tab</value>
   </data>
+  <data name="GameSurgeAuthLabel" xml:space="preserve">
+    <value>Authenticate to GameSurge</value>
+  </data>
+  <data name="GameSurgePasswordLabel" xml:space="preserve">
+    <value>GameSurge password (optional):</value>
+  </data>
 </root>

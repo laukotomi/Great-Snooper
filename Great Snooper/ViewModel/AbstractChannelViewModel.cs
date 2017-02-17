@@ -264,24 +264,39 @@ namespace GreatSnooper.ViewModel
                             if (Server.Channels.TryGetValue(parts[0], out chvm) == false)
                             {
                                 if (parts.Length == 1)
-                                    new ChannelViewModel(this.MainViewModel, this.Server, parts[0], "");
+                                    chvm = new ChannelViewModel(this.MainViewModel, this.Server, parts[0], "");
                                 else
-                                    new ChannelViewModel(this.MainViewModel, this.Server, parts[0], "", parts[1]);
+                                    chvm = new ChannelViewModel(this.MainViewModel, this.Server, parts[0], "", parts[1]);
                             }
-                            else if (this.MainViewModel.SelectedChannel != chvm)
-                                this.MainViewModel.SelectChannel(chvm);
+                            this.MainViewModel.SelectChannel(chvm);
                         }
                     }
                 }
-                else if (command.Equals("pm", StringComparison.OrdinalIgnoreCase))
+                else if (command.Equals("pm", StringComparison.OrdinalIgnoreCase) ||
+                    command.Equals("msg", StringComparison.OrdinalIgnoreCase) ||
+                    command.Equals("chat", StringComparison.OrdinalIgnoreCase))
                 {
                     if (text.Length > 0)
                     {
+                        string username = text;
+                        string msg = string.Empty;
+
+                        spacePos = text.IndexOf(' ');
+                        if (spacePos != -1)
+                        {
+                            username = text.Substring(0, spacePos).Trim();
+                            msg = text.Substring(spacePos + 1).Trim();
+                        }
+
                         AbstractChannelViewModel chvm;
-                        if (Server.Channels.TryGetValue(text, out chvm) == false)
-                            new PMChannelViewModel(this.MainViewModel, this.Server, text);
-                        else if (this.MainViewModel.SelectedChannel != chvm)
-                            this.MainViewModel.SelectChannel(chvm);
+                        if (Server.Channels.TryGetValue(username, out chvm) == false)
+                            chvm = new PMChannelViewModel(this.MainViewModel, this.Server, username);
+                        this.MainViewModel.SelectChannel(chvm);
+
+                        if (msg.Length > 0)
+                        {
+                            chvm.SendMessage(msg);
+                        }
                     }
                 }
                 else if (command.Equals("gs", StringComparison.OrdinalIgnoreCase))
@@ -297,10 +312,37 @@ namespace GreatSnooper.ViewModel
                 {
                     MainViewModel.OpenNewsCommand.Execute(null);
                 }
+                else if (command.Equals("ignore", StringComparison.OrdinalIgnoreCase))
+                {
+                    this.MainViewModel.AddOrRemoveBanCommand.Execute(text);
+                }
+                else if (command.Equals("part", StringComparison.OrdinalIgnoreCase))
+                {
+                    var chvm = this as ChannelViewModel;
+                    if (chvm != null)
+                    {
+                        chvm.LeaveChannelCommand.Execute(null);
+                    }
+                    else
+                    {
+                        this.MainViewModel.CloseChannelCommand.Execute(this);
+                    }
+                }
                 else if (command.Equals("worms", StringComparison.OrdinalIgnoreCase))
                 {
                     Properties.Settings.Default.ShowWormsChannel = !Properties.Settings.Default.ShowWormsChannel;
                     Properties.Settings.Default.Save();
+                }
+                else if (command.Equals("quit", StringComparison.OrdinalIgnoreCase))
+                {
+                    this.MainViewModel.CloseCommand.Execute(null);
+                }
+                else if (command.Equals("topic", StringComparison.OrdinalIgnoreCase))
+                {
+                    if (this is ChannelViewModel)
+                    {
+                        this.Server.Send(this, "TOPIC " + this.Name);
+                    }
                 }
                 else if (command.Equals("get", StringComparison.OrdinalIgnoreCase))
                 {

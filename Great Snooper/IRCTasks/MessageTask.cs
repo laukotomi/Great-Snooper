@@ -1,8 +1,8 @@
-﻿using GreatSnooper.Classes;
+﻿using System.Text.RegularExpressions;
+using GreatSnooper.Classes;
 using GreatSnooper.Helpers;
 using GreatSnooper.Model;
 using GreatSnooper.ViewModel;
-using System.Text.RegularExpressions;
 
 namespace GreatSnooper.IRCTasks
 {

@@ -828,6 +828,28 @@ namespace GreatSnooper.Localizations
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Authenticate to GameSurge:.
+        /// </summary>
+        public string GameSurgeAuthLabel
+        {
+            get
+            {
+                return _rm.GetString("GameSurgeAuthLabel");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to GameSurge password (optional):.
+        /// </summary>
+        public string GameSurgePasswordLabel
+        {
+            get
+            {
+                return _rm.GetString("GameSurgePasswordLabel");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Games.
         /// </summary>
         public string GamesText

@@ -1,9 +1,4 @@
-﻿using GalaSoft.MvvmLight;
-using GreatSnooper.Helpers;
-using GreatSnooper.IRCTasks;
-using GreatSnooper.Model;
-using GreatSnooper.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -12,6 +7,11 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading;
 using System.Threading.Tasks;
+using GalaSoft.MvvmLight;
+using GreatSnooper.Helpers;
+using GreatSnooper.IRCTasks;
+using GreatSnooper.Model;
+using GreatSnooper.ViewModel;
 
 namespace GreatSnooper.Classes
 {
@@ -45,6 +45,7 @@ namespace GreatSnooper.Classes
         // :AeF`T!Username@no.address.for.you PRIVMSG #AnythingGoes :\x01ACTION ads\x01
         protected readonly Regex messageRegex = new Regex(@":?([^!]+)!~?([^@]+)\S+\s(\S+)\s?:?(.*)", RegexOptions.Compiled);
         protected readonly Regex namesRegex = new Regex(@"^(=|\*|@) ([^ ]+) :(.*)", RegexOptions.Compiled);
+        protected readonly Regex topicRegex = new Regex(@"^([^ ]+) :(.*)", RegexOptions.Compiled);
 
         // Communication things
         protected Socket ircServer;
@@ -61,6 +62,7 @@ namespace GreatSnooper.Classes
         protected readonly TimeSpan reconnectTimeout = new TimeSpan(0, 0, 30);
 
         private bool handleGlobalMessage;
+        private bool handleAuth;
         #endregion
 
         #region Properties
@@ -100,7 +102,7 @@ namespace GreatSnooper.Classes
         public abstract string VerifyString(string str);
         #endregion
 
-        protected AbstractCommunicator(string serverAddress, int serverPort, bool handleGlobalMessage, bool handleNickChange, bool handleJoinRequest)
+        protected AbstractCommunicator(string serverAddress, int serverPort, bool handleGlobalMessage, bool handleNickChange, bool handleJoinRequest, bool handleAuth)
         {
             this.ErrorState = ErrorStates.None;
             this.ServerAddress = serverAddress;
@@ -108,6 +110,7 @@ namespace GreatSnooper.Classes
             this.handleGlobalMessage = handleGlobalMessage;
             this.HandleNickChange = handleNickChange;
             this.HandleJoinRequest = handleJoinRequest;
+            this.handleAuth = handleAuth;
             this.Users = new Dictionary<string, User>(GlobalManager.CIStringComparer);
             this.Channels = new Dictionary<string, AbstractChannelViewModel>(GlobalManager.CIStringComparer);
             this.lastReconnectAttempt = new DateTime(1999, 5, 31);
@@ -613,7 +616,7 @@ namespace GreatSnooper.Classes
                     string[] data = m.Groups[4].Value.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (data.Length == 2 && data[0].Equals(this.User.Name, StringComparison.OrdinalIgnoreCase))
                     {
-                        MVM.HandleTask(new JoinedTask(this, data[1], this.User.Name, this.User.Clan));
+                        MVM.HandleTask(new InviteTask(this, data[1]));
                     }
                 }
             }
@@ -640,7 +643,7 @@ namespace GreatSnooper.Classes
                     {
                         string clientName = m.Groups[1].Value;
                         string topic = (data[1][0] == ':') ? data[1].Substring(1) : data[1];
-                        MVM.HandleTask(new MessageTask(this, GlobalManager.SystemUser.Name, data[0], string.Format(Localizations.GSLocalization.Instance.TopicMessage, clientName, topic), MessageSettings.SystemMessage));
+                        MVM.HandleTask(new MessageTask(this, GlobalManager.SystemUser.Name, data[0], string.Format(Localizations.GSLocalization.Instance.TopicMessage, clientName, topic), MessageSettings.NoticeMessage));
                     }
                 }
             }
@@ -688,11 +691,15 @@ namespace GreatSnooper.Classes
                     {
                         this.serverIrcAddress = ':' + line.Substring(spacePos, spacePos2 - spacePos);
 
-                        //if (!this.IsWormNet)
-                        //    Send("authserv auth " + this.User.Name + " " + Properties.Settings.Default.WormsPassword);
-
+                        if (this.handleAuth && Properties.Settings.Default.GameSurgeAuth &&
+                            !string.IsNullOrWhiteSpace(Properties.Settings.Default.WormsPassword))
+                        {
+                            this.Send(this, "authserv auth " + this.User.Name + " " + Properties.Settings.Default.WormsPassword);
+                        }
                         if (this.State == ConnectionStates.Connecting || this.State == ConnectionStates.ReConnecting)
+                        {
                             this.State = ConnectionStates.Connected;
+                        }
                     }
                     break;
 
@@ -731,6 +738,21 @@ namespace GreatSnooper.Classes
                         MVM.HandleTask(new ChannelListTask(this, temp));
                     }
                     channelListHelper = null;
+                    break;
+
+                // TOPIC
+                case 332:
+                    if (MVM != null)
+                    {
+                        Match m = topicRegex.Match(line.Substring(spacePos));
+                        if (m.Success)
+                        {
+                            string channelName = m.Groups[1].Value;
+                            string topic = m.Groups[2].Value;
+
+                            MVM.HandleTask(new MessageTask(this, GlobalManager.SystemUser.Name, channelName, topic, MessageSettings.NoticeMessage));
+                        }
+                    }
                     break;
 
                 // A client (answer for WHO command)

@@ -696,7 +696,18 @@
                     </GridSplitter.Style>
                 </GridSplitter>
 
-                <u:ChannelTabControl x:Name="ChannelTabcontrol2" Grid.Column="2" />
+                <u:ChannelTabControl x:Name="ChannelTabcontrol2" Grid.Column="2">
+                    <u:ChannelTabControl.Style>
+                        <Style TargetType="u:ChannelTabControl">
+                            <Setter Property="Visibility" Value="Collapsed" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding Path=ShowSecondaryTab, Mode=OneWay}" Value="True">
+                                    <Setter Property="Visibility" Value="Visible" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </u:ChannelTabControl.Style>
+                </u:ChannelTabControl>
             </Grid>
         </Grid>
 

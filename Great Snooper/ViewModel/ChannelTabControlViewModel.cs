@@ -22,25 +22,28 @@ namespace GreatSnooper.ViewModel
             get { return this._selectedChannelIndex; }
             set
             {
-                PMChannelViewModel oldPMChannel = this._selectedChannel as PMChannelViewModel;
-
-                if (value == -1)
+                if (value != this._selectedChannelIndex)
                 {
-                    this._selectedChannelIndex = value;
-                    this._selectedChannel = null;
-                }
-                else if (value >= 0 && value < this.Channels.Count)
-                {
-                    this._selectedChannelIndex = value;
-                    this._visitedChannels.Visit(value);
-                    this._selectedChannel = Channels[value];
-                    this.ActivateSelectedChannel();
-                }
+                    PMChannelViewModel oldPMChannel = this._selectedChannel as PMChannelViewModel;
 
-                if (oldPMChannel != null)
-                    oldPMChannel.GenerateHeader();
+                    if (value == -1)
+                    {
+                        this._selectedChannelIndex = value;
+                        this._selectedChannel = null;
+                    }
+                    else if (value >= 0 && value < this.Channels.Count)
+                    {
+                        this._selectedChannelIndex = value;
+                        this._visitedChannels.Visit(value);
+                        this._selectedChannel = Channels[value];
+                        this.ActivateSelectedChannel();
+                    }
 
-                this.RaisePropertyChanged("SelectedChannelIndex");
+                    if (oldPMChannel != null)
+                        oldPMChannel.GenerateHeader();
+
+                    this.RaisePropertyChanged("SelectedChannelIndex");
+                }
             }
         }
 
@@ -133,9 +136,9 @@ namespace GreatSnooper.ViewModel
             {
                 chvm.Log(chvm.Messages.Count, true);
                 chvm.ClearUsers();
-                chvm.Server.Channels.Remove(chvm.Name);
             }
 
+            chvm.Server.Channels.Remove(chvm.Name);
             if (chvm.Server is GameSurgeCommunicator && chvm.Server.Channels.Any(x => x.Value.Joined) == false)
                 chvm.Server.CancelAsync();
 

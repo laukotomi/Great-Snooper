@@ -1,11 +1,4 @@
-﻿using GalaSoft.MvvmLight;
-using GreatSnooper.Classes;
-using GreatSnooper.Helpers;
-using GreatSnooper.Services;
-using GreatSnooper.Settings;
-using GreatSnooper.Validators;
-using MahApps.Metro;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Globalization;
@@ -15,6 +8,13 @@ using System.Text.RegularExpressions;
 using System.Threading;
 using System.Windows;
 using System.Windows.Media;
+using GalaSoft.MvvmLight;
+using GreatSnooper.Classes;
+using GreatSnooper.Helpers;
+using GreatSnooper.Services;
+using GreatSnooper.Settings;
+using GreatSnooper.Validators;
+using MahApps.Metro;
 
 namespace GreatSnooper.ViewModel
 {
@@ -88,10 +88,11 @@ namespace GreatSnooper.ViewModel
 
 
             this.GeneralSettings = new List<AbstractSetting>();
-            this.GeneralSettings.Add(new ComboboxSetting(Localizations.GSLocalization.Instance.LanguageText, languages, selectedLanguage, (DataTemplate)this.DialogService.GetView().TryFindResource("LanguageSelectorTemplate"), new Action<object>((x) => {
+            this.GeneralSettings.Add(new ComboboxSetting(Localizations.GSLocalization.Instance.LanguageText, languages, selectedLanguage, (DataTemplate)this.DialogService.GetView().TryFindResource("LanguageSelectorTemplate"), new Action<object>((x) =>
+            {
                 if (x == null)
                     return;
-                
+
                 try
                 {
                     var language = (LanguageData)x;
@@ -175,6 +176,8 @@ namespace GreatSnooper.ViewModel
             this.WormsSettings = new List<AbstractSetting>();
             this.WormsSettings.Add(new BoolSetting("ShowWormsChannel", Localizations.GSLocalization.Instance.ShowWormsText));
             this.WormsSettings.Add(new StringSetting("WormsNick", Localizations.GSLocalization.Instance.WormsNickLabel, Validator.NickNameValidator, this.DialogService));
+            this.WormsSettings.Add(new BoolSetting("GameSurgeAuth", Localizations.GSLocalization.Instance.GameSurgeAuthLabel));
+            this.WormsSettings.Add(new StringSetting("WormsPassword", Localizations.GSLocalization.Instance.GameSurgePasswordLabel, null, this.DialogService));
             this.WormsSettings.Add(new BoolSetting("ChangeWormsNick", Localizations.GSLocalization.Instance.ChangeWormsNickText));
 
             this.MsgSettings = new List<AbstractSetting>();

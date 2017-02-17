@@ -15,11 +15,14 @@ namespace GreatSnooper.Settings
             get { return _value; }
             set
             {
-                string error = this.validator.Validate(ref value);
-                if (error != string.Empty)
+                if (this.validator != null)
                 {
-                    this.dialogService.ShowDialog(Localizations.GSLocalization.Instance.InvalidValueText, error);
-                    return;
+                    string error = this.validator.Validate(ref value);
+                    if (error != string.Empty)
+                    {
+                        this.dialogService.ShowDialog(Localizations.GSLocalization.Instance.InvalidValueText, error);
+                        return;
+                    }
                 }
 
                 SettingsHelper.Save(this.settingName, value);

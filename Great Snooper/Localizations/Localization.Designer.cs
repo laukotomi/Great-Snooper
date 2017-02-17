@@ -700,6 +700,24 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authenticate to GameSurge.
+        /// </summary>
+        public static string GameSurgeAuthLabel {
+            get {
+                return ResourceManager.GetString("GameSurgeAuthLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GameSurge password (optional):.
+        /// </summary>
+        public static string GameSurgePasswordLabel {
+            get {
+                return ResourceManager.GetString("GameSurgePasswordLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to General sounds.
         /// </summary>
         public static string GeneralSoundsText {

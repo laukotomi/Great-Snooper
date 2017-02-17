@@ -1,9 +1,8 @@
-﻿using GreatSnooper.Helpers;
-using GreatSnooper.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
+using GreatSnooper.Helpers;
+using GreatSnooper.Model;
 
 namespace GreatSnooper.Classes
 {
@@ -22,7 +21,7 @@ namespace GreatSnooper.Classes
         #endregion
 
         public GameSurgeCommunicator(string serverAddress, int serverPort)
-            : base(serverAddress, serverPort, false, true, true)
+            : base(serverAddress, serverPort, false, true, true, true)
         {
             JoinChannelList = new List<string>();
         }

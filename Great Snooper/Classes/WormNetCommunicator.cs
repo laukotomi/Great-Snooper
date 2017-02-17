@@ -1,5 +1,5 @@
-﻿using GreatSnooper.Helpers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using GreatSnooper.Helpers;
 
 namespace GreatSnooper.Classes
 {
@@ -18,7 +18,7 @@ namespace GreatSnooper.Classes
         #endregion
 
         public WormNetCommunicator(string serverAddress, int serverPort)
-            : base(serverAddress, serverPort, true, false, false)
+            : base(serverAddress, serverPort, true, false, false, false)
         {
 
         }
