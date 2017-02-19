@@ -52,7 +52,8 @@
     </Border>
     <ListBox HorizontalContentAlignment="Stretch" Background="Transparent" ItemsSource="{Binding Path=Games, Mode=OneTime}"
         SelectedItem="{Binding Path=SelectedGame, Mode=OneWayToSource}" Grid.Row="2" BorderThickness="0"
-        LostFocus="ListBox_LostFocus" SelectionChanged="ListBox_SelectionChanged">
+        LostFocus="ListBox_LostFocus" SelectionChanged="ListBox_SelectionChanged"
+        IsTextSearchEnabled="True" TextSearch.TextPath="Name">
         <ListBox.ItemTemplate>
             <DataTemplate>
                 <Grid>

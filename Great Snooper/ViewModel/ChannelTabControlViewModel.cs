@@ -134,7 +134,7 @@ namespace GreatSnooper.ViewModel
             }
             else
             {
-                chvm.Log(chvm.Messages.Count, true);
+                chvm.EndLogging();
                 chvm.ClearUsers();
             }
 

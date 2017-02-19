@@ -1,12 +1,12 @@
-﻿using System.Windows;
-using GalaSoft.MvvmLight.Threading;
-using System;
-using GreatSnooper.Helpers;
-using Microsoft.Win32;
-using System.IO;
-using GreatSnooper.Validators;
-using System.Threading;
+﻿using System;
 using System.Globalization;
+using System.IO;
+using System.Threading;
+using System.Windows;
+using GalaSoft.MvvmLight.Threading;
+using GreatSnooper.Helpers;
+using GreatSnooper.Validators;
+using Microsoft.Win32;
 
 namespace GreatSnooper
 {
@@ -115,7 +115,7 @@ namespace GreatSnooper
                 foreach (var item in server.Channels)
                 {
                     if (item.Value.Joined)
-                        item.Value.Log(item.Value.Messages.Count, true);
+                        item.Value.EndLogging();
                 }
             }
         }

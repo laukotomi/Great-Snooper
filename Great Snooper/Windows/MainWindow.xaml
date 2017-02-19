@@ -353,6 +353,7 @@
     <controls:MetroWindow.InputBindings>
         <KeyBinding Command="{Binding Path=NextChannelCommand, Mode=OneTime}" Key="Right" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=PrevChannelCommand, Mode=OneTime}" Key="Left" Modifiers="Alt" />
+        <KeyBinding Command="{Binding Path=ChangeTabCommand, Mode=OneTime}" Key="X" Modifiers="Alt" />
         <KeyBinding Command="{Binding Path=CloseActualChannelCommand, Mode=OneTime}" Key="W" Modifiers="Control" />
         <KeyBinding Command="{Binding Path=FilterCommand, Mode=OneTime}" Key="F" Modifiers="Control" />
         <KeyBinding Command="{Binding Path=AwayShortkeyCommand, Mode=OneTime}" Key="A" Modifiers="Control+Shift" />

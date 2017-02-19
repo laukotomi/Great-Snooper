@@ -727,7 +727,7 @@ namespace GreatSnooper.ViewModel
                 foreach (var item in server.Channels)
                 {
                     if (item.Value.Joined)
-                        item.Value.Log(item.Value.Messages.Count, true);
+                        item.Value.EndLogging();
                 }
             }
 

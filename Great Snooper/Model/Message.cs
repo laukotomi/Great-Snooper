@@ -23,7 +23,7 @@ namespace GreatSnooper.Model
         public DateTime Time { get; private set; }
         public MessageSetting Style { get; private set; }
         public SortedDictionary<int, KeyValuePair<int, HightLightTypes>> HighlightWords { get; private set; }
-        public bool IsLogged { get; private set; }
+        public bool IsLogged { get; set; }
         #endregion
 
         public Message(User sender, string text, MessageSetting setting, DateTime time, bool isLogged = false)

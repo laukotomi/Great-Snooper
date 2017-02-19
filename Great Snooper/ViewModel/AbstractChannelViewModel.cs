@@ -41,6 +41,8 @@ namespace GreatSnooper.ViewModel
         protected RichTextBox rtb;
         protected FlowDocument rtbDocument;
         private ContextMenu instantColorMenu;
+        private StreamWriter _logger;
+        private int _loggerDay;
         #endregion
 
         #region Properties
@@ -123,7 +125,7 @@ namespace GreatSnooper.ViewModel
                     if (value == false)
                     {
                         // Reset everything to default value
-                        this.Log(this.Messages.Count, true);
+                        this.EndLogging();
                         this.messagesLoadedFrom = null;
                         this.Disabled = false;
                         this.Loading = false;
@@ -470,8 +472,9 @@ namespace GreatSnooper.ViewModel
 
         public void AddMessage(Message msg)
         {
-            if (this.Messages.Count >= GlobalManager.MaxMessagesInMemory && this.MainViewModel.IsGameWindowOn() == false)
-                Log(this.Messages.Count - GlobalManager.MaxMessagesInMemory + GlobalManager.NumOfOldMessagesToBeLoaded);
+            this.LogMessage(msg);
+            if (this.Messages.Count > GlobalManager.MaxMessagesInMemory && this.MainViewModel.IsGameWindowOn() == false)
+                ClearMessages();
 
             this.Messages.AddLast(msg);
 
@@ -743,53 +746,28 @@ namespace GreatSnooper.ViewModel
             this.HiddenMessagesInEnergySaveMode = false;
         }
 
-        public virtual void Log(int count, bool makeEnd = false)
+        private void ClearMessages()
         {
-            if (count == 0) return;
-
             try
             {
-                string dirPath = GlobalManager.SettingsPath + @"\Logs\" + this.Name;
-                if (!Directory.Exists(dirPath))
-                    Directory.CreateDirectory(dirPath);
-
-                string logFile = dirPath + "\\" + DateTime.Now.ToString("yyyy-MM-dd") + ".log";
-                bool loggedAnything = false;
-
-                using (StreamWriter writer = new StreamWriter(logFile, true))
+                while (this.Messages.Count > GlobalManager.MaxMessagesInMemory)
                 {
-                    for (int i = 0; i < count && this.Messages.Count > 0; i++)
+                    Message msg = this.Messages.First.Value;
+                    this.Messages.RemoveFirst();
+                    if (this.messagesLoadedFrom != null && messagesLoadedFrom.Value == msg)
                     {
-                        Message msg = this.Messages.First.Value;
-                        if (!msg.IsLogged)
+                        this.rtbDocument.Blocks.Remove(this.rtbDocument.Blocks.FirstBlock);
+                        this.messagesLoadedFrom = this.Messages.First; // ok, since it was the first block which was removed and it is already checked that messagesLoadedFrom was the first message
+                        if (Properties.Settings.Default.ChatMode)
                         {
-                            writer.WriteLine("(" + msg.Style.Type.ToString() + ") " + msg.Time.ToString("yyyy-MM-dd HH:mm:ss") + " " + msg.Sender.Name + ": " + msg.Text);
-                            loggedAnything = true;
-                        }
-
-                        this.Messages.RemoveFirst();
-                        if (this.messagesLoadedFrom != null && messagesLoadedFrom.Value == msg)
-                        {
-                            this.rtbDocument.Blocks.Remove(this.rtbDocument.Blocks.FirstBlock);
-                            this.messagesLoadedFrom = this.Messages.First; // ok, since it was the first block which was removed and it is already checked that messagesLoadedFrom was the first message
-                            if (Properties.Settings.Default.ChatMode)
+                            while (this.messagesLoadedFrom != null)
                             {
-                                while (this.messagesLoadedFrom != null)
-                                {
-                                    var type = this.messagesLoadedFrom.Value.Style.Type;
-                                    if (type != Message.MessageTypes.Part && type != Message.MessageTypes.Join && type != Message.MessageTypes.Quit)
-                                        break;
-                                    this.messagesLoadedFrom = this.messagesLoadedFrom.Next;
-                                }
+                                var type = this.messagesLoadedFrom.Value.Style.Type;
+                                if (type != Message.MessageTypes.Part && type != Message.MessageTypes.Join && type != Message.MessageTypes.Quit)
+                                    break;
+                                this.messagesLoadedFrom = this.messagesLoadedFrom.Next;
                             }
                         }
-                    }
-
-                    if (makeEnd && loggedAnything)
-                    {
-                        writer.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " Channel closed.");
-                        writer.WriteLine("-----------------------------------------------------------------------------------------");
-                        writer.WriteLine(Environment.NewLine + Environment.NewLine);
                     }
                 }
             }
@@ -797,6 +775,57 @@ namespace GreatSnooper.ViewModel
             {
                 ErrorLog.Log(ex);
             }
+        }
+
+        protected virtual void LogMessage(Message msg)
+        {
+            try
+            {
+                if (msg.IsLogged)
+                    return;
+
+                DateTime now = DateTime.Now;
+                if (now.Day != this._loggerDay)
+                {
+                    this.EndLogging();
+
+                    string dirPath = GlobalManager.SettingsPath + @"\Logs\" + this.Name;
+                    if (!Directory.Exists(dirPath))
+                        Directory.CreateDirectory(dirPath);
+
+                    string logFile = dirPath + "\\" + now.ToString("yyyy-MM-dd") + ".log";
+                    this._logger = new StreamWriter(logFile, true);
+                    this._loggerDay = now.Day;
+                }
+
+                this._logger.WriteLine("(" + msg.Style.Type.ToString() + ") " + msg.Time.ToString("yyyy-MM-dd HH:mm:ss") + " " + msg.Sender.Name + ": " + msg.Text);
+                this._logger.Flush();
+                msg.IsLogged = true;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+            }
+        }
+
+        public virtual void EndLogging()
+        {
+            if (this._logger != null)
+            {
+                try
+                {
+                    this._logger.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " Channel closed.");
+                    this._logger.WriteLine("-----------------------------------------------------------------------------------------");
+                    this._logger.WriteLine(Environment.NewLine + Environment.NewLine);
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex);
+                }
+                this._logger.Dispose();
+                this._logger = null;
+            }
+            this._loggerDay = 0;
         }
         #endregion
 

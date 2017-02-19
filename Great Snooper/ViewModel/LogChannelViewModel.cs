@@ -38,72 +38,82 @@ namespace GreatSnooper.ViewModel
             server.Channels.Add(this.Name, this);
             mainViewModel.CreateChannel(this);
 
-            string path = GlobalManager.SettingsPath + @"\Logs\" + channelName;
-            if (Directory.Exists(path))
+            try
             {
-                DirectoryInfo logDirectory = new DirectoryInfo(path);
-                List<string> oldMessages = new List<string>();
-                bool done = false;
-                foreach (FileInfo file in logDirectory.GetFiles().OrderByDescending(f => f.LastWriteTime))
+                string path = GlobalManager.SettingsPath + @"\Logs\" + channelName;
+                if (Directory.Exists(path))
                 {
-                    string[] lines = File.ReadAllLines(file.FullName);
-                    for (int i = lines.Length - 1; i >= 0; i--)
+                    DirectoryInfo logDirectory = new DirectoryInfo(path);
+                    List<string> oldMessages = new List<string>();
+                    bool done = false;
+                    foreach (FileInfo file in logDirectory.GetFiles().OrderByDescending(f => f.LastWriteTime))
                     {
-                        string line = lines[i];
-                        if (!string.IsNullOrEmpty(line) && !line.StartsWith("---"))
+                        using (StreamReader sr = new StreamReader(File.Open(file.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
                         {
-                            oldMessages.Add(line);
-                            if (oldMessages.Count == GlobalManager.MaxMessagesInMemory)
+                            string[] lines = sr.ReadToEnd().Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                            for (int i = lines.Length - 1; i >= 0; i--)
                             {
-                                done = true;
+                                string line = lines[i];
+                                if (!line.StartsWith("---"))
+                                {
+                                    oldMessages.Add(line);
+                                    if (oldMessages.Count == GlobalManager.MaxMessagesInMemory)
+                                    {
+                                        done = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (done)
                                 break;
+                        }
+                    }
+
+                    for (int i = oldMessages.Count - 1; i >= 0; i--)
+                    {
+                        Match m = logMessageRegex.Match(oldMessages[i]);
+                        if (m.Success)
+                        {
+                            Message.MessageTypes messageType;
+                            DateTime time;
+                            if (Enum.TryParse(m.Groups["type"].Value, true, out messageType)
+                                && DateTime.TryParseExact(m.Groups["date"].Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+                            {
+                                this.AddMessage(
+                                    new Message(
+                                        UserHelper.GetUser(this.Server, m.Groups["sender"].Value),
+                                        m.Groups["text"].Value,
+                                        MessageSettings.GetByMessageType(messageType),
+                                        time,
+                                        true
+                                    )
+                                );
+                            }
+                            continue;
+                        }
+                        m = logChannelClosedRegex.Match(oldMessages[i]);
+                        if (m.Success)
+                        {
+                            DateTime time;
+                            if (DateTime.TryParseExact(m.Groups["date"].Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+                            {
+                                this.AddMessage(
+                                    new Message(
+                                        GlobalManager.SystemUser,
+                                        GSLocalization.Instance.EndOfConversation,
+                                        MessageSettings.SystemMessage,
+                                        time,
+                                        true
+                                    )
+                                );
                             }
                         }
                     }
-                    if (done)
-                        break;
                 }
-
-                for (int i = oldMessages.Count - 1; i >= 0; i--)
-                {
-                    Match m = logMessageRegex.Match(oldMessages[i]);
-                    if (m.Success)
-                    {
-                        Message.MessageTypes messageType;
-                        DateTime time;
-                        if (Enum.TryParse(m.Groups["type"].Value, true, out messageType)
-                            && DateTime.TryParseExact(m.Groups["date"].Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
-                        {
-                            this.AddMessage(
-                                new Message(
-                                    UserHelper.GetUser(this.Server, m.Groups["sender"].Value),
-                                    m.Groups["text"].Value,
-                                    MessageSettings.GetByMessageType(messageType),
-                                    time,
-                                    true
-                                )
-                            );
-                        }
-                        continue;
-                    }
-                    m = logChannelClosedRegex.Match(oldMessages[i]);
-                    if (m.Success)
-                    {
-                        DateTime time;
-                        if (DateTime.TryParseExact(m.Groups["date"].Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
-                        {
-                            this.AddMessage(
-                                new Message(
-                                    GlobalManager.SystemUser,
-                                    GSLocalization.Instance.EndOfConversation,
-                                    MessageSettings.SystemMessage,
-                                    time,
-                                    true
-                                )
-                            );
-                        }
-                    }
-                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
             }
         }
 
@@ -147,7 +157,12 @@ namespace GreatSnooper.ViewModel
 
         }
 
-        public override void Log(int count, bool makeEnd = false)
+        protected override void LogMessage(Message msg)
+        {
+
+        }
+
+        public override void EndLogging()
         {
 
         }

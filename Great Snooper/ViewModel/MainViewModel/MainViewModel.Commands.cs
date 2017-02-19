@@ -79,15 +79,21 @@ namespace GreatSnooper.ViewModel
 
         private void ChangeTab(AbstractChannelViewModel chvm)
         {
-            if (chvm.ChannelTabVM == this._channelTabControl1)
+            if (chvm == null)
+                chvm = this.SelectedChannel;
+
+            if (chvm != null)
             {
-                this._channelTabControl1.Channels.Remove(chvm);
-                this._channelTabControl2.Channels.Add(chvm);
-            }
-            else
-            {
-                this._channelTabControl2.Channels.Remove(chvm);
-                this._channelTabControl1.Channels.Add(chvm);
+                if (chvm.ChannelTabVM == this._channelTabControl1)
+                {
+                    this._channelTabControl1.Channels.Remove(chvm);
+                    this._channelTabControl2.Channels.Add(chvm);
+                }
+                else
+                {
+                    this._channelTabControl2.Channels.Remove(chvm);
+                    this._channelTabControl1.Channels.Add(chvm);
+                }
             }
         }
     }
