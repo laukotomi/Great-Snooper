@@ -1,5 +1,4 @@
-﻿
-namespace GreatSnooper.Validators
+﻿namespace GreatSnooper.Validators
 {
     public static class Validator
     {
@@ -14,7 +13,9 @@ namespace GreatSnooper.Validators
             get
             {
                 if (_clanValidator == null)
+                {
                     _clanValidator = new ClanValidator();
+                }
                 return _clanValidator;
             }
         }
@@ -24,7 +25,9 @@ namespace GreatSnooper.Validators
             get
             {
                 if (_gsVersionValidator == null)
+                {
                     _gsVersionValidator = new GSVersionValidator();
+                }
                 return _gsVersionValidator;
             }
         }
@@ -34,7 +37,9 @@ namespace GreatSnooper.Validators
             get
             {
                 if (_nicknameValidator == null)
+                {
                     _nicknameValidator = new NickNameValidator();
+                }
                 return _nicknameValidator;
             }
         }
@@ -44,16 +49,21 @@ namespace GreatSnooper.Validators
             get
             {
                 if (_notEmptyValidator == null)
+                {
                     _notEmptyValidator = new NotEmptyValidator();
+                }
                 return _notEmptyValidator;
             }
         }
+
         public static WormNetTextValidator WormNetTextValidator
         {
             get
             {
                 if (_wormNetTextValidator == null)
+                {
                     _wormNetTextValidator = new WormNetTextValidator();
+                }
                 return _wormNetTextValidator;
             }
         }

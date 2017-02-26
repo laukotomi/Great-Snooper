@@ -1,26 +1,52 @@
-﻿using GalaSoft.MvvmLight.Command;
-using GreatSnooper.Helpers;
-using GreatSnooper.Model;
-using GreatSnooper.Services;
-using GreatSnooper.Validators;
-using GreatSnooper.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
-
-namespace GreatSnooper.Settings
+﻿namespace GreatSnooper.Settings
 {
+    using System.Windows.Input;
+    using System.Windows.Media;
+
+    using GalaSoft.MvvmLight.Command;
+
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Model;
+    using GreatSnooper.Services;
+    using GreatSnooper.Validators;
+    using GreatSnooper.Windows;
+
     class UserGroupSetting : AbstractSetting
     {
-        #region Members
-        private AbstractValidator validator;
         private IMetroDialogService dialogService;
         private UserGroup group;
-        #endregion
+        private AbstractValidator validator;
 
-        #region Properties
+        public UserGroupSetting(UserGroup group, AbstractValidator validator, IMetroDialogService dialogService)
+        : base(string.Empty, string.Empty)
+        {
+            this.group = group;
+            this.validator = validator;
+            this.dialogService = dialogService;
+        }
+
+        public Color GroupColor
+        {
+            get
+            {
+                return group.GroupColor.Color;
+            }
+            set
+            {
+                if (group.GroupColor.Color != value)
+                {
+                    group.GroupColor = new SolidColorBrush(value);
+                    SaveSettings();
+                }
+            }
+        }
+
         public string GroupName
         {
-            get { return group.Name; }
+            get
+            {
+                return group.Name;
+            }
             set
             {
                 if (group.Name != value)
@@ -38,24 +64,12 @@ namespace GreatSnooper.Settings
             }
         }
 
-        public Color GroupColor
-        {
-            get { return group.GroupColor.Color; }
-            set
-            {
-                if (group.GroupColor.Color != value)
-                {
-                    group.GroupColor = new SolidColorBrush(value);
-                    SaveSettings();
-                }
-            }
-        }
-        #endregion
-
-        #region ListEditorCommand
         public ICommand ListEditorCommand
         {
-            get { return new RelayCommand(OpenListEditor); }
+            get
+            {
+                return new RelayCommand(OpenListEditor);
+            }
         }
 
         private void OpenListEditor()
@@ -63,15 +77,6 @@ namespace GreatSnooper.Settings
             ListEditor window = new ListEditor(this.group.SettingName + "List", this.group.Name, Validator.NickNameValidator);
             window.Owner = this.dialogService.GetView();
             window.ShowDialog();
-        }
-        #endregion
-
-        public UserGroupSetting(UserGroup group, AbstractValidator validator, IMetroDialogService dialogService) :
-            base (string.Empty, string.Empty)
-        {
-            this.group = group;
-            this.validator = validator;
-            this.dialogService = dialogService;
         }
 
         private void SaveSettings()

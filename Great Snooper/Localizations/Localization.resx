@@ -1325,4 +1325,8 @@
   <data name="GameSurgePasswordLabel" xml:space="preserve">
     <value>GameSurge password (optional):</value>
   </data>
+  <data name="AuthFailed" xml:space="preserve">
+    <value>Authentication failed</value>
+    <comment>When GameSurge authentication fails</comment>
+  </data>
 </root>

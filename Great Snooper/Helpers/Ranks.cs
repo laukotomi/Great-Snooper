@@ -1,13 +1,37 @@
-﻿using GreatSnooper.Model;
-using System.Collections.Generic;
-
-namespace GreatSnooper.Helpers
+﻿namespace GreatSnooper.Helpers
 {
+    using System.Collections.Generic;
+
+    using GreatSnooper.Model;
+
     class Ranks
     {
-        public static List<Rank> RankList { get; private set; }
-        public static Rank Unknown { get; private set; }
-        public static Rank Snooper { get; private set; }
+        public static List<Rank> RankList
+        {
+            get;
+            private set;
+        }
+
+        public static Rank Snooper
+        {
+            get;
+            private set;
+        }
+
+        public static Rank Unknown
+        {
+            get;
+            private set;
+        }
+
+        public static Rank GetRankByInt(int rank)
+        {
+            if (rank >= 0 && rank <= 13)
+            {
+                return RankList[rank];
+            }
+            return Unknown;
+        }
 
         public static void Initialize()
         {
@@ -29,13 +53,6 @@ namespace GreatSnooper.Helpers
 
             Unknown = RankList[12];
             Snooper = RankList[13];
-        }
-
-        public static Rank GetRankByInt(int rank)
-        {
-            if (rank >= 0 && rank <= 13)
-                return RankList[rank];
-            return Unknown;
         }
     }
 }

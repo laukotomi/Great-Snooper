@@ -1,15 +1,20 @@
-﻿using GreatSnooper.Classes;
-using System;
-
-namespace GreatSnooper.EventArguments
+﻿namespace GreatSnooper.EventArguments
 {
+    using System;
+
+    using GreatSnooper.Classes;
+
     public class ConnectionStateEventArgs : EventArgs
     {
-        public AbstractCommunicator.ConnectionStates State { get; private set; }
-
         public ConnectionStateEventArgs(AbstractCommunicator.ConnectionStates state)
         {
             State = state;
+        }
+
+        public AbstractCommunicator.ConnectionStates State
+        {
+            get;
+            private set;
         }
     }
 }

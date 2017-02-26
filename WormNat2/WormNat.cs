@@ -294,7 +294,7 @@ namespace Hoster
                             using (WebResponse response = request.GetResponse())
                             using (StreamReader stream = new StreamReader(response.GetResponseStream()))
                             {
-                                //Search for the ip in the html
+                                // Search for the ip in the html
                                 string localIP = stream.ReadToEnd();
                                 int first = localIP.IndexOf("Address: ") + 9;
                                 int last = localIP.LastIndexOf("</body>");

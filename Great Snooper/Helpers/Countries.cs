@@ -1,12 +1,47 @@
-﻿using GreatSnooper.Classes;
-using GreatSnooper.Model;
-
-namespace GreatSnooper.Helpers
+﻿namespace GreatSnooper.Helpers
 {
+    using GreatSnooper.Classes;
+    using GreatSnooper.Model;
+
     public static class Countries
     {
-        public static MySortedList<Country> CountryList { get; private set; }
-        public static Country DefaultCountry { get; private set; }
+        public static MySortedList<Country> CountryList
+        {
+            get;
+            private set;
+        }
+
+        public static Country DefaultCountry
+        {
+            get;
+            private set;
+        }
+
+        // Get a country by its country code
+        public static Country GetCountryByCC(string CountryCode)
+        {
+            for (int i = 0; i < CountryList.Count; i++)
+            {
+                if (CountryList[i].CountryCode == CountryCode)
+                {
+                    return CountryList[i];
+                }
+            }
+            return DefaultCountry;
+        }
+
+        // Get a country by its ID (this method is needed, because the countries will be stored in order of their names not in order of their IDs)
+        public static Country GetCountryByID(int ID)
+        {
+            for (int i = 0; i < CountryList.Count; i++)
+            {
+                if (CountryList[i].ID == ID)
+                {
+                    return CountryList[i];
+                }
+            }
+            return DefaultCountry;
+        }
 
         public static void Initialize()
         {
@@ -97,28 +132,6 @@ namespace GreatSnooper.Helpers
             CountryList.Add(new Country("United Arab Emirates", "AE"));
 
             DefaultCountry = GetCountryByID(49);
-        }
-
-        // Get a country by its country code
-        public static Country GetCountryByCC(string CountryCode)
-        {
-            for (int i = 0; i < CountryList.Count; i++)
-            {
-                if (CountryList[i].CountryCode == CountryCode)
-                    return CountryList[i];
-            }
-            return DefaultCountry;
-        }
-
-        // Get a country by its ID (this method is needed, because the countries will be stored in order of their names not in order of their IDs)
-        public static Country GetCountryByID(int ID)
-        {
-            for (int i = 0; i < CountryList.Count; i++)
-            {
-                if (CountryList[i].ID == ID)
-                    return CountryList[i];
-            }
-            return DefaultCountry;
         }
     }
 }

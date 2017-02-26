@@ -1,51 +1,75 @@
-﻿using GalaSoft.MvvmLight;
-using GreatSnooper.Helpers;
-using GreatSnooper.Model;
-using GreatSnooper.ViewModel;
-using System;
-using System.Collections.Generic;
-
-namespace GreatSnooper.Classes
+﻿namespace GreatSnooper.Classes
 {
+    using System;
+    using System.Collections.Generic;
+
+    using GalaSoft.MvvmLight;
+
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Model;
+    using GreatSnooper.ViewModel;
+
     public delegate void MessageRegexChangedDelegate(object sender);
 
     public class LeagueSearcher : ObservableObject
     {
-        #region Static
         private static LeagueSearcher instance;
-        #endregion
 
-        #region Members
-        #endregion
+        private LeagueSearcher()
+        {
+            SearchData = new Dictionary<string, Dictionary<string, DateTime>>(GlobalManager.CIStringComparer);
+        }
 
-        #region Properties
+        public event MessageRegexChangedDelegate MessageRegexChange;
+
         public static LeagueSearcher Instance
         {
             get
             {
                 if (instance == null)
+                {
                     instance = new LeagueSearcher();
+                }
                 return instance;
             }
         }
+
+        public ChannelViewModel ChannelToSearch
+        {
+            get;
+            private set;
+        }
+
+        public int Counter
+        {
+            get;
+            set;
+        }
+
         public bool IsEnabled
         {
-            get { return ChannelToSearch != null; }
+            get
+            {
+                return ChannelToSearch != null;
+            }
         }
-        public ChannelViewModel ChannelToSearch { get; private set; }
-        public Dictionary<string, Dictionary<string, DateTime>> SearchData { get; private set; }
-        public int SpamLeft { get; set; }
-        public int Counter { get; set; }
-        public string SearchingText { get; private set; }
-        #endregion
 
-        #region Events
-        public event MessageRegexChangedDelegate MessageRegexChange;
-        #endregion
-
-        private LeagueSearcher()
+        public Dictionary<string, Dictionary<string, DateTime>> SearchData
         {
-            SearchData = new Dictionary<string, Dictionary<string, DateTime>>(GlobalManager.CIStringComparer);
+            get;
+            private set;
+        }
+
+        public string SearchingText
+        {
+            get;
+            private set;
+        }
+
+        public int SpamLeft
+        {
+            get;
+            set;
         }
 
         public void ChangeSearching(ChannelViewModel channel, bool spamming = false)
@@ -57,16 +81,20 @@ namespace GreatSnooper.Classes
             {
                 string[] leaguesToSearch = Properties.Settings.Default.SearchForThese.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string league in leaguesToSearch)
+                {
                     SearchData.Add(league, new Dictionary<string, DateTime>(GlobalManager.CIStringComparer));
+                }
                 SearchingText = string.Join(" or ", leaguesToSearch) + " anyone?";
             }
 
-            this.SpamLeft = (spamming) ? 10 : -1;
+            this.SpamLeft = spamming ? 10 : -1;
             this.Counter = 1000;
 
             RaisePropertyChanged("IsEnabled");
             if (MessageRegexChange != null)
+            {
                 MessageRegexChange(this);
+            }
         }
 
         public void DoSearch()
@@ -81,7 +109,9 @@ namespace GreatSnooper.Classes
                 this.ChangeSearching(null);
 
                 if (Properties.Settings.Default.LeagueFailBeepEnabled)
+                {
                     Sounds.PlaySoundByName("LeagueFailBeep");
+                }
             }
         }
 

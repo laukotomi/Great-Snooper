@@ -1,15 +1,17 @@
-﻿using GreatSnooper.EventArguments;
-using GreatSnooper.Helpers;
-using GreatSnooper.Services;
-using GreatSnooper.ViewModel;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using System;
-using System.Diagnostics;
-using System.Windows;
-
-namespace GreatSnooper.Windows
+﻿namespace GreatSnooper.Windows
 {
+    using System;
+    using System.Diagnostics;
+    using System.Windows;
+
+    using GreatSnooper.EventArguments;
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Services;
+    using GreatSnooper.ViewModel;
+
+    using MahApps.Metro.Controls;
+    using MahApps.Metro.Controls.Dialogs;
+
     public partial class HostingWindow : MetroWindow
     {
         private HostingViewModel vm;

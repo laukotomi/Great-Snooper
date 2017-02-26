@@ -1,20 +1,9 @@
-﻿using System;
-
-namespace GreatSnooper.Model
+﻿namespace GreatSnooper.Model
 {
+    using System;
+
     public class Game : IComparable
     {
-        #region Properties
-        public bool IsAlive { get; set; }
-
-        public uint ID { get; private set; }
-        public string Address { get; private set; }
-        public string Name { get; private set; }
-        public Country Country { get; private set; }
-        public string Hoster { get; private set; }
-        public bool Locked { get; private set; }
-        #endregion
-
         // Constructor
         public Game(uint id, string name, string address, Country country, string hoster, bool locked)
         {
@@ -25,6 +14,48 @@ namespace GreatSnooper.Model
             this.Country = country;
             this.Hoster = hoster;
             this.IsAlive = true;
+        }
+
+        public string Address
+        {
+            get;
+            private set;
+        }
+
+        public Country Country
+        {
+            get;
+            private set;
+        }
+
+        public string Hoster
+        {
+            get;
+            private set;
+        }
+
+        public uint ID
+        {
+            get;
+            private set;
+        }
+
+        public bool IsAlive
+        {
+            get;
+            set;
+        }
+
+        public bool Locked
+        {
+            get;
+            private set;
+        }
+
+        public string Name
+        {
+            get;
+            private set;
         }
 
         public int CompareTo(object obj)

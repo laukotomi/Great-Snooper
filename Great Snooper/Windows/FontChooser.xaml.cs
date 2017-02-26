@@ -1,16 +1,18 @@
-﻿using GreatSnooper.Services;
-using GreatSnooper.Settings;
-using GreatSnooper.ViewModel;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using System.Windows.Controls;
-
-namespace GreatSnooper.Windows
+﻿namespace GreatSnooper.Windows
 {
+    using System.Windows.Controls;
+
+    using GreatSnooper.Services;
+    using GreatSnooper.Settings;
+    using GreatSnooper.ViewModel;
+
+    using MahApps.Metro.Controls;
+    using MahApps.Metro.Controls.Dialogs;
+
     public partial class FontChooser : MetroWindow
     {
-        private FontChooserViewModel vm;
         private MetroDialogService dialogService;
+        private FontChooserViewModel vm;
 
         public FontChooser(StyleSetting style)
         {

@@ -1,21 +1,46 @@
-﻿using GalaSoft.MvvmLight.Command;
-using GreatSnooper.Helpers;
-using System.IO;
-using System.Windows.Input;
-
-namespace GreatSnooper.Settings
+﻿namespace GreatSnooper.Settings
 {
+    using System.IO;
+    using System.Windows.Input;
+
+    using GalaSoft.MvvmLight.Command;
+
+    using GreatSnooper.Helpers;
+
     class SoundSetting : AbstractSetting
     {
-        #region Members
-        private string _path;
         private bool? _enabled;
-        #endregion
+        private string _path;
 
-        #region Properties
+        public SoundSetting(string settingName, string text)
+        : base(settingName, text)
+        {
+            this._path = SettingsHelper.Load<string>(settingName);
+            this._enabled = SettingsHelper.Load<bool>(settingName + "Enabled");
+        }
+
+        public bool? Enabled
+        {
+            get
+            {
+                return _enabled;
+            }
+            set
+            {
+                if (_enabled != value)
+                {
+                    _enabled = value;
+                    SettingsHelper.Save(this.settingName + "Enabled", value.Value);
+                }
+            }
+        }
+
         public string Path
         {
-            get { return _path; }
+            get
+            {
+                return _path;
+            }
             set
             {
                 if (_path != value)
@@ -26,24 +51,12 @@ namespace GreatSnooper.Settings
             }
         }
 
-        public bool? Enabled
-        {
-            get { return _enabled; }
-            set
-            {
-                if (_enabled != value)
-                {
-                    _enabled = value;
-                    SettingsHelper.Save(this.settingName + "Enabled", value.Value);
-                }
-            }
-        }
-        #endregion
-
-        #region SoundBrowseCommand
         public ICommand SoundBrowseCommand
         {
-            get { return new RelayCommand(BrowseSound); }
+            get
+            {
+                return new RelayCommand(BrowseSound);
+            }
         }
 
         private void BrowseSound()
@@ -51,25 +64,19 @@ namespace GreatSnooper.Settings
             var dlg = new Microsoft.Win32.OpenFileDialog();
             dlg.Filter = "WAV Files (*.wav)|*.wav";
             if (File.Exists(Path))
+            {
                 dlg.InitialDirectory = new FileInfo(Path).Directory.FullName;
+            }
 
-            // Display OpenFileDialog by calling ShowDialog method 
+            // Display OpenFileDialog by calling ShowDialog method
             var result = dlg.ShowDialog();
 
-            // Get the selected file name and display in a TextBox 
+            // Get the selected file name and display in a TextBox
             if (result.HasValue && result.Value)
             {
                 this.Path = dlg.FileName;
                 RaisePropertyChanged("Path");
             }
-        }
-        #endregion
-
-        public SoundSetting(string settingName, string text)
-            : base(settingName, text)
-        {
-            this._path = SettingsHelper.Load<string>(settingName);
-            this._enabled = SettingsHelper.Load<bool>(settingName + "Enabled");
         }
     }
 }

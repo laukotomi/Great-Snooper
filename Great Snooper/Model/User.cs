@@ -1,55 +1,101 @@
-﻿using GalaSoft.MvvmLight;
-using GreatSnooper.Helpers;
-using GreatSnooper.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-
-namespace GreatSnooper.Model
+﻿namespace GreatSnooper.Model
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+
+    using GalaSoft.MvvmLight;
+
+    using GreatSnooper.Helpers;
+    using GreatSnooper.ViewModel;
+
     [DebuggerDisplay("{Name}")]
     public class User : ObservableObject, IComparable
     {
-        #region Enums
-        public enum Status { Online, Offline, Unknown }
-        #endregion
+        public Country _country;
+        public Rank _rank;
 
-        #region Members
-        private string _name;
+        private bool? _canConversation;
         private string _clan;
-        private bool _isBanned = false;
-        private TusAccount _tusAccount;
-        private Status _onlineStatus = Status.Unknown;
-        private UserGroup _group = GlobalManager.DefaultGroup;
         private string _clientName;
+        private UserGroup _group = GlobalManager.DefaultGroup;
+        private bool _isBanned = false;
+        private string _name;
+        private Status _onlineStatus = Status.Unknown;
+        private TusAccount _tusAccount;
         private bool? _usingGreatSnooper;
         private bool? _usingGreatSnooper2;
-        private bool? _canConversation;
-        public Rank _rank;
-        public Country _country;
-        #endregion
 
-        #region Properties
-        public string Name
+        public User(string name, string clan = "")
         {
-            get { return _name; }
-            set
+            this._name = name;
+            this._clan = clan;
+            this.Channels = new HashSet<ChannelViewModel>();
+            this.PMChannels = new HashSet<PMChannelViewModel>();
+            this.AddToChannel = new List<ChannelViewModel>();
+            UserGroup group;
+            if (UserGroups.Users.TryGetValue(name, out group))
             {
-                if (_name != value)
-                {
-                    _name = value;
-                    RaisePropertyChanged("Name");
-                }
+                this._group = group;
+            }
+            else
+            {
+                this._group = GlobalManager.DefaultGroup;
             }
         }
+
+        public enum Status
+        {
+            Online, Offline, Unknown
+        }
+
+        public List<ChannelViewModel> AddToChannel
+        {
+            get;
+            private set;
+        }
+
+        public bool CanConversation
+        {
+            get
+            {
+                if (this._canConversation.HasValue)
+                {
+                    return this._canConversation.Value;
+                }
+
+                if (!UsingGreatSnooper)
+                {
+                    this._canConversation = false;
+                }
+                else
+                {
+                    // Great snooper v1.4
+                    string gsVersion = ClientName.Substring(15);
+                    this._canConversation = Math.Sign(gsVersion.CompareTo("1.4")) != -1;
+                }
+                return this._canConversation.Value;
+            }
+        }
+
+        public HashSet<ChannelViewModel> Channels
+        {
+            get;
+            private set;
+        }
+
         public string Clan
         {
             get
             {
                 if (TusAccount != null)
+                {
                     return TusAccount.Clan;
+                }
                 else
+                {
                     return _clan;
+                }
             }
             set
             {
@@ -60,32 +106,36 @@ namespace GreatSnooper.Model
                 }
             }
         }
-        public Rank Rank
+
+        public string ClientName
         {
             get
             {
-                if (TusAccount != null)
-                    return TusAccount.Rank;
-                else
-                    return _rank;
+                return this._clientName;
             }
             set
             {
-                if (_rank != value)
+                if (this._clientName != value)
                 {
-                    _rank = value;
-                    RaisePropertyChanged("Rank");
+                    this._clientName = value;
+                    this._usingGreatSnooper = null;
+                    this._canConversation = null;
                 }
             }
         }
+
         public Country Country
         {
             get
             {
                 if (TusAccount != null)
+                {
                     return TusAccount.Country;
+                }
                 else
+                {
                     return _country;
+                }
             }
             set
             {
@@ -96,62 +146,25 @@ namespace GreatSnooper.Model
                 }
             }
         }
-        public TusAccount TusAccount
-        {
-            get { return _tusAccount; }
-            set
-            {
-                if (_tusAccount != value)
-                {
-                    _tusAccount = value;
-                    RaisePropertyChanged("Clan");
-                    RaisePropertyChanged("Rank");
-                    RaisePropertyChanged("Country");
-                    RaisePropertyChanged("TusAccount");
-                }
-            }
-        }
-        public Status OnlineStatus
-        {
-            get { return _onlineStatus; }
-            set
-            {
-                if (_onlineStatus != value)
-                {
-                    _onlineStatus = value;
-                    if (value != Status.Online)
-                    {
-                        // Reset client info
-                        TusAccount = null;
-                        ClientName = null;
-                    }
-                    RaisePropertyChanged("OnlineStatus");
-                }
-            }
-        }
-        public bool IsBanned
-        {
-            get { return _isBanned; }
-            set
-            {
-                if (_isBanned != value)
-                {
-                    _isBanned = value;
-                    RaisePropertyChanged("IsBanned");
-                }
-            }
-        }
+
         public UserGroup Group
         {
-            get { return _group; }
+            get
+            {
+                return _group;
+            }
             set
             {
                 if (_group != value)
                 {
                     if (value != null)
+                    {
                         _group = value;
+                    }
                     else
+                    {
                         _group = GlobalManager.DefaultGroup;
+                    }
 
                     // Refresh sorting
                     foreach (var chvm in Channels)
@@ -167,60 +180,135 @@ namespace GreatSnooper.Model
                 }
             }
         }
-        public string ClientName
+
+        public bool IsBanned
         {
-            get { return _clientName; }
+            get
+            {
+                return _isBanned;
+            }
             set
             {
-                if (_clientName != value)
+                if (_isBanned != value)
                 {
-                    _clientName = value;
-                    _usingGreatSnooper = null;
-                    _canConversation = null;
+                    _isBanned = value;
+                    RaisePropertyChanged("IsBanned");
                 }
             }
         }
+
+        public string Name
+        {
+            get
+            {
+                return _name;
+            }
+            set
+            {
+                if (_name != value)
+                {
+                    _name = value;
+                    RaisePropertyChanged("Name");
+                }
+            }
+        }
+
+        public Status OnlineStatus
+        {
+            get
+            {
+                return _onlineStatus;
+            }
+            set
+            {
+                if (_onlineStatus != value)
+                {
+                    _onlineStatus = value;
+                    if (value != Status.Online)
+                    {
+                        // Reset client info
+                        TusAccount = null;
+                        ClientName = null;
+                    }
+                    RaisePropertyChanged("OnlineStatus");
+                }
+            }
+        }
+
+        public HashSet<PMChannelViewModel> PMChannels
+        {
+            get;
+            private set;
+        }
+
+        public Rank Rank
+        {
+            get
+            {
+                if (TusAccount != null)
+                {
+                    return TusAccount.Rank;
+                }
+                else
+                {
+                    return _rank;
+                }
+            }
+            set
+            {
+                if (_rank != value)
+                {
+                    _rank = value;
+                    RaisePropertyChanged("Rank");
+                }
+            }
+        }
+
+        public TusAccount TusAccount
+        {
+            get
+            {
+                return _tusAccount;
+            }
+            set
+            {
+                if (_tusAccount != value)
+                {
+                    _tusAccount = value;
+                    RaisePropertyChanged("Clan");
+                    RaisePropertyChanged("Rank");
+                    RaisePropertyChanged("Country");
+                    RaisePropertyChanged("TusAccount");
+                }
+            }
+        }
+
         public bool UsingGreatSnooper
         {
             get
             {
                 if (_usingGreatSnooper.HasValue)
+                {
                     return _usingGreatSnooper.Value;
+                }
                 _usingGreatSnooper = ClientName != null && ClientName.StartsWith("Great Snooper", StringComparison.OrdinalIgnoreCase);
                 return _usingGreatSnooper.Value;
             }
         }
-        public bool UsingGreatSnooperItalic
-        {
-            get { return Properties.Settings.Default.ItalicForGSUsers && this.UsingGreatSnooper; }
-        }
-        public bool CanConversation
-        {
-            get
-            {
-                if (_canConversation.HasValue)
-                    return _canConversation.Value;
 
-                if (!UsingGreatSnooper)
-                    _canConversation = false;
-                else
-                {
-                    // Great snooper v1.4
-                    string gsVersion = ClientName.Substring(15);
-                    _canConversation = Math.Sign(gsVersion.CompareTo("1.4")) != -1;
-                }
-                return _canConversation.Value;
-            }
-        }
         public bool UsingGreatSnooper2
         {
             get
             {
                 if (_usingGreatSnooper2.HasValue)
+                {
                     return _usingGreatSnooper2.Value;
+                }
 
                 if (!UsingGreatSnooper)
+                {
                     _usingGreatSnooper2 = false;
+                }
                 else
                 {
                     // Great snooper v1.4
@@ -230,42 +318,34 @@ namespace GreatSnooper.Model
                 return _usingGreatSnooper2.Value;
             }
         }
-        public HashSet<ChannelViewModel> Channels { get; private set; }
-        public HashSet<PMChannelViewModel> PMChannels { get; private set; }
-        public List<ChannelViewModel> AddToChannel { get; private set; }
-        #endregion
 
-        public User(string name, string clan = "")
+        public bool UsingGreatSnooperItalic
         {
-            this._name = name;
-            this._clan = clan;
-            this.Channels = new HashSet<ChannelViewModel>();
-            this.PMChannels = new HashSet<PMChannelViewModel>();
-            this.AddToChannel = new List<ChannelViewModel>();
-            UserGroup group;
-            if (UserGroups.Users.TryGetValue(name, out group))
-                this._group = group;
-            else
-                this._group = GlobalManager.DefaultGroup;
+            get
+            {
+                return Properties.Settings.Default.ItalicForGSUsers && this.UsingGreatSnooper;
+            }
         }
 
-        #region IComparable
+        public static bool operator !=(User user1, User user2)
+        {
+            return !(user1 == user2);
+        }
+
+        public static bool operator ==(User user1, User user2)
+        {
+            if (object.ReferenceEquals(user1, null))
+            {
+                return object.ReferenceEquals(user2, null);
+            }
+
+            return user1.Equals(user2);
+        }
+
         public int CompareTo(object obj)
         {
             var o = obj as User;
             return GlobalManager.CIStringComparer.Compare(this.Name, o.Name);
-        }
-        #endregion
-
-        // To use this object with string.Join(",", List<User>);
-        public override string ToString()
-        {
-            return this.Name;
-        }
-
-        public void RaisePropertyChangedPublic(string propertyName)
-        {
-            this.RaisePropertyChanged(propertyName);
         }
 
         public override bool Equals(object obj)
@@ -280,24 +360,20 @@ namespace GreatSnooper.Model
             return this.Name.Equals(item.Name);
         }
 
-        public static bool operator ==(User user1, User user2)
-        {
-            if (object.ReferenceEquals(user1, null))
-            {
-                return object.ReferenceEquals(user2, null);
-            }
-
-            return user1.Equals(user2);
-        }
-
-        public static bool operator !=(User user1, User user2)
-        {
-            return !(user1 == user2);
-        }
-
         public override int GetHashCode()
         {
             return this.Name.GetHashCode();
+        }
+
+        public void RaisePropertyChangedPublic(string propertyName)
+        {
+            this.RaisePropertyChanged(propertyName);
+        }
+
+        // To use this object with string.Join(",", List<User>);
+        public override string ToString()
+        {
+            return this.Name;
         }
     }
 }

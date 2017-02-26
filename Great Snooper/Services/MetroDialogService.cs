@@ -1,11 +1,13 @@
-﻿using GreatSnooper.Helpers;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using System;
-using System.Threading.Tasks;
-
-namespace GreatSnooper.Services
+﻿namespace GreatSnooper.Services
 {
+    using System;
+    using System.Threading.Tasks;
+
+    using GreatSnooper.Helpers;
+
+    using MahApps.Metro.Controls;
+    using MahApps.Metro.Controls.Dialogs;
+
     class MetroDialogService : IMetroDialogService
     {
         private MetroWindow window;
@@ -13,17 +15,6 @@ namespace GreatSnooper.Services
         public MetroDialogService(MetroWindow window)
         {
             this.window = window;
-        }
-
-        public void ShowDialog(string title, string message)
-        {
-            window.ShowMessageAsync(title, message, MessageDialogStyle.Affirmative, GlobalManager.OKDialogSetting);
-        }
-
-        public void ShowDialog(string title, string message, MessageDialogStyle style, MetroDialogSettings settings, Action<Task<MessageDialogResult>> action)
-        {
-            window.ShowMessageAsync(title, message, style, settings)
-                .ContinueWith(action, TaskScheduler.FromCurrentSynchronizationContext());
         }
 
         public void ActivationRequest()
@@ -39,6 +30,17 @@ namespace GreatSnooper.Services
         public MetroWindow GetView()
         {
             return this.window;
+        }
+
+        public void ShowDialog(string title, string message)
+        {
+            this.window.ShowMessageAsync(title, message, MessageDialogStyle.Affirmative, GlobalManager.OKDialogSetting);
+        }
+
+        public void ShowDialog(string title, string message, MessageDialogStyle style, MetroDialogSettings settings, Action<Task<MessageDialogResult>> action)
+        {
+            this.window.ShowMessageAsync(title, message, style, settings)
+            .ContinueWith(action, TaskScheduler.FromCurrentSynchronizationContext());
         }
     }
 }

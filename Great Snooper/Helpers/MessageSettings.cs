@@ -1,27 +1,119 @@
-﻿using GreatSnooper.Model;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Documents;
-using System.Windows.Media;
-
-namespace GreatSnooper.Helpers
+﻿namespace GreatSnooper.Helpers
 {
+    using System.Collections.Generic;
+    using System.Windows;
+    using System.Windows.Documents;
+    using System.Windows.Media;
+
+    using GreatSnooper.Model;
+
     public static class MessageSettings
     {
-        #region Properties
-        public static MessageSetting ChannelMessage { get; private set; }
-        public static MessageSetting JoinMessage { get; private set; }
-        public static MessageSetting QuitMessage { get; private set; }
-        public static MessageSetting PartMessage { get; private set; }
-        public static MessageSetting SystemMessage { get; private set; }
-        public static MessageSetting ActionMessage { get; private set; }
-        public static MessageSetting UserMessage { get; private set; }
-        public static MessageSetting NoticeMessage { get; private set; }
-        public static MessageSetting MessageTimeStyle { get; private set; }
-        public static MessageSetting HyperLinkStyle { get; private set; }
-        public static MessageSetting LeagueFoundMessage { get; private set; }
-        #endregion
+        public static MessageSetting ActionMessage
+        {
+            get;
+            private set;
+        }
 
+        public static MessageSetting ChannelMessage
+        {
+            get;
+            private set;
+        }
+
+        public static MessageSetting HyperLinkStyle
+        {
+            get;
+            private set;
+        }
+
+        public static MessageSetting JoinMessage
+        {
+            get;
+            private set;
+        }
+
+        public static MessageSetting LeagueFoundMessage
+        {
+            get;
+            private set;
+        }
+
+        public static MessageSetting MessageTimeStyle
+        {
+            get;
+            private set;
+        }
+
+        public static MessageSetting NoticeMessage
+        {
+            get;
+            private set;
+        }
+
+        public static MessageSetting PartMessage
+        {
+            get;
+            private set;
+        }
+
+        public static MessageSetting QuitMessage
+        {
+            get;
+            private set;
+        }
+
+        public static MessageSetting SystemMessage
+        {
+            get;
+            private set;
+        }
+
+        public static MessageSetting UserMessage
+        {
+            get;
+            private set;
+        }
+
+        public static MessageSetting GetByMessageType(Message.MessageTypes messageType)
+        {
+            switch (messageType)
+            {
+            case Message.MessageTypes.Action:
+                return ActionMessage;
+
+            case Message.MessageTypes.Channel:
+                return ChannelMessage;
+
+            case Message.MessageTypes.Hyperlink:
+                return HyperLinkStyle;
+
+            case Message.MessageTypes.Join:
+                return JoinMessage;
+
+            case Message.MessageTypes.League:
+                return LeagueFoundMessage;
+
+            case Message.MessageTypes.Notice:
+                return NoticeMessage;
+
+            case Message.MessageTypes.Offline:
+                return SystemMessage;
+
+            case Message.MessageTypes.Part:
+                return PartMessage;
+
+            case Message.MessageTypes.Quit:
+                return QuitMessage;
+
+            case Message.MessageTypes.Time:
+                return MessageTimeStyle;
+
+            case Message.MessageTypes.User:
+                return UserMessage;
+            }
+            return ChannelMessage;
+        }
 
         // This method ensures that the initialization will be made from the appropriate thread
         public static void Initialize()
@@ -39,37 +131,24 @@ namespace GreatSnooper.Helpers
             LeagueFoundMessage = SettingToObj(Properties.Settings.Default.LeagueFoundMessageStyle, Message.MessageTypes.League, true);
         }
 
-        public static MessageSetting SettingToObj(string setting, Message.MessageTypes type, bool oneColorOnly)
+        public static void LoadSettingsFor(System.Windows.Documents.TextElement element, MessageSetting setting)
         {
-            var things = setting.Split('|');
-
-            var nickColor = Color.FromRgb(
-                byte.Parse(things[0].Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
-                byte.Parse(things[0].Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
-                byte.Parse(things[0].Substring(4, 2), System.Globalization.NumberStyles.HexNumber)
-            );
-
-            if (oneColorOnly == false)
+            element.FontFamily = setting.FontFamily;
+            element.FontWeight = setting.Bold;
+            element.FontStyle = setting.Italic;
+            element.FontSize = setting.Size;
+            element.FontWeight = setting.Bold;
+            if (element is Inline)
             {
-                if (things.Length == 7) // Old style messsage settings
-                {
-                    var help = new List<string>(things);
-                    help.Insert(0, help[0]);
-                    things = help.ToArray();
-                }
-
-                var messageColor = Color.FromRgb(
-                    byte.Parse(things[1].Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
-                    byte.Parse(things[1].Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
-                    byte.Parse(things[1].Substring(4, 2), System.Globalization.NumberStyles.HexNumber)
-                );
-
-                return new MessageSetting(nickColor, messageColor, double.Parse(things[2]), things[3], things[4], things[5], things[6], things[7], type);
+                Inline inline = (Inline)element;
+                inline.TextDecorations = setting.Textdecorations;
             }
-            else
-                return new MessageSetting(nickColor, double.Parse(things[1]), things[2], things[3], things[4], things[5], things[6], type);
+            else if (element is Paragraph)
+            {
+                Paragraph p = (Paragraph)element;
+                p.TextDecorations = setting.Textdecorations;
+            }
         }
-
 
         public static string ObjToSetting(MessageSetting obj)
         {
@@ -104,63 +183,35 @@ namespace GreatSnooper.Helpers
             return sb.ToString();
         }
 
-        public static void LoadSettingsFor(System.Windows.Documents.TextElement element, MessageSetting setting)
+        public static MessageSetting SettingToObj(string setting, Message.MessageTypes type, bool oneColorOnly)
         {
-            element.FontFamily = setting.FontFamily;
-            element.FontWeight = setting.Bold;
-            element.FontStyle = setting.Italic;
-            element.FontSize = setting.Size;
-            element.FontWeight = setting.Bold;
-            if (element is Inline)
+            var things = setting.Split('|');
+
+            var nickColor = Color.FromRgb(
+                                byte.Parse(things[0].Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
+                                byte.Parse(things[0].Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
+                                byte.Parse(things[0].Substring(4, 2), System.Globalization.NumberStyles.HexNumber));
+
+            if (oneColorOnly == false)
             {
-                Inline inline = (Inline)element;
-                inline.TextDecorations = setting.Textdecorations;
+                if (things.Length == 7) // Old style messsage settings
+                {
+                    var help = new List<string>(things);
+                    help.Insert(0, help[0]);
+                    things = help.ToArray();
+                }
+
+                var messageColor = Color.FromRgb(
+                                       byte.Parse(things[1].Substring(0, 2), System.Globalization.NumberStyles.HexNumber),
+                                       byte.Parse(things[1].Substring(2, 2), System.Globalization.NumberStyles.HexNumber),
+                                       byte.Parse(things[1].Substring(4, 2), System.Globalization.NumberStyles.HexNumber));
+
+                return new MessageSetting(nickColor, messageColor, double.Parse(things[2]), things[3], things[4], things[5], things[6], things[7], type);
             }
-            else if (element is Paragraph)
+            else
             {
-                Paragraph p = (Paragraph)element;
-                p.TextDecorations = setting.Textdecorations;
+                return new MessageSetting(nickColor, double.Parse(things[1]), things[2], things[3], things[4], things[5], things[6], type);
             }
-        }
-
-        public static MessageSetting GetByMessageType(Message.MessageTypes messageType)
-        {
-            switch (messageType)
-            {
-                case Message.MessageTypes.Action:
-                    return ActionMessage;
-
-                case Message.MessageTypes.Channel:
-                    return ChannelMessage;
-
-                case Message.MessageTypes.Hyperlink:
-                    return HyperLinkStyle;
-
-                case Message.MessageTypes.Join:
-                    return JoinMessage;
-
-                case Message.MessageTypes.League:
-                    return LeagueFoundMessage;
-
-                case Message.MessageTypes.Notice:
-                    return NoticeMessage;
-
-                case Message.MessageTypes.Offline:
-                    return SystemMessage;
-
-                case Message.MessageTypes.Part:
-                    return PartMessage;
-
-                case Message.MessageTypes.Quit:
-                    return QuitMessage;
-
-                case Message.MessageTypes.Time:
-                    return MessageTimeStyle;
-
-                case Message.MessageTypes.User:
-                    return UserMessage;
-            }
-            return ChannelMessage;
         }
     }
 }

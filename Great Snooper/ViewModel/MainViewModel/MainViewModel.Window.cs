@@ -1,53 +1,66 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Input;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GreatSnooper.Helpers;
-using GreatSnooper.Windows;
-
-namespace GreatSnooper.ViewModel
+﻿namespace GreatSnooper.ViewModel
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Input;
+
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.Command;
+
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Windows;
+
     public partial class MainViewModel : ViewModelBase, IDisposable
     {
-        public ICommand WindowActivatedCommand
+        public ICommand ColumnsWidthChangedCommand
         {
-            get { return new RelayCommand(WindowActivated); }
+            get
+            {
+                return new RelayCommand(ColumnsWidthChanged);
+            }
         }
 
-        private void WindowActivated()
+        public ICommand RowsHeightChangedCommand
         {
-            this.IsWindowFlashing = false;
-            if (this.SelectedChannel != null)
-                this.SelectedChannel.ChannelTabVM.ActivateSelectedChannel();
+            get
+            {
+                return new RelayCommand(RowsHeightChanged);
+            }
+        }
+
+        public ICommand WindowActivatedCommand
+        {
+            get
+            {
+                return new RelayCommand(WindowActivated);
+            }
         }
 
         public ICommand WindowStateChangedCommand
         {
-            get { return new RelayCommand(WindowStateChanged); }
-        }
-
-        private void WindowStateChanged()
-        {
-            var window = this.DialogService.GetView();
-            if (window.WindowState == WindowState.Minimized)
+            get
             {
-                if (Properties.Settings.Default.EnergySaveModeWin && !IsEnergySaveMode)
-                    EnterEnergySaveMode();
-            }
-            else
-            {
-                if (IsEnergySaveMode)
-                    this.shouldLeaveEnergySaveMode = true; // Somehow leaving energysave mode doesn't work
-
-                // save window state
-                Properties.Settings.Default.WindowState = (int)window.WindowState;
+                return new RelayCommand(WindowStateChanged);
             }
         }
 
-        public ICommand ColumnsWidthChangedCommand
+        public bool IsGameWindowOn()
         {
-            get { return new RelayCommand(ColumnsWidthChanged); }
+            var lobby = NativeMethods.FindWindow(null, "Worms Armageddon");
+            if (lobby != IntPtr.Zero)
+            {
+                return NativeMethods.GetPlacement(lobby).showCmd == ShowWindowCommands.Normal;
+            }
+
+            return false;
+        }
+
+        internal void FlashWindow()
+        {
+            if (Properties.Settings.Default.TrayFlashing && this.IsWindowActive == false && this.IsWindowFlashing == false)
+            {
+                this.IsWindowFlashing = true;
+            }
         }
 
         private void ColumnsWidthChanged()
@@ -56,9 +69,15 @@ namespace GreatSnooper.ViewModel
             this.RightColumnWidth = ((MainWindow)this.DialogService.GetView()).RightColumn.Width;
         }
 
-        public ICommand RowsHeightChangedCommand
+        private void HideWindow()
         {
-            get { return new RelayCommand(RowsHeightChanged); }
+            this.DialogService.GetView().Hide();
+            this.isHidden = true;
+
+            if (Properties.Settings.Default.EnergySaveModeWin && !IsEnergySaveMode)
+            {
+                EnterEnergySaveMode();
+            }
         }
 
         private void RowsHeightChanged()
@@ -67,29 +86,35 @@ namespace GreatSnooper.ViewModel
             this.BottomRowHeight = ((MainWindow)this.DialogService.GetView()).BottomRow.Height;
         }
 
-        private void HideWindow()
+        private void WindowActivated()
         {
-            this.DialogService.GetView().Hide();
-            this.isHidden = true;
-
-            if (Properties.Settings.Default.EnergySaveModeWin && !IsEnergySaveMode)
-                EnterEnergySaveMode();
+            this.IsWindowFlashing = false;
+            if (this.SelectedChannel != null)
+            {
+                this.SelectedChannel.ChannelTabVM.ActivateSelectedChannel();
+            }
         }
 
-        internal void FlashWindow()
+        private void WindowStateChanged()
         {
-            if (Properties.Settings.Default.TrayFlashing && this.IsWindowActive == false && this.IsWindowFlashing == false)
-                this.IsWindowFlashing = true;
+            var window = this.DialogService.GetView();
+            if (window.WindowState == WindowState.Minimized)
+            {
+                if (Properties.Settings.Default.EnergySaveModeWin && !IsEnergySaveMode)
+                {
+                    EnterEnergySaveMode();
+                }
+            }
+            else
+            {
+                if (IsEnergySaveMode)
+                {
+                    this.shouldLeaveEnergySaveMode = true;    // Somehow leaving energysave mode doesn't work
+                }
+
+                // save window state
+                Properties.Settings.Default.WindowState = (int)window.WindowState;
+            }
         }
-
-        public bool IsGameWindowOn()
-        {
-            var lobby = NativeMethods.FindWindow(null, "Worms Armageddon");
-            if (lobby != IntPtr.Zero)
-                return NativeMethods.GetPlacement(lobby).showCmd == ShowWindowCommands.Normal;
-
-            return false;
-        }
-
     }
 }

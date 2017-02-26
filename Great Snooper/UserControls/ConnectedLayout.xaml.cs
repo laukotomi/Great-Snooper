@@ -1,8 +1,9 @@
-﻿using GreatSnooper.ViewModel;
-using System.Windows.Controls;
-
-namespace GreatSnooper.UserControls
+﻿namespace GreatSnooper.UserControls
 {
+    using System.Windows.Controls;
+
+    using GreatSnooper.ViewModel;
+
     public partial class ConnectedLayout : Border
     {
         public ConnectedLayout(AbstractChannelViewModel chvm)
@@ -15,7 +16,9 @@ namespace GreatSnooper.UserControls
         {
             ((AbstractChannelViewModel)this.DataContext).MsgPreviewKeyDownCommand.Execute(e);
             if (e.Handled)
+            {
                 ((TextBox)sender).SelectAll();
+            }
         }
     }
 }

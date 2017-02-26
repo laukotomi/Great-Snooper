@@ -1,23 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Threading.Tasks;
-using System.Xml;
-using GalaSoft.MvvmLight;
-using GreatSnooper.Classes;
-using GreatSnooper.Helpers;
-using GreatSnooper.Model;
-using MahApps.Metro.Controls.Dialogs;
-
-namespace GreatSnooper.ViewModel
+﻿namespace GreatSnooper.ViewModel
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Threading.Tasks;
+    using System.Xml;
+
+    using GalaSoft.MvvmLight;
+
+    using GreatSnooper.Classes;
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Model;
+
+    using MahApps.Metro.Controls.Dialogs;
+
     public partial class MainViewModel : ViewModelBase, IDisposable
     {
         internal void ContentRendered(object sender, EventArgs e)
         {
             if (this.closing)
+            {
                 return;
+            }
 
             string latestVersion = string.Empty;
             bool openNews = false;
@@ -32,7 +37,10 @@ namespace GreatSnooper.ViewModel
                     {
                         string settingsXMLPathTemp = GlobalManager.SettingsPath + @"\SettingsTemp.xml";
 
-                        using (WebDownload webClient = new WebDownload() { Proxy = null })
+                        using (WebDownload webClient = new WebDownload()
+                        {
+                            Proxy = null
+                        })
                         {
                             webClient.DownloadFile("https://www.dropbox.com/s/5h5boog570q1nap/SnooperSettings.xml?dl=1", settingsXMLPathTemp);
                         }
@@ -41,7 +49,9 @@ namespace GreatSnooper.ViewModel
                         GlobalManager.SpamAllowed = true;
 
                         if (File.Exists(settingsXMLPath))
+                        {
                             File.Delete(settingsXMLPath);
+                        }
 
                         File.Move(settingsXMLPathTemp, settingsXMLPath);
                     }
@@ -57,8 +67,8 @@ namespace GreatSnooper.ViewModel
                 if (File.Exists(settingsXMLPath))
                 {
                     HashSet<string> serverList = new HashSet<string>(
-                        Properties.Settings.Default.ServerAddresses.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries)
-                        , GlobalManager.CIStringComparer);
+                        Properties.Settings.Default.ServerAddresses.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
+                        GlobalManager.CIStringComparer);
                     bool updateServers = false;
 
                     using (XmlReader xml = XmlReader.Create(settingsXMLPath))
@@ -99,7 +109,9 @@ namespace GreatSnooper.ViewModel
                                 inner.MoveToFirstAttribute();
                                 newsThings.Add(inner.Name, inner.Value);
                                 while (inner.MoveToNextAttribute())
+                                {
                                     newsThings.Add(inner.Name, inner.Value);
+                                }
 
                                 int id;
                                 double fontsize;
@@ -108,7 +120,9 @@ namespace GreatSnooper.ViewModel
                                     && newsThings.ContainsKey("fontsize") && double.TryParse(newsThings["fontsize"], out fontsize) && newsThings.ContainsKey("bbcode"))
                                 {
                                     if (newsThings["show"] == "1" && id > Properties.Settings.Default.LastNewsID)
+                                    {
                                         openNews = true;
+                                    }
 
                                     newsList.Add(new News(id, newsThings["show"] == "1", newsThings["background"], newsThings["textcolor"], fontsize, newsThings["bbcode"]));
                                 }
@@ -121,7 +135,9 @@ namespace GreatSnooper.ViewModel
                     }
 
                     if (updateServers)
+                    {
                         SettingsHelper.Save("ServerAddresses", serverList);
+                    }
                 }
                 else
                 {
@@ -143,7 +159,9 @@ namespace GreatSnooper.ViewModel
                 if (!GlobalManager.SpamAllowed && Properties.Settings.Default.LoadCommonSettings)
                 {
                     if (t.IsFaulted)
+                    {
                         ErrorLog.Log(t.Exception);
+                    }
                     this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.CommonSettingFailText);
                 }
                 else if (t.IsFaulted)
@@ -154,35 +172,35 @@ namespace GreatSnooper.ViewModel
                 else if (Math.Sign(App.GetVersion().CompareTo(latestVersion)) == -1) // we need update only if it is newer than this version
                 {
                     this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.InformationText, Localizations.GSLocalization.Instance.NewVersionText,
-                        MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative, GlobalManager.YesNoDialogSetting, (tt) =>
+                                                  MahApps.Metro.Controls.Dialogs.MessageDialogStyle.AffirmativeAndNegative, GlobalManager.YesNoDialogSetting, (tt) =>
+                    {
+                        if (tt.Result == MessageDialogResult.Affirmative)
                         {
-                            if (tt.Result == MessageDialogResult.Affirmative)
+                            try
                             {
-                                try
+                                Process p = new Process();
+                                if (Environment.OSVersion.Version.Major >= 6) // Vista or higher (to get admin rights).. on xp this causes fail!
                                 {
-                                    Process p = new Process();
-                                    if (Environment.OSVersion.Version.Major >= 6) // Vista or higher (to get admin rights).. on xp this causes fail!
-                                    {
-                                        p.StartInfo.UseShellExecute = true;
-                                        p.StartInfo.Verb = "runas";
-                                    }
-                                    p.StartInfo.FileName = "Updater2.exe";
-                                    p.Start();
-                                    this.Dispatcher.BeginInvoke(new Action(() =>
-                                    {
-                                        this.CloseCommand.Execute(null);
-                                    }));
-                                    return;
+                                    p.StartInfo.UseShellExecute = true;
+                                    p.StartInfo.Verb = "runas";
                                 }
-                                catch (Exception ex)
+                                p.StartInfo.FileName = "Updater2.exe";
+                                p.Start();
+                                this.Dispatcher.BeginInvoke(new Action(() =>
                                 {
-                                    ErrorLog.Log(ex);
-                                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.UpdaterFailText);
-                                }
+                                    this.CloseCommand.Execute(null);
+                                }));
+                                return;
                             }
-                            else if (openNews)
-                                OpenNewsCommand.Execute(null);
-                        });
+                            catch (Exception ex)
+                            {
+                                ErrorLog.Log(ex);
+                                this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.UpdaterFailText);
+                            }
+                        }
+                        else if (openNews)
+                            OpenNewsCommand.Execute(null);
+                    });
                 }
                 else if (openNews)
                     OpenNewsCommand.Execute(null);

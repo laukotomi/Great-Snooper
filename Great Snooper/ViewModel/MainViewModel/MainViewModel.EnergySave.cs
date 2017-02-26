@@ -1,9 +1,10 @@
-﻿using System;
-using System.Windows;
-using GalaSoft.MvvmLight;
-
-namespace GreatSnooper.ViewModel
+﻿namespace GreatSnooper.ViewModel
 {
+    using System;
+    using System.Windows;
+
+    using GalaSoft.MvvmLight;
+
     public partial class MainViewModel : ViewModelBase, IDisposable
     {
         public void EnterEnergySaveMode()
@@ -26,9 +27,13 @@ namespace GreatSnooper.ViewModel
                     if (chvm != null)
                     {
                         if (chvm.UserListDG != null)
+                        {
                             chvm.UserListDG.ItemsSource = null;
+                        }
                         if (chvm.GameListGrid != null)
+                        {
                             chvm.GameListGrid.DataContext = null;
+                        }
                     }
                 }
             }
@@ -37,7 +42,9 @@ namespace GreatSnooper.ViewModel
         private void LeaveEnergySaveMode()
         {
             if (this.isHidden || this.DialogService.GetView().WindowState == WindowState.Minimized)
+            {
                 return;
+            }
             var screenBounds = System.Windows.Forms.Screen.PrimaryScreen.Bounds;
             if (screenBounds.Height == 480 && screenBounds.Width == 640)
             {
@@ -60,10 +67,14 @@ namespace GreatSnooper.ViewModel
                             chvm.UserListDG.SetDefaultOrderForGrid();
                         }
                         if (chvm.GameListGrid != null)
+                        {
                             chvm.GameListGrid.DataContext = chvm;
+                        }
                     }
                     if (item.Value.Joined && item.Value.HiddenMessagesInEnergySaveMode)
+                    {
                         item.Value.LoadNewMessages();
+                    }
                 }
             }
         }

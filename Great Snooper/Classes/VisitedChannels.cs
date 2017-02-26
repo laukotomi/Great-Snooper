@@ -1,32 +1,16 @@
-﻿using System.Collections.Generic;
-
-namespace GreatSnooper.Classes
+﻿namespace GreatSnooper.Classes
 {
+    using System.Collections.Generic;
+
     class VisitedChannels
     {
         private List<int> visitedChannels = new List<int>();
 
-        public void Visit(int channelIndex)
-        {
-            this.visitedChannels.Remove(channelIndex);
-            this.visitedChannels.Add(channelIndex);
-        }
-
         public int Count
         {
-            get { return this.visitedChannels.Count; }
-        }
-
-        public void HandleRemovedIndex(int index)
-        {
-            this.visitedChannels.Remove(index);
-
-            for (int i = 0; i < this.visitedChannels.Count; i++)
+            get
             {
-                if (this.visitedChannels[i] > index)
-                {
-                    this.visitedChannels[i]--;
-                }
+                return this.visitedChannels.Count;
             }
         }
 
@@ -46,6 +30,25 @@ namespace GreatSnooper.Classes
                 return this.visitedChannels[this.visitedChannels.Count - 1];
             }
             return -1;
+        }
+
+        public void HandleRemovedIndex(int index)
+        {
+            this.visitedChannels.Remove(index);
+
+            for (int i = 0; i < this.visitedChannels.Count; i++)
+            {
+                if (this.visitedChannels[i] > index)
+                {
+                    this.visitedChannels[i]--;
+                }
+            }
+        }
+
+        public void Visit(int channelIndex)
+        {
+            this.visitedChannels.Remove(channelIndex);
+            this.visitedChannels.Add(channelIndex);
         }
     }
 }

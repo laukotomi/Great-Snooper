@@ -1,18 +1,19 @@
-﻿using GreatSnooper.Classes;
-using GreatSnooper.Helpers;
-using GreatSnooper.Model;
-using GreatSnooper.ViewModel;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace GreatSnooper.IRCTasks
+﻿namespace GreatSnooper.IRCTasks
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text;
+
+    using GreatSnooper.Classes;
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Model;
+    using GreatSnooper.ViewModel;
+
     class NamesTask : IRCTask
     {
-        private string[] names;
         private string channelName;
+        private string[] names;
 
         public NamesTask(AbstractCommunicator sender, string channelName, string[] names)
         {
@@ -39,7 +40,9 @@ namespace GreatSnooper.IRCTasks
                         chvm.AddUser(user);
                     }
                     else if (user.Channels.Contains(chvm) == false)
+                    {
                         chvm.AddUser(user);
+                    }
                 }
             }
         }

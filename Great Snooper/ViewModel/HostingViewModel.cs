@@ -1,67 +1,35 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GreatSnooper.EventArguments;
-using GreatSnooper.Helpers;
-using GreatSnooper.Services;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Threading;
-
-namespace GreatSnooper.ViewModel
+﻿namespace GreatSnooper.ViewModel
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Windows;
+    using System.Windows.Input;
+    using System.Windows.Threading;
+
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.Command;
+
+    using GreatSnooper.EventArguments;
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Services;
+
     class HostingViewModel : ViewModelBase
     {
-        #region Static
         private static Regex PassRegex = new Regex(@"^[a-z]*$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
-        #endregion
 
-        #region Enums
-        private enum HosterErrors { NoError, WormNatError, WormNatInitError, FailedToGetLocalIP, CreateGameFailed, NoGameID, FailedToStartTheGame, Unkown, WormNatClientError }
-        #endregion
-
-        #region Members
-        private bool _loading;
-
-        private string serverAddress;
-        private ChannelViewModel channel;
         private string cc;
-
+        private ChannelViewModel channel;
         private Dispatcher dispatcher;
         private Process gameProcess;
-        #endregion
-
-        #region Properties
-        public MainViewModel MVM { get; private set; }
-        public IMetroDialogService DialogService { get; set; }
-        public string GameName { get; set; }
-        public string GamePassword { get; set; }
-        public bool? UsingWormNat2 { get; set; }
-        public bool? InfoToChannel { get; set; }
-        public bool? ExitSnooper { get; set; }
-        public bool Loading
-        {
-            get { return _loading; }
-            private set
-            {
-                if (_loading != value)
-                {
-                    _loading = value;
-                    RaisePropertyChanged("Loading");
-                }
-            }
-        }
-
-        public int SelectedWaExe { get; set; }
-        #endregion
+        private string serverAddress;
+        private bool _loading;
 
         public HostingViewModel(MainViewModel mvm, string serverAddress, ChannelViewModel channel, string cc)
         {
@@ -80,22 +48,94 @@ namespace GreatSnooper.ViewModel
             this.dispatcher = Dispatcher.CurrentDispatcher;
         }
 
-        #region CloseCommand
+        private enum HosterErrors
+        {
+            NoError, WormNatError, WormNatInitError, FailedToGetLocalIP, CreateGameFailed, NoGameID, FailedToStartTheGame, Unkown, WormNatClientError
+        }
+
         public ICommand CloseCommand
         {
-            get { return new RelayCommand(Close); }
+            get
+            {
+                return new RelayCommand(Close);
+            }
+        }
+
+        public ICommand CreateGameCommand
+        {
+            get
+            {
+                return new RelayCommand(CreateGame);
+            }
+        }
+
+        public IMetroDialogService DialogService
+        {
+            get;
+            set;
+        }
+
+        public bool? ExitSnooper
+        {
+            get;
+            set;
+        }
+
+        public string GameName
+        {
+            get;
+            set;
+        }
+
+        public string GamePassword
+        {
+            get;
+            set;
+        }
+
+        public bool? InfoToChannel
+        {
+            get;
+            set;
+        }
+
+        public bool Loading
+        {
+            get
+            {
+                return _loading;
+            }
+            private set
+            {
+                if (_loading != value)
+                {
+                    _loading = value;
+                    RaisePropertyChanged("Loading");
+                }
+            }
+        }
+
+        public MainViewModel MVM
+        {
+            get;
+            private set;
+        }
+
+        public int SelectedWaExe
+        {
+            get;
+            set;
+        }
+
+        public bool? UsingWormNat2
+        {
+            get;
+            set;
         }
 
         private void Close()
         {
             this.DialogService.CloseRequest();
-        }
-        #endregion
-
-        #region CreateGameCommand
-        public ICommand CreateGameCommand
-        {
-            get { return new RelayCommand(CreateGame); }
         }
 
         private void CreateGame()
@@ -172,19 +212,18 @@ namespace GreatSnooper.ViewModel
                 string waExe = (this.SelectedWaExe == 0) ? Properties.Settings.Default.WaExe : Properties.Settings.Default.WaExe2;
 
                 string arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" \"{8}\" \"{9}\" \"{10}\" \"{11}\"",
-                    serverAddress,
-                    waExe,
-                    channel.Server.User.Name,
-                    sb.ToString(),
-                    GamePassword,
-                    channel.Name.Substring(1),
-                    channel.Scheme,
-                    channel.Server.User.Country.ID.ToString(),
-                    cc,
-                    wormnat,
-                    highPriority,
-                    GlobalManager.SettingsPath
-                );
+                                                 serverAddress,
+                                                 waExe,
+                                                 channel.Server.User.Name,
+                                                 sb.ToString(),
+                                                 GamePassword,
+                                                 channel.Name.Substring(1),
+                                                 channel.Scheme,
+                                                 channel.Server.User.Country.ID.ToString(),
+                                                 cc,
+                                                 wormnat,
+                                                 highPriority,
+                                                 GlobalManager.SettingsPath);
 
                 string success = TryHostGame(arguments);
 
@@ -207,27 +246,27 @@ namespace GreatSnooper.ViewModel
                 }
                 switch (result)
                 {
-                    case HosterErrors.CreateGameFailed:
-                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterCreateGameFail);
-                        return;
-                        
-                    case HosterErrors.FailedToStartTheGame:
-                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterStartGameFail);
-                        return;
+                case HosterErrors.CreateGameFailed:
+                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterCreateGameFail);
+                    return;
 
-                    case HosterErrors.NoGameID:
-                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterNoGameIDError);
-                        return;
+                case HosterErrors.FailedToStartTheGame:
+                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterStartGameFail);
+                    return;
 
-                    case HosterErrors.FailedToGetLocalIP:
-                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterFailedToGetLocalIP);
-                        return;
+                case HosterErrors.NoGameID:
+                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterNoGameIDError);
+                    return;
 
-                    case HosterErrors.WormNatClientError:
-                    case HosterErrors.WormNatError:
-                    case HosterErrors.WormNatInitError:
-                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterWormNatError);
-                        return;
+                case HosterErrors.FailedToGetLocalIP:
+                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterFailedToGetLocalIP);
+                    return;
+
+                case HosterErrors.WormNatClientError:
+                case HosterErrors.WormNatError:
+                case HosterErrors.WormNatInitError:
+                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterWormNatError);
+                    return;
                 }
 
                 this.dispatcher.BeginInvoke(new Action(() =>
@@ -278,6 +317,5 @@ namespace GreatSnooper.ViewModel
             }
             return string.Empty;
         }
-        #endregion
     }
 }

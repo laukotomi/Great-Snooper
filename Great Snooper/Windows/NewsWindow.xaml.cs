@@ -1,10 +1,12 @@
-﻿using GreatSnooper.Model;
-using GreatSnooper.ViewModel;
-using MahApps.Metro.Controls;
-using System.Collections.Generic;
-
-namespace GreatSnooper.Windows
+﻿namespace GreatSnooper.Windows
 {
+    using System.Collections.Generic;
+
+    using GreatSnooper.Model;
+    using GreatSnooper.ViewModel;
+
+    using MahApps.Metro.Controls;
+
     public partial class NewsWindow : MetroWindow
     {
         private NewsViewModel vm;
@@ -13,7 +15,7 @@ namespace GreatSnooper.Windows
         {
             this.vm = new NewsViewModel(news);
             this.DataContext = vm;
-            InitializeComponent(); 
+            InitializeComponent();
         }
     }
 }

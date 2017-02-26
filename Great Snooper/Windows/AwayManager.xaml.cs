@@ -1,10 +1,12 @@
-﻿using GreatSnooper.Services;
-using GreatSnooper.ViewModel;
-using MahApps.Metro.Controls;
-using System.Windows;
-
-namespace GreatSnooper.Windows
+﻿namespace GreatSnooper.Windows
 {
+    using System.Windows;
+
+    using GreatSnooper.Services;
+    using GreatSnooper.ViewModel;
+
+    using MahApps.Metro.Controls;
+
     public partial class AwayManager : MetroWindow
     {
         private AwayViewModel vm;

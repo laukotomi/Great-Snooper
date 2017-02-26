@@ -1,11 +1,12 @@
-﻿using GreatSnooper.Helpers;
-using GreatSnooper.Services;
-using GreatSnooper.ViewModel;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-
-namespace GreatSnooper.Windows
+﻿namespace GreatSnooper.Windows
 {
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Services;
+    using GreatSnooper.ViewModel;
+
+    using MahApps.Metro.Controls;
+    using MahApps.Metro.Controls.Dialogs;
+
     public partial class NotificatorWindow : MetroWindow
     {
         private NotificatorViewModel vm;

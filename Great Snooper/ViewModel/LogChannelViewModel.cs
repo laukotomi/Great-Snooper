@@ -1,28 +1,27 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Windows;
-using System.Windows.Controls;
-using GreatSnooper.Classes;
-using GreatSnooper.Helpers;
-using GreatSnooper.Localizations;
-using GreatSnooper.Model;
-using GreatSnooper.Windows;
-
-namespace GreatSnooper.ViewModel
+﻿namespace GreatSnooper.ViewModel
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Windows;
+    using System.Windows.Controls;
+
+    using GreatSnooper.Classes;
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Localizations;
+    using GreatSnooper.Model;
+    using GreatSnooper.Windows;
+
     public class LogChannelViewModel : AbstractChannelViewModel
     {
-        #region Static
-        private static Regex logMessageRegex = new Regex(@"^\((?<type>\w+)\) (?<date>\d+\-\d+\-\d+ \d+:\d+:\d+) (?<sender>[^:]+):(?<text>.*)", RegexOptions.Compiled);
         private static Regex logChannelClosedRegex = new Regex(@"^(?<date>\d+\-\d+\-\d+ \d+:\d+:\d+) Channel closed\.$", RegexOptions.Compiled);
-        #endregion
+        private static Regex logMessageRegex = new Regex(@"^\((?<type>\w+)\) (?<date>\d+\-\d+\-\d+ \d+:\d+:\d+) (?<sender>[^:]+):(?<text>.*)", RegexOptions.Compiled);
 
         public LogChannelViewModel(MainViewModel mainViewModel, AbstractCommunicator server, string channelName)
-            : base(mainViewModel, server)
+        : base(mainViewModel, server)
         {
             this.Joined = true;
             this.Disabled = true;
@@ -65,7 +64,9 @@ namespace GreatSnooper.ViewModel
                                 }
                             }
                             if (done)
+                            {
                                 break;
+                            }
                         }
                     }
 
@@ -85,9 +86,7 @@ namespace GreatSnooper.ViewModel
                                         m.Groups["text"].Value,
                                         MessageSettings.GetByMessageType(messageType),
                                         time,
-                                        true
-                                    )
-                                );
+                                        true));
                             }
                             continue;
                         }
@@ -103,9 +102,7 @@ namespace GreatSnooper.ViewModel
                                         GSLocalization.Instance.EndOfConversation,
                                         MessageSettings.SystemMessage,
                                         time,
-                                        true
-                                    )
-                                );
+                                        true));
                             }
                         }
                     }
@@ -119,7 +116,10 @@ namespace GreatSnooper.ViewModel
 
         public override void ClearUsers()
         {
+        }
 
+        public override void EndLogging()
+        {
         }
 
         public override TabItem GetLayout()
@@ -129,42 +129,30 @@ namespace GreatSnooper.ViewModel
 
         public override void ProcessMessage(IRCTasks.MessageTask msgTask)
         {
-
         }
 
         public override void SendActionMessage(string message)
         {
-
         }
 
         public override void SendCTCPMessage(string ctcpCommand, string ctcpText, User except = null)
         {
-
         }
 
         public override void SendMessage(string message)
         {
-
         }
 
         public override void SendNotice(string message)
         {
-
         }
 
         public override void SetLoading(bool loading = true)
         {
-
         }
 
         protected override void LogMessage(Message msg)
         {
-
-        }
-
-        public override void EndLogging()
-        {
-
         }
     }
 }

@@ -1,22 +1,10 @@
-﻿using GreatSnooper.Classes;
-using GreatSnooper.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace GreatSnooper.Helpers
+﻿namespace GreatSnooper.Helpers
 {
+    using GreatSnooper.Classes;
+    using GreatSnooper.Model;
+
     public static class UserHelper
     {
-        public static User GetUser(AbstractCommunicator server, string name, string clan = "")
-        {
-            User user;
-            if (!server.Users.TryGetValue(name, out user))
-                return CreateUser(server, name, clan);
-            return user;
-        }
-
         public static User CreateUser(AbstractCommunicator server, string name, string clan = "")
         {
             User user = new User(name, clan);
@@ -41,7 +29,18 @@ namespace GreatSnooper.Helpers
                 u.TusAccount.User = null;
                 u.TusAccount = null;
             }
-            server.Users.Remove(u.Name);
+            // server.Users.Remove(u.Name);
+            u.OnlineStatus = User.Status.Offline;
+        }
+
+        public static User GetUser(AbstractCommunicator server, string name, string clan = "")
+        {
+            User user;
+            if (!server.Users.TryGetValue(name, out user))
+            {
+                return CreateUser(server, name, clan);
+            }
+            return user;
         }
     }
 }

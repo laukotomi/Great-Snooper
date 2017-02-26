@@ -1,39 +1,57 @@
-﻿using GreatSnooper.UserControls;
-using GreatSnooper.ViewModel;
-using Hardcodet.Wpf.TaskbarNotification;
-using System;
-
-namespace GreatSnooper.Services
+﻿namespace GreatSnooper.Services
 {
+    using System;
+
+    using GreatSnooper.UserControls;
+    using GreatSnooper.ViewModel;
+
+    using Hardcodet.Wpf.TaskbarNotification;
+
     public class TaskbarIconService : ITaskbarIconService, IDisposable
     {
-        public TaskbarIcon Icon { get; private set; }
+        bool disposed = false;
 
         public TaskbarIconService(TaskbarIcon icon)
         {
             this.Icon = icon;
         }
 
-        public void ShowMessage(string message, AbstractChannelViewModel chvm = null)
+        ~TaskbarIconService()
         {
-            this.Icon.ShowCustomBalloon(new GSBalloon(chvm) { BalloonText = message }, System.Windows.Controls.Primitives.PopupAnimation.None, 5000);
+            this.Dispose(false);
         }
 
-        #region IDisposable
-        bool disposed = false;
+        public TaskbarIcon Icon
+        {
+            get;
+            private set;
+        }
 
         public void Dispose()
         {
-            Dispose(true);
+            this.Dispose(true);
             GC.SuppressFinalize(this);
+        }
+
+        public void ShowMessage(string message, AbstractChannelViewModel chvm = null)
+        {
+            this.Icon.ShowCustomBalloon(
+                new GSBalloon(chvm)
+                {
+                    BalloonText = message
+                },
+                System.Windows.Controls.Primitives.PopupAnimation.None,
+                5000);
         }
 
         protected virtual void Dispose(bool disposing)
         {
-            if (disposed)
+            if (this.disposed)
+            {
                 return;
+            }
 
-            disposed = true;
+            this.disposed = true;
 
             if (disposing)
             {
@@ -44,12 +62,5 @@ namespace GreatSnooper.Services
                 }
             }
         }
-
-        ~TaskbarIconService()
-        {
-            Dispose(false);
-        }
-
-        #endregion
     }
 }

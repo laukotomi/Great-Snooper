@@ -1,12 +1,15 @@
-﻿using GreatSnooper.Services;
-using GreatSnooper.ViewModel;
-using MahApps.Metro.Controls;
-using System;
-
-namespace GreatSnooper.Windows
+﻿namespace GreatSnooper.Windows
 {
+    using System;
+
+    using GreatSnooper.Services;
+    using GreatSnooper.ViewModel;
+
+    using MahApps.Metro.Controls;
+
     public partial class SettingsWindow : MetroWindow, IDisposable
     {
+        bool disposed = false;
         private SettingsViewModel vm;
 
         public SettingsWindow()
@@ -18,8 +21,10 @@ namespace GreatSnooper.Windows
             InitializeComponent();
         }
 
-        #region IDisposable
-        bool disposed = false;
+        ~SettingsWindow()
+        {
+            Dispose(false);
+        }
 
         public void Dispose()
         {
@@ -30,7 +35,9 @@ namespace GreatSnooper.Windows
         protected virtual void Dispose(bool disposing)
         {
             if (disposed)
+            {
                 return;
+            }
 
             disposed = true;
 
@@ -43,12 +50,5 @@ namespace GreatSnooper.Windows
                 }
             }
         }
-
-        ~SettingsWindow()
-        {
-            Dispose(false);
-        }
-
-        #endregion
     }
 }

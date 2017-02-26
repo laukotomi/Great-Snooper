@@ -1,12 +1,14 @@
-﻿using GreatSnooper.Model;
-using GreatSnooper.Services;
-using GreatSnooper.ViewModel;
-using MahApps.Metro.Controls;
-using System.Collections.Generic;
-using System.Windows;
-
-namespace GreatSnooper.Windows
+﻿namespace GreatSnooper.Windows
 {
+    using System.Collections.Generic;
+    using System.Windows;
+
+    using GreatSnooper.Model;
+    using GreatSnooper.Services;
+    using GreatSnooper.ViewModel;
+
+    using MahApps.Metro.Controls;
+
     public partial class LeagueSearcherWindow : MetroWindow
     {
         private LeagueSearcherViewModel vm;

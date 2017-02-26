@@ -1,18 +1,15 @@
-﻿using GreatSnooper.Classes;
-using GreatSnooper.Helpers;
-using GreatSnooper.Model;
-using GreatSnooper.ViewModel;
-using System;
-using System.Linq;
-
-namespace GreatSnooper.IRCTasks
+﻿namespace GreatSnooper.IRCTasks
 {
+    using System;
+    using System.Linq;
+
+    using GreatSnooper.Classes;
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Model;
+    using GreatSnooper.ViewModel;
+
     public class JoinedTask : IRCTask
     {
-        public string ChannelHash { get; private set; }
-        public string ClientName { get; private set; }
-        public string Clan { get; private set; }
-
         public JoinedTask(AbstractCommunicator sender, string channelHash, string clientName, string clan)
         {
             this.Sender = sender;
@@ -21,32 +18,56 @@ namespace GreatSnooper.IRCTasks
             this.Clan = clan;
         }
 
+        public string ChannelHash
+        {
+            get;
+            private set;
+        }
+
+        public string Clan
+        {
+            get;
+            private set;
+        }
+
+        public string ClientName
+        {
+            get;
+            private set;
+        }
+
         public override void DoTask(MainViewModel mvm)
         {
             AbstractChannelViewModel temp;
-            if (!Sender.Channels.TryGetValue(ChannelHash, out temp))
+            if (!Sender.Channels.TryGetValue(this.ChannelHash, out temp))
             {
                 if (Sender.HandleJoinRequest)
-                    temp = new ChannelViewModel(mvm, this.Sender, ChannelHash, "");
+                {
+                    temp = new ChannelViewModel(mvm, this.Sender, this.ChannelHash, string.Empty);
+                }
                 else
+                {
                     return;
+                }
             }
 
             ChannelViewModel chvm = temp as ChannelViewModel;
             if (chvm == null)
+            {
                 return;
+            }
 
-            if (ClientName.Equals(Sender.User.Name, StringComparison.OrdinalIgnoreCase) == false)
+            if (this.ClientName.Equals(Sender.User.Name, StringComparison.OrdinalIgnoreCase) == false)
             {
                 if (chvm.Joined)
                 {
-                    User u = UserHelper.GetUser(Sender, ClientName, Clan);
+                    User u = UserHelper.GetUser(Sender, this.ClientName, this.Clan);
                     if (u.OnlineStatus != User.Status.Online)
                     {
                         u.OnlineStatus = User.Status.Online;
                         if (Properties.Settings.Default.UseWhoMessages)
                         {
-                            this.Sender.GetInfoAboutClient(this, ClientName);
+                            this.Sender.GetInfoAboutClient(this, this.ClientName);
                             u.AddToChannel.Add(chvm); // Client will be added to the channel if information is arrived to keep the client list sorted properly
                         }
                         else
@@ -65,14 +86,20 @@ namespace GreatSnooper.IRCTasks
                         else if (u.Group.ID != UserGroups.SystemGroupID)
                         {
                             if (Properties.Settings.Default.TrayNotifications)
+                            {
                                 mvm.ShowTrayMessage(string.Format(Localizations.GSLocalization.Instance.OnlineMessage, u.Name), chvm);
+                            }
                             if (u.Group.SoundEnabled)
+                            {
                                 Sounds.PlaySound(u.Group.Sound);
+                            }
                         }
                         chvm.AddMessage(msg);
 
                         foreach (var channel in u.PMChannels)
+                        {
                             channel.AddMessage(u, Localizations.GSLocalization.Instance.PMOnlineMessage, MessageSettings.JoinMessage);
+                        }
                     }
                     else
                     {
@@ -98,7 +125,9 @@ namespace GreatSnooper.IRCTasks
                     });
                 }
                 else
-                    FinishJoin(chvm);
+                {
+                    this.FinishJoin(chvm);
+                }
             }
         }
 
@@ -109,7 +138,9 @@ namespace GreatSnooper.IRCTasks
             if (chvm.MainViewModel.SelectedChannel == chvm)
             {
                 if (chvm.CanHost)
+                {
                     chvm.MainViewModel.GameListRefresh = true;
+                }
                 chvm.MainViewModel.DialogService.GetView().UpdateLayout();
                 chvm.IsTBFocused = true;
             }

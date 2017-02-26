@@ -142,6 +142,15 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authentication failed.
+        /// </summary>
+        public static string AuthFailed {
+            get {
+                return ResourceManager.GetString("AuthFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto join this channel.
         /// </summary>
         public static string AutoJoinText {

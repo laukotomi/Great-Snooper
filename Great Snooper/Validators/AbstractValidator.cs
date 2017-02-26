@@ -1,5 +1,4 @@
-﻿
-namespace GreatSnooper.Validators
+﻿namespace GreatSnooper.Validators
 {
     public abstract class AbstractValidator
     {

@@ -1,71 +1,93 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GreatSnooper.Classes;
-using GreatSnooper.Helpers;
-using GreatSnooper.IRCTasks;
-using GreatSnooper.Model;
-using GreatSnooper.UserControls;
-
-namespace GreatSnooper.ViewModel
+﻿namespace GreatSnooper.ViewModel
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.IO;
+    using System.Linq;
+    using System.Reflection;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Documents;
+    using System.Windows.Input;
+    using System.Windows.Media;
+
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.Command;
+
+    using GreatSnooper.Classes;
+    using GreatSnooper.Helpers;
+    using GreatSnooper.IRCTasks;
+    using GreatSnooper.Model;
+    using GreatSnooper.UserControls;
+
     [DebuggerDisplay("{Name}")]
     public abstract class AbstractChannelViewModel : ViewModelBase, IComparable
     {
-        #region Members
-        private bool _loading;
-        private bool _isHighlighted;
-        private bool _joined;
-        private bool _isTBFocused;
-        private bool _disabled;
-
-        private LinkedList<string> lastMessages;
-        private LinkedListNode<string> lastMessageIterator;
-        private string tempMessage = string.Empty;
-        private LinkedListNode<Message> messagesLoadedFrom;
-        private LinkedListNode<Message> lastMessageLoaded;
-        private bool stopLoadingMessages;
-
-        protected TabItem tabitem;
-        private Border _connectedLayout;
         protected RichTextBox rtb;
         protected FlowDocument rtbDocument;
+        protected TabItem tabitem;
+
         private ContextMenu instantColorMenu;
+        private LinkedListNode<string> lastMessageIterator;
+        private LinkedListNode<Message> lastMessageLoaded;
+        private LinkedList<string> lastMessages;
+        private LinkedListNode<Message> messagesLoadedFrom;
+        private bool stopLoadingMessages;
+        private string tempMessage = string.Empty;
+        private Border _connectedLayout;
+        private bool _disabled;
+        private bool _isHighlighted;
+        private bool _isTBFocused;
+        private bool _joined;
+        private bool _loading;
         private StreamWriter _logger;
         private int _loggerDay;
-        #endregion
 
-        #region Properties
-        public string Name { get; protected set; }
-        public SortedObservableCollection<User> Users { get; private set; }
-        public LinkedList<Message> Messages { get; private set; }
-        public AbstractCommunicator Server { get; private set; }
-        public ChannelTabControlViewModel ChannelTabVM { get; set; }
-        public bool Loading
+        protected AbstractChannelViewModel(MainViewModel mainViewModel, AbstractCommunicator server)
         {
-            get { return _loading; }
+            this.MainViewModel = mainViewModel;
+            this.Server = server;
+            this.Messages = new LinkedList<Message>();
+            this.Users = new SortedObservableCollection<User>();
+            this.lastMessages = new LinkedList<string>();
+            this.MessageText = string.Empty;
+        }
+
+        public ChannelTabControlViewModel ChannelTabVM
+        {
+            get;
+            set;
+        }
+
+        public bool Disabled
+        {
+            get
+            {
+                return _disabled;
+            }
             set
             {
-                if (_loading != value)
+                if (_disabled != value)
                 {
-                    _loading = value;
-                    RaisePropertyChanged("Loading");
+                    _disabled = value;
+                    RaisePropertyChanged("Disabled");
                 }
             }
         }
+
+        public bool HiddenMessagesInEnergySaveMode
+        {
+            get;
+            private set;
+        }
+
         public bool IsHighlighted
         {
-            get { return _isHighlighted; }
+            get
+            {
+                return _isHighlighted;
+            }
             set
             {
                 if (_isHighlighted != value)
@@ -75,10 +97,13 @@ namespace GreatSnooper.ViewModel
                 }
             }
         }
-        public string MessageText { get; set; }
+
         public bool IsTBFocused
         {
-            get { return _isTBFocused; }
+            get
+            {
+                return _isTBFocused;
+            }
             set
             {
                 if (_isTBFocused != value)
@@ -90,32 +115,13 @@ namespace GreatSnooper.ViewModel
                 }
             }
         }
-        public bool Disabled
-        {
-            get { return _disabled; }
-            set
-            {
-                if (_disabled != value)
-                {
-                    _disabled = value;
-                    RaisePropertyChanged("Disabled");
-                }
-            }
-        }
-        public MainViewModel MainViewModel { get; private set; }
-        protected Border ConnectedLayout
+
+        public bool Joined
         {
             get
             {
-                if (_connectedLayout == null)
-                    this.InitConnectedLayout();
-                return _connectedLayout;
+                return _joined;
             }
-        }
-        public bool HiddenMessagesInEnergySaveMode { get; private set; }
-        public bool Joined
-        {
-            get { return _joined; }
             protected set
             {
                 if (_joined != value)
@@ -139,40 +145,623 @@ namespace GreatSnooper.ViewModel
                         this.lastMessages.Clear();
                     }
                     else if (this._connectedLayout == null)
+                    {
                         this.InitConnectedLayout();
+                    }
                     this.JoinedChanged();
                     RaisePropertyChanged("Joined");
                 }
             }
         }
-        #endregion
 
-        #region Abstract methods
-        public abstract void ClearUsers();
-        public abstract void SendMessage(string message);
-        public abstract void SendNotice(string message);
-        public abstract void SendActionMessage(string message);
-        public abstract void SendCTCPMessage(string ctcpCommand, string ctcpText, User except = null);
-        public abstract void ProcessMessage(MessageTask msgTask);
-        protected virtual void JoinedChanged() { }
-        public abstract TabItem GetLayout();
-        public abstract void SetLoading(bool loading = true);
-        #endregion
-
-        protected AbstractChannelViewModel(MainViewModel mainViewModel, AbstractCommunicator server)
+        public bool Loading
         {
-            this.MainViewModel = mainViewModel;
-            this.Server = server;
-            this.Messages = new LinkedList<Message>();
-            this.Users = new SortedObservableCollection<User>();
-            this.lastMessages = new LinkedList<string>();
-            this.MessageText = string.Empty;
+            get
+            {
+                return _loading;
+            }
+            set
+            {
+                if (_loading != value)
+                {
+                    _loading = value;
+                    RaisePropertyChanged("Loading");
+                }
+            }
         }
 
-        #region MsgKeyDownCommand
+        public MainViewModel MainViewModel
+        {
+            get;
+            private set;
+        }
+
+        public LinkedList<Message> Messages
+        {
+            get;
+            private set;
+        }
+
+        public string MessageText
+        {
+            get;
+            set;
+        }
+
         public RelayCommand<KeyEventArgs> MsgKeyDownCommand
         {
-            get { return new RelayCommand<KeyEventArgs>(MsgKeyDown); }
+            get
+            {
+                return new RelayCommand<KeyEventArgs>(MsgKeyDown);
+            }
+        }
+
+        public RelayCommand<KeyEventArgs> MsgPreviewKeyDownCommand
+        {
+            get
+            {
+                return new RelayCommand<KeyEventArgs>(MsgPreviewKeyDown);
+            }
+        }
+
+        public string Name
+        {
+            get;
+            protected set;
+        }
+
+        public AbstractCommunicator Server
+        {
+            get;
+            private set;
+        }
+
+        public SortedObservableCollection<User> Users
+        {
+            get;
+            private set;
+        }
+
+        protected Border ConnectedLayout
+        {
+            get
+            {
+                if (_connectedLayout == null)
+                {
+                    this.InitConnectedLayout();
+                }
+                return _connectedLayout;
+            }
+        }
+
+        public void AddMessage(User sender, string message, MessageSetting messageSetting)
+        {
+            var msg = new Message(sender, message, messageSetting, DateTime.Now);
+            this.AddMessage(msg);
+        }
+
+        public void AddMessage(Message msg)
+        {
+            this.LogMessage(msg);
+            if (this.Messages.Count > GlobalManager.MaxMessagesInMemory && this.MainViewModel.IsGameWindowOn() == false)
+            {
+                ClearMessages();
+            }
+
+            this.Messages.AddLast(msg);
+
+            if (!msg.Sender.IsBanned || this.GetType() == typeof(ChannelViewModel) && Properties.Settings.Default.ShowBannedMessages)
+            {
+                if (this.MainViewModel.IsEnergySaveMode)
+                {
+                    this.HiddenMessagesInEnergySaveMode = true;
+                }
+                else
+                {
+                    this.lastMessageLoaded = this.Messages.Last;
+                    if (this.messagesLoadedFrom == null)
+                    {
+                        this.messagesLoadedFrom = this.Messages.Last;
+                    }
+                    this.AddMessageToUI(msg);
+                }
+            }
+        }
+
+        public void ChangeMessageColorForUser(User u, SolidColorBrush color)
+        {
+            bool italic = u.Group.ID != UserGroups.SystemGroupID;
+
+            foreach (var chvm in this.MainViewModel.AllChannels)
+            {
+                if (chvm.Joined && chvm.rtbDocument.Blocks.Count > 0)
+                {
+                    Paragraph p = (Paragraph)chvm.rtbDocument.Blocks.FirstBlock;
+                    while (p != null)
+                    {
+                        var msg = (Message)p.Tag;
+                        if (msg.Sender == u)
+                        {
+                            if (Properties.Settings.Default.MessageTime)
+                            {
+                                // p.Inlines.FirstInline.Foreground = (color != null) ? color : MessageSettings.MessageTimeStyle.NickColor;
+                                p.Inlines.FirstInline.NextInline.Foreground = (color != null) ? color : msg.Style.NickColor;
+                                p.Inlines.FirstInline.NextInline.FontStyle = (italic) ? FontStyles.Italic : FontStyles.Normal;
+                            }
+                            else
+                            {
+                                p.Inlines.FirstInline.Foreground = (color != null) ? color : msg.Style.NickColor;
+                                p.Inlines.FirstInline.FontStyle = (italic) ? FontStyles.Italic : FontStyles.Normal;
+                            }
+                        }
+                        p = (Paragraph)p.NextBlock;
+                    }
+                }
+            }
+        }
+
+        public abstract void ClearUsers();
+
+        public int CompareTo(object obj)
+        {
+            var o = (AbstractChannelViewModel)obj;
+            return this.Name.CompareTo(o.Name);
+        }
+
+        public virtual void EndLogging()
+        {
+            if (this._logger != null)
+            {
+                try
+                {
+                    this._logger.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " Channel closed.");
+                    this._logger.WriteLine("-----------------------------------------------------------------------------------------");
+                    this._logger.WriteLine(Environment.NewLine + Environment.NewLine);
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex);
+                }
+                this._logger.Dispose();
+                this._logger = null;
+            }
+            this._loggerDay = 0;
+        }
+
+        public abstract TabItem GetLayout();
+
+        public void Highlight()
+        {
+            if (this.MainViewModel.IsWindowActive == false || this.MainViewModel.SelectedChannel != this)
+            {
+                this.IsHighlighted = true;
+                if (this is PMChannelViewModel)
+                {
+                    ((PMChannelViewModel)this).GenerateHeader();
+                }
+            }
+        }
+
+        public int LoadMessages(int count, bool clear = false)
+        {
+            if (clear)
+            {
+                this.rtbDocument.Blocks.Clear();
+            }
+
+            // select the index from which the messages will be loaded
+            if (clear)
+            {
+                this.messagesLoadedFrom = this.Messages.Last;
+                this.lastMessageLoaded = this.Messages.Last;
+            }
+            else
+            {
+                this.messagesLoadedFrom = this.messagesLoadedFrom.Previous;
+            }
+
+            // load the message backwards
+            int k = 0;
+            while (true)
+            {
+                var msg = messagesLoadedFrom.Value;
+                if (!msg.Sender.IsBanned || Properties.Settings.Default.ShowBannedMessages)
+                {
+                    if (AddMessageToUI(msg, false))
+                    {
+                        k++;
+                        if (k == count)
+                        {
+                            break;
+                        }
+                    }
+                }
+                if (this.messagesLoadedFrom.Previous == null)
+                {
+                    break;
+                }
+                this.messagesLoadedFrom = this.messagesLoadedFrom.Previous;
+            }
+
+            return k;
+        }
+
+        public void LoadNewMessages()
+        {
+            try
+            {
+                while (true)
+                {
+                    if (this.lastMessageLoaded == null || lastMessageLoaded.Previous == null && lastMessageLoaded.Next == null) // or is removed
+                    {
+                        this.lastMessageLoaded = this.Messages.First;
+                    }
+                    else
+                    {
+                        this.lastMessageLoaded = this.lastMessageLoaded.Next;
+                    }
+
+                    if (this.lastMessageLoaded == null)
+                    {
+                        break;
+                    }
+
+                    var msg = lastMessageLoaded.Value;
+                    if (!msg.Sender.IsBanned || Properties.Settings.Default.ShowBannedMessages)
+                    {
+                        AddMessageToUI(msg);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+            }
+            this.HiddenMessagesInEnergySaveMode = false;
+        }
+
+        public abstract void ProcessMessage(MessageTask msgTask);
+
+        public abstract void SendActionMessage(string message);
+
+        public abstract void SendCTCPMessage(string ctcpCommand, string ctcpText, User except = null);
+
+        public abstract void SendMessage(string message);
+
+        public abstract void SendNotice(string message);
+
+        public abstract void SetLoading(bool loading = true);
+
+        protected virtual void JoinedChanged()
+        {
+        }
+
+        protected virtual void LogMessage(Message msg)
+        {
+            try
+            {
+                if (msg.IsLogged)
+                {
+                    return;
+                }
+
+                DateTime now = DateTime.Now;
+                if (now.Day != this._loggerDay)
+                {
+                    this.EndLogging();
+
+                    string dirPath = GlobalManager.SettingsPath + @"\Logs\" + this.Name;
+                    if (!Directory.Exists(dirPath))
+                    {
+                        Directory.CreateDirectory(dirPath);
+                    }
+
+                    string logFile = dirPath + "\\" + now.ToString("yyyy-MM-dd") + ".log";
+                    this._logger = new StreamWriter(logFile, true);
+                    this._loggerDay = now.Day;
+                }
+
+                this._logger.WriteLine("(" + msg.Style.Type.ToString() + ") " + msg.Time.ToString("yyyy-MM-dd HH:mm:ss") + " " + msg.Sender.Name + ": " + msg.Text);
+                this._logger.Flush();
+                msg.IsLogged = true;
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+            }
+        }
+
+        private void AddColorChoosed(object sender, RoutedEventArgs e)
+        {
+            MenuItem obj = (MenuItem)sender;
+            User u = ((Message)((ContextMenu)obj.Parent).Tag).Sender;
+            SolidColorBrush color = (SolidColorBrush)obj.Foreground;
+
+            this.MainViewModel.InstantColors[u.Name] = color;
+            ChangeMessageColorForUser(u, color);
+        }
+
+        private bool AddMessageToUI(Message msg, bool add = true)
+        {
+            if (Properties.Settings.Default.ChatMode && (
+                    msg.Style.Type == Message.MessageTypes.Part ||
+                    msg.Style.Type == Message.MessageTypes.Join ||
+                    msg.Style.Type == Message.MessageTypes.Quit))
+            {
+                return false;
+            }
+
+            try
+            {
+                Paragraph p = new Paragraph();
+                MessageSettings.LoadSettingsFor(p, msg.Style);
+                p.Foreground = msg.Style.MessageColor;
+                p.Padding = new Thickness(0, 2, 0, 2);
+                p.Tag = msg;
+                p.MouseRightButtonDown += InstantColorMenu;
+
+                // Time when the message arrived
+                if (Properties.Settings.Default.MessageTime)
+                {
+                    Run word = new Run(msg.Time.ToString("T") + " ");
+                    MessageSettings.LoadSettingsFor(word, MessageSettings.MessageTimeStyle);
+                    word.Foreground = MessageSettings.MessageTimeStyle.NickColor;
+                    p.Inlines.Add(word);
+                }
+
+                // Sender of the message
+                Run nick = (msg.Style.Type == Message.MessageTypes.Action) ? new Run(msg.Sender.Name + " ") : new Run(msg.Sender.Name + ": ");
+                msg.NickRun = nick;
+                p.Inlines.Add(nick);
+
+                // Message content
+                if (msg.HighlightWords == null)
+                {
+                    p.Inlines.Add(new Run(msg.Text));
+                }
+                else
+                {
+                    int idx = 0;
+                    foreach (var item in msg.HighlightWords)
+                    {
+                        if (item.Key != idx)
+                        {
+                            var part = msg.Text.Substring(idx, item.Key - idx);
+                            p.Inlines.Add(new Run(part));
+                            idx += part.Length;
+                        }
+
+                        var hword = msg.Text.Substring(idx, item.Value.Key);
+                        if (item.Value.Value == Message.HightLightTypes.Highlight)
+                        {
+                            Run word = new Run(hword);
+                            MessageSettings.LoadSettingsFor(word, MessageSettings.LeagueFoundMessage);
+                            word.Foreground = MessageSettings.LeagueFoundMessage.NickColor;
+                            p.Inlines.Add(word);
+                        }
+                        else if (item.Value.Value == Message.HightLightTypes.URI)
+                        {
+                            Hyperlink word = new Hyperlink(new Run(hword));
+                            MessageSettings.LoadSettingsFor(word, MessageSettings.HyperLinkStyle);
+                            word.Foreground = MessageSettings.HyperLinkStyle.NickColor;
+                            word.Click += OpenLinkClick;
+                            word.CommandParameter = hword;
+                            p.Inlines.Add(word);
+                        }
+                        else
+                        {
+                            Run word = new Run(hword);
+                            MessageSettings.LoadSettingsFor(word, MessageSettings.LeagueFoundMessage);
+                            word.Foreground = MessageSettings.LeagueFoundMessage.NickColor;
+                            p.Inlines.Add(word);
+                        }
+                        idx += item.Value.Key;
+                    }
+
+                    if (idx != msg.Text.Length)
+                    {
+                        var part = msg.Text.Substring(idx, msg.Text.Length - idx);
+                        p.Inlines.Add(new Run(part));
+                        idx += part.Length;
+                    }
+                }
+
+                // Insert the new paragraph
+                if (add == false && this.rtbDocument.Blocks.Count > 0)
+                    this.rtbDocument.Blocks.InsertBefore(this.rtbDocument.Blocks.FirstBlock, p);
+                else
+                {
+                    this.rtbDocument.Blocks.Add(p);
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                ErrorLog.Log(e);
+            }
+            return false;
+        }
+
+        private void ClearMessages()
+        {
+            try
+            {
+                while (this.Messages.Count > GlobalManager.MaxMessagesInMemory)
+                {
+                    Message msg = this.Messages.First.Value;
+                    this.Messages.RemoveFirst();
+                    if (this.messagesLoadedFrom != null && messagesLoadedFrom.Value == msg)
+                    {
+                        this.rtbDocument.Blocks.Remove(this.rtbDocument.Blocks.FirstBlock);
+                        this.messagesLoadedFrom = this.Messages.First; // ok, since it was the first block which was removed and it is already checked that messagesLoadedFrom was the first message
+                        if (Properties.Settings.Default.ChatMode)
+                        {
+                            while (this.messagesLoadedFrom != null)
+                            {
+                                var type = this.messagesLoadedFrom.Value.Style.Type;
+                                if (type != Message.MessageTypes.Part && type != Message.MessageTypes.Join && type != Message.MessageTypes.Quit)
+                                {
+                                    break;
+                                }
+                                this.messagesLoadedFrom = this.messagesLoadedFrom.Next;
+                            }
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+            }
+        }
+
+        private void InitConnectedLayout()
+        {
+            _connectedLayout = new ConnectedLayout(this);
+            var sw = (ScrollViewer)((Border)((Grid)_connectedLayout.Child).Children[0]).Child;
+            sw.ScrollChanged += MessageScrollChanged;
+            rtb = (RichTextBox)sw.Content;
+            rtbDocument = rtb.Document;
+        }
+
+        private void InstantColorMenu(object sender, MouseButtonEventArgs e)
+        {
+            e.Handled = true;
+            if (!this.rtb.Selection.IsEmpty)
+            {
+                return;
+            }
+
+            if (instantColorMenu == null)
+            {
+                instantColorMenu = new ContextMenu();
+
+                var def = new MenuItem()
+                {
+                    Header = Localizations.GSLocalization.Instance.DefaultText,
+                    FontWeight = FontWeights.Bold,
+                    FontSize = 12
+                };
+                def.Click += RemoveInstantColor;
+                instantColorMenu.Items.Add(def);
+
+                string[] goodcolors = { "Aquamarine", "Bisque", "BlueViolet", "BurlyWood", "CadetBlue", "Chocolate", "CornflowerBlue", "Gold", "GreenYellow", "LightCoral", "Pink", "Plum", "Red", "Sienna", "Violet", "White" };
+                // populate colors drop down (will work with other kinds of list controls)
+                Type colors = typeof(Colors);
+                PropertyInfo[] colorInfo = colors.GetProperties(BindingFlags.Public | BindingFlags.Static);
+                int found = 0;
+                foreach (PropertyInfo info in colorInfo)
+                {
+                    for (int i = 0; i < goodcolors.Length; i++)
+                    {
+                        if (info.Name == goodcolors[i])
+                        {
+                            var color = new SolidColorBrush((Color)info.GetValue(null, null));
+                            color.Freeze();
+                            var item = new MenuItem()
+                            {
+                                Header = info.Name,
+                                Foreground = color,
+                                FontWeight = FontWeights.Bold,
+                                FontSize = 12
+                            };
+                            item.Click += AddColorChoosed;
+                            instantColorMenu.Items.Add(item);
+
+                            found++;
+                            break;
+                        }
+                    }
+                    if (found == goodcolors.Length)
+                    {
+                        break;
+                    }
+                }
+            }
+
+            var p = (Paragraph)sender;
+            var msg = (Message)p.Tag;
+            instantColorMenu.Tag = msg;
+            ((MenuItem)instantColorMenu.Items[0]).Foreground = msg.Style.NickColor;
+            p.ContextMenu = instantColorMenu;
+            p.ContextMenu.IsOpen = true;
+            p.ContextMenu = null;
+        }
+
+        private void MessageScrollChanged(object sender, ScrollChangedEventArgs e)
+        {
+            e.Handled = true;
+            var obj = sender as ScrollViewer;
+            // Keep scrolling
+            if (obj.VerticalOffset == obj.ScrollableHeight)
+            {
+                if (this.rtbDocument.Blocks.Count > GlobalManager.MaxMessagesDisplayed)
+                {
+                    while (this.rtbDocument.Blocks.Count > GlobalManager.MaxMessagesDisplayed)
+                    {
+                        this.rtbDocument.Blocks.Remove(this.rtbDocument.Blocks.FirstBlock);
+                        this.messagesLoadedFrom = this.messagesLoadedFrom.Next;
+
+                        if (Properties.Settings.Default.ChatMode)
+                        {
+                            while (this.messagesLoadedFrom != null)
+                            {
+                                var type = this.messagesLoadedFrom.Value.Style.Type;
+                                if (type != Message.MessageTypes.Part && type != Message.MessageTypes.Join && type != Message.MessageTypes.Quit)
+                                {
+                                    break;
+                                }
+                                this.messagesLoadedFrom = this.messagesLoadedFrom.Next;
+                            }
+                        }
+                    }
+                }
+
+                obj.ScrollToEnd();
+            }
+            // Load older messages
+            else if (obj.VerticalOffset == 0)
+            {
+                if (!stopLoadingMessages)
+                {
+                    if (this.messagesLoadedFrom != null && this.messagesLoadedFrom != this.Messages.First)
+                    {
+                        stopLoadingMessages = true;
+                        int loaded = LoadMessages(GlobalManager.NumOfOldMessagesToBeLoaded);
+                        Block first = this.rtbDocument.Blocks.FirstBlock;
+                        double plus = first.Padding.Top + first.Padding.Bottom + first.Margin.Bottom + first.Margin.Top;
+                        double sum = 0;
+                        Block temp = this.rtbDocument.Blocks.FirstBlock;
+                        for (int i = 0; i < loaded; i++)
+                        {
+                            double maxFontSize = 0;
+                            // Get the biggest font size int the paragraph
+                            Inline temp2 = ((Paragraph)temp).Inlines.FirstInline;
+                            while (temp2 != null)
+                            {
+                                if (maxFontSize < temp2.FontSize)
+                                {
+                                    maxFontSize = temp.FontSize;
+                                }
+                                temp2 = temp2.NextInline;
+                            }
+                            sum += maxFontSize + plus;
+                            temp = temp.NextBlock;
+                            if (temp == null)
+                            {
+                                break;
+                            }
+                        }
+
+                        obj.ScrollToVerticalOffset(sum);
+                    }
+                }
+            }
+            else
+            {
+                stopLoadingMessages = false;
+            }
         }
 
         private void MsgKeyDown(KeyEventArgs e)
@@ -193,6 +782,63 @@ namespace GreatSnooper.ViewModel
             }
         }
 
+        private void MsgPreviewKeyDown(KeyEventArgs e)
+        {
+            if (lastMessages.Count > 0)
+            {
+                if (e.Key == Key.Up)
+                {
+                    if (lastMessageIterator == null)
+                    {
+                        lastMessageIterator = lastMessages.First;
+                        tempMessage = MessageText;
+                        MessageText = lastMessageIterator.Value;
+                        RaisePropertyChanged("MessageText");
+                    }
+                    else
+                    {
+                        if (lastMessageIterator.Next != null)
+                        {
+                            lastMessageIterator = lastMessageIterator.Next;
+                            MessageText = lastMessageIterator.Value;
+                            RaisePropertyChanged("MessageText");
+                        }
+                    }
+                    e.Handled = true;
+                }
+                else if (e.Key == Key.Down)
+                {
+                    if (lastMessageIterator != null)
+                    {
+                        lastMessageIterator = lastMessageIterator.Previous;
+                        if (lastMessageIterator == null)
+                        {
+                            MessageText = tempMessage;
+                        }
+                        else
+                        {
+                            MessageText = lastMessageIterator.Value;
+                        }
+                        RaisePropertyChanged("MessageText");
+                    }
+                    e.Handled = true;
+                }
+            }
+        }
+
+        private void OpenLinkClick(object sender, RoutedEventArgs e)
+        {
+            var link = (Hyperlink)sender;
+            try
+            {
+                Process.Start((string)link.CommandParameter);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+            }
+        }
+
         private void ProcessUserMessage(string message)
         {
             // Command message
@@ -207,23 +853,31 @@ namespace GreatSnooper.ViewModel
                     text = message.Substring(spacePos + 1).Trim();
                 }
                 else
+                {
                     command = message.Substring(1).Trim();
+                }
 
                 // Process the command
                 if (command.Equals("me", StringComparison.OrdinalIgnoreCase))
                 {
                     if (text.Length > 0)
+                    {
                         SendActionMessage(text);
+                    }
                 }
                 else if (command.Equals("notice", StringComparison.OrdinalIgnoreCase))
                 {
                     if (text.Length > 0)
+                    {
                         SendNotice(text);
+                    }
                 }
                 else if (command.Equals("nick", StringComparison.OrdinalIgnoreCase))
                 {
                     if (text.Length > 0 && Server.HandleNickChange)
+                    {
                         Server.NickChange(this, text);
+                    }
                 }
                 else if (command.Equals("away", StringComparison.OrdinalIgnoreCase))
                 {
@@ -253,7 +907,9 @@ namespace GreatSnooper.ViewModel
                 else if (command.Equals("raw", StringComparison.OrdinalIgnoreCase) || command.Equals("irc", StringComparison.OrdinalIgnoreCase))
                 {
                     if (text.Length > 0)
+                    {
                         Server.Send(this, text);
+                    }
                 }
                 else if (command.Equals("join", StringComparison.OrdinalIgnoreCase))
                 {
@@ -266,17 +922,21 @@ namespace GreatSnooper.ViewModel
                             if (Server.Channels.TryGetValue(parts[0], out chvm) == false)
                             {
                                 if (parts.Length == 1)
-                                    chvm = new ChannelViewModel(this.MainViewModel, this.Server, parts[0], "");
+                                {
+                                    chvm = new ChannelViewModel(this.MainViewModel, this.Server, parts[0], string.Empty);
+                                }
                                 else
-                                    chvm = new ChannelViewModel(this.MainViewModel, this.Server, parts[0], "", parts[1]);
+                                {
+                                    chvm = new ChannelViewModel(this.MainViewModel, this.Server, parts[0], string.Empty, parts[1]);
+                                }
                             }
                             this.MainViewModel.SelectChannel(chvm);
                         }
                     }
                 }
                 else if (command.Equals("pm", StringComparison.OrdinalIgnoreCase) ||
-                    command.Equals("msg", StringComparison.OrdinalIgnoreCase) ||
-                    command.Equals("chat", StringComparison.OrdinalIgnoreCase))
+                         command.Equals("msg", StringComparison.OrdinalIgnoreCase) ||
+                         command.Equals("chat", StringComparison.OrdinalIgnoreCase))
                 {
                     if (text.Length > 0)
                     {
@@ -292,7 +952,9 @@ namespace GreatSnooper.ViewModel
 
                         AbstractChannelViewModel chvm;
                         if (Server.Channels.TryGetValue(username, out chvm) == false)
+                        {
                             chvm = new PMChannelViewModel(this.MainViewModel, this.Server, username);
+                        }
                         this.MainViewModel.SelectChannel(chvm);
 
                         if (msg.Length > 0)
@@ -353,7 +1015,9 @@ namespace GreatSnooper.ViewModel
                         if (text.Length > 0)
                         {
                             if (SettingsHelper.Exists(text))
+                            {
                                 this.AddMessage(GlobalManager.SystemUser, SettingsHelper.Load(text).ToString(), MessageSettings.SystemMessage);
+                            }
                         }
                     }
                     catch (Exception ex)
@@ -400,513 +1064,10 @@ namespace GreatSnooper.ViewModel
             {
                 message = message.Trim();
                 if (message.Length > 0)
+                {
                     SendMessage(message);
-            }
-        }
-
-        private void SaveNewMessage(string message)
-        {
-            if (lastMessages.Count == 0 || lastMessages.First.Value != message)
-            {
-                if (lastMessages.Count == GlobalManager.LastMessageCapacity)
-                    lastMessages.RemoveLast();
-                lastMessages.AddFirst(message);
-            }
-            lastMessageIterator = null;
-        }
-        #endregion
-
-        #region MsgPreviewKeyDownCommand
-        public RelayCommand<KeyEventArgs> MsgPreviewKeyDownCommand
-        {
-            get { return new RelayCommand<KeyEventArgs>(MsgPreviewKeyDown); }
-        }
-
-        private void MsgPreviewKeyDown(KeyEventArgs e)
-        {
-            if (lastMessages.Count > 0)
-            {
-                if (e.Key == Key.Up)
-                {
-                    if (lastMessageIterator == null)
-                    {
-                        lastMessageIterator = lastMessages.First;
-                        tempMessage = MessageText;
-                        MessageText = lastMessageIterator.Value;
-                        RaisePropertyChanged("MessageText");
-                    }
-                    else
-                    {
-                        if (lastMessageIterator.Next != null)
-                        {
-                            lastMessageIterator = lastMessageIterator.Next;
-                            MessageText = lastMessageIterator.Value;
-                            RaisePropertyChanged("MessageText");
-                        }
-                    }
-                    e.Handled = true;
-                }
-                else if (e.Key == Key.Down)
-                {
-                    if (lastMessageIterator != null)
-                    {
-                        lastMessageIterator = lastMessageIterator.Previous;
-                        if (lastMessageIterator == null)
-                            MessageText = tempMessage;
-                        else
-                            MessageText = lastMessageIterator.Value;
-                        RaisePropertyChanged("MessageText");
-                    }
-                    e.Handled = true;
                 }
             }
-        }
-        #endregion
-
-        #region Add message
-        public void AddMessage(User sender, string message, MessageSetting messageSetting)
-        {
-            var msg = new Message(sender, message, messageSetting, DateTime.Now);
-            this.AddMessage(msg);
-        }
-
-        public void AddMessage(Message msg)
-        {
-            this.LogMessage(msg);
-            if (this.Messages.Count > GlobalManager.MaxMessagesInMemory && this.MainViewModel.IsGameWindowOn() == false)
-                ClearMessages();
-
-            this.Messages.AddLast(msg);
-
-            if (!msg.Sender.IsBanned || this.GetType() == typeof(ChannelViewModel) && Properties.Settings.Default.ShowBannedMessages)
-            {
-                if (this.MainViewModel.IsEnergySaveMode)
-                    this.HiddenMessagesInEnergySaveMode = true;
-                else
-                {
-                    this.lastMessageLoaded = this.Messages.Last;
-                    if (this.messagesLoadedFrom == null)
-                        this.messagesLoadedFrom = this.Messages.Last;
-                    this.AddMessageToUI(msg);
-                }
-            }
-        }
-
-        private bool AddMessageToUI(Message msg, bool add = true)
-        {
-            if (Properties.Settings.Default.ChatMode && (
-                msg.Style.Type == Message.MessageTypes.Part ||
-                msg.Style.Type == Message.MessageTypes.Join ||
-                msg.Style.Type == Message.MessageTypes.Quit)
-            )
-                return false;
-
-            try
-            {
-                Paragraph p = new Paragraph();
-                MessageSettings.LoadSettingsFor(p, msg.Style);
-                p.Foreground = msg.Style.MessageColor;
-                p.Padding = new Thickness(0, 2, 0, 2);
-                p.Tag = msg;
-                p.MouseRightButtonDown += InstantColorMenu;
-
-                // Time when the message arrived
-                if (Properties.Settings.Default.MessageTime)
-                {
-                    Run word = new Run(msg.Time.ToString("T") + " ");
-                    MessageSettings.LoadSettingsFor(word, MessageSettings.MessageTimeStyle);
-                    word.Foreground = MessageSettings.MessageTimeStyle.NickColor;
-                    p.Inlines.Add(word);
-                }
-
-                // Sender of the message
-                Run nick = (msg.Style.Type == Message.MessageTypes.Action) ? new Run(msg.Sender.Name + " ") : new Run(msg.Sender.Name + ": ");
-
-                // Instant color
-                SolidColorBrush b;
-                if (this.MainViewModel.InstantColors.TryGetValue(msg.Sender.Name, out b))
-                    nick.Foreground = b;
-                // Group color
-                else if (msg.Sender.Group.ID != UserGroups.SystemGroupID)
-                {
-                    nick.Foreground = msg.Sender.Group.TextColor;
-                    nick.FontStyle = FontStyles.Italic;
-                }
-                else
-                    nick.Foreground = msg.Style.NickColor;
-                nick.FontWeight = FontWeights.Bold;
-                p.Inlines.Add(nick);
-
-                // Message content
-                if (msg.HighlightWords == null)
-                    p.Inlines.Add(new Run(msg.Text));
-                else
-                {
-                    int idx = 0;
-                    foreach (var item in msg.HighlightWords)
-                    {
-                        if (item.Key != idx)
-                        {
-                            var part = msg.Text.Substring(idx, item.Key - idx);
-                            p.Inlines.Add(new Run(part));
-                            idx += part.Length;
-                        }
-
-                        var hword = msg.Text.Substring(idx, item.Value.Key);
-                        if (item.Value.Value == Message.HightLightTypes.Highlight)
-                        {
-                            Run word = new Run(hword);
-                            MessageSettings.LoadSettingsFor(word, MessageSettings.LeagueFoundMessage);
-                            word.Foreground = MessageSettings.LeagueFoundMessage.NickColor;
-                            p.Inlines.Add(word);
-                        }
-                        else if (item.Value.Value == Message.HightLightTypes.URI)
-                        {
-                            Hyperlink word = new Hyperlink(new Run(hword));
-                            MessageSettings.LoadSettingsFor(word, MessageSettings.HyperLinkStyle);
-                            word.Foreground = MessageSettings.HyperLinkStyle.NickColor;
-                            word.Click += OpenLinkClick;
-                            word.CommandParameter = hword;
-                            p.Inlines.Add(word);
-                        }
-                        else
-                        {
-                            Run word = new Run(hword);
-                            MessageSettings.LoadSettingsFor(word, MessageSettings.LeagueFoundMessage);
-                            word.Foreground = MessageSettings.LeagueFoundMessage.NickColor;
-                            p.Inlines.Add(word);
-                        }
-                        idx += item.Value.Key;
-                    }
-
-                    if (idx != msg.Text.Length)
-                    {
-                        var part = msg.Text.Substring(idx, msg.Text.Length - idx);
-                        p.Inlines.Add(new Run(part));
-                        idx += part.Length;
-                    }
-                }
-
-                // Insert the new paragraph
-                if (add == false && this.rtbDocument.Blocks.Count > 0)
-                    this.rtbDocument.Blocks.InsertBefore(this.rtbDocument.Blocks.FirstBlock, p);
-                else
-                    this.rtbDocument.Blocks.Add(p);
-
-                return true;
-            }
-            catch (Exception e)
-            {
-                ErrorLog.Log(e);
-            }
-            return false;
-        }
-
-        private void OpenLinkClick(object sender, RoutedEventArgs e)
-        {
-            var link = (Hyperlink)sender;
-            try
-            {
-                Process.Start((string)link.CommandParameter);
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.Log(ex);
-            }
-        }
-        #endregion
-
-        #region Message scrolling, log and loading
-        private void MessageScrollChanged(object sender, ScrollChangedEventArgs e)
-        {
-            e.Handled = true;
-            var obj = sender as ScrollViewer;
-            // Keep scrolling
-            if (obj.VerticalOffset == obj.ScrollableHeight)
-            {
-                if (this.rtbDocument.Blocks.Count > GlobalManager.MaxMessagesDisplayed)
-                {
-                    while (this.rtbDocument.Blocks.Count > GlobalManager.MaxMessagesDisplayed)
-                    {
-                        this.rtbDocument.Blocks.Remove(this.rtbDocument.Blocks.FirstBlock);
-                        this.messagesLoadedFrom = this.messagesLoadedFrom.Next;
-
-                        if (Properties.Settings.Default.ChatMode)
-                        {
-                            while (this.messagesLoadedFrom != null)
-                            {
-                                var type = this.messagesLoadedFrom.Value.Style.Type;
-                                if (type != Message.MessageTypes.Part && type != Message.MessageTypes.Join && type != Message.MessageTypes.Quit)
-                                    break;
-                                this.messagesLoadedFrom = this.messagesLoadedFrom.Next;
-                            }
-                        }
-                    }
-                }
-
-                obj.ScrollToEnd();
-            }
-            // Load older messages
-            else if (obj.VerticalOffset == 0)
-            {
-                if (!stopLoadingMessages)
-                {
-                    if (this.messagesLoadedFrom != null && this.messagesLoadedFrom != this.Messages.First)
-                    {
-                        stopLoadingMessages = true;
-                        int loaded = LoadMessages(GlobalManager.NumOfOldMessagesToBeLoaded);
-                        Block first = this.rtbDocument.Blocks.FirstBlock;
-                        double plus = first.Padding.Top + first.Padding.Bottom + first.Margin.Bottom + first.Margin.Top;
-                        double sum = 0;
-                        Block temp = this.rtbDocument.Blocks.FirstBlock;
-                        for (int i = 0; i < loaded; i++)
-                        {
-                            double maxFontSize = 0;
-                            // Get the biggest font size int the paragraph
-                            Inline temp2 = ((Paragraph)temp).Inlines.FirstInline;
-                            while (temp2 != null)
-                            {
-                                if (maxFontSize < temp2.FontSize)
-                                    maxFontSize = temp.FontSize;
-                                temp2 = temp2.NextInline;
-                            }
-                            sum += maxFontSize + plus;
-                            temp = temp.NextBlock;
-                            if (temp == null)
-                                break;
-                        }
-
-                        obj.ScrollToVerticalOffset(sum);
-                    }
-                }
-            }
-            else
-                stopLoadingMessages = false;
-        }
-
-        public int LoadMessages(int count, bool clear = false)
-        {
-            if (clear)
-                this.rtbDocument.Blocks.Clear();
-
-            // select the index from which the messages will be loaded
-            if (clear)
-            {
-                this.messagesLoadedFrom = this.Messages.Last;
-                this.lastMessageLoaded = this.Messages.Last;
-            }
-            else
-                this.messagesLoadedFrom = this.messagesLoadedFrom.Previous;
-
-            // load the message backwards
-            int k = 0;
-            while (true)
-            {
-                var msg = messagesLoadedFrom.Value;
-                if (!msg.Sender.IsBanned || Properties.Settings.Default.ShowBannedMessages)
-                {
-                    if (AddMessageToUI(msg, false))
-                    {
-                        k++;
-                        if (k == count)
-                            break;
-                    }
-                }
-                if (this.messagesLoadedFrom.Previous == null)
-                    break;
-                this.messagesLoadedFrom = this.messagesLoadedFrom.Previous;
-            }
-
-            return k;
-        }
-
-        public void LoadNewMessages()
-        {
-            try
-            {
-                while (true)
-                {
-                    if (this.lastMessageLoaded == null || lastMessageLoaded.Previous == null && lastMessageLoaded.Next == null) // or is removed
-                        this.lastMessageLoaded = this.Messages.First;
-                    else
-                        this.lastMessageLoaded = this.lastMessageLoaded.Next;
-
-                    if (this.lastMessageLoaded == null)
-                        break;
-
-                    var msg = lastMessageLoaded.Value;
-                    if (!msg.Sender.IsBanned || Properties.Settings.Default.ShowBannedMessages)
-                        AddMessageToUI(msg);
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.Log(ex);
-            }
-            this.HiddenMessagesInEnergySaveMode = false;
-        }
-
-        private void ClearMessages()
-        {
-            try
-            {
-                while (this.Messages.Count > GlobalManager.MaxMessagesInMemory)
-                {
-                    Message msg = this.Messages.First.Value;
-                    this.Messages.RemoveFirst();
-                    if (this.messagesLoadedFrom != null && messagesLoadedFrom.Value == msg)
-                    {
-                        this.rtbDocument.Blocks.Remove(this.rtbDocument.Blocks.FirstBlock);
-                        this.messagesLoadedFrom = this.Messages.First; // ok, since it was the first block which was removed and it is already checked that messagesLoadedFrom was the first message
-                        if (Properties.Settings.Default.ChatMode)
-                        {
-                            while (this.messagesLoadedFrom != null)
-                            {
-                                var type = this.messagesLoadedFrom.Value.Style.Type;
-                                if (type != Message.MessageTypes.Part && type != Message.MessageTypes.Join && type != Message.MessageTypes.Quit)
-                                    break;
-                                this.messagesLoadedFrom = this.messagesLoadedFrom.Next;
-                            }
-                        }
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.Log(ex);
-            }
-        }
-
-        protected virtual void LogMessage(Message msg)
-        {
-            try
-            {
-                if (msg.IsLogged)
-                    return;
-
-                DateTime now = DateTime.Now;
-                if (now.Day != this._loggerDay)
-                {
-                    this.EndLogging();
-
-                    string dirPath = GlobalManager.SettingsPath + @"\Logs\" + this.Name;
-                    if (!Directory.Exists(dirPath))
-                        Directory.CreateDirectory(dirPath);
-
-                    string logFile = dirPath + "\\" + now.ToString("yyyy-MM-dd") + ".log";
-                    this._logger = new StreamWriter(logFile, true);
-                    this._loggerDay = now.Day;
-                }
-
-                this._logger.WriteLine("(" + msg.Style.Type.ToString() + ") " + msg.Time.ToString("yyyy-MM-dd HH:mm:ss") + " " + msg.Sender.Name + ": " + msg.Text);
-                this._logger.Flush();
-                msg.IsLogged = true;
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.Log(ex);
-            }
-        }
-
-        public virtual void EndLogging()
-        {
-            if (this._logger != null)
-            {
-                try
-                {
-                    this._logger.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " Channel closed.");
-                    this._logger.WriteLine("-----------------------------------------------------------------------------------------");
-                    this._logger.WriteLine(Environment.NewLine + Environment.NewLine);
-                }
-                catch (Exception ex)
-                {
-                    ErrorLog.Log(ex);
-                }
-                this._logger.Dispose();
-                this._logger = null;
-            }
-            this._loggerDay = 0;
-        }
-        #endregion
-
-        public void Highlight()
-        {
-            if (this.MainViewModel.IsWindowActive == false || this.MainViewModel.SelectedChannel != this)
-            {
-                this.IsHighlighted = true;
-                if (this is PMChannelViewModel)
-                    ((PMChannelViewModel)this).GenerateHeader();
-            }
-        }
-
-        private void InitConnectedLayout()
-        {
-            _connectedLayout = new ConnectedLayout(this);
-            var sw = (ScrollViewer)((Border)((Grid)_connectedLayout.Child).Children[0]).Child;
-            sw.ScrollChanged += MessageScrollChanged;
-            rtb = (RichTextBox)sw.Content;
-            rtbDocument = rtb.Document;
-        }
-
-
-        #region Instant colors
-        private void InstantColorMenu(object sender, MouseButtonEventArgs e)
-        {
-            e.Handled = true;
-            if (!this.rtb.Selection.IsEmpty)
-                return;
-
-            if (instantColorMenu == null)
-            {
-                instantColorMenu = new ContextMenu();
-
-                var def = new MenuItem() { Header = Localizations.GSLocalization.Instance.DefaultText, FontWeight = FontWeights.Bold, FontSize = 12 };
-                def.Click += RemoveInstantColor;
-                instantColorMenu.Items.Add(def);
-
-                string[] goodcolors = { "Aquamarine", "Bisque", "BlueViolet", "BurlyWood", "CadetBlue", "Chocolate", "CornflowerBlue", "Gold", "GreenYellow", "LightCoral", "Pink", "Plum", "Red", "Sienna", "Violet", "White" };
-                // populate colors drop down (will work with other kinds of list controls)
-                Type colors = typeof(Colors);
-                PropertyInfo[] colorInfo = colors.GetProperties(BindingFlags.Public | BindingFlags.Static);
-                int found = 0;
-                foreach (PropertyInfo info in colorInfo)
-                {
-                    for (int i = 0; i < goodcolors.Length; i++)
-                    {
-                        if (info.Name == goodcolors[i])
-                        {
-                            var color = new SolidColorBrush((Color)info.GetValue(null, null));
-                            color.Freeze();
-                            var item = new MenuItem() { Header = info.Name, Foreground = color, FontWeight = FontWeights.Bold, FontSize = 12 };
-                            item.Click += AddColorChoosed;
-                            instantColorMenu.Items.Add(item);
-
-                            found++;
-                            break;
-                        }
-                    }
-                    if (found == goodcolors.Length)
-                        break;
-                }
-            }
-
-            var p = (Paragraph)sender;
-            var msg = (Message)p.Tag;
-            instantColorMenu.Tag = msg;
-            ((MenuItem)instantColorMenu.Items[0]).Foreground = msg.Style.NickColor;
-            p.ContextMenu = instantColorMenu;
-            p.ContextMenu.IsOpen = true;
-            p.ContextMenu = null;
-        }
-
-        private void AddColorChoosed(object sender, RoutedEventArgs e)
-        {
-            MenuItem obj = (MenuItem)sender;
-            User u = ((Message)((ContextMenu)obj.Parent).Tag).Sender;
-            SolidColorBrush color = (SolidColorBrush)obj.Foreground;
-
-            this.MainViewModel.InstantColors[u.Name] = color;
-            ChangeMessageColorForUser(u, color);
         }
 
         private void RemoveInstantColor(object sender, RoutedEventArgs e)
@@ -918,43 +1079,17 @@ namespace GreatSnooper.ViewModel
             ChangeMessageColorForUser(u, null);
         }
 
-        public void ChangeMessageColorForUser(User u, SolidColorBrush color)
+        private void SaveNewMessage(string message)
         {
-            bool italic = u.Group.ID != UserGroups.SystemGroupID;
-
-            foreach (var chvm in this.MainViewModel.AllChannels)
+            if (lastMessages.Count == 0 || lastMessages.First.Value != message)
             {
-                if (chvm.Joined && chvm.rtbDocument.Blocks.Count > 0)
+                if (lastMessages.Count == GlobalManager.LastMessageCapacity)
                 {
-                    Paragraph p = (Paragraph)chvm.rtbDocument.Blocks.FirstBlock;
-                    while (p != null)
-                    {
-                        var msg = (Message)p.Tag;
-                        if (msg.Sender == u)
-                        {
-                            if (Properties.Settings.Default.MessageTime)
-                            {
-                                //p.Inlines.FirstInline.Foreground = (color != null) ? color : MessageSettings.MessageTimeStyle.NickColor;
-                                p.Inlines.FirstInline.NextInline.Foreground = (color != null) ? color : msg.Style.NickColor;
-                                p.Inlines.FirstInline.NextInline.FontStyle = (italic) ? FontStyles.Italic : FontStyles.Normal;
-                            }
-                            else
-                            {
-                                p.Inlines.FirstInline.Foreground = (color != null) ? color : msg.Style.NickColor;
-                                p.Inlines.FirstInline.FontStyle = (italic) ? FontStyles.Italic : FontStyles.Normal;
-                            }
-                        }
-                        p = (Paragraph)p.NextBlock;
-                    }
+                    lastMessages.RemoveLast();
                 }
+                lastMessages.AddFirst(message);
             }
-        }
-        #endregion
-
-        public int CompareTo(object obj)
-        {
-            var o = (AbstractChannelViewModel)obj;
-            return this.Name.CompareTo(o.Name);
+            lastMessageIterator = null;
         }
     }
 }
