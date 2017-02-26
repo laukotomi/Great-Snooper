@@ -18,38 +18,6 @@
 
         private Run _nickRun;
 
-        public Message(User sender, string text, MessageSetting setting, DateTime time, bool isLogged = false)
-        {
-            this.Sender = sender;
-            this.Text = text;
-            this.Style = setting;
-            this.Time = time;
-            this.IsLogged = isLogged;
-
-            if (setting.Type == MessageTypes.Action ||
-                setting.Type == MessageTypes.Channel ||
-                setting.Type == MessageTypes.Notice ||
-                setting.Type == MessageTypes.User ||
-                setting.Type == MessageTypes.Quit)
-            {
-                MatchCollection matches = urlRegex.Matches(text);
-                for (int i = 0; i < matches.Count; i++)
-                {
-                    Group group = matches[i].Groups[0];
-                    Uri uri;
-                    if (Uri.TryCreate(group.Value, UriKind.RelativeOrAbsolute, out uri))
-                    {
-                        this.AddHighlightWord(group.Index, group.Length, Message.HightLightTypes.URI);
-                    }
-                }
-            }
-
-            if (setting.Type == MessageTypes.Channel)
-            {
-                sender.PropertyChanged += this.SenderPropertyChanged;
-            }
-        }
-
         public enum HightLightTypes
         {
             Highlight, LeagueFound, NotificatorFound, URI
@@ -113,6 +81,38 @@
             private set;
         }
 
+        public Message(User sender, string text, MessageSetting setting, DateTime time, bool isLogged = false)
+        {
+            this.Sender = sender;
+            this.Text = text;
+            this.Style = setting;
+            this.Time = time;
+            this.IsLogged = isLogged;
+
+            if (setting.Type == MessageTypes.Action ||
+                setting.Type == MessageTypes.Channel ||
+                setting.Type == MessageTypes.Notice ||
+                setting.Type == MessageTypes.User ||
+                setting.Type == MessageTypes.Quit)
+            {
+                MatchCollection matches = urlRegex.Matches(text);
+                for (int i = 0; i < matches.Count; i++)
+                {
+                    Group group = matches[i].Groups[0];
+                    Uri uri;
+                    if (Uri.TryCreate(group.Value, UriKind.RelativeOrAbsolute, out uri))
+                    {
+                        this.AddHighlightWord(group.Index, group.Length, Message.HightLightTypes.URI);
+                    }
+                }
+            }
+
+            if (setting.Type == MessageTypes.Channel)
+            {
+                sender.PropertyChanged += this.SenderPropertyChanged;
+            }
+        }
+
         public void AddHighlightWord(int idx, int length, HightLightTypes type)
         {
             if (this.HighlightWords == null)
@@ -174,32 +174,32 @@
 
             switch (this.Sender.OnlineStatus)
             {
-            case User.Status.Online:
-                // Instant color
-                SolidColorBrush b;
-                if (MainViewModel.Instance.InstantColors.TryGetValue(this.Sender.Name, out b))
-                {
-                    this.NickRun.Foreground = b;
-                }
-                // Group color
-                else if (this.Sender.Group.ID != UserGroups.SystemGroupID)
-                {
-                    this.NickRun.Foreground = this.Sender.Group.TextColor;
-                    this.NickRun.FontStyle = FontStyles.Italic;
-                }
-                else
-                {
-                    this.NickRun.Foreground = this.Style.NickColor;
-                }
-                break;
+                case User.Status.Online:
+                    // Instant color
+                    SolidColorBrush b;
+                    if (MainViewModel.Instance.InstantColors.TryGetValue(this.Sender.Name, out b))
+                    {
+                        this.NickRun.Foreground = b;
+                    }
+                    // Group color
+                    else if (this.Sender.Group.ID != UserGroups.SystemGroupID)
+                    {
+                        this.NickRun.Foreground = this.Sender.Group.TextColor;
+                        this.NickRun.FontStyle = FontStyles.Italic;
+                    }
+                    else
+                    {
+                        this.NickRun.Foreground = this.Style.NickColor;
+                    }
+                    break;
 
-            case User.Status.Offline:
-                this.NickRun.Foreground = Brushes.Red;
-                break;
+                case User.Status.Offline:
+                    this.NickRun.Foreground = Brushes.Red;
+                    break;
 
-            case User.Status.Unknown:
-                this.NickRun.Foreground = Brushes.Goldenrod;
-                break;
+                case User.Status.Unknown:
+                    this.NickRun.Foreground = Brushes.Goldenrod;
+                    break;
             }
         }
     }

@@ -1,48 +1,45 @@
-﻿namespace GreatSnooper.ViewModel
+﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Reflection;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using GalaSoft.MvvmLight;
+using GalaSoft.MvvmLight.Command;
+using GreatSnooper.Channel;
+using GreatSnooper.Classes;
+using GreatSnooper.Helpers;
+using GreatSnooper.IRCTasks;
+using GreatSnooper.Model;
+using GreatSnooper.UserControls;
+
+namespace GreatSnooper.ViewModel
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Diagnostics;
-    using System.IO;
-    using System.Linq;
-    using System.Reflection;
-    using System.Windows;
-    using System.Windows.Controls;
-    using System.Windows.Documents;
-    using System.Windows.Input;
-    using System.Windows.Media;
-
-    using GalaSoft.MvvmLight;
-    using GalaSoft.MvvmLight.Command;
-
-    using GreatSnooper.Classes;
-    using GreatSnooper.Helpers;
-    using GreatSnooper.IRCTasks;
-    using GreatSnooper.Model;
-    using GreatSnooper.UserControls;
-
     [DebuggerDisplay("{Name}")]
-    public abstract class AbstractChannelViewModel : ViewModelBase, IComparable
+    public abstract class AbstractChannelViewModel : ViewModelBase, IComparable, IDisposable
     {
-        protected RichTextBox rtb;
-        protected FlowDocument rtbDocument;
-        protected TabItem tabitem;
-
-        private ContextMenu instantColorMenu;
-        private LinkedListNode<string> lastMessageIterator;
-        private LinkedListNode<Message> lastMessageLoaded;
-        private LinkedList<string> lastMessages;
-        private LinkedListNode<Message> messagesLoadedFrom;
-        private bool stopLoadingMessages;
-        private string tempMessage = string.Empty;
         private Border _connectedLayout;
+        protected RichTextBox _rtb;
+        protected FlowDocument _rtbDocument;
+        protected TabItem _tabitem;
+        private ContextMenu _instantColorMenu;
+
+        private LastUserMessages _lastUserMessages = new LastUserMessages();
+        private ChannelLogger _channelLogger = new ChannelLogger();
+
+        private LinkedListNode<Message> _lastMessageLoaded;
+        private LinkedListNode<Message> _messagesLoadedFrom;
+        private bool _stopLoadingMessages;
+
         private bool _disabled;
         private bool _isHighlighted;
         private bool _isTBFocused;
         private bool _joined;
         private bool _loading;
-        private StreamWriter _logger;
-        private int _loggerDay;
 
         protected AbstractChannelViewModel(MainViewModel mainViewModel, AbstractCommunicator server)
         {
@@ -50,50 +47,41 @@
             this.Server = server;
             this.Messages = new LinkedList<Message>();
             this.Users = new SortedObservableCollection<User>();
-            this.lastMessages = new LinkedList<string>();
             this.MessageText = string.Empty;
         }
 
-        public ChannelTabControlViewModel ChannelTabVM
-        {
-            get;
-            set;
-        }
+        public ChannelTabControlViewModel ChannelTabVM { get; set; }
 
         public bool Disabled
         {
             get
             {
-                return _disabled;
+                return this._disabled;
             }
             set
             {
-                if (_disabled != value)
+                if (this._disabled != value)
                 {
-                    _disabled = value;
-                    RaisePropertyChanged("Disabled");
+                    this._disabled = value;
+                    this.RaisePropertyChanged("Disabled");
                 }
             }
         }
 
-        public bool HiddenMessagesInEnergySaveMode
-        {
-            get;
-            private set;
-        }
+        public bool HiddenMessagesInEnergySaveMode { get; private set; }
 
         public bool IsHighlighted
         {
             get
             {
-                return _isHighlighted;
+                return this._isHighlighted;
             }
             set
             {
-                if (_isHighlighted != value)
+                if (this._isHighlighted != value)
                 {
-                    _isHighlighted = value;
-                    RaisePropertyChanged("IsHighlighted");
+                    this._isHighlighted = value;
+                    this.RaisePropertyChanged("IsHighlighted");
                 }
             }
         }
@@ -102,16 +90,16 @@
         {
             get
             {
-                return _isTBFocused;
+                return this._isTBFocused;
             }
             set
             {
-                if (_isTBFocused != value)
+                if (this._isTBFocused != value)
                 {
-                    _isTBFocused = value;
-                    RaisePropertyChanged("IsTBFocused");
-                    _isTBFocused = false;
-                    RaisePropertyChanged("IsTBFocused");
+                    this._isTBFocused = value;
+                    this.RaisePropertyChanged("IsTBFocused");
+                    this._isTBFocused = false;
+                    this.RaisePropertyChanged("IsTBFocused");
                 }
             }
         }
@@ -120,36 +108,34 @@
         {
             get
             {
-                return _joined;
+                return this._joined;
             }
             protected set
             {
-                if (_joined != value)
+                if (this._joined != value)
                 {
-                    _joined = value;
+                    this._joined = value;
 
                     if (value == false)
                     {
                         // Reset everything to default value
-                        this.EndLogging();
-                        this.messagesLoadedFrom = null;
+                        this._channelLogger.EndLogging();
+                        this._messagesLoadedFrom = null;
                         this.Disabled = false;
                         this.Loading = false;
                         this.IsHighlighted = false;
-                        this.lastMessageIterator = null;
-                        this.lastMessageLoaded = null;
+                        this._lastUserMessages.Reset();
+                        this._lastMessageLoaded = null;
                         this.MessageText = string.Empty;
                         this.HiddenMessagesInEnergySaveMode = false;
-                        this.stopLoadingMessages = false;
-                        this.tempMessage = string.Empty;
-                        this.lastMessages.Clear();
+                        this._stopLoadingMessages = false;
                     }
                     else if (this._connectedLayout == null)
                     {
                         this.InitConnectedLayout();
                     }
                     this.JoinedChanged();
-                    RaisePropertyChanged("Joined");
+                    this.RaisePropertyChanged("Joined");
                 }
             }
         }
@@ -158,35 +144,23 @@
         {
             get
             {
-                return _loading;
+                return this._loading;
             }
             set
             {
-                if (_loading != value)
+                if (this._loading != value)
                 {
-                    _loading = value;
-                    RaisePropertyChanged("Loading");
+                    this._loading = value;
+                    this.RaisePropertyChanged("Loading");
                 }
             }
         }
 
-        public MainViewModel MainViewModel
-        {
-            get;
-            private set;
-        }
+        public MainViewModel MainViewModel { get; private set; }
 
-        public LinkedList<Message> Messages
-        {
-            get;
-            private set;
-        }
+        public LinkedList<Message> Messages { get; private set; }
 
-        public string MessageText
-        {
-            get;
-            set;
-        }
+        public string MessageText { get; set; }
 
         public RelayCommand<KeyEventArgs> MsgKeyDownCommand
         {
@@ -226,11 +200,11 @@
         {
             get
             {
-                if (_connectedLayout == null)
+                if (this._connectedLayout == null)
                 {
                     this.InitConnectedLayout();
                 }
-                return _connectedLayout;
+                return this._connectedLayout;
             }
         }
 
@@ -242,8 +216,8 @@
 
         public void AddMessage(Message msg)
         {
-            this.LogMessage(msg);
-            if (this.Messages.Count > GlobalManager.MaxMessagesInMemory && this.MainViewModel.IsGameWindowOn() == false)
+            this._channelLogger.LogMessage(msg, this.Name);
+            if (this.Messages.Count >= GlobalManager.MaxMessagesInMemory && this.MainViewModel.IsGameWindowOn() == false)
             {
                 ClearMessages();
             }
@@ -258,10 +232,10 @@
                 }
                 else
                 {
-                    this.lastMessageLoaded = this.Messages.Last;
-                    if (this.messagesLoadedFrom == null)
+                    this._lastMessageLoaded = this.Messages.Last;
+                    if (this._messagesLoadedFrom == null)
                     {
-                        this.messagesLoadedFrom = this.Messages.Last;
+                        this._messagesLoadedFrom = this.Messages.Last;
                     }
                     this.AddMessageToUI(msg);
                 }
@@ -270,32 +244,39 @@
 
         public void ChangeMessageColorForUser(User u, SolidColorBrush color)
         {
-            bool italic = u.Group.ID != UserGroups.SystemGroupID;
+            if (!this.Joined || this._rtbDocument == null || this._rtbDocument.Blocks.Count == 0)
+            {
+                return;
+            }
+
+            FontStyle fontStyle = u.Group.ID != UserGroups.SystemGroupID ? FontStyles.Italic : FontStyles.Normal;
+            Paragraph p = this._rtbDocument.Blocks.FirstBlock as Paragraph;
+
+            while (p != null)
+            {
+                var msg = (Message)p.Tag;
+                if (msg.Sender == u)
+                {
+                    if (Properties.Settings.Default.MessageTime)
+                    {
+                        // p.Inlines.FirstInline.Foreground = (color != null) ? color : MessageSettings.MessageTimeStyle.NickColor;
+                        p.Inlines.FirstInline.NextInline.Foreground = (color != null) ? color : msg.Style.NickColor;
+                        p.Inlines.FirstInline.NextInline.FontStyle = fontStyle;
+                    }
+                    else
+                    {
+                        p.Inlines.FirstInline.Foreground = (color != null) ? color : msg.Style.NickColor;
+                        p.Inlines.FirstInline.FontStyle = fontStyle;
+                    }
+                }
+                p = (Paragraph)p.NextBlock;
+            }
+
 
             foreach (var chvm in this.MainViewModel.AllChannels)
             {
-                if (chvm.Joined && chvm.rtbDocument.Blocks.Count > 0)
+                if (chvm.Joined && chvm._rtbDocument.Blocks.Count > 0)
                 {
-                    Paragraph p = (Paragraph)chvm.rtbDocument.Blocks.FirstBlock;
-                    while (p != null)
-                    {
-                        var msg = (Message)p.Tag;
-                        if (msg.Sender == u)
-                        {
-                            if (Properties.Settings.Default.MessageTime)
-                            {
-                                // p.Inlines.FirstInline.Foreground = (color != null) ? color : MessageSettings.MessageTimeStyle.NickColor;
-                                p.Inlines.FirstInline.NextInline.Foreground = (color != null) ? color : msg.Style.NickColor;
-                                p.Inlines.FirstInline.NextInline.FontStyle = (italic) ? FontStyles.Italic : FontStyles.Normal;
-                            }
-                            else
-                            {
-                                p.Inlines.FirstInline.Foreground = (color != null) ? color : msg.Style.NickColor;
-                                p.Inlines.FirstInline.FontStyle = (italic) ? FontStyles.Italic : FontStyles.Normal;
-                            }
-                        }
-                        p = (Paragraph)p.NextBlock;
-                    }
                 }
             }
         }
@@ -306,26 +287,6 @@
         {
             var o = (AbstractChannelViewModel)obj;
             return this.Name.CompareTo(o.Name);
-        }
-
-        public virtual void EndLogging()
-        {
-            if (this._logger != null)
-            {
-                try
-                {
-                    this._logger.WriteLine(DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss") + " Channel closed.");
-                    this._logger.WriteLine("-----------------------------------------------------------------------------------------");
-                    this._logger.WriteLine(Environment.NewLine + Environment.NewLine);
-                }
-                catch (Exception ex)
-                {
-                    ErrorLog.Log(ex);
-                }
-                this._logger.Dispose();
-                this._logger = null;
-            }
-            this._loggerDay = 0;
         }
 
         public abstract TabItem GetLayout();
@@ -346,25 +307,25 @@
         {
             if (clear)
             {
-                this.rtbDocument.Blocks.Clear();
+                this._rtbDocument.Blocks.Clear();
             }
 
             // select the index from which the messages will be loaded
             if (clear)
             {
-                this.messagesLoadedFrom = this.Messages.Last;
-                this.lastMessageLoaded = this.Messages.Last;
+                this._messagesLoadedFrom = this.Messages.Last;
+                this._lastMessageLoaded = this.Messages.Last;
             }
             else
             {
-                this.messagesLoadedFrom = this.messagesLoadedFrom.Previous;
+                this._messagesLoadedFrom = this._messagesLoadedFrom.Previous;
             }
 
             // load the message backwards
             int k = 0;
             while (true)
             {
-                var msg = messagesLoadedFrom.Value;
+                var msg = _messagesLoadedFrom.Value;
                 if (!msg.Sender.IsBanned || Properties.Settings.Default.ShowBannedMessages)
                 {
                     if (AddMessageToUI(msg, false))
@@ -376,11 +337,11 @@
                         }
                     }
                 }
-                if (this.messagesLoadedFrom.Previous == null)
+                if (this._messagesLoadedFrom.Previous == null)
                 {
                     break;
                 }
-                this.messagesLoadedFrom = this.messagesLoadedFrom.Previous;
+                this._messagesLoadedFrom = this._messagesLoadedFrom.Previous;
             }
 
             return k;
@@ -392,21 +353,21 @@
             {
                 while (true)
                 {
-                    if (this.lastMessageLoaded == null || lastMessageLoaded.Previous == null && lastMessageLoaded.Next == null) // or is removed
+                    if (this._lastMessageLoaded == null || _lastMessageLoaded.Previous == null && _lastMessageLoaded.Next == null) // or is removed
                     {
-                        this.lastMessageLoaded = this.Messages.First;
+                        this._lastMessageLoaded = this.Messages.First;
                     }
                     else
                     {
-                        this.lastMessageLoaded = this.lastMessageLoaded.Next;
+                        this._lastMessageLoaded = this._lastMessageLoaded.Next;
                     }
 
-                    if (this.lastMessageLoaded == null)
+                    if (this._lastMessageLoaded == null)
                     {
                         break;
                     }
 
-                    var msg = lastMessageLoaded.Value;
+                    var msg = _lastMessageLoaded.Value;
                     if (!msg.Sender.IsBanned || Properties.Settings.Default.ShowBannedMessages)
                     {
                         AddMessageToUI(msg);
@@ -434,41 +395,6 @@
 
         protected virtual void JoinedChanged()
         {
-        }
-
-        protected virtual void LogMessage(Message msg)
-        {
-            try
-            {
-                if (msg.IsLogged)
-                {
-                    return;
-                }
-
-                DateTime now = DateTime.Now;
-                if (now.Day != this._loggerDay)
-                {
-                    this.EndLogging();
-
-                    string dirPath = GlobalManager.SettingsPath + @"\Logs\" + this.Name;
-                    if (!Directory.Exists(dirPath))
-                    {
-                        Directory.CreateDirectory(dirPath);
-                    }
-
-                    string logFile = dirPath + "\\" + now.ToString("yyyy-MM-dd") + ".log";
-                    this._logger = new StreamWriter(logFile, true);
-                    this._loggerDay = now.Day;
-                }
-
-                this._logger.WriteLine("(" + msg.Style.Type.ToString() + ") " + msg.Time.ToString("yyyy-MM-dd HH:mm:ss") + " " + msg.Sender.Name + ": " + msg.Text);
-                this._logger.Flush();
-                msg.IsLogged = true;
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.Log(ex);
-            }
         }
 
         private void AddColorChoosed(object sender, RoutedEventArgs e)
@@ -567,11 +493,11 @@
                 }
 
                 // Insert the new paragraph
-                if (add == false && this.rtbDocument.Blocks.Count > 0)
-                    this.rtbDocument.Blocks.InsertBefore(this.rtbDocument.Blocks.FirstBlock, p);
+                if (add == false && this._rtbDocument.Blocks.Count > 0)
+                    this._rtbDocument.Blocks.InsertBefore(this._rtbDocument.Blocks.FirstBlock, p);
                 else
                 {
-                    this.rtbDocument.Blocks.Add(p);
+                    this._rtbDocument.Blocks.Add(p);
                 }
 
                 return true;
@@ -591,22 +517,11 @@
                 {
                     Message msg = this.Messages.First.Value;
                     this.Messages.RemoveFirst();
-                    if (this.messagesLoadedFrom != null && messagesLoadedFrom.Value == msg)
+
+                    if (this._messagesLoadedFrom != null && this._messagesLoadedFrom.Value == msg) // If the removed message was displayed (when the scrollbar is not at bottom)
                     {
-                        this.rtbDocument.Blocks.Remove(this.rtbDocument.Blocks.FirstBlock);
-                        this.messagesLoadedFrom = this.Messages.First; // ok, since it was the first block which was removed and it is already checked that messagesLoadedFrom was the first message
-                        if (Properties.Settings.Default.ChatMode)
-                        {
-                            while (this.messagesLoadedFrom != null)
-                            {
-                                var type = this.messagesLoadedFrom.Value.Style.Type;
-                                if (type != Message.MessageTypes.Part && type != Message.MessageTypes.Join && type != Message.MessageTypes.Quit)
-                                {
-                                    break;
-                                }
-                                this.messagesLoadedFrom = this.messagesLoadedFrom.Next;
-                            }
-                        }
+                        this._rtbDocument.Blocks.Remove(this._rtbDocument.Blocks.FirstBlock);
+                        this.SetMessagesLoadedFrom();
                     }
                 }
             }
@@ -616,26 +531,44 @@
             }
         }
 
+        private void SetMessagesLoadedFrom()
+        {
+            this._messagesLoadedFrom = this.Messages.First;
+
+            if (Properties.Settings.Default.ChatMode)
+            {
+                while (this._messagesLoadedFrom != null)
+                {
+                    var type = this._messagesLoadedFrom.Value.Style.Type;
+                    if (type != Message.MessageTypes.Part && type != Message.MessageTypes.Join && type != Message.MessageTypes.Quit)
+                    {
+                        break;
+                    }
+                    this._messagesLoadedFrom = this._messagesLoadedFrom.Next;
+                }
+            }
+        }
+
         private void InitConnectedLayout()
         {
             _connectedLayout = new ConnectedLayout(this);
             var sw = (ScrollViewer)((Border)((Grid)_connectedLayout.Child).Children[0]).Child;
             sw.ScrollChanged += MessageScrollChanged;
-            rtb = (RichTextBox)sw.Content;
-            rtbDocument = rtb.Document;
+            _rtb = (RichTextBox)sw.Content;
+            _rtbDocument = _rtb.Document;
         }
 
         private void InstantColorMenu(object sender, MouseButtonEventArgs e)
         {
             e.Handled = true;
-            if (!this.rtb.Selection.IsEmpty)
+            if (!this._rtb.Selection.IsEmpty)
             {
                 return;
             }
 
-            if (instantColorMenu == null)
+            if (_instantColorMenu == null)
             {
-                instantColorMenu = new ContextMenu();
+                _instantColorMenu = new ContextMenu();
 
                 var def = new MenuItem()
                 {
@@ -644,7 +577,7 @@
                     FontSize = 12
                 };
                 def.Click += RemoveInstantColor;
-                instantColorMenu.Items.Add(def);
+                _instantColorMenu.Items.Add(def);
 
                 string[] goodcolors = { "Aquamarine", "Bisque", "BlueViolet", "BurlyWood", "CadetBlue", "Chocolate", "CornflowerBlue", "Gold", "GreenYellow", "LightCoral", "Pink", "Plum", "Red", "Sienna", "Violet", "White" };
                 // populate colors drop down (will work with other kinds of list controls)
@@ -667,7 +600,7 @@
                                 FontSize = 12
                             };
                             item.Click += AddColorChoosed;
-                            instantColorMenu.Items.Add(item);
+                            _instantColorMenu.Items.Add(item);
 
                             found++;
                             break;
@@ -682,9 +615,9 @@
 
             var p = (Paragraph)sender;
             var msg = (Message)p.Tag;
-            instantColorMenu.Tag = msg;
-            ((MenuItem)instantColorMenu.Items[0]).Foreground = msg.Style.NickColor;
-            p.ContextMenu = instantColorMenu;
+            _instantColorMenu.Tag = msg;
+            ((MenuItem)_instantColorMenu.Items[0]).Foreground = msg.Style.NickColor;
+            p.ContextMenu = _instantColorMenu;
             p.ContextMenu.IsOpen = true;
             p.ContextMenu = null;
         }
@@ -696,23 +629,23 @@
             // Keep scrolling
             if (obj.VerticalOffset == obj.ScrollableHeight)
             {
-                if (this.rtbDocument.Blocks.Count > GlobalManager.MaxMessagesDisplayed)
+                if (this._rtbDocument.Blocks.Count > GlobalManager.MaxMessagesDisplayed)
                 {
-                    while (this.rtbDocument.Blocks.Count > GlobalManager.MaxMessagesDisplayed)
+                    while (this._rtbDocument.Blocks.Count > GlobalManager.MaxMessagesDisplayed)
                     {
-                        this.rtbDocument.Blocks.Remove(this.rtbDocument.Blocks.FirstBlock);
-                        this.messagesLoadedFrom = this.messagesLoadedFrom.Next;
+                        this._rtbDocument.Blocks.Remove(this._rtbDocument.Blocks.FirstBlock);
+                        this._messagesLoadedFrom = this._messagesLoadedFrom.Next;
 
                         if (Properties.Settings.Default.ChatMode)
                         {
-                            while (this.messagesLoadedFrom != null)
+                            while (this._messagesLoadedFrom != null)
                             {
-                                var type = this.messagesLoadedFrom.Value.Style.Type;
+                                var type = this._messagesLoadedFrom.Value.Style.Type;
                                 if (type != Message.MessageTypes.Part && type != Message.MessageTypes.Join && type != Message.MessageTypes.Quit)
                                 {
                                     break;
                                 }
-                                this.messagesLoadedFrom = this.messagesLoadedFrom.Next;
+                                this._messagesLoadedFrom = this._messagesLoadedFrom.Next;
                             }
                         }
                     }
@@ -723,16 +656,16 @@
             // Load older messages
             else if (obj.VerticalOffset == 0)
             {
-                if (!stopLoadingMessages)
+                if (!_stopLoadingMessages)
                 {
-                    if (this.messagesLoadedFrom != null && this.messagesLoadedFrom != this.Messages.First)
+                    if (this._messagesLoadedFrom != null && this._messagesLoadedFrom != this.Messages.First)
                     {
-                        stopLoadingMessages = true;
+                        _stopLoadingMessages = true;
                         int loaded = LoadMessages(GlobalManager.NumOfOldMessagesToBeLoaded);
-                        Block first = this.rtbDocument.Blocks.FirstBlock;
+                        Block first = this._rtbDocument.Blocks.FirstBlock;
                         double plus = first.Padding.Top + first.Padding.Bottom + first.Margin.Bottom + first.Margin.Top;
                         double sum = 0;
-                        Block temp = this.rtbDocument.Blocks.FirstBlock;
+                        Block temp = this._rtbDocument.Blocks.FirstBlock;
                         for (int i = 0; i < loaded; i++)
                         {
                             double maxFontSize = 0;
@@ -760,7 +693,7 @@
             }
             else
             {
-                stopLoadingMessages = false;
+                _stopLoadingMessages = false;
             }
         }
 
@@ -773,7 +706,7 @@
 
                 if (message.Length > 0)
                 {
-                    SaveNewMessage(message);
+                    this._lastUserMessages.Add(message);
                     ProcessUserMessage(message);
                 }
 
@@ -784,45 +717,27 @@
 
         private void MsgPreviewKeyDown(KeyEventArgs e)
         {
-            if (lastMessages.Count > 0)
+            if (e.Key == Key.Up)
             {
-                if (e.Key == Key.Up)
+                string text;
+                if (this._lastUserMessages.TryGetPrevious(this.MessageText, out text))
                 {
-                    if (lastMessageIterator == null)
-                    {
-                        lastMessageIterator = lastMessages.First;
-                        tempMessage = MessageText;
-                        MessageText = lastMessageIterator.Value;
-                        RaisePropertyChanged("MessageText");
-                    }
-                    else
-                    {
-                        if (lastMessageIterator.Next != null)
-                        {
-                            lastMessageIterator = lastMessageIterator.Next;
-                            MessageText = lastMessageIterator.Value;
-                            RaisePropertyChanged("MessageText");
-                        }
-                    }
-                    e.Handled = true;
+                    this.MessageText = text;
+                    this.RaisePropertyChanged("MessageText");
                 }
-                else if (e.Key == Key.Down)
+
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Down)
+            {
+                string text;
+                if (this._lastUserMessages.TryGetNext(this.MessageText, out text))
                 {
-                    if (lastMessageIterator != null)
-                    {
-                        lastMessageIterator = lastMessageIterator.Previous;
-                        if (lastMessageIterator == null)
-                        {
-                            MessageText = tempMessage;
-                        }
-                        else
-                        {
-                            MessageText = lastMessageIterator.Value;
-                        }
-                        RaisePropertyChanged("MessageText");
-                    }
-                    e.Handled = true;
+                    this.MessageText = text;
+                    this.RaisePropertyChanged("MessageText");
                 }
+
+                e.Handled = true;
             }
         }
 
@@ -1079,17 +994,25 @@
             ChangeMessageColorForUser(u, null);
         }
 
-        private void SaveNewMessage(string message)
+        public void Dispose()
         {
-            if (lastMessages.Count == 0 || lastMessages.First.Value != message)
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
             {
-                if (lastMessages.Count == GlobalManager.LastMessageCapacity)
+                if (this._channelLogger != null)
                 {
-                    lastMessages.RemoveLast();
+                    this._channelLogger.EndLogging();
+                    this._channelLogger.Dispose();
+                    this._channelLogger = null;
                 }
-                lastMessages.AddFirst(message);
+
+                this.ClearUsers();
             }
-            lastMessageIterator = null;
         }
     }
 }

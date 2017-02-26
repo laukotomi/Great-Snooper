@@ -26,12 +26,12 @@
             this.Joined = true;
 
             var mainWindow = (MainWindow)mainViewModel.DialogService.GetView();
-            tabitem = new TabItem();
-            tabitem.DataContext = this;
-            tabitem.Style = (Style)mainWindow.FindResource("pmChannelTabItem");
-            tabitem.ApplyTemplate();
-            this.headerTB = (TextBlock)tabitem.Template.FindName("ContentSite", tabitem);
-            tabitem.Content = ConnectedLayout;
+            _tabitem = new TabItem();
+            _tabitem.DataContext = this;
+            _tabitem.Style = (Style)mainWindow.FindResource("pmChannelTabItem");
+            _tabitem.ApplyTemplate();
+            this.headerTB = (TextBlock)_tabitem.Template.FindName("ContentSite", _tabitem);
+            _tabitem.Content = ConnectedLayout;
 
             string[] users = channelName.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
             foreach (string userName in users)
@@ -204,7 +204,7 @@
 
         public override TabItem GetLayout()
         {
-            return tabitem;
+            return _tabitem;
         }
 
         public bool IsUserInConversation(User u)

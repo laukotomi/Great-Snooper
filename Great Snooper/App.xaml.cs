@@ -40,7 +40,7 @@
                 {
                     if (item.Value.Joined)
                     {
-                        item.Value.EndLogging();
+                        item.Value.Dispose();
                     }
                 }
             }

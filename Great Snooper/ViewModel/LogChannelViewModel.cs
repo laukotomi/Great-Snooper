@@ -21,18 +21,18 @@
         private static Regex logMessageRegex = new Regex(@"^\((?<type>\w+)\) (?<date>\d+\-\d+\-\d+ \d+:\d+:\d+) (?<sender>[^:]+):(?<text>.*)", RegexOptions.Compiled);
 
         public LogChannelViewModel(MainViewModel mainViewModel, AbstractCommunicator server, string channelName)
-        : base(mainViewModel, server)
+            : base(mainViewModel, server)
         {
             this.Joined = true;
             this.Disabled = true;
             this.Name = "Log: " + channelName;
 
             var mainWindow = (MainWindow)mainViewModel.DialogService.GetView();
-            tabitem = new TabItem();
-            tabitem.DataContext = this;
-            tabitem.Style = (Style)mainWindow.FindResource("logChannelTabItem");
-            tabitem.ApplyTemplate();
-            tabitem.Content = ConnectedLayout;
+            _tabitem = new TabItem();
+            _tabitem.DataContext = this;
+            _tabitem.Style = (Style)mainWindow.FindResource("logChannelTabItem");
+            _tabitem.ApplyTemplate();
+            _tabitem.Content = ConnectedLayout;
 
             server.Channels.Add(this.Name, this);
             mainViewModel.CreateChannel(this);
@@ -118,13 +118,9 @@
         {
         }
 
-        public override void EndLogging()
-        {
-        }
-
         public override TabItem GetLayout()
         {
-            return tabitem;
+            return _tabitem;
         }
 
         public override void ProcessMessage(IRCTasks.MessageTask msgTask)
@@ -148,10 +144,6 @@
         }
 
         public override void SetLoading(bool loading = true)
-        {
-        }
-
-        protected override void LogMessage(Message msg)
         {
         }
     }

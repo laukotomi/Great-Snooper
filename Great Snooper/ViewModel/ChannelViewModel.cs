@@ -326,16 +326,16 @@
 
         public override TabItem GetLayout()
         {
-            if (tabitem == null)
+            if (_tabitem == null)
             {
                 var mainWindow = (MainWindow)this.MainViewModel.DialogService.GetView();
-                tabitem = new TabItem();
-                tabitem.DataContext = this;
-                tabitem.Style = (Style)mainWindow.FindResource("channelTabItem");
-                tabitem.Content = (this.Joined) ? ConnectedLayout : DisconnectedLayout;
+                _tabitem = new TabItem();
+                _tabitem.DataContext = this;
+                _tabitem.Style = (Style)mainWindow.FindResource("channelTabItem");
+                _tabitem.Content = (this.Joined) ? ConnectedLayout : DisconnectedLayout;
 
             }
-            return tabitem;
+            return _tabitem;
         }
 
         public TabItem GetUserListLayout()
@@ -560,9 +560,9 @@
                 }
             }
 
-            if (tabitem != null)
+            if (_tabitem != null)
             {
-                tabitem.Content = (this.Joined) ? ConnectedLayout : DisconnectedLayout;
+                _tabitem.Content = (this.Joined) ? ConnectedLayout : DisconnectedLayout;
             }
         }
 

@@ -140,8 +140,7 @@
             }
             else
             {
-                chvm.EndLogging();
-                chvm.ClearUsers();
+                chvm.Dispose();
             }
 
             chvm.Server.Channels.Remove(chvm.Name);
