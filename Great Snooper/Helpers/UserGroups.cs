@@ -1,7 +1,6 @@
 ﻿namespace GreatSnooper.Helpers
 {
     using System.Collections.Generic;
-
     using GreatSnooper.Model;
 
     public static class UserGroups
@@ -12,34 +11,36 @@
         public static readonly Dictionary<string, UserGroup> Groups = new Dictionary<string, UserGroup>(GlobalManager.CIStringComparer);
         public static readonly Dictionary<string, UserGroup> Users = new Dictionary<string, UserGroup>(GlobalManager.CIStringComparer);
 
-        public static void AddOrRemoveUser(User u, UserGroup newGroup)
+        public static void AddOrRemoveUser(User user, UserGroup newGroup)
         {
             UserGroup oldGroup;
-            if (Users.TryGetValue(u.Name, out oldGroup))
+            if (Users.TryGetValue(user.Name, out oldGroup))
             {
-                oldGroup.Users.Remove(u.Name);
+                oldGroup.Users.Remove(user.Name);
                 oldGroup.SaveUsers();
 
                 if (newGroup == null)
                 {
-                    Users.Remove(u.Name);
-                    u.Group = null;
+                    Users.Remove(user.Name);
+                    user.Group = null;
                 }
                 else
                 {
-                    Users[u.Name] = newGroup;
-                    newGroup.Users.Add(u.Name);
+                    Users[user.Name] = newGroup;
+                    newGroup.Users.Add(user.Name);
                     newGroup.SaveUsers();
-                    u.Group = newGroup;
+                    user.Group = newGroup;
                 }
             }
             else if (newGroup != null)
             {
-                Users.Add(u.Name, newGroup);
-                newGroup.Users.Add(u.Name);
+                Users.Add(user.Name, newGroup);
+                newGroup.Users.Add(user.Name);
                 newGroup.SaveUsers();
-                u.Group = newGroup;
+                user.Group = newGroup;
             }
+
+            UserHelper.UpdateMessageStyle(user);
         }
 
         public static void Initialize()

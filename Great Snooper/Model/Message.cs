@@ -52,7 +52,7 @@
                 {
                     this._nickRun = value;
                     this._nickRun.MouseLeftButtonDown += this.MouseClick;
-                    this.SetNickStyle();
+                    this.UpdateNickStyle();
                 }
             }
         }
@@ -88,6 +88,8 @@
             this.Style = setting;
             this.Time = time;
             this.IsLogged = isLogged;
+
+            sender.Messages.Add(this);
 
             if (setting.Type == MessageTypes.Action ||
                 setting.Type == MessageTypes.Channel ||
@@ -163,12 +165,17 @@
         {
             if (this.NickRun != null && e.PropertyName == "OnlineStatus")
             {
-                this.SetNickStyle();
+                this.UpdateNickStyle();
             }
         }
 
-        private void SetNickStyle()
+        public void UpdateNickStyle()
         {
+            if (this._nickRun == null)
+            {
+                return; // If message is not displayed
+            }
+
             this.NickRun.FontStyle = FontStyles.Normal;
             this.NickRun.FontWeight = FontWeights.Bold;
 
@@ -177,7 +184,7 @@
                 case User.Status.Online:
                     // Instant color
                     SolidColorBrush b;
-                    if (MainViewModel.Instance.InstantColors.TryGetValue(this.Sender.Name, out b))
+                    if (MainViewModel.Instance.InstantColors.TryGetValue(this.Sender, out b))
                     {
                         this.NickRun.Foreground = b;
                     }
@@ -201,6 +208,12 @@
                     this.NickRun.Foreground = Brushes.Goldenrod;
                     break;
             }
+        }
+
+        public void Dispose()
+        {
+            this._nickRun = null;
+            this.Sender.Messages.Remove(this);
         }
     }
 }

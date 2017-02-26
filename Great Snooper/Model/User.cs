@@ -3,9 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
-
     using GalaSoft.MvvmLight;
-
     using GreatSnooper.Helpers;
     using GreatSnooper.ViewModel;
 
@@ -33,6 +31,7 @@
             this.Channels = new HashSet<ChannelViewModel>();
             this.PMChannels = new HashSet<PMChannelViewModel>();
             this.AddToChannel = new List<ChannelViewModel>();
+            this.Messages = new List<Message>();
             UserGroup group;
             if (UserGroups.Users.TryGetValue(name, out group))
             {
@@ -50,6 +49,12 @@
         }
 
         public List<ChannelViewModel> AddToChannel
+        {
+            get;
+            private set;
+        }
+
+        public List<Message> Messages
         {
             get;
             private set;

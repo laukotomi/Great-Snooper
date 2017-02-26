@@ -42,5 +42,13 @@
             }
             return user;
         }
+
+        public static void UpdateMessageStyle(User user)
+        {
+            foreach (Message message in user.Messages)
+            {
+                message.UpdateNickStyle();
+            }
+        }
     }
 }

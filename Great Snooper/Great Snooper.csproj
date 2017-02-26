@@ -154,6 +154,7 @@
     <Compile Include="Classes\BBParser.cs" />
     <Compile Include="Classes\GameSurgeCommunicator.cs" />
     <Compile Include="Channel\LastUserMessages.cs" />
+    <Compile Include="Classes\InstantColors.cs" />
     <Compile Include="Classes\LeagueSearcher.cs" />
     <Compile Include="Classes\Notificator.cs" />
     <Compile Include="Classes\NotificatorEntry.cs" />

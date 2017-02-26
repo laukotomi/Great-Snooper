@@ -242,45 +242,6 @@ namespace GreatSnooper.ViewModel
             }
         }
 
-        public void ChangeMessageColorForUser(User u, SolidColorBrush color)
-        {
-            if (!this.Joined || this._rtbDocument == null || this._rtbDocument.Blocks.Count == 0)
-            {
-                return;
-            }
-
-            FontStyle fontStyle = u.Group.ID != UserGroups.SystemGroupID ? FontStyles.Italic : FontStyles.Normal;
-            Paragraph p = this._rtbDocument.Blocks.FirstBlock as Paragraph;
-
-            while (p != null)
-            {
-                var msg = (Message)p.Tag;
-                if (msg.Sender == u)
-                {
-                    if (Properties.Settings.Default.MessageTime)
-                    {
-                        // p.Inlines.FirstInline.Foreground = (color != null) ? color : MessageSettings.MessageTimeStyle.NickColor;
-                        p.Inlines.FirstInline.NextInline.Foreground = (color != null) ? color : msg.Style.NickColor;
-                        p.Inlines.FirstInline.NextInline.FontStyle = fontStyle;
-                    }
-                    else
-                    {
-                        p.Inlines.FirstInline.Foreground = (color != null) ? color : msg.Style.NickColor;
-                        p.Inlines.FirstInline.FontStyle = fontStyle;
-                    }
-                }
-                p = (Paragraph)p.NextBlock;
-            }
-
-
-            foreach (var chvm in this.MainViewModel.AllChannels)
-            {
-                if (chvm.Joined && chvm._rtbDocument.Blocks.Count > 0)
-                {
-                }
-            }
-        }
-
         public abstract void ClearUsers();
 
         public int CompareTo(object obj)
@@ -403,8 +364,7 @@ namespace GreatSnooper.ViewModel
             User u = ((Message)((ContextMenu)obj.Parent).Tag).Sender;
             SolidColorBrush color = (SolidColorBrush)obj.Foreground;
 
-            this.MainViewModel.InstantColors[u.Name] = color;
-            ChangeMessageColorForUser(u, color);
+            this.MainViewModel.InstantColors.Add(u, color);
         }
 
         private bool AddMessageToUI(Message msg, bool add = true)
@@ -517,6 +477,7 @@ namespace GreatSnooper.ViewModel
                 {
                     Message msg = this.Messages.First.Value;
                     this.Messages.RemoveFirst();
+                    msg.Dispose();
 
                     if (this._messagesLoadedFrom != null && this._messagesLoadedFrom.Value == msg) // If the removed message was displayed (when the scrollbar is not at bottom)
                     {
@@ -990,8 +951,7 @@ namespace GreatSnooper.ViewModel
             MenuItem obj = (MenuItem)sender;
             User u = ((Message)((ContextMenu)obj.Parent).Tag).Sender;
 
-            this.MainViewModel.InstantColors.Remove(u.Name);
-            ChangeMessageColorForUser(u, null);
+            this.MainViewModel.InstantColors.Remove(u);
         }
 
         public void Dispose()

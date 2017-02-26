@@ -569,13 +569,11 @@
         private void AddUserToDefaultGroup(User u)
         {
             UserGroups.AddOrRemoveUser(u, null);
-            this.ChangeMessageColorForUser(u, null);
         }
 
         private void AddUserToGroup(KeyValuePair<User, UserGroup> param)
         {
             UserGroups.AddOrRemoveUser(param.Key, param.Value);
-            this.ChangeMessageColorForUser(param.Key, param.Value.TextColor);
         }
 
         private bool CheckWAExe()

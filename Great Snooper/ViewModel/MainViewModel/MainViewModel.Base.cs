@@ -14,7 +14,6 @@
     using System.Windows.Controls;
     using System.Windows.Input;
     using System.Windows.Interop;
-    using System.Windows.Media;
     using System.Windows.Threading;
 
     using GalaSoft.MvvmLight;
@@ -102,7 +101,7 @@
             this.Servers[1].ConnectionState += ConnectionState;
             this.Servers[1].MVM = this;
 
-            this.InstantColors = new Dictionary<string, SolidColorBrush>(GlobalManager.CIStringComparer);
+            this.InstantColors = new InstantColors();
             this.notificator = Notificator.Instance;
             this.notificator.IsEnabledChanged += notificator_IsEnabledChanged;
             this.LeagueSearcher = LeagueSearcher.Instance;
@@ -129,6 +128,12 @@
         }
 
         public static MainViewModel Instance
+        {
+            get;
+            private set;
+        }
+
+        public InstantColors InstantColors
         {
             get;
             private set;
@@ -345,12 +350,6 @@
             {
                 return (GameSurgeCommunicator)this.Servers[1];
             }
-        }
-
-        public Dictionary<string, SolidColorBrush> InstantColors
-        {
-            get;
-            private set;
         }
 
         public bool IsAway
