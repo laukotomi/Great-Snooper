@@ -97,6 +97,14 @@
       <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net40\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="SimpleInjector, Version=3.3.2.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.3.3.2\lib\net40-client\SimpleInjector.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="SimpleInjector.Extensions.LifetimeScoping, Version=3.3.2.0, Culture=neutral, PublicKeyToken=984cb50dea722e99, processorArchitecture=MSIL">
+      <HintPath>..\packages\SimpleInjector.Extensions.LifetimeScoping.3.3.2\lib\net40-client\SimpleInjector.Extensions.LifetimeScoping.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Data" />
@@ -173,8 +181,10 @@
     <Compile Include="Converters\SolidColorBrushConverter.cs" />
     <Compile Include="Converters\ToUpperConverter.cs" />
     <Compile Include="CustomUI\CustomSlider.cs" />
+    <Compile Include="DI.cs" />
     <Compile Include="EventArguments\ConnectionStateEventArgs.cs" />
     <Compile Include="Helpers\ExtensionMethods.cs" />
+    <Compile Include="ServiceInterfaces\IWormNetCharTable.cs" />
     <Compile Include="Helpers\NativeMethods.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
     <Compile Include="Helpers\TusAccounts.cs" />
@@ -210,6 +220,7 @@
     <Compile Include="Settings\UserGroupSetting.cs" />
     <Compile Include="Settings\WAExeSetting.cs" />
     <Compile Include="IRCTasks\QuitTask.cs" />
+    <Compile Include="Startup\SettingsUpgrader.cs" />
     <Compile Include="UserControls\ChannelTabControl.xaml.cs">
       <DependentUpon>ChannelTabControl.xaml</DependentUpon>
     </Compile>
@@ -242,7 +253,7 @@
     <Compile Include="CustomUI\PasswordBoxAssistant.cs" />
     <Compile Include="Helpers\Ranks.cs" />
     <Compile Include="Helpers\Sounds.cs" />
-    <Compile Include="Helpers\WormNetCharTable.cs" />
+    <Compile Include="Services\WormNetCharTable.cs" />
     <Compile Include="Model\Country.cs" />
     <Compile Include="Classes\LanguageData.cs" />
     <Compile Include="Classes\MySortedList.cs" />
@@ -269,6 +280,7 @@
     <Compile Include="ViewModel\ChannelViewModel.cs" />
     <Compile Include="ViewModel\FontChooserViewModel.cs" />
     <Compile Include="ViewModel\HostingViewModel.cs" />
+    <Compile Include="ViewModelInterfaces\IHostingViewModel.cs" />
     <Compile Include="ViewModel\LeagueSearcherViewModel.cs" />
     <Compile Include="ViewModel\ListEditorViewModel.cs" />
     <Compile Include="ViewModel\LogChannelViewModel.cs" />

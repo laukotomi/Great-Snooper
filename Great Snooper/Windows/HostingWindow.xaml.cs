@@ -3,24 +3,30 @@
     using System;
     using System.Diagnostics;
     using System.Windows;
-
-    using GreatSnooper.EventArguments;
     using GreatSnooper.Helpers;
     using GreatSnooper.Services;
     using GreatSnooper.ViewModel;
-
+    using GreatSnooper.ViewModelInterfaces;
     using MahApps.Metro.Controls;
     using MahApps.Metro.Controls.Dialogs;
 
     public partial class HostingWindow : MetroWindow
     {
-        private HostingViewModel vm;
+        private readonly DI _di;
+        private IHostingViewModel _vm;
 
-        public HostingWindow(MainViewModel mvm, string serverAddress, ChannelViewModel channel, string cc)
+        public HostingWindow(DI di)
         {
-            this.vm = new HostingViewModel(mvm, serverAddress, channel, cc);
-            this.vm.DialogService = new MetroDialogService(this);
-            this.DataContext = this.vm;
+            _vm = di.Resolve<IHostingViewModel>();
+        }
+
+        public void Init(ChannelViewModel channel)
+        {
+            IMetroDialogService dialogService = _di.Resolve<IMetroDialogService>();
+            dialogService.Init(this);
+
+            _vm.Init(dialogService, channel);
+            DataContext = _vm;
             InitializeComponent();
         }
 

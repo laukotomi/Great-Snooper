@@ -2,12 +2,13 @@
 {
     using System;
     using System.Threading.Tasks;
-
+    using System.Windows;
     using MahApps.Metro.Controls;
     using MahApps.Metro.Controls.Dialogs;
 
     public interface IMetroDialogService
     {
+        void Init(Window window);
         void ActivationRequest();
 
         void CloseRequest();

@@ -1,12 +1,14 @@
-﻿namespace GreatSnooper.Helpers
+﻿namespace GreatSnooper.Services
 {
     using System.Collections.Generic;
     using System.Text;
+    using GreatSnooper.ServiceInterfaces;
 
-    public static class WormNetCharTable
+    public class WormNetCharTable : IWormNetCharTable
     {
+        #region Fields
         // A table to decode the messages sent from the WormNet servers. The encoding table will be generated from this.
-        public static char[] Decode =
+        private readonly char[] _decode =
         {
             ////x0      x1      x2      x3      x4      x5      x6      x7      x8      x9      xA      xB      xC      xD      xE      xF
             '\x00', '\x01', '\x02', '\x03', '\x04', '\x05', '\x06', '\x07', '\x08', '\x09', '\x0A', '\x0B', '\x0C', '\x0D', '\x0E', '\x0F', // 0x
@@ -26,68 +28,52 @@
             'à',    'á',    'â',    'ã',    'ä',    'å',    'æ',    'ç',    'è',    'é',    'ê',    'ë',    'ì',    'í',    'î',    'ï',    // Ex
             'ð',    'ñ',    'ò',    'ó',    'ô',    'õ',    'ö',    '÷',    'ø',    'ù',    'ú',    'û',    'ü',    'ý',    'þ',    'ÿ'     // Fx
         };
-        public static char[] DecodeGame = new char[256];
+        private readonly char[] _decodeGame = new char[256];
 
         // A table to encode messages to send them to the WormNet (will be generated in the constructor)
-        public static Dictionary<char, byte> Encode = new Dictionary<char, byte>();
-        public static Dictionary<char, byte> EncodeGame = new Dictionary<char, byte>();
-
-        private static StringBuilder sb = new StringBuilder();
+        private readonly Dictionary<char, byte> _encode = new Dictionary<char, byte>();
+        private readonly Dictionary<char, byte> _encodeGame = new Dictionary<char, byte>();
+        #endregion
 
         // This method ensures that the initialization will be made from the appropriate thread
-        public static void Initialize()
+        public WormNetCharTable()
         {
-            for (int i = 0; i < Decode.Length; i++)
+            for (int i = 0; i < _decode.Length; i++)
             {
                 // Generate the encode dictionary
-                if (!Encode.ContainsKey(Decode[i]))
+                if (!_encode.ContainsKey(_decode[i]))
                 {
-                    Encode.Add(Decode[i], System.Convert.ToByte(i));    // We mix up the key - value pairs
+                    _encode.Add(_decode[i], System.Convert.ToByte(i));    // We mix up the key - value pairs
                 }
 
                 // Generate the decode array for games
-                DecodeGame[i] = Decode[i];
+                _decodeGame[i] = _decode[i];
             }
 
-            AddCyrillSupport(Encode);
+            AddCyrillSupport(_encode);
 
             // <Deadcode> the five characters "&'<>\ are mapped to %10%11%12%13%14%15
-            DecodeGame[0x10] = '"';
-            DecodeGame[0x11] = '&';
-            DecodeGame[0x12] = '\'';
-            DecodeGame[0x13] = '<';
-            DecodeGame[0x14] = '>';
-            DecodeGame[0x15] = '\\';
+            _decodeGame[0x10] = '"';
+            _decodeGame[0x11] = '&';
+            _decodeGame[0x12] = '\'';
+            _decodeGame[0x13] = '<';
+            _decodeGame[0x14] = '>';
+            _decodeGame[0x15] = '\\';
 
             // Generate the encode dictionary for games
-            for (int i = 0; i < DecodeGame.Length; i++)
+            for (int i = 0; i < _decodeGame.Length; i++)
             {
                 // Generate the encode dictionary for games (WormNet GameList.asp, etc. can't use ; character!)
-                if (DecodeGame[i] != ';' && !EncodeGame.ContainsKey(DecodeGame[i]))
+                if (_decodeGame[i] != ';' && !_encodeGame.ContainsKey(_decodeGame[i]))
                 {
-                    EncodeGame.Add(DecodeGame[i], System.Convert.ToByte(i));    // We mix up the key - value pairs
+                    _encodeGame.Add(_decodeGame[i], System.Convert.ToByte(i));    // We mix up the key - value pairs
                 }
             }
 
-            AddCyrillSupport(EncodeGame);
+            AddCyrillSupport(_encodeGame);
         }
 
-        // Remove non-wormnet characters from a string
-        public static string RemoveNonWormNetChars(string input)
-        {
-            System.Text.StringBuilder sb = new System.Text.StringBuilder(input);
-            for (int i = 0; i < sb.Length; i++)
-            {
-                if (!Encode.ContainsKey(sb[i]))
-                {
-                    sb.Remove(i, 1);
-                    i -= 1;
-                }
-            }
-            return sb.ToString().TrimEnd();
-        }
-
-        private static void AddCyrillSupport(Dictionary<char, byte> obj)
+        private void AddCyrillSupport(Dictionary<char, byte> obj)
         {
             // Add missing cyrill letters to the Encode dictionary
             obj.Add('А', System.Convert.ToByte(0x41));
@@ -109,6 +95,70 @@
             obj.Add('у', System.Convert.ToByte(0x79));
             obj.Add('Ё', System.Convert.ToByte(0xCB));
             obj.Add('ё', System.Convert.ToByte(0xEB));
+        }
+
+        // Remove non-wormnet characters from a string
+        public string Encode(string input)
+        {
+            return RemoveWrongChars(input, _encode);
+        }
+
+        public string EncodeGame(string input)
+        {
+            return RemoveWrongChars(input, _encodeGame);
+        }
+
+        public byte GetByteForChar(char c)
+        {
+            return _encode[c];
+        }
+
+        public string EncodeGameUrl(string input)
+        {
+            StringBuilder sb = new StringBuilder(input);
+            for (int i = 0; i < sb.Length; i++)
+            {
+                char ch = sb[i];
+                if (ch == '"' || ch == '&' || ch == '\'' || ch == '<' || ch == '>' || ch == '\\')
+                {
+                    sb.Remove(i, 1);
+                    sb.Insert(i, "%" + _encodeGame[ch].ToString("X"));
+                    i += 2;
+                }
+                else if (ch == '#' || ch == '+' || ch == '%')
+                {
+                    sb.Remove(i, 1);
+                    sb.Insert(i, "%" + _encodeGame[ch].ToString("X"));
+                    i += 2;
+                }
+                else if (ch == ' ')
+                {
+                    sb.Remove(i, 1);
+                    sb.Insert(i, "%A0");
+                    i += 2;
+                }
+                else if (_encodeGame[ch] >= 0x80)
+                {
+                    sb.Remove(i, 1);
+                    sb.Insert(i, "%" + _encodeGame[ch].ToString("X"));
+                    i += 2;
+                }
+            }
+            return sb.ToString();
+        }
+
+        private string RemoveWrongChars(string input, Dictionary<char, byte> map)
+        {
+            StringBuilder sb = new StringBuilder(input);
+            for (int i = 0; i < sb.Length; i++)
+            {
+                if (!map.ContainsKey(sb[i]))
+                {
+                    sb.Remove(i, 1);
+                    i--;
+                }
+            }
+            return sb.ToString().TrimEnd();
         }
     }
 }

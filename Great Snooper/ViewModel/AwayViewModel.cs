@@ -3,24 +3,27 @@
     using System;
     using System.Windows.Input;
     using System.Windows.Threading;
-
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
-
-    using GreatSnooper.Helpers;
+    using GreatSnooper.ServiceInterfaces;
     using GreatSnooper.Services;
 
     class AwayViewModel : ViewModelBase
     {
-        private Dispatcher dispatcher;
-        private MainViewModel mvm;
+        private readonly DI _di;
+        private readonly Dispatcher _dispatcher;
         private bool _isAway;
+        private IMetroDialogService _dialogService;
 
-        public AwayViewModel(MainViewModel mvm, string awayText)
+        public AwayViewModel(DI di)
         {
-            this.mvm = mvm;
-            this.dispatcher = Dispatcher.CurrentDispatcher;
+            _di = di;
+            _dispatcher = Dispatcher.CurrentDispatcher;
+        }
 
+        public void Init(IMetroDialogService dialogService, string awayText)
+        {
+            _dialogService = dialogService;
             _isAway = awayText != string.Empty;
             if (_isAway)
             {
@@ -36,7 +39,9 @@
         {
             get
             {
-                return (_isAway) ? Localizations.GSLocalization.Instance.AwayButtonBack : Localizations.GSLocalization.Instance.AwayButtonAway;
+                return (_isAway)
+                    ? Localizations.GSLocalization.Instance.AwayButtonBack
+                    : Localizations.GSLocalization.Instance.AwayButtonAway;
             }
         }
 
@@ -62,12 +67,6 @@
             }
         }
 
-        public IMetroDialogService DialogService
-        {
-            get;
-            set;
-        }
-
         public bool IsAway
         {
             get
@@ -87,29 +86,33 @@
 
         private void Close()
         {
-            this.DialogService.CloseRequest();
+            _dialogService.CloseRequest();
         }
 
         private void SetAway()
         {
             if (IsAway)
             {
-                this.dispatcher.BeginInvoke(new Action(() =>
+                MainViewModel mvm = _di.Resolve<MainViewModel>();
+                _dispatcher.BeginInvoke(new Action(() =>
                 {
-                    this.mvm.SetBack();
+                    mvm.SetBack();
                 }));
                 this.Close();
             }
             else
             {
-                string text = WormNetCharTable.RemoveNonWormNetChars(AwayText.Trim());
+                IWormNetCharTable wormNetCharTable = _di.Resolve<IWormNetCharTable>();
+                string text = wormNetCharTable.Encode(AwayText.Trim());
                 if (text.Length > 0)
                 {
                     Properties.Settings.Default.AwayMessage = text;
                     Properties.Settings.Default.Save();
-                    this.dispatcher.BeginInvoke(new Action(() =>
+
+                    MainViewModel mvm = _di.Resolve<MainViewModel>();
+                    _dispatcher.BeginInvoke(new Action(() =>
                     {
-                        this.mvm.SetAway(text);
+                        mvm.SetAway(text);
                     }));
                     this.Close();
                 }

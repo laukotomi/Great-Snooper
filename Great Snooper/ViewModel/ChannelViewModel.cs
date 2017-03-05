@@ -882,9 +882,10 @@
 
         private void OpenHostingWindow()
         {
-            string hexcc = "6487" + WormNetCharTable.Encode[this.Server.User.Country.CountryCode[1]].ToString("X") + WormNetCharTable.Encode[this.Server.User.Country.CountryCode[0]].ToString("X");
+            DI _di;
 
-            var window = new HostingWindow(this.MainViewModel, this.Server.ServerAddress, this, hexcc);
+            HostingWindow window = _di.Resolve<HostingWindow>();
+            window.Init(this);
             window.Owner = this.MainViewModel.DialogService.GetView();
             window.ShowDialog();
         }
