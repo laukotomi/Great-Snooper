@@ -142,6 +142,15 @@ namespace GreatSnooper.Localizations {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Authentication failed.
+        /// </summary>
+        public static string AuthFailed {
+            get {
+                return ResourceManager.GetString("AuthFailed", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Auto join this channel.
         /// </summary>
         public static string AutoJoinText {
@@ -273,6 +282,15 @@ namespace GreatSnooper.Localizations {
         public static string ChangeButtonText {
             get {
                 return ResourceManager.GetString("ChangeButtonText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Send to other tab.
+        /// </summary>
+        public static string ChangeTabText {
+            get {
+                return ResourceManager.GetString("ChangeTabText", resourceCulture);
             }
         }
         
@@ -687,6 +705,24 @@ namespace GreatSnooper.Localizations {
         public static string GamesText {
             get {
                 return ResourceManager.GetString("GamesText", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Authenticate to GameSurge.
+        /// </summary>
+        public static string GameSurgeAuthLabel {
+            get {
+                return ResourceManager.GetString("GameSurgeAuthLabel", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to GameSurge password (optional):.
+        /// </summary>
+        public static string GameSurgePasswordLabel {
+            get {
+                return ResourceManager.GetString("GameSurgePasswordLabel", resourceCulture);
             }
         }
         

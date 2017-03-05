@@ -1,9 +1,10 @@
-﻿using GreatSnooper.Helpers;
-using System;
-using System.Text.RegularExpressions;
-
-namespace GreatSnooper.Validators
+﻿namespace GreatSnooper.Validators
 {
+    using System;
+    using System.Text.RegularExpressions;
+
+    using GreatSnooper.Helpers;
+
     public class GSVersionValidator : AbstractValidator
     {
         private readonly Regex gsVersionRegex = new Regex(@"^v[1-9]+\.[0-9]+\.?[0-9]*$", RegexOptions.IgnoreCase);
@@ -18,9 +19,10 @@ namespace GreatSnooper.Validators
                 words[1].Equals("snooper", StringComparison.OrdinalIgnoreCase) &&
                 gsVersionRegex.IsMatch(words[2]) &&
                 words[2].Equals("v" + App.GetVersion(), StringComparison.OrdinalIgnoreCase) == false)
+            {
                 return Localizations.GSLocalization.Instance.GSVersionTrolling;
+            }
             return string.Empty;
         }
     }
-
 }

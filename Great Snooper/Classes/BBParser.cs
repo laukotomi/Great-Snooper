@@ -1,18 +1,19 @@
-﻿using GreatSnooper.Helpers;
-using System;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-
-namespace GreatSnooper.Classes
+﻿namespace GreatSnooper.Classes
 {
+    using System;
+    using System.Text;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Documents;
+    using System.Windows.Media;
+    using System.Windows.Media.Imaging;
+
+    using GreatSnooper.Helpers;
+
     public static class BBParser
     {
-        private static Paragraph tempP;
         private static FlowDocument fd;
+        private static Paragraph tempP;
 
         public static FlowDocument Parse(string bbcode)
         {
@@ -30,6 +31,48 @@ namespace GreatSnooper.Classes
             return fd;
         }
 
+        private static void AddInline(object e, Inline i)
+        {
+            if (e is Paragraph)
+            {
+                ((Paragraph)e).Inlines.Add(i);
+            }
+            else if (e is Hyperlink)
+            {
+                ((Hyperlink)e).Inlines.Add(i);
+            }
+            else if (e is TextBlock)
+            {
+                ((TextBlock)e).Inlines.Add(i);
+            }
+        }
+
+        private static void AddInline(object e, TextBlock tb)
+        {
+            if (e is Paragraph)
+            {
+                ((Paragraph)e).Inlines.Add(tb);
+            }
+            else if (e is Hyperlink)
+            {
+                ((Hyperlink)e).Inlines.Add(tb);
+            }
+            else if (e is TextBlock)
+            {
+                ((TextBlock)e).Inlines.Add(tb);
+            }
+        }
+
+        private static void LinkClicked(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                System.Diagnostics.Process.Start((string)((Hyperlink)sender).Tag);
+            }
+            catch (Exception)
+            { }
+        }
+
         private static void Parse(object e, string bbcode, int idx = 0, int max = int.MaxValue)
         {
             StringBuilder text = new StringBuilder();
@@ -45,7 +88,6 @@ namespace GreatSnooper.Classes
                         AddInline(e, new Run(text.ToString()));
                         text.Clear();
                     }
-
 
                     // Get the tag and optionally the parameter
                     string tag = string.Empty;
@@ -97,11 +139,14 @@ namespace GreatSnooper.Classes
                     else
                     {
                         i++;
+
                         // search for the closing tag
                         string endtag = "[/" + tag + "]";
                         int m = bbcode.IndexOf(endtag, i);
                         if (m == -1)
+                        {
                             throw new Exception("Wrong BB code!");
+                        }
 
                         switch (tag.ToLower())
                         {
@@ -123,7 +168,10 @@ namespace GreatSnooper.Classes
                                 }
                                 else
                                 {
-                                    TextBlock tb = new TextBlock() { FontWeight = FontWeights.Bold };
+                                    TextBlock tb = new TextBlock()
+                                    {
+                                        FontWeight = FontWeights.Bold
+                                    };
                                     Parse(tb, bbcode, i, m);
                                     AddInline(e, tb);
                                 }
@@ -147,7 +195,10 @@ namespace GreatSnooper.Classes
                                 }
                                 else
                                 {
-                                    TextBlock tb = new TextBlock() { FontStyle = FontStyles.Italic };
+                                    TextBlock tb = new TextBlock()
+                                    {
+                                        FontStyle = FontStyles.Italic
+                                    };
                                     Parse(tb, bbcode, i, m);
                                     AddInline(e, tb);
                                 }
@@ -303,7 +354,6 @@ namespace GreatSnooper.Classes
                                 }
                                 break;
 
-
                             case "url":
                                 Hyperlink h = new Hyperlink();
                                 if (parameter == string.Empty)
@@ -312,7 +362,9 @@ namespace GreatSnooper.Classes
                                     h.Tag = url;
                                 }
                                 else
+                                {
                                     h.Tag = parameter;
+                                }
                                 h.Click += LinkClicked;
                                 Parse(h, bbcode, i, m);
                                 AddInline(e, h);
@@ -341,39 +393,14 @@ namespace GreatSnooper.Classes
             if (text.Length != 0)
             {
                 if (e is Run)
+                {
                     ((Run)e).Text = text.ToString();
+                }
                 else
+                {
                     AddInline(e, new Run(text.ToString()));
+                }
             }
-        }
-
-        private static void LinkClicked(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                System.Diagnostics.Process.Start((string)((Hyperlink)sender).Tag);
-            }
-            catch (Exception) { }
-        }
-
-        private static void AddInline(object e, Inline i)
-        {
-            if (e is Paragraph)
-                ((Paragraph)e).Inlines.Add(i);
-            else if (e is Hyperlink)
-                ((Hyperlink)e).Inlines.Add(i);
-            else if (e is TextBlock)
-                ((TextBlock)e).Inlines.Add(i);
-        }
-
-        private static void AddInline(object e, TextBlock tb)
-        {
-            if (e is Paragraph)
-                ((Paragraph)e).Inlines.Add(tb);
-            else if (e is Hyperlink)
-                ((Hyperlink)e).Inlines.Add(tb);
-            else if (e is TextBlock)
-                ((TextBlock)e).Inlines.Add(tb);
         }
     }
 }

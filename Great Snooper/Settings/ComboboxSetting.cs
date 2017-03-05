@@ -1,24 +1,35 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Windows;
-
-namespace GreatSnooper.Settings
+﻿namespace GreatSnooper.Settings
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Windows;
+
     class ComboboxSetting : AbstractSetting
     {
-        #region Members
         private Action<object> selectionChanged;
         private object _selectedItem;
-        #endregion
 
-        #region Properties
-        public DataTemplate Template { get; private set; }
-        public IEnumerable<object> Items { get; private set; }
+        public ComboboxSetting(string text, IEnumerable<object> items, object selectedItem, DataTemplate template, Action<object> selectionChanged)
+            : base(string.Empty, text)
+        {
+            this.Items = items;
+            this._selectedItem = selectedItem;
+            this.Template = template;
+            this.selectionChanged = selectionChanged;
+        }
+
+        public IEnumerable<object> Items
+        {
+            get;
+            private set;
+        }
+
         public object SelectedItem
         {
-            get { return _selectedItem; }
+            get
+            {
+                return _selectedItem;
+            }
             set
             {
                 if (_selectedItem != value)
@@ -28,15 +39,11 @@ namespace GreatSnooper.Settings
                 }
             }
         }
-        #endregion
 
-        public ComboboxSetting(string text, IEnumerable<object> items, object selectedItem, DataTemplate template, Action<object> selectionChanged)
-            : base("", text)
+        public DataTemplate Template
         {
-            this.Items = items;
-            this._selectedItem = selectedItem;
-            this.Template = template;
-            this.selectionChanged = selectionChanged;
+            get;
+            private set;
         }
     }
 }

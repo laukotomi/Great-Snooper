@@ -1,22 +1,30 @@
-﻿using GalaSoft.MvvmLight.Command;
-using GreatSnooper.Helpers;
-using Microsoft.Win32;
-using System;
-using System.IO;
-using System.Windows.Input;
-
-namespace GreatSnooper.Settings
+﻿namespace GreatSnooper.Settings
 {
+    using System.IO;
+    using System.Windows.Input;
+
+    using GalaSoft.MvvmLight.Command;
+
+    using GreatSnooper.Helpers;
+
+    using Microsoft.Win32;
+
     class WAExeSetting : AbstractSetting
     {
-        #region Members
         private string _path;
-        #endregion
 
-        #region Properties
+        public WAExeSetting(string settingName, string text)
+            : base(settingName, text)
+        {
+            this._path = SettingsHelper.Load<string>(settingName);
+        }
+
         public string Path
         {
-            get { return _path; }
+            get
+            {
+                return _path;
+            }
             set
             {
                 if (_path != value)
@@ -26,12 +34,13 @@ namespace GreatSnooper.Settings
                 }
             }
         }
-        #endregion
 
-        #region WAExeCommand
         public ICommand WAExeCommand
         {
-            get { return new RelayCommand(WAExe); }
+            get
+            {
+                return new RelayCommand(WAExe);
+            }
         }
 
         private void WAExe()
@@ -39,10 +48,12 @@ namespace GreatSnooper.Settings
             OpenFileDialog dlg = new OpenFileDialog();
             dlg.Filter = "Worms Armageddon Exe (*.exe)|*.exe";
             if (File.Exists(this.Path))
+            {
                 dlg.InitialDirectory = new FileInfo(this.Path).Directory.FullName;
+            }
 
-            // Display OpenFileDialog by calling ShowDialog method 
-            Nullable<bool> result = dlg.ShowDialog();
+            // Display OpenFileDialog by calling ShowDialog method
+            bool? result = dlg.ShowDialog();
 
             // Get the selected file name
             if (result.HasValue && result.Value)
@@ -50,14 +61,6 @@ namespace GreatSnooper.Settings
                 this.Path = dlg.FileName;
                 RaisePropertyChanged("Path");
             }
-        }
-        #endregion
-
-
-        public WAExeSetting(string settingName, string text)
-            : base(settingName, text)
-        {
-            this._path = SettingsHelper.Load<string>(settingName);
         }
     }
 }

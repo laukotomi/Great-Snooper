@@ -4,18 +4,20 @@
       <vm:ViewModelLocatorTemplate xmlns:vm="clr-namespace:Great_Snooper.ViewModel"
                                    x:Key="Locator" />
   </Application.Resources>
-  
+
   In the View:
   DataContext="{Binding Source={StaticResource Locator}, Path=ViewModelName}"
 */
 
-using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Ioc;
-using Microsoft.Practices.ServiceLocation;
-using GreatSnooper.Model;
-
 namespace GreatSnooper.ViewModel
 {
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.Ioc;
+
+    using GreatSnooper.Model;
+
+    using Microsoft.Practices.ServiceLocation;
+
     /// <summary>
     /// This class contains static references to all the view models in the
     /// application and provides an entry point for the bindings.
@@ -45,8 +47,8 @@ namespace GreatSnooper.ViewModel
         /// Gets the Main property.
         /// </summary>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Performance",
-            "CA1822:MarkMembersAsStatic",
-            Justification = "This non-static member is needed for data binding purposes.")]
+                "CA1822:MarkMembersAsStatic",
+                Justification = "This non-static member is needed for data binding purposes.")]
         public LoginViewModel Main
         {
             get

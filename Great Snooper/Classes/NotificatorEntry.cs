@@ -1,20 +1,17 @@
-﻿using GreatSnooper.Services;
-using System;
-using System.Linq;
-using System.Collections.Generic;
-using System.Text.RegularExpressions;
-
-namespace GreatSnooper.Classes
+﻿namespace GreatSnooper.Classes
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+
+    using GreatSnooper.Services;
+
     public class NotificatorEntry
     {
         private static Regex notificatorRow = new Regex(@"\{\{(?<channels>[^\,]*)\,?(?<wait>\d*)\}\}$", RegexOptions.Compiled);
 
         private Regex regex;
-
-        public HashSet<string> ChannelNames { get; set; }
-        public TimeSpan WaitTime { get; set; }
-        public Dictionary<string, DateTime> LastBeepTimes { get; set; }
 
         public NotificatorEntry(string word)
         {
@@ -35,22 +32,22 @@ namespace GreatSnooper.Classes
             this.LastBeepTimes = new Dictionary<string, DateTime>(StringComparer.OrdinalIgnoreCase);
         }
 
-        private bool CanMatch(string userName, string channelName)
+        public HashSet<string> ChannelNames
         {
-            if (this.WaitTime.Ticks > 0)
-            {
-                DateTime lastBeep;
-                if (this.LastBeepTimes.TryGetValue(userName, out lastBeep) && DateTime.Now - lastBeep < this.WaitTime)
-                {
-                    return false;
-                }
-            }
-            if (this.ChannelNames.Count > 0 && !this.ChannelNames.Contains(channelName))
-            {
-                return false;
-            }
+            get;
+            set;
+        }
 
-            return true;
+        public Dictionary<string, DateTime> LastBeepTimes
+        {
+            get;
+            set;
+        }
+
+        public TimeSpan WaitTime
+        {
+            get;
+            set;
         }
 
         public bool IsMatch(string word, string userName, string channelName)
@@ -76,6 +73,24 @@ namespace GreatSnooper.Classes
                 return matches;
             }
             return null;
+        }
+
+        private bool CanMatch(string userName, string channelName)
+        {
+            if (this.WaitTime.Ticks > 0)
+            {
+                DateTime lastBeep;
+                if (this.LastBeepTimes.TryGetValue(userName, out lastBeep) && DateTime.Now - lastBeep < this.WaitTime)
+                {
+                    return false;
+                }
+            }
+            if (this.ChannelNames.Count > 0 && !this.ChannelNames.Contains(channelName))
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }

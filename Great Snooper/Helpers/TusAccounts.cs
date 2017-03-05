@@ -1,10 +1,11 @@
-﻿using GreatSnooper.Classes;
-using GreatSnooper.Model;
-using System;
-using System.Collections.Generic;
-
-namespace GreatSnooper.Helpers
+﻿namespace GreatSnooper.Helpers
 {
+    using System;
+    using System.Collections.Generic;
+
+    using GreatSnooper.Classes;
+    using GreatSnooper.Model;
+
     public static class TusAccounts
     {
         public static DateTime tusAccountsLoaded = new DateTime(1999, 5, 31);
@@ -12,7 +13,9 @@ namespace GreatSnooper.Helpers
         public static void SetTusAccounts(string[] rows, AbstractCommunicator server = null)
         {
             foreach (var account in GlobalManager.TusAccounts)
+            {
                 account.Value.Active = false;
+            }
 
             foreach (var row in rows)
             {
@@ -26,7 +29,9 @@ namespace GreatSnooper.Helpers
                         GlobalManager.TusAccounts.Add(data[0], tusAccount);
                     }
                     else
+                    {
                         tusAccount.Active = true;
+                    }
 
                     User u;
                     if (server != null && server.State == AbstractCommunicator.ConnectionStates.Connected && server.Users.TryGetValue(data[0], out u) && u.TusAccount == null)
@@ -52,7 +57,9 @@ namespace GreatSnooper.Helpers
             }
 
             foreach (var key in toRemove)
+            {
                 GlobalManager.TusAccounts.Remove(key);
+            }
 
             tusAccountsLoaded = DateTime.Now;
         }

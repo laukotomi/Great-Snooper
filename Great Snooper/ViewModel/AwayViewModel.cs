@@ -1,31 +1,79 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GreatSnooper.Helpers;
-using GreatSnooper.Services;
-using System;
-using System.Windows.Input;
-using System.Windows.Threading;
-
-namespace GreatSnooper.ViewModel
+﻿namespace GreatSnooper.ViewModel
 {
+    using System;
+    using System.Windows.Input;
+    using System.Windows.Threading;
+
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.Command;
+
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Services;
+
     class AwayViewModel : ViewModelBase
     {
-        #region Members
-        private bool _isAway;
-        private MainViewModel mvm;
         private Dispatcher dispatcher;
-        #endregion
+        private MainViewModel mvm;
+        private bool _isAway;
 
-        #region Properties
-        public IMetroDialogService DialogService { get; set; }
-        public string AwayText { get; set; }
+        public AwayViewModel(MainViewModel mvm, string awayText)
+        {
+            this.mvm = mvm;
+            this.dispatcher = Dispatcher.CurrentDispatcher;
+
+            _isAway = awayText != string.Empty;
+            if (_isAway)
+            {
+                AwayText = awayText;
+            }
+            else
+            {
+                AwayText = Properties.Settings.Default.AwayMessage;
+            }
+        }
+
         public string AwayButtonText
         {
-            get { return (_isAway) ? Localizations.GSLocalization.Instance.AwayButtonBack : Localizations.GSLocalization.Instance.AwayButtonAway; }
+            get
+            {
+                return (_isAway) ? Localizations.GSLocalization.Instance.AwayButtonBack : Localizations.GSLocalization.Instance.AwayButtonAway;
+            }
         }
+
+        public ICommand AwayCommand
+        {
+            get
+            {
+                return new RelayCommand(SetAway);
+            }
+        }
+
+        public string AwayText
+        {
+            get;
+            set;
+        }
+
+        public ICommand CloseCommand
+        {
+            get
+            {
+                return new RelayCommand(Close);
+            }
+        }
+
+        public IMetroDialogService DialogService
+        {
+            get;
+            set;
+        }
+
         public bool IsAway
         {
-            get { return _isAway; }
+            get
+            {
+                return _isAway;
+            }
             private set
             {
                 if (_isAway != value)
@@ -36,24 +84,10 @@ namespace GreatSnooper.ViewModel
                 }
             }
         }
-        #endregion
 
-        public AwayViewModel(MainViewModel mvm, string awayText)
+        private void Close()
         {
-            this.mvm = mvm;
-            this.dispatcher = Dispatcher.CurrentDispatcher;
-
-            _isAway = awayText != string.Empty;
-            if (_isAway)
-                AwayText = awayText;
-            else
-                AwayText = Properties.Settings.Default.AwayMessage;
-        }
-
-        #region AwayCommand
-        public ICommand AwayCommand
-        {
-            get { return new RelayCommand(SetAway); }
+            this.DialogService.CloseRequest();
         }
 
         private void SetAway()
@@ -81,18 +115,5 @@ namespace GreatSnooper.ViewModel
                 }
             }
         }
-        #endregion
-
-        #region CloseCommand
-        public ICommand CloseCommand
-        {
-            get { return new RelayCommand(Close); }
-        }
-
-        private void Close()
-        {
-            this.DialogService.CloseRequest();
-        }
-        #endregion
     }
 }

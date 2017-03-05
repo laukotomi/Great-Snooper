@@ -1,20 +1,21 @@
-﻿using GreatSnooper.Helpers;
-using GreatSnooper.Services;
-using GreatSnooper.Validators;
-using GreatSnooper.ViewModel;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using System;
-using System.Collections.Generic;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-
-namespace GreatSnooper.Windows
+﻿namespace GreatSnooper.Windows
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Input;
+
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Services;
+    using GreatSnooper.Validators;
+    using GreatSnooper.ViewModel;
+
+    using MahApps.Metro.Controls;
+    using MahApps.Metro.Controls.Dialogs;
+
     public partial class ListEditor : MetroWindow
     {
-        public enum ListModes { Users, Normal, Setting }
         private ListEditorViewModel vm;
 
         public ListEditor(IEnumerable<string> list, string title, Action<string> addAction, Action<string> removeAction, AbstractValidator validator = null)
@@ -34,27 +35,40 @@ namespace GreatSnooper.Windows
             InitializeComponent();
         }
 
+        public enum ListModes
+        {
+            Users, Normal, Setting
+        }
+
         private void AddToList(object sender, KeyEventArgs e)
         {
             var obj = sender as TextBox;
             if (e.Key == Key.Enter && obj.Text.Length > 0)
+            {
                 vm.AddCommand.Execute(null);
+            }
             else if (e.Key == Key.Escape)
+            {
                 this.Close();
+            }
         }
 
         private void AddToListEnter(object sender, KeyboardFocusChangedEventArgs e)
         {
             var obj = sender as TextBox;
             if (obj.Text == (string)obj.Tag)
+            {
                 obj.Clear();
+            }
         }
 
         private void AddToListLeave(object sender, KeyboardFocusChangedEventArgs e)
         {
             var obj = sender as TextBox;
             if (obj.Text.Trim() == string.Empty)
+            {
                 obj.Text = (string)obj.Tag;
+            }
         }
 
         private void InformationClicked(object sender, RoutedEventArgs e)

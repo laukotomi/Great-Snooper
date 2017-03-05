@@ -1,9 +1,9 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Data;
-
-namespace GreatSnooper.Converters
+﻿namespace GreatSnooper.Converters
 {
+    using System;
+    using System.Windows;
+    using System.Windows.Data;
+
     class BoolToItalicConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
@@ -15,7 +15,9 @@ namespace GreatSnooper.Converters
         {
             var o = (bool?)value;
             if (o.HasValue && o.Value)
+            {
                 return FontStyles.Italic;
+            }
             return FontStyles.Normal;
         }
     }

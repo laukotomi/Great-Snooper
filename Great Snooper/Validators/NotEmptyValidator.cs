@@ -1,5 +1,4 @@
-﻿
-namespace GreatSnooper.Validators
+﻿namespace GreatSnooper.Validators
 {
     public class NotEmptyValidator : AbstractValidator
     {
@@ -7,7 +6,9 @@ namespace GreatSnooper.Validators
         {
             text = text.Trim();
             if (text.Length == 0)
+            {
                 return Localizations.GSLocalization.Instance.EmptyErrorMessage;
+            }
             return string.Empty;
         }
     }

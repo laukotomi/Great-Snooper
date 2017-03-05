@@ -1,10 +1,11 @@
-﻿using GreatSnooper.Classes;
-using GreatSnooper.Model;
-using System.Windows.Controls;
-using System.Windows.Media;
-
-namespace GreatSnooper.UserControls
+﻿namespace GreatSnooper.UserControls
 {
+    using System.Windows.Controls;
+    using System.Windows.Media;
+
+    using GreatSnooper.Classes;
+    using GreatSnooper.Model;
+
     public partial class NewsBody : Grid
     {
         public NewsBody(News news)

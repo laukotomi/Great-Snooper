@@ -1,7 +1,7 @@
-﻿using System.Windows.Controls;
-
-namespace GreatSnooper.UserControls
+﻿namespace GreatSnooper.UserControls
 {
+    using System.Windows.Controls;
+
     public partial class GameListLayout : Grid
     {
         public GameListLayout()

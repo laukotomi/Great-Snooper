@@ -148,14 +148,18 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Channel\ChannelLogger.cs" />
     <Compile Include="Classes\AbstractCommunicator.cs" />
     <Compile Include="Classes\AccentColorMenuData.cs" />
     <Compile Include="Classes\BBParser.cs" />
     <Compile Include="Classes\GameSurgeCommunicator.cs" />
+    <Compile Include="Channel\LastUserMessages.cs" />
+    <Compile Include="Classes\InstantColors.cs" />
     <Compile Include="Classes\LeagueSearcher.cs" />
     <Compile Include="Classes\Notificator.cs" />
     <Compile Include="Classes\NotificatorEntry.cs" />
     <Compile Include="Classes\TusResult.cs" />
+    <Compile Include="Classes\VisitedChannels.cs" />
     <Compile Include="Classes\WebDownload.cs">
       <SubType>Component</SubType>
     </Compile>
@@ -179,6 +183,7 @@
     <Compile Include="IRCTasks\ClientAddTask.cs" />
     <Compile Include="IRCTasks\ClientLeftTask.cs" />
     <Compile Include="IRCTasks\ClientRemoveTask.cs" />
+    <Compile Include="IRCTasks\InviteTask.cs" />
     <Compile Include="IRCTasks\JoinedTask.cs" />
     <Compile Include="IRCTasks\MessageTask.cs" />
     <Compile Include="IRCTasks\NamesTask.cs" />
@@ -205,6 +210,9 @@
     <Compile Include="Settings\UserGroupSetting.cs" />
     <Compile Include="Settings\WAExeSetting.cs" />
     <Compile Include="IRCTasks\QuitTask.cs" />
+    <Compile Include="UserControls\ChannelTabControl.xaml.cs">
+      <DependentUpon>ChannelTabControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UserControls\ConnectedLayout.xaml.cs">
       <DependentUpon>ConnectedLayout.xaml</DependentUpon>
     </Compile>
@@ -257,13 +265,21 @@
     <Compile Include="Validators\NotEmptyValidator.cs" />
     <Compile Include="ViewModel\AbstractChannelViewModel.cs" />
     <Compile Include="ViewModel\AwayViewModel.cs" />
+    <Compile Include="ViewModel\ChannelTabControlViewModel.cs" />
     <Compile Include="ViewModel\ChannelViewModel.cs" />
     <Compile Include="ViewModel\FontChooserViewModel.cs" />
     <Compile Include="ViewModel\HostingViewModel.cs" />
     <Compile Include="ViewModel\LeagueSearcherViewModel.cs" />
     <Compile Include="ViewModel\ListEditorViewModel.cs" />
     <Compile Include="ViewModel\LogChannelViewModel.cs" />
-    <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.CommonServer.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.Base.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.EnergySave.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.Filter.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.GameList.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.Settings.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.Commands.cs" />
+    <Compile Include="ViewModel\MainViewModel\MainViewModel.Window.cs" />
     <Compile Include="ViewModel\NewsViewModel.cs" />
     <Compile Include="ViewModel\NotificatorViewModel.cs" />
     <Compile Include="ViewModel\PMChannelViewModel.cs" />
@@ -309,6 +325,10 @@
     <Compile Include="Windows\SettingsWindow.xaml.cs">
       <DependentUpon>SettingsWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="UserControls\ChannelTabControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UserControls\ConnectedLayout.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -592,6 +612,7 @@
       <Install>true</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

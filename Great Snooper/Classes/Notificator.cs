@@ -1,123 +1,170 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text.RegularExpressions;
-
-namespace GreatSnooper.Classes
+﻿namespace GreatSnooper.Classes
 {
+    using System;
+    using System.Collections.Generic;
+
     internal delegate void NotificatorIsEnabledChangedDelegate();
 
     class Notificator
     {
-        #region Static
-        private static Notificator instance;
-        #endregion
-
-        #region Members
-        public bool _searchInMessagesEnabled;
-        public bool _searchInSenderNamesEnabled;
+        public volatile bool _isEnabled;
         public bool _searchInGameNamesEnabled;
         public bool _searchInHosterNamesEnabled;
         public bool _searchInJoinMessagesEnabled;
-        public volatile bool _isEnabled;
-        #endregion
+        public bool _searchInMessagesEnabled;
+        public bool _searchInSenderNamesEnabled;
 
-        #region Properties
+        private static Notificator instance;
+
+        private bool isDisposed;
+
+        private Notificator()
+        {
+            this._isEnabled = Properties.Settings.Default.NotificatorStartWithSnooper;
+            this.GameNames = this.LoadList(Properties.Settings.Default.NotificatorInGameNames, out this._searchInGameNamesEnabled);
+            this.HosterNames = this.LoadList(Properties.Settings.Default.NotificatorInHosterNames, out this._searchInHosterNamesEnabled);
+            this.JoinMessages = this.LoadList(Properties.Settings.Default.NotificatorInJoinMessages, out this._searchInJoinMessagesEnabled);
+            this.InMessages = this.LoadList(Properties.Settings.Default.NotificatorInMessages, out this._searchInMessagesEnabled);
+            this.SenderNames = this.LoadList(Properties.Settings.Default.NotificatorInSenderNames, out this._searchInSenderNamesEnabled);
+
+            Properties.Settings.Default.PropertyChanged += this.Default_PropertyChanged;
+        }
+
+        public event NotificatorIsEnabledChangedDelegate IsEnabledChanged;
+
         public static Notificator Instance
         {
             get
             {
                 if (instance == null)
+                {
                     instance = new Notificator();
+                }
                 return instance;
             }
         }
 
+        public List<NotificatorEntry> GameNames
+        {
+            get;
+            private set;
+        }
 
-        public List<NotificatorEntry> InMessages { get; private set; }
+        public List<NotificatorEntry> HosterNames
+        {
+            get;
+            private set;
+        }
 
-        public List<NotificatorEntry> GameNames { get; private set; }
-
-        public List<NotificatorEntry> HosterNames { get; private set; }
-
-        public List<NotificatorEntry> JoinMessages { get; private set; }
-
-        public List<NotificatorEntry> SenderNames { get; private set; }
+        public List<NotificatorEntry> InMessages
+        {
+            get;
+            private set;
+        }
 
         public bool IsEnabled
         {
-            get { return _isEnabled; }
+            get
+            {
+                return this._isEnabled;
+            }
             set
             {
-                if (_isEnabled != value)
+                if (this._isEnabled != value)
                 {
-                    _isEnabled = value;
+                    this._isEnabled = value;
                     if (this.IsEnabledChanged != null)
+                    {
                         this.IsEnabledChanged();
+                    }
                 }
             }
         }
-        public bool SearchInMessagesEnabled
+
+        public List<NotificatorEntry> JoinMessages
         {
-            get { return this.IsEnabled && _searchInMessagesEnabled; }
+            get;
+            private set;
         }
-        public bool SearchInSenderNamesEnabled
-        {
-            get { return this.IsEnabled && _searchInSenderNamesEnabled; }
-        }
+
         public bool SearchInGameNamesEnabled
         {
-            get { return this.IsEnabled && _searchInGameNamesEnabled; }
+            get
+            {
+                return this.IsEnabled && this._searchInGameNamesEnabled;
+            }
         }
+
         public bool SearchInHosterNamesEnabled
         {
-            get { return this.IsEnabled && _searchInHosterNamesEnabled; }
+            get
+            {
+                return this.IsEnabled && this._searchInHosterNamesEnabled;
+            }
         }
+
         public bool SearchInJoinMessagesEnabled
         {
-            get { return this.IsEnabled && _searchInJoinMessagesEnabled; }
+            get
+            {
+                return this.IsEnabled && this._searchInJoinMessagesEnabled;
+            }
         }
-        #endregion
 
-        #region Events
-        public event NotificatorIsEnabledChangedDelegate IsEnabledChanged;
-        #endregion
-
-        private Notificator()
+        public bool SearchInMessagesEnabled
         {
-            this._isEnabled = Properties.Settings.Default.NotificatorStartWithSnooper;
-            this.GameNames = LoadList(Properties.Settings.Default.NotificatorInGameNames, out this._searchInGameNamesEnabled);
-            this.HosterNames = LoadList(Properties.Settings.Default.NotificatorInHosterNames, out this._searchInHosterNamesEnabled);
-            this.JoinMessages = LoadList(Properties.Settings.Default.NotificatorInJoinMessages, out this._searchInJoinMessagesEnabled);
-            this.InMessages = LoadList(Properties.Settings.Default.NotificatorInMessages, out this._searchInMessagesEnabled);
-            this.SenderNames = LoadList(Properties.Settings.Default.NotificatorInSenderNames, out this._searchInSenderNamesEnabled);
+            get
+            {
+                return this.IsEnabled && this._searchInMessagesEnabled;
+            }
+        }
 
-            Properties.Settings.Default.PropertyChanged += Default_PropertyChanged;
+        public bool SearchInSenderNamesEnabled
+        {
+            get
+            {
+                return this.IsEnabled && this._searchInSenderNamesEnabled;
+            }
+        }
+
+        public List<NotificatorEntry> SenderNames
+        {
+            get;
+            private set;
+        }
+
+        public void Dispose()
+        {
+            if (!this.isDisposed)
+            {
+                this.isDisposed = true;
+                Properties.Settings.Default.PropertyChanged -= this.Default_PropertyChanged;
+            }
         }
 
         private void Default_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
             switch (e.PropertyName)
             {
-                case "NotificatorInGameNames":
-                    this.GameNames = LoadList(Properties.Settings.Default.NotificatorInGameNames, out this._searchInGameNamesEnabled);
-                    break;
+            case "NotificatorInGameNames":
+                this.GameNames = this.LoadList(Properties.Settings.Default.NotificatorInGameNames, out this._searchInGameNamesEnabled);
+                break;
 
-                case "NotificatorInHosterNames":
-                    this.HosterNames = LoadList(Properties.Settings.Default.NotificatorInHosterNames, out this._searchInHosterNamesEnabled);
-                    break;
+            case "NotificatorInHosterNames":
+                this.HosterNames = this.LoadList(Properties.Settings.Default.NotificatorInHosterNames, out this._searchInHosterNamesEnabled);
+                break;
 
-                case "NotificatorInJoinMessages":
-                    this.JoinMessages = LoadList(Properties.Settings.Default.NotificatorInJoinMessages, out this._searchInJoinMessagesEnabled);
-                    break;
+            case "NotificatorInJoinMessages":
+                this.JoinMessages = this.LoadList(Properties.Settings.Default.NotificatorInJoinMessages, out this._searchInJoinMessagesEnabled);
+                break;
 
-                case "NotificatorInMessages":
-                    this.InMessages = LoadList(Properties.Settings.Default.NotificatorInMessages, out this._searchInMessagesEnabled);
-                    break;
+            case "NotificatorInMessages":
+                this.InMessages = this.LoadList(Properties.Settings.Default.NotificatorInMessages, out this._searchInMessagesEnabled);
+                break;
 
-                case "NotificatorInSenderNames":
-                    this.SenderNames = LoadList(Properties.Settings.Default.NotificatorInSenderNames, out this._searchInSenderNamesEnabled);
-                    break;
+            case "NotificatorInSenderNames":
+                this.SenderNames = this.LoadList(Properties.Settings.Default.NotificatorInSenderNames, out this._searchInSenderNamesEnabled);
+                break;
             }
         }
 
@@ -140,17 +187,5 @@ namespace GreatSnooper.Classes
             enabled = list.Count != 0;
             return list;
         }
-
-        #region Dispose
-        private bool isDisposed;
-        public void Dispose()
-        {
-            if (!isDisposed)
-            {
-                isDisposed = true;
-                Properties.Settings.Default.PropertyChanged -= Default_PropertyChanged;
-            }
-        }
-        #endregion
     }
 }

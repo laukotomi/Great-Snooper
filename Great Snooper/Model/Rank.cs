@@ -1,36 +1,29 @@
-﻿using GreatSnooper.Helpers;
-using System;
-using System.Windows.Media.Imaging;
-
-namespace GreatSnooper.Model
+﻿namespace GreatSnooper.Model
 {
+    using System;
+    using System.Windows.Media.Imaging;
+
+    using GreatSnooper.Helpers;
+
     public class Rank : IComparable
     {
-        #region Static
         private static int counter = 0;
-        #endregion
-
-        #region Properties
-        public int ID { get; private set; }
-        public string Name { get; private set; }
-        public BitmapImage Picture { get; private set; }
-        #endregion
 
         public Rank(string name)
         {
-            ID = counter++;
+            this.ID = counter++;
             this.Name = name;
 
             try
             {
-                Picture = new BitmapImage();
-                Picture.DecodePixelWidth = 48;
-                Picture.DecodePixelHeight = 17;
-                Picture.CacheOption = BitmapCacheOption.OnLoad;
-                Picture.BeginInit();
-                Picture.UriSource = new Uri("pack://application:,,,/Resources/ranks/rank" + ID.ToString() + ".png");
-                Picture.EndInit();
-                Picture.Freeze();
+                this.Picture = new BitmapImage();
+                this.Picture.DecodePixelWidth = 48;
+                this.Picture.DecodePixelHeight = 17;
+                this.Picture.CacheOption = BitmapCacheOption.OnLoad;
+                this.Picture.BeginInit();
+                this.Picture.UriSource = new Uri("pack://application:,,,/Resources/ranks/rank" + this.ID.ToString() + ".png");
+                this.Picture.EndInit();
+                this.Picture.Freeze();
             }
             catch (Exception e)
             {
@@ -38,12 +31,28 @@ namespace GreatSnooper.Model
             }
         }
 
-        #region IComparable
+        public int ID
+        {
+            get;
+            private set;
+        }
+
+        public string Name
+        {
+            get;
+            private set;
+        }
+
+        public BitmapImage Picture
+        {
+            get;
+            private set;
+        }
+
         public int CompareTo(object obj)
         {
             var o = (Rank)obj;
-            return ID.CompareTo(o.ID);
+            return this.ID.CompareTo(o.ID);
         }
-        #endregion
     }
 }

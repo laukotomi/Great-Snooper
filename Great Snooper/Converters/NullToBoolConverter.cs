@@ -1,8 +1,8 @@
-﻿using System;
-using System.Windows.Data;
-
-namespace GreatSnooper.Converters
+﻿namespace GreatSnooper.Converters
 {
+    using System;
+    using System.Windows.Data;
+
     class NullToBoolConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)

@@ -1,122 +1,295 @@
-﻿using GalaSoft.MvvmLight;
-using GreatSnooper.Helpers;
-using GreatSnooper.IRCTasks;
-using GreatSnooper.Model;
-using GreatSnooper.ViewModel;
-using System;
-using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Net.Sockets;
-using System.Text;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace GreatSnooper.Classes
+﻿namespace GreatSnooper.Classes
 {
+    using System;
+    using System.Collections.Concurrent;
+    using System.Collections.Generic;
+    using System.Diagnostics;
+    using System.Net.Sockets;
+    using System.Text;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Threading.Tasks;
+
+    using GalaSoft.MvvmLight;
+
+    using GreatSnooper.Helpers;
+    using GreatSnooper.IRCTasks;
+    using GreatSnooper.Model;
+    using GreatSnooper.ViewModel;
+
     public delegate void ConnectionStateDelegate(object sender, AbstractCommunicator.ConnectionStates oldState);
 
     public abstract class AbstractCommunicator : ObservableObject, IDisposable
     {
-        #region Enums
-        public enum ConnectionStates { Disconnected, Connecting, Connected, Disconnecting, ReConnecting }
-        public enum ErrorStates { None, UsernameInUse, Error, /*,AuthOK, AuthBad*/TimeOut }
-        #endregion
-
-        #region Members
-        private volatile ConnectionStates _connectionState = ConnectionStates.Disconnected;
-        protected readonly int serverPort;
-        protected string serverIrcAddress = string.Empty;
-
-        protected readonly byte[] recvBuffer = new byte[10240]; // stores the bytes arrived from WormNet server. These bytes will be decoding into RecvMessage or into RecvHTML
-        protected readonly byte[] sendBuffer = new byte[1024]; // stores the encoded bytes from the items of the ToSend list which will be sent to WormNet server.
-        protected readonly StringBuilder recvMessage = new StringBuilder(10240);
-        protected readonly ConcurrentQueue<string> messages = new ConcurrentQueue<string>();
-        protected SortedDictionary<string, string> channelListHelper;
-
         // #Help 10 :05 A place to get help, or help others
-        protected readonly Regex channelRegex = new Regex(@"((#|&)\S+)[^:]+\S+\s(.*)", RegexOptions.Compiled);
+        protected readonly Regex _channelRegex = new Regex(@"((#|&)\S+)[^:]+\S+\s(.*)", RegexOptions.Compiled);
+
         // #AnythingGoes ~UserName no.address.for.you wormnet1.team17.com Herbsman H :0 68 7 LT The Wheat Snooper 2.8
         // * ~ooo OutofOrder.user.gamesurge *.GameSurge.net OutofOrder Hx :3 Tomás Ticado
         // #worms ~tear tear.moe *.GameSurge.net Tear H :3 Tear
-        protected readonly Regex clientRegex = new Regex(@"(\S+)\s~?(\S+)\s\S+\s\S+\s(\S+)[^:]+\S+\s(.*)", RegexOptions.Compiled);
+        protected readonly Regex _clientRegex = new Regex(@"(\S+)\s~?(\S+)\s\S+\s\S+\s(\S+)[^:]+\S+\s(.*)", RegexOptions.Compiled);
+        protected readonly TimeSpan _disconnectTimeout = new TimeSpan(0, 0, 120);
+        protected readonly TimeSpan _idleTimeout = new TimeSpan(0, 0, 60);
+
         // :sToOMiToO!~AeF@no.address.for.you JOIN :#RopersHeaven
         // :AeF`T!Username@no.address.for.you PRIVMSG #AnythingGoes :\x01ACTION ads\x01
-        protected readonly Regex messageRegex = new Regex(@":?([^!]+)!~?([^@]+)\S+\s(\S+)\s?:?(.*)", RegexOptions.Compiled);
-        protected readonly Regex namesRegex = new Regex(@"^(=|\*|@) ([^ ]+) :(.*)", RegexOptions.Compiled);
+        protected readonly Regex _messageRegex = new Regex(@":?([^!]+)!~?([^@]+)\S+\s(\S+)\s?:?(.*)", RegexOptions.Compiled);
+        protected readonly ConcurrentQueue<string> _messages = new ConcurrentQueue<string>();
+        protected readonly Regex _namesRegex = new Regex(@"^(=|\*|@) ([^ ]+) :(.*)", RegexOptions.Compiled);
+        protected readonly TimeSpan _reconnectTimeout = new TimeSpan(0, 0, 30);
+        protected readonly byte[] _recvBuffer = new byte[10240]; // stores the bytes arrived from WormNet server. These bytes will be decoding into RecvMessage or into RecvHTML
+        protected readonly StringBuilder _recvMessage = new StringBuilder(10240);
+        protected readonly byte[] _sendBuffer = new byte[1024]; // stores the encoded bytes from the items of the ToSend list which will be sent to WormNet server.
+        protected readonly int _serverPort;
+        protected readonly Regex _topicRegex = new Regex(@"^([^ ]+) :(.*)", RegexOptions.Compiled);
+
+        protected SortedDictionary<string, string> _channelListHelper;
+        protected Task _connectionTask;
 
         // Communication things
-        protected Socket ircServer;
-        protected Task connectionTask;
-        protected Timer timer;
-        protected readonly TimeSpan idleTimeout = new TimeSpan(0, 0, 60);
-        protected readonly TimeSpan disconnectTimeout = new TimeSpan(0, 0, 120);
-        protected DateTime lastServerAction;
-        protected bool pingSent = false;
+        protected Socket _ircServer;
+        protected DateTime _lastReconnectAttempt;
+        protected DateTime _lastServerAction;
+        protected bool _pingSent = false;
 
         // Reconnet things
-        protected Timer reconnectTimer;
-        protected DateTime lastReconnectAttempt;
-        protected readonly TimeSpan reconnectTimeout = new TimeSpan(0, 0, 30);
+        protected Timer _reconnectTimer;
+        protected string _serverIrcAddress = string.Empty;
+        protected Timer _timer;
 
-        private bool handleGlobalMessage;
-        #endregion
+        bool disposed = false;
+        private volatile ConnectionStates _connectionState = ConnectionStates.Disconnected;
+        private bool _handleAuth;
+        private bool _handleGlobalMessage;
 
-        #region Properties
-        public ConnectionStates State
-        {
-            get { return _connectionState; }
-            protected set
-            {
-                if (_connectionState != value)
-                {
-                    var oldValue = _connectionState;
-                    _connectionState = value;
-                    if (ConnectionState != null)
-                        ConnectionState.BeginInvoke(this, oldValue, null, null);
-                }
-            }
-        }
-        public ErrorStates ErrorState { get; protected set; }
-        public string ServerAddress { get; private set; }
-        public User User { get; protected set; }
-        public bool HandleNickChange { get; private set; }
-        public bool HandleJoinRequest { get; private set; }
-        public MainViewModel MVM { get; set; }
-        public Dictionary<string, User> Users { get; private set; } // Is used only from UI thread!
-        public Dictionary<string, AbstractChannelViewModel> Channels { get; private set; } // Is used only from UI thread!
-        #endregion
-
-        #region Events
-        public event ConnectionStateDelegate ConnectionState;
-        #endregion
-
-        #region Abstract methods
-        protected abstract void SetUser();
-        protected abstract void EncodeMessage(int bytes);
-        protected abstract int DecodeMessage(string message);
-        protected virtual void SendPassword() { }
-        public abstract string VerifyString(string str);
-        #endregion
-
-        protected AbstractCommunicator(string serverAddress, int serverPort, bool handleGlobalMessage, bool handleNickChange, bool handleJoinRequest)
+        protected AbstractCommunicator(string serverAddress, int serverPort, bool handleGlobalMessage, bool handleNickChange, bool handleJoinRequest, bool handleAuth)
         {
             this.ErrorState = ErrorStates.None;
             this.ServerAddress = serverAddress;
-            this.serverPort = serverPort;
-            this.handleGlobalMessage = handleGlobalMessage;
+            this._serverPort = serverPort;
+            this._handleGlobalMessage = handleGlobalMessage;
             this.HandleNickChange = handleNickChange;
             this.HandleJoinRequest = handleJoinRequest;
+            this._handleAuth = handleAuth;
             this.Users = new Dictionary<string, User>(GlobalManager.CIStringComparer);
             this.Channels = new Dictionary<string, AbstractChannelViewModel>(GlobalManager.CIStringComparer);
-            this.lastReconnectAttempt = new DateTime(1999, 5, 31);
+            this._lastReconnectAttempt = new DateTime(1999, 5, 31);
+        }
+
+        ~AbstractCommunicator()
+        {
+            Dispose(false);
+        }
+
+        public enum ConnectionStates
+        {
+            Disconnected,
+            Connecting,
+            Connected,
+            Disconnecting,
+            ReConnecting
+        }
+
+        public enum ErrorStates
+        {
+            None,
+            UsernameInUse,
+            Error,
+            TimeOut
+        }
+
+        public event ConnectionStateDelegate ConnectionState;
+
+        public Dictionary<string, AbstractChannelViewModel> Channels
+        {
+            get;
+            private set;
+        }
+
+        public ErrorStates ErrorState
+        {
+            get;
+            protected set;
+        }
+
+        public bool HandleJoinRequest
+        {
+            get;
+            private set;
+        }
+
+        public bool HandleNickChange
+        {
+            get;
+            private set;
+        }
+
+        public MainViewModel MVM
+        {
+            get;
+            set;
+        }
+
+        public string ServerAddress
+        {
+            get;
+            private set;
+        }
+
+        public ConnectionStates State
+        {
+            get
+            {
+                return this._connectionState;
+            }
+            protected set
+            {
+                if (this._connectionState != value)
+                {
+                    ConnectionStates oldValue = this._connectionState;
+                    this._connectionState = value;
+                    if (this.ConnectionState != null)
+                    {
+                        this.ConnectionState.BeginInvoke(this, oldValue, null, null);
+                    }
+                }
+            }
+        }
+
+        public User User
+        {
+            get;
+            protected set;
+        }
+
+        public Dictionary<string, User> Users
+        {
+            get;
+            private set;
         }
 
         public void CancelAsync()
         {
             if (this.State != ConnectionStates.Disconnected)
+            {
                 this.State = ConnectionStates.Disconnecting;
+            }
+        }
+
+        public void Connect()
+        {
+            if (this.State != ConnectionStates.Disconnected && this.State != ConnectionStates.ReConnecting)
+            {
+                Stop(ErrorStates.None);
+                return;
+            }
+            if (this.State == ConnectionStates.Disconnected)
+            {
+                this.State = ConnectionStates.Connecting;
+            }
+
+            this._lastReconnectAttempt = DateTime.Now;
+            this.ErrorState = ErrorStates.None;
+            this.SetUser();
+
+            if (_connectionTask != null)
+            {
+                _connectionTask.Dispose();
+                _connectionTask = null;
+            }
+
+            _connectionTask = Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    if (_ircServer != null)
+                    {
+                        _ircServer.Dispose();
+                        _ircServer = null;
+                    }
+
+                    // Reset things
+                    _lastServerAction = DateTime.Now;
+                    _pingSent = false;
+                    this._serverIrcAddress = string.Empty;
+
+                    string message;
+                    while (_messages.TryDequeue(out message))
+                    {
+
+                    }
+                    _recvMessage.Clear();
+
+                    // Connect to server
+                    _ircServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                    _ircServer.SendTimeout = 60000;
+                    _ircServer.ReceiveBufferSize = 10240;
+                    Debug.WriteLine("Trying to connect " + this.ServerAddress + ":" + _serverPort.ToString());
+                    _ircServer.Connect(System.Net.Dns.GetHostAddresses(ServerAddress), _serverPort);
+
+                    // Let's log in
+                    SendLoginMessages();
+
+                    // Start timer
+                    if (_timer == null)
+                        _timer = new Timer(timer_Elapsed, null, 1000, Timeout.Infinite);
+                    else
+                    { _timer.Change(1000, Timeout.Infinite); }
+                }
+                catch (Exception ex)
+                {
+                    ErrorLog.Log(ex);
+                    Stop(ErrorStates.Error);
+                }
+            });
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        public void GetChannelClients(object sender, string channelName)
+        {
+            Send(sender, "WHO " + channelName);
+        }
+
+        public void GetChannelList(object sender)
+        {
+            Send(sender, "LIST");
+        }
+
+        public void GetInfoAboutClient(object sender, string clientName)
+        {
+            Send(sender, "WHO " + clientName);
+        }
+
+        public void JoinChannel(object sender, string channelName, string password = null)
+        {
+            if (password == null)
+            {
+                Send(sender, "JOIN " + channelName);
+            }
+            else
+            {
+                Send(sender, "JOIN " + channelName + " " + password);
+            }
+        }
+
+        public void JoinChannels(object sender, IEnumerable<string> channels)
+        {
+            Send(sender, "JOIN " + string.Join(",", channels));
+        }
+
+        public void LeaveChannel(object sender, string channelName)
+        {
+            Send(sender, "PART " + channelName);
+        }
+
+        public void NickChange(object sender, string newNick)
+        {
+            Send(sender, "NICK " + newNick);
         }
 
         public void Reconnect()
@@ -132,10 +305,14 @@ namespace GreatSnooper.Classes
                 // Reset things
                 this.State = ConnectionStates.ReConnecting;
 
-                if (reconnectTimer == null)
-                    reconnectTimer = new Timer(ReconnectNow, null, 500, Timeout.Infinite);
+                if (_reconnectTimer == null)
+                {
+                    _reconnectTimer = new Timer(ReconnectNow, null, 500, Timeout.Infinite);
+                }
                 else
-                    reconnectTimer.Change(500, Timeout.Infinite);
+                {
+                    _reconnectTimer.Change(500, Timeout.Infinite);
+                }
             }
             catch (Exception ex)
             {
@@ -144,273 +321,104 @@ namespace GreatSnooper.Classes
             }
         }
 
-        private void ReconnectNow(object state)
+        // Send a message to WormNet
+        public void Send(object sender, string message)
         {
-            try
+            // dont allow adding commands while the server is not connected
+            if (sender is AbstractCommunicator || this.State == ConnectionStates.Connected)
             {
-                if (this.State != ConnectionStates.ReConnecting)
-                {
-                    Stop(ErrorStates.None);
-                    return;
-                }
-
-                if (DateTime.Now - lastReconnectAttempt > reconnectTimeout)
-                    Connect();
-                else
-                    reconnectTimer.Change(500, Timeout.Infinite);
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.Log(ex);
-                Stop(ErrorStates.Error);
+                _messages.Enqueue(message);
             }
         }
 
-        public void Connect()
+        public void SendCTCPMessage(object sender, string channelOrClientName, string command, string message = "")
         {
-            if (this.State != ConnectionStates.Disconnected && this.State != ConnectionStates.ReConnecting)
+            if (message.Length == 0)
             {
-                Stop(ErrorStates.None);
-                return;
+                Send(sender, "PRIVMSG " + channelOrClientName + " :\x01" + command + "\x01");
             }
-            if (this.State == ConnectionStates.Disconnected)
-                this.State = ConnectionStates.Connecting;
-
-            this.lastReconnectAttempt = DateTime.Now;
-            this.ErrorState = ErrorStates.None;
-            this.SetUser();
-
-            if (connectionTask != null)
-            {
-                connectionTask.Dispose();
-                connectionTask = null;
-            }
-
-            connectionTask = Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    if (ircServer != null)
-                    {
-                        ircServer.Dispose();
-                        ircServer = null;
-                    }
-
-                    // Reset things
-                    lastServerAction = DateTime.Now;
-                    pingSent = false;
-                    this.serverIrcAddress = string.Empty;
-
-                    string message;
-                    while (messages.TryDequeue(out message)) ;
-                    recvMessage.Clear();
-
-                    // Connect to server
-                    ircServer = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                    ircServer.SendTimeout = 60000;
-                    ircServer.ReceiveBufferSize = 10240;
-                    Debug.WriteLine("Trying to connect " + this.ServerAddress + ":" + serverPort.ToString());
-                    ircServer.Connect(System.Net.Dns.GetHostAddresses(ServerAddress), serverPort);
-
-                    // Let's log in
-                    SendLoginMessages();
-
-                    // Start timer
-                    if (timer == null)
-                        timer = new Timer(timer_Elapsed, null, 1000, Timeout.Infinite);
-                    else
-                        timer.Change(1000, Timeout.Infinite);
-                }
-                catch (Exception ex)
-                {
-                    ErrorLog.Log(ex);
-                    Stop(ErrorStates.Error);
-                }
-            });
-        }
-
-        private void SendLoginMessages()
-        {
-            // USER Username hostname servername :41 0 RU StepS
-            int countryID = this.User.Country.ID;
-            if (countryID > 52)
-                countryID = 49;
-
-            string nickClan = this.User.Clan;
-            if (nickClan.Length == 0)
-                nickClan = "Username";
-
-            this.SendPassword();
-            Send(this, "NICK " + this.User.Name); // Nick
-            Send(this, "USER " + nickClan + " hostname servername :" + countryID.ToString() + " " + this.User.Rank.ID.ToString() + " " + this.User.Country.CountryCode + " Great Snooper v" + App.GetVersion()); // USER message
-        }
-
-        private void Stop(ErrorStates state)
-        {
-            this.ErrorState = state;
-            this.State = ConnectionStates.Disconnected;
-        }
-
-        private void TrySendQuitMessage()
-        {
-            ircServer.SendTimeout = 5000;
-            if (Properties.Settings.Default.QuitMessagee.Length > 0)
-                Send(this, "QUIT :" + Properties.Settings.Default.QuitMessagee);
             else
-                Send(this, "QUIT");
-            SendMessages();
+            {
+                Send(sender, "PRIVMSG " + channelOrClientName + " :\x01" + command + " " + message + "\x01");
+            }
         }
 
-        private void timer_Elapsed(object state)
+        public void SendMessage(object sender, string channelOrClientName, string message)
         {
-            if (this.State == ConnectionStates.Disconnected)
+            Send(sender, "PRIVMSG " + channelOrClientName + " :" + message);
+        }
+
+        public void SendNotice(object sender, string channelOrClientName, string message)
+        {
+            Send(sender, "NOTICE " + channelOrClientName + " :" + message);
+        }
+
+        public abstract string VerifyString(string str);
+
+        protected abstract int DecodeMessage(string message);
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
             {
-                Stop(ErrorStates.None);
                 return;
             }
 
-            try
+            disposed = true;
+
+            if (disposing)
             {
-                // The logic
-                if (this.State == ConnectionStates.Disconnecting)
+                if (_timer != null)
                 {
-                    TrySendQuitMessage();
-                    Stop(ErrorStates.None);
-                    return;
+                    _timer.Dispose();
+                    _timer = null;
                 }
 
-                DateTime now = DateTime.Now;
-
-                if (now - lastServerAction >= disconnectTimeout)
+                if (_reconnectTimer != null)
                 {
-                    TrySendQuitMessage();
-                    Stop(ErrorStates.TimeOut);
-                    return; // Connection lost
+                    _reconnectTimer.Dispose();
+                    _reconnectTimer = null;
                 }
 
-                // RECEIVE data if there are any
-                if (ircServer.Available > 0)
+                if (_ircServer != null)
                 {
-                    lastServerAction = now;
-                    if (pingSent)
-                        pingSent = false; // we consider server action as pong message
+                    _ircServer.Dispose();
+                    _ircServer = null;
+                }
 
-                    int bytes = ircServer.Receive(recvBuffer); // Read the arrived datas into the buffer with a maximal length of the buffer (if the data is bigger than the buffer, it will be read in the next loop)
-                    this.EncodeMessage(bytes); // Encodes recvBuffer into recvMesssage
-                    string[] lines = recvMessage.ToString().Split(new string[] { "\r\n" }, StringSplitOptions.None);
+                if (_connectionTask != null)
+                {
+                    _connectionTask.Dispose();
+                    _connectionTask = null;
+                }
 
-                    // process the message line-by-line
-                    for (int i = 0; i < lines.Length - 1; i++) // the last line is either string.Empty or a line which end hasn't arrived yet
+                foreach (var chvm in this.Channels)
+                {
+                    ChannelViewModel channel = chvm.Value as ChannelViewModel;
+                    if (channel != null && channel.ChannelSchemeTask != null)
                     {
-                        Debug.WriteLine("RECEIVED: " + this.ServerAddress + " " + lines[i]);
-
-                        // Get the sender of the message
-                        int spacePos = lines[i].IndexOf(' ');
-                        if (spacePos != -1)
-                        {
-                            string sender = lines[i].Substring(0, spacePos);
-
-                            // PING Message
-                            if (sender.Equals("PING", StringComparison.OrdinalIgnoreCase))
-                            {
-                                Send(this, "PONG " + lines[i].Substring(spacePos + 1));
-                            }
-
-                            // Closing link message after QUIT or ban ;)
-                            else if (sender.Equals("ERROR", StringComparison.OrdinalIgnoreCase))
-                            {
-                                if (MVM != null)
-                                {
-                                    MVM.Dispatcher.BeginInvoke(new Action(() =>
-                                    {
-                                        MVM.DialogService.ShowDialog(
-                                            Localizations.GSLocalization.Instance.ErrorText,
-                                            string.Format(Localizations.GSLocalization.Instance.ServerErrorMessage, lines[i].Substring(spacePos + 2))
-                                        );
-                                    }));
-                                }
-                                // ERROR :Closing Link: Test[~Test@ip-addr] (Test)
-                                TrySendQuitMessage();
-                                Stop(ErrorStates.Error);
-                                return;
-                            }
-
-                            // If it is a server message
-                            // :wormnet1.team17.com 322 Test #Help 10 :05 A place to get help, or help others
-                            else if (sender.Equals(serverIrcAddress, StringComparison.OrdinalIgnoreCase) || serverIrcAddress == string.Empty)
-                            {
-                                if (ProcessServerMessage(lines[i], spacePos))
-                                {
-                                    Stop(ErrorStates.UsernameInUse);
-                                    return;
-                                }
-                            }
-
-                            // Message
-                            // :sToOMiToO!~AeF@no.address.for.you JOIN :#RopersHeaven
-                            else if (ProcessClientMessage(lines[i]))
-                            {
-                                Stop(ErrorStates.Error);
-                                return;
-                            }
-                        }
+                        channel.ChannelSchemeTask.Dispose();
                     }
-
-                    // Clear processed data from the buffer
-                    recvMessage.Clear();
-                    if (lines.Length > 0 && lines[lines.Length - 1] != string.Empty)
-                        recvMessage.Append(lines[lines.Length - 1]);
                 }
-
-                // If there was no server action for idleTimeout, then send ping message in every idleTimeout seconds
-                if (!pingSent && now - lastServerAction >= idleTimeout && serverIrcAddress != string.Empty)
-                {
-                    pingSent = true;
-                    Send(this, "PING " + serverIrcAddress);
-                }
-
-                // SEND
-                if (messages.Count > 0)
-                    SendMessages();
-
-                timer.Change(1000, Timeout.Infinite);
-            }
-            catch (Exception ex)
-            {
-                ErrorLog.Log(ex);
-                Stop(ErrorStates.Error);
             }
         }
 
-        private void SendMessages()
+        protected abstract void EncodeMessage(int bytes);
+
+        protected virtual void SendPassword()
         {
-            string message;
-            while (messages.TryDequeue(out message))
-            {
-                if (message.Length + 2 > sendBuffer.Length)
-                    return;
-
-                int i = this.DecodeMessage(message);
-                if (i == -1)
-                    continue;
-
-                if (message == "cancel")
-                {
-                    this.CancelAsync();
-                    return;
-                }
-
-                Debug.WriteLine("SENDING: " + this.ServerAddress + " " + message);
-                ircServer.Send(sendBuffer, 0, i, SocketFlags.None);
-            }
         }
+
+        protected abstract void SetUser();
 
         private bool ProcessClientMessage(string line)
         {
             // :Test!~Test@no.address.for.you PART #AnythingGoes
-            Match m = messageRegex.Match(line);
+            Match m = _messageRegex.Match(line);
             if (!m.Success)
+            {
                 return false;
+            }
 
             string command = m.Groups[3].Value;
 
@@ -426,7 +434,9 @@ namespace GreatSnooper.Classes
                     string channelHash = (spacePos != -1) ? param.Substring(0, spacePos) : param;
                     string message = string.Empty;
                     if (spacePos != -1 && param.Length > spacePos + 1)
+                    {
                         message = (param[spacePos + 1] == ':') ? param.Substring(spacePos + 2) : param.Substring(spacePos + 1);
+                    }
 
                     MVM.HandleTask(new PartedTask(this, channelHash, clientName, message));
                 }
@@ -459,7 +469,9 @@ namespace GreatSnooper.Classes
                     return true;
                 }
                 if (MVM != null)
+                {
                     MVM.HandleTask(new QuitTask(this, clientName, message));
+                }
             }
 
             // :Don-Coyote!Username@no.address.for.you PRIVMSG #AnythingGoes :can u take my oral
@@ -467,8 +479,10 @@ namespace GreatSnooper.Classes
             else if (command.Equals("PRIVMSG", StringComparison.OrdinalIgnoreCase) || command.Equals("NOTICE", StringComparison.OrdinalIgnoreCase))
             {
                 string clientName = m.Groups[1].Value;
-                if (clientName.Equals("Global", StringComparison.OrdinalIgnoreCase) && this.handleGlobalMessage == false)
+                if (clientName.Equals("Global", StringComparison.OrdinalIgnoreCase) && this._handleGlobalMessage == false)
+                {
                     return false;
+                }
 
                 string param = m.Groups[4].Value;
                 int spacePos = param.IndexOf(' ');
@@ -476,23 +490,20 @@ namespace GreatSnooper.Classes
                 {
                     string channelHash = param.Substring(0, spacePos);
                     if (channelHash.Equals(this.User.Name, StringComparison.OrdinalIgnoreCase))
-                        channelHash = clientName; // if private message then the channel will be the channel with name of the sender of this message
+                    {
+                        channelHash = clientName;    // if private message then the channel will be the channel with name of the sender of this message
+                    }
                     string message = (param.Length > spacePos + 1 && param[spacePos + 1] == ':')
-                        ? param.Substring(spacePos + 2)
-                        : param.Substring(spacePos + 1); // this will never happen in theory
+                                     ? param.Substring(spacePos + 2)
+                                     : param.Substring(spacePos + 1); // this will never happen in theory
 
-                    /*
-                    if (!IsWormNet && lower == "authserv" && ConnectionState != null)
+                    if (clientName.Equals("AuthServ", StringComparison.OrdinalIgnoreCase))
                     {
                         if (message == "I recognize you.")
                         {
-                            ConnectionState(this, ConnectionStates.AuthOK);
                             return false;
                         }
-                        else
-                            ConnectionState(this, ConnectionStates.AuthBad);
                     }
-                    */
 
                     // Is it an action message? (CTCP message) (\x01ACTION message..\x01)
                     if (message.Length > 2 && message[0] == '\x01' && message[message.Length - 1] == '\x01')
@@ -506,12 +517,16 @@ namespace GreatSnooper.Classes
                             if (ctcpCommand.Equals("ACTION", StringComparison.OrdinalIgnoreCase))
                             {
                                 if (MVM != null)
+                                {
                                     MVM.HandleTask(new MessageTask(this, clientName, channelHash, message, MessageSettings.ActionMessage));
+                                }
                             }
                             else if (ctcpCommand.Equals("AWAY", StringComparison.OrdinalIgnoreCase))
                             {
                                 if (MVM != null)
+                                {
                                     MVM.HandleTask(new MessageTask(this, clientName, channelHash, string.Format(Localizations.GSLocalization.Instance.AwayMessageFormat, message), MessageSettings.ChannelMessage));
+                                }
                             }
                             else if (ctcpCommand.Equals("CMESSAGE", StringComparison.OrdinalIgnoreCase) || ctcpCommand.Equals("CNOTICE", StringComparison.OrdinalIgnoreCase))
                             {
@@ -523,7 +538,7 @@ namespace GreatSnooper.Classes
                                         channelHash = SplitUserAndSenderName(message.Substring(0, vertBarPos), clientName);
                                         string msg = message.Substring(vertBarPos + 1);
 
-                                        MessageSetting setting = (ctcpCommand.Equals("CMESSAGE", StringComparison.OrdinalIgnoreCase)) ? MessageSettings.ChannelMessage : MessageSettings.NoticeMessage;
+                                        MessageSetting setting = ctcpCommand.Equals("CMESSAGE", StringComparison.OrdinalIgnoreCase) ? MessageSettings.ChannelMessage : MessageSettings.NoticeMessage;
                                         MVM.HandleTask(new MessageTask(this, clientName, channelHash, msg, setting));
                                     }
                                 }
@@ -589,13 +604,13 @@ namespace GreatSnooper.Classes
                     {
                         if (MVM != null)
                         {
-                            MessageSetting setting = (command.Equals("PRIVMSG", StringComparison.OrdinalIgnoreCase)) ? MessageSettings.ChannelMessage : MessageSettings.NoticeMessage;
+                            MessageSetting setting = command.Equals("PRIVMSG", StringComparison.OrdinalIgnoreCase) ? MessageSettings.ChannelMessage : MessageSettings.NoticeMessage;
                             MVM.HandleTask(new MessageTask(this, clientName, channelHash, message, setting));
                         }
                     }
                 }
             }
-            // :Tomi!~Tomi@irc.org NICK :Tomi3
+            //// :Tomi!~Tomi@irc.org NICK :Tomi3
             else if (command.Equals("NICK", StringComparison.OrdinalIgnoreCase) && HandleNickChange)
             {
                 if (MVM != null)
@@ -605,7 +620,7 @@ namespace GreatSnooper.Classes
                     MVM.HandleTask(new NickChangeTask(this, oldClientName, newClientName));
                 }
             }
-            // :Angel!wings@irc.org INVITE Wiz #Dust
+            //// :Angel!wings@irc.org INVITE Wiz #Dust
             else if (command.Equals("INVITE", StringComparison.OrdinalIgnoreCase) && MVM != null)
             {
                 if (MVM != null)
@@ -613,11 +628,11 @@ namespace GreatSnooper.Classes
                     string[] data = m.Groups[4].Value.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (data.Length == 2 && data[0].Equals(this.User.Name, StringComparison.OrdinalIgnoreCase))
                     {
-                        MVM.HandleTask(new JoinedTask(this, data[1], this.User.Name, this.User.Clan));
+                        MVM.HandleTask(new InviteTask(this, data[1]));
                     }
                 }
             }
-            // :WiZ!jto@tolsun.oulu.fi KICK #Finnish John
+            //// :WiZ!jto@tolsun.oulu.fi KICK #Finnish John
             else if (command.Equals("KICK", StringComparison.OrdinalIgnoreCase) && MVM != null)
             {
                 if (MVM != null)
@@ -630,7 +645,7 @@ namespace GreatSnooper.Classes
                     }
                 }
             }
-            // :WiZ!jto@tolsun.oulu.fi TOPIC #test :New topic
+            //// :WiZ!jto@tolsun.oulu.fi TOPIC #test :New topic
             else if (command.Equals("TOPIC", StringComparison.OrdinalIgnoreCase) && MVM != null)
             {
                 if (MVM != null)
@@ -640,27 +655,12 @@ namespace GreatSnooper.Classes
                     {
                         string clientName = m.Groups[1].Value;
                         string topic = (data[1][0] == ':') ? data[1].Substring(1) : data[1];
-                        MVM.HandleTask(new MessageTask(this, GlobalManager.SystemUser.Name, data[0], string.Format(Localizations.GSLocalization.Instance.TopicMessage, clientName, topic), MessageSettings.SystemMessage));
+                        MVM.HandleTask(new MessageTask(this, GlobalManager.SystemUser.Name, data[0], string.Format(Localizations.GSLocalization.Instance.TopicMessage, clientName, topic), MessageSettings.NoticeMessage));
                     }
                 }
             }
 
             return false;
-        }
-
-        private string SplitUserAndSenderName(string channelHash, string clientName)
-        {
-            string[] helper = channelHash.Split(new char[] { ',' });
-            for (int i = 0; i < helper.Length; i++)
-            {
-                if (helper[i].Equals(this.User.Name, StringComparison.OrdinalIgnoreCase))
-                {
-                    helper[i] = clientName;
-                    break;
-                }
-            }
-            Array.Sort(helper);
-            return String.Join(",", helper);
         }
 
         private bool ProcessServerMessage(string line, int spacePos)
@@ -670,12 +670,16 @@ namespace GreatSnooper.Classes
             int number;
             int spacePos2 = line.IndexOf(' ', spacePos + 1);
             if (spacePos2 == -1 || !int.TryParse(line.Substring(spacePos + 1, spacePos2 - spacePos - 1), out number))
+            {
                 return false;
+            }
 
             // Find the space after our nickname in the message
             spacePos = line.IndexOf(' ', spacePos2 + 1);
             if (spacePos == -1)
+            {
                 return false;
+            }
             spacePos++; // we will start all the regex match from this position
 
             // Process the message
@@ -686,20 +690,26 @@ namespace GreatSnooper.Classes
                     spacePos2 = line.IndexOf(' ', spacePos);
                     if (spacePos2 != -1)
                     {
-                        this.serverIrcAddress = ':' + line.Substring(spacePos, spacePos2 - spacePos);
+                        this._serverIrcAddress = ':' + line.Substring(spacePos, spacePos2 - spacePos);
 
-                        //if (!this.IsWormNet)
-                        //    Send("authserv auth " + this.User.Name + " " + Properties.Settings.Default.WormsPassword);
-
+                        if (this._handleAuth && Properties.Settings.Default.GameSurgeAuth &&
+                            !string.IsNullOrWhiteSpace(Properties.Settings.Default.WormsPassword))
+                        {
+                            this.Send(this, "authserv auth " + this.User.Name + " " + Properties.Settings.Default.WormsPassword);
+                        }
                         if (this.State == ConnectionStates.Connecting || this.State == ConnectionStates.ReConnecting)
+                        {
                             this.State = ConnectionStates.Connected;
+                        }
                     }
                     break;
 
                 // This nickname is already in use!
                 case 433:
-                    if (serverIrcAddress == string.Empty)
+                    if (_serverIrcAddress == string.Empty)
+                    {
                         return true;
+                    }
                     else if (MVM != null)
                     {
                         // nickname is in use when we tried to change with /NICK command
@@ -709,16 +719,16 @@ namespace GreatSnooper.Classes
 
                 // A channel (answer for the LIST command)
                 case 322:
-                    if (channelListHelper != null)
+                    if (this._channelListHelper != null)
                     {
                         // :wormnet1.team17.com 322 Test #Help 10 :05 A place to get help, or help others
-                        Match chMatch = channelRegex.Match(line, spacePos);
+                        Match chMatch = _channelRegex.Match(line, spacePos);
                         if (chMatch.Success)
                         {
                             string channelName = chMatch.Groups[1].Value;
                             string description = chMatch.Groups[3].Value;
 
-                            channelListHelper[channelName] = description;
+                            this._channelListHelper[channelName] = description;
                         }
                     }
                     break;
@@ -727,10 +737,25 @@ namespace GreatSnooper.Classes
                 case 323:
                     if (MVM != null)
                     {
-                        var temp = channelListHelper;
+                        var temp = this._channelListHelper;
                         MVM.HandleTask(new ChannelListTask(this, temp));
                     }
-                    channelListHelper = null;
+                    this._channelListHelper = null;
+                    break;
+
+                // TOPIC
+                case 332:
+                    if (MVM != null)
+                    {
+                        Match m = _topicRegex.Match(line.Substring(spacePos));
+                        if (m.Success)
+                        {
+                            string channelName = m.Groups[1].Value;
+                            string topic = m.Groups[2].Value;
+
+                            MVM.HandleTask(new MessageTask(this, GlobalManager.SystemUser.Name, channelName, topic, MessageSettings.NoticeMessage));
+                        }
+                    }
                     break;
 
                 // A client (answer for WHO command)
@@ -738,7 +763,7 @@ namespace GreatSnooper.Classes
                     if (MVM != null)
                     {
                         // :wormnet1.team17.com 352 Test #AnythingGoes ~UserName no.address.for.you wormnet1.team17.com Herbsman H :0 68 7 LT The Wheat Snooper 2.8
-                        Match clMatch = clientRegex.Match(line, spacePos);
+                        Match clMatch = _clientRegex.Match(line, spacePos);
                         if (clMatch.Success)
                         {
                             string channelHash = clMatch.Groups[1].Value;
@@ -756,9 +781,13 @@ namespace GreatSnooper.Classes
                                 if (int.TryParse(realName[1], out rank))
                                 {
                                     if (rank > 13)
+                                    {
                                         rank = 13;
+                                    }
                                     if (rank < 0)
+                                    {
                                         rank = 0;
+                                    }
                                 }
 
                                 // set country
@@ -768,20 +797,30 @@ namespace GreatSnooper.Classes
                                     if (countrycode == 49 && realName[2].Length == 2) // use cc as countricode
                                     {
                                         if (realName[2].Equals("UK", StringComparison.OrdinalIgnoreCase))
+                                        {
                                             realName[2] = "GB";
+                                        }
                                         else if (realName[2].Equals("EL", StringComparison.OrdinalIgnoreCase))
+                                        {
                                             realName[2] = "GR";
+                                        }
                                         country = Countries.GetCountryByCC(realName[2]);
                                     }
                                     else
+                                    {
                                         country = Countries.GetCountryByID(countrycode);
+                                    }
                                 }
                                 else if (realName[2].Length == 2) // use cc if countrycode is bigger than 52
                                 {
                                     if (realName[2].Equals("UK", StringComparison.OrdinalIgnoreCase))
+                                    {
                                         realName[2] = "GB";
+                                    }
                                     else if (realName[2].Equals("EL", StringComparison.OrdinalIgnoreCase))
+                                    {
                                         realName[2] = "GR";
+                                    }
                                     country = Countries.GetCountryByCC(realName[2]);
                                 }
 
@@ -790,7 +829,9 @@ namespace GreatSnooper.Classes
                                 {
                                     sb.Append(realName[i]);
                                     if (i + 1 < realName.Length)
+                                    {
                                         sb.Append(" ");
+                                    }
                                 }
                                 clientApp = sb.ToString();
                             }
@@ -804,7 +845,7 @@ namespace GreatSnooper.Classes
                 case 353:
                     if (Properties.Settings.Default.UseWhoMessages == false && MVM != null)
                     {
-                        Match m = namesRegex.Match(line.Substring(spacePos));
+                        Match m = _namesRegex.Match(line.Substring(spacePos));
                         if (m.Success)
                         {
                             string channelName = m.Groups[2].Value;
@@ -844,126 +885,239 @@ namespace GreatSnooper.Classes
             return false;
         }
 
-        #region Send messages
-        // Send a message to WormNet
-        public void Send(object sender, string message)
+        private void ReconnectNow(object state)
         {
-            if (sender is AbstractCommunicator || this.State == ConnectionStates.Connected) // dont allow adding commands while the server is not connected
-                messages.Enqueue(message);
-        }
-
-        public void SendMessage(object sender, string channelOrClientName, string message)
-        {
-            Send(sender, "PRIVMSG " + channelOrClientName + " :" + message);
-        }
-
-        public void SendNotice(object sender, string channelOrClientName, string message)
-        {
-            Send(sender, "NOTICE " + channelOrClientName + " :" + message);
-        }
-
-        public void SendCTCPMessage(object sender, string channelOrClientName, string command, string message = "")
-        {
-            if (message.Length == 0)
-                Send(sender, "PRIVMSG " + channelOrClientName + " :\x01" + command + "\x01");
-            else
-                Send(sender, "PRIVMSG " + channelOrClientName + " :\x01" + command + " " + message + "\x01");
-        }
-
-        public void JoinChannel(object sender, string channelName, string password = null)
-        {
-            if (password == null)
-                Send(sender, "JOIN " + channelName);
-            else
-                Send(sender, "JOIN " + channelName + " " + password);
-        }
-
-        public void JoinChannels(object sender, IEnumerable<string> channels)
-        {
-            Send(sender, "JOIN " + string.Join(",", channels));
-        }
-
-        public void NickChange(object sender, string newNick)
-        {
-            Send(sender, "NICK " + newNick);
-        }
-
-        public void LeaveChannel(object sender, string channelName)
-        {
-            Send(sender, "PART " + channelName);
-        }
-
-        public void GetChannelList(object sender)
-        {
-            Send(sender, "LIST");
-        }
-
-        public void GetChannelClients(object sender, string channelName)
-        {
-            Send(sender, "WHO " + channelName);
-        }
-
-        public void GetInfoAboutClient(object sender, string clientName)
-        {
-            Send(sender, "WHO " + clientName);
-        }
-        #endregion
-
-        #region IDisposable
-        bool disposed = false;
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposed)
-                return;
-
-            disposed = true;
-
-            if (disposing)
+            try
             {
-                if (timer != null)
+                if (this.State != ConnectionStates.ReConnecting)
                 {
-                    timer.Dispose();
-                    timer = null;
+                    Stop(ErrorStates.None);
+                    return;
                 }
 
-                if (reconnectTimer != null)
+                if (DateTime.Now - _lastReconnectAttempt > _reconnectTimeout)
                 {
-                    reconnectTimer.Dispose();
-                    reconnectTimer = null;
+                    Connect();
                 }
-
-                if (ircServer != null)
+                else
                 {
-                    ircServer.Dispose();
-                    ircServer = null;
+                    _reconnectTimer.Change(500, Timeout.Infinite);
                 }
-
-                if (connectionTask != null)
-                {
-                    connectionTask.Dispose();
-                    connectionTask = null;
-                }
-
-                foreach (var chvm in this.Channels)
-                {
-                    ChannelViewModel channel = chvm.Value as ChannelViewModel;
-                    if (channel != null && channel.ChannelSchemeTask != null)
-                        channel.ChannelSchemeTask.Dispose();
-                }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+                Stop(ErrorStates.Error);
             }
         }
 
-        ~AbstractCommunicator()
+        private void SendLoginMessages()
         {
-            Dispose(false);
+            // USER Username hostname servername :41 0 RU StepS
+            int countryID = this.User.Country.ID;
+            if (countryID > 52)
+            {
+                countryID = 49;
+            }
+
+            string nickClan = this.User.Clan;
+            if (nickClan.Length == 0)
+            {
+                nickClan = "Username";
+            }
+
+            this.SendPassword();
+            Send(this, "NICK " + this.User.Name); // Nick
+            Send(this, "USER " + nickClan + " hostname servername :" + countryID.ToString() + " " + this.User.Rank.ID.ToString() + " " + this.User.Country.CountryCode + " Great Snooper v" + App.GetVersion()); // USER message
         }
-        #endregion
+
+        private void SendMessages()
+        {
+            string message;
+            while (_messages.TryDequeue(out message))
+            {
+                if (message.Length + 2 > _sendBuffer.Length)
+                {
+                    return;
+                }
+
+                int i = this.DecodeMessage(message);
+                if (i == -1)
+                {
+                    continue;
+                }
+
+                if (message == "cancel")
+                {
+                    this.CancelAsync();
+                    return;
+                }
+
+                Debug.WriteLine("SENDING: " + this.ServerAddress + " " + message);
+                _ircServer.Send(_sendBuffer, 0, i, SocketFlags.None);
+            }
+        }
+
+        private string SplitUserAndSenderName(string channelHash, string clientName)
+        {
+            string[] helper = channelHash.Split(new char[] { ',' });
+            for (int i = 0; i < helper.Length; i++)
+            {
+                if (helper[i].Equals(this.User.Name, StringComparison.OrdinalIgnoreCase))
+                {
+                    helper[i] = clientName;
+                    break;
+                }
+            }
+            Array.Sort(helper);
+            return string.Join(",", helper);
+        }
+
+        private void Stop(ErrorStates state)
+        {
+            this.ErrorState = state;
+            this.State = ConnectionStates.Disconnected;
+        }
+
+        private void timer_Elapsed(object state)
+        {
+            if (this.State == ConnectionStates.Disconnected)
+            {
+                Stop(ErrorStates.None);
+                return;
+            }
+
+            try
+            {
+                // The logic
+                if (this.State == ConnectionStates.Disconnecting)
+                {
+                    TrySendQuitMessage();
+                    Stop(ErrorStates.None);
+                    return;
+                }
+
+                DateTime now = DateTime.Now;
+
+                if (now - _lastServerAction >= _disconnectTimeout)
+                {
+                    TrySendQuitMessage();
+                    Stop(ErrorStates.TimeOut);
+                    return; // Connection lost
+                }
+
+                // RECEIVE data if there are any
+                if (_ircServer.Available > 0)
+                {
+                    _lastServerAction = now;
+                    if (_pingSent)
+                    {
+                        _pingSent = false;    // we consider server action as pong message
+                    }
+
+                    int bytes = _ircServer.Receive(_recvBuffer); // Read the arrived datas into the buffer with a maximal length of the buffer (if the data is bigger than the buffer, it will be read in the next loop)
+                    this.EncodeMessage(bytes); // Encodes recvBuffer into recvMesssage
+                    string[] lines = _recvMessage.ToString().Split(new string[] { "\r\n" }, StringSplitOptions.None);
+
+                    // process the message line-by-line
+                    for (int i = 0; i < lines.Length - 1; i++) // the last line is either string.Empty or a line which end hasn't arrived yet
+                    {
+                        Debug.WriteLine("RECEIVED: " + this.ServerAddress + " " + lines[i]);
+
+                        // Get the sender of the message
+                        int spacePos = lines[i].IndexOf(' ');
+                        if (spacePos != -1)
+                        {
+                            string sender = lines[i].Substring(0, spacePos);
+
+                            // PING Message
+                            if (sender.Equals("PING", StringComparison.OrdinalIgnoreCase))
+                            {
+                                Send(this, "PONG " + lines[i].Substring(spacePos + 1));
+                            }
+
+                            // Closing link message after QUIT or ban ;)
+                            else if (sender.Equals("ERROR", StringComparison.OrdinalIgnoreCase))
+                            {
+                                if (MVM != null)
+                                {
+                                    MVM.Dispatcher.BeginInvoke(new Action(() =>
+                                    {
+                                        MVM.DialogService.ShowDialog(
+                                            Localizations.GSLocalization.Instance.ErrorText,
+                                            string.Format(Localizations.GSLocalization.Instance.ServerErrorMessage, lines[i].Substring(spacePos + 2)));
+                                    }));
+                                }
+
+                                // ERROR :Closing Link: Test[~Test@ip-addr] (Test)
+                                TrySendQuitMessage();
+                                Stop(ErrorStates.Error);
+                                return;
+                            }
+
+                            // If it is a server message
+                            // :wormnet1.team17.com 322 Test #Help 10 :05 A place to get help, or help others
+                            else if (sender.Equals(_serverIrcAddress, StringComparison.OrdinalIgnoreCase) || _serverIrcAddress == string.Empty)
+                            {
+                                if (ProcessServerMessage(lines[i], spacePos))
+                                {
+                                    Stop(ErrorStates.UsernameInUse);
+                                    return;
+                                }
+                            }
+
+                            // Message
+                            // :sToOMiToO!~AeF@no.address.for.you JOIN :#RopersHeaven
+                            else if (ProcessClientMessage(lines[i]))
+                            {
+                                Stop(ErrorStates.Error);
+                                return;
+                            }
+                        }
+                    }
+
+                    // Clear processed data from the buffer
+                    _recvMessage.Clear();
+                    if (lines.Length > 0 && lines[lines.Length - 1] != string.Empty)
+                    {
+                        _recvMessage.Append(lines[lines.Length - 1]);
+                    }
+                }
+
+                // If there was no server action for idleTimeout, then send ping message in every idleTimeout seconds
+                if (!_pingSent && now - _lastServerAction >= _idleTimeout && _serverIrcAddress != string.Empty)
+                {
+                    _pingSent = true;
+                    Send(this, "PING " + _serverIrcAddress);
+                }
+
+                // SEND
+                if (_messages.Count > 0)
+                {
+                    SendMessages();
+                }
+
+                _timer.Change(1000, Timeout.Infinite);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+                Stop(ErrorStates.Error);
+            }
+        }
+
+        private void TrySendQuitMessage()
+        {
+            _ircServer.SendTimeout = 5000;
+            if (Properties.Settings.Default.QuitMessagee.Length > 0)
+            {
+                Send(this, "QUIT :" + Properties.Settings.Default.QuitMessagee);
+            }
+            else
+            {
+                Send(this, "QUIT");
+            }
+            SendMessages();
+        }
     }
 }

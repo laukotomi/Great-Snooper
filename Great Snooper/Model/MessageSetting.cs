@@ -1,144 +1,21 @@
-﻿using GalaSoft.MvvmLight;
-using System.Windows;
-using System.Windows.Media;
-
-namespace GreatSnooper.Model
+﻿namespace GreatSnooper.Model
 {
+    using System.Windows;
+    using System.Windows.Media;
+
+    using GalaSoft.MvvmLight;
+
     public class MessageSetting : ObservableObject
     {
-        #region Members
-        private FontFamily _fontFamily;
-        private SolidColorBrush _nickColor;
-        private SolidColorBrush _messageColor;
-        private double _size;
         private FontWeight _bold;
+        private FontFamily _fontFamily;
         private FontStyle _italic;
+        private SolidColorBrush _messageColor;
+        private SolidColorBrush _nickColor;
+        private double _size;
+        private bool? _strikethrough;
         private TextDecorationCollection _textDecorations;
         private bool? _underline;
-        private bool? _strikethrough;
-        #endregion
-
-        #region Properties
-        public FontFamily FontFamily
-        {
-            get { return _fontFamily; }
-            set
-            {
-                if (_fontFamily != value)
-                {
-                    _fontFamily = value;
-                    RaisePropertyChanged("FontFamily");
-                }
-            }
-        }
-        public SolidColorBrush NickColor
-        {
-            get { return _nickColor; }
-            set
-            {
-                if (_nickColor != value)
-                {
-                    _nickColor = value;
-                    _nickColor.Freeze();
-                    RaisePropertyChanged("NickColor");
-                }
-            }
-        }
-        public SolidColorBrush MessageColor
-        {
-            get { return _messageColor; }
-            set
-            {
-                if (_messageColor != value)
-                {
-                    _messageColor = value;
-                    _messageColor.Freeze();
-                    RaisePropertyChanged("MessageColor");
-                }
-            }
-        }
-        public double Size
-        {
-            get { return _size; }
-            set
-            {
-                if (_size != value)
-                {
-                    _size = value;
-                    RaisePropertyChanged("Size");
-                }
-            }
-        }
-        public FontWeight Bold
-        {
-            get { return _bold; }
-            set
-            {
-                if (_bold != value)
-                {
-                    _bold = value;
-                    RaisePropertyChanged("Bold");
-                }
-            }
-        }
-        public FontStyle Italic
-        {
-            get { return _italic; }
-            set
-            {
-                if (_italic != value)
-                {
-                    _italic = value;
-                    RaisePropertyChanged("Italic");
-                }
-            }
-        }
-        public Message.MessageTypes Type { get; private set; }
-        public TextDecorationCollection Textdecorations
-        {
-            get
-            {
-                if (_textDecorations == null)
-                    GenerateTextDecorations();
-                return _textDecorations;
-            }
-            private set
-            {
-                if (_textDecorations != value)
-                {
-                    _textDecorations = value;
-                    _textDecorations.Freeze();
-                }
-            }
-        }
-        public bool? Underline
-        {
-            get { return _underline; }
-            set
-            {
-                if (_underline != value)
-                {
-                    _underline = value;
-                    GenerateTextDecorations();
-                    RaisePropertyChanged("Textdecorations");
-                }
-            }
-        }
-        public bool? Strikethrough
-        {
-            get { return _strikethrough; }
-            set
-            {
-                if (_strikethrough != value)
-                {
-                    _strikethrough = value;
-                    GenerateTextDecorations();
-                    RaisePropertyChanged("Textdecorations");
-                }
-            }
-        }
-        public bool OneColorOnly { get; private set; }
-        #endregion
 
         public MessageSetting(Color nickColor, Color messageColor, double size, string bold, string italic, string strikethrough, string underline, string fontfamily, Message.MessageTypes type)
         {
@@ -185,14 +62,181 @@ namespace GreatSnooper.Model
             this.OneColorOnly = messageSetting.OneColorOnly;
         }
 
+        public FontWeight Bold
+        {
+            get
+            {
+                return this._bold;
+            }
+            set
+            {
+                if (this._bold != value)
+                {
+                    this._bold = value;
+                    RaisePropertyChanged("Bold");
+                }
+            }
+        }
+
+        public FontFamily FontFamily
+        {
+            get
+            {
+                return this._fontFamily;
+            }
+            set
+            {
+                if (this._fontFamily != value)
+                {
+                    this._fontFamily = value;
+                    RaisePropertyChanged("FontFamily");
+                }
+            }
+        }
+
+        public FontStyle Italic
+        {
+            get
+            {
+                return _italic;
+            }
+            set
+            {
+                if (_italic != value)
+                {
+                    _italic = value;
+                    RaisePropertyChanged("Italic");
+                }
+            }
+        }
+
+        public SolidColorBrush MessageColor
+        {
+            get
+            {
+                return _messageColor;
+            }
+            set
+            {
+                if (_messageColor != value)
+                {
+                    _messageColor = value;
+                    _messageColor.Freeze();
+                    RaisePropertyChanged("MessageColor");
+                }
+            }
+        }
+
+        public SolidColorBrush NickColor
+        {
+            get
+            {
+                return _nickColor;
+            }
+            set
+            {
+                if (_nickColor != value)
+                {
+                    _nickColor = value;
+                    _nickColor.Freeze();
+                    RaisePropertyChanged("NickColor");
+                }
+            }
+        }
+
+        public bool OneColorOnly
+        {
+            get;
+            private set;
+        }
+
+        public double Size
+        {
+            get
+            {
+                return _size;
+            }
+            set
+            {
+                if (_size != value)
+                {
+                    _size = value;
+                    RaisePropertyChanged("Size");
+                }
+            }
+        }
+
+        public bool? Strikethrough
+        {
+            get
+            {
+                return _strikethrough;
+            }
+            set
+            {
+                if (_strikethrough != value)
+                {
+                    _strikethrough = value;
+                    GenerateTextDecorations();
+                    RaisePropertyChanged("Textdecorations");
+                }
+            }
+        }
+
+        public TextDecorationCollection Textdecorations
+        {
+            get
+            {
+                if (_textDecorations == null)
+                {
+                    GenerateTextDecorations();
+                }
+                return _textDecorations;
+            }
+            private set
+            {
+                if (_textDecorations != value)
+                {
+                    _textDecorations = value;
+                    _textDecorations.Freeze();
+                }
+            }
+        }
+
+        public Message.MessageTypes Type
+        {
+            get;
+            private set;
+        }
+
+        public bool? Underline
+        {
+            get
+            {
+                return _underline;
+            }
+            set
+            {
+                if (_underline != value)
+                {
+                    _underline = value;
+                    GenerateTextDecorations();
+                    RaisePropertyChanged("Textdecorations");
+                }
+            }
+        }
 
         private void GenerateTextDecorations()
         {
             var decorations = new TextDecorationCollection();
             if (Underline.HasValue && Underline.Value)
+            {
                 decorations.Add(TextDecorations.Underline);
+            }
             if (Strikethrough.HasValue && Strikethrough.Value)
+            {
                 decorations.Add(TextDecorations.Strikethrough);
+            }
             this.Textdecorations = decorations;
         }
     }

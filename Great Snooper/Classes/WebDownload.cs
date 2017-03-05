@@ -1,15 +1,16 @@
-﻿using GreatSnooper.Helpers;
-using System;
-using System.Diagnostics;
-using System.Net;
-using System.Net.Cache;
-
-namespace GreatSnooper.Classes
+﻿namespace GreatSnooper.Classes
 {
+    using System;
+    using System.Diagnostics;
+    using System.Net;
+    using System.Net.Cache;
+
+    using GreatSnooper.Helpers;
+
     public class WebDownload : WebClient
     {
         public WebDownload()
-            : base()
+        : base()
         {
             this.Proxy = null;
             this.CachePolicy = new RequestCachePolicy(RequestCacheLevel.NoCacheNoStore);
@@ -19,7 +20,9 @@ namespace GreatSnooper.Classes
         {
             var request = base.GetWebRequest(address);
             if (request != null)
+            {
                 request.Timeout = GlobalManager.WebRequestTimeout;
+            }
             return request;
         }
 

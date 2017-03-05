@@ -1,51 +1,33 @@
-﻿using System.ComponentModel;
-using System.Linq;
-using System.Reflection;
-using System.Resources;
-
-namespace GreatSnooper.Localizations
+﻿namespace GreatSnooper.Localizations
 {
+    using System.ComponentModel;
+    using System.Linq;
+    using System.Reflection;
+    using System.Resources;
+
     public class GSLocalization : INotifyPropertyChanged
     {
-        #region Singleton and PropertyChanged
+        private readonly ResourceManager _rm = new ResourceManager("GreatSnooper.Localizations.Localization", Assembly.GetExecutingAssembly());
+
         private static GSLocalization instance;
+
+        private GSLocalization()
+        {
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         public static GSLocalization Instance
         {
             get
             {
                 if (instance == null)
+                {
                     instance = new GSLocalization();
+                }
                 return instance;
             }
         }
-
-        private GSLocalization() { }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void RaisePropertyChanged(string propertyName)
-        {
-            // take a copy to prevent thread issues
-            PropertyChangedEventHandler handler = PropertyChanged;
-            if (handler != null)
-            {
-                handler(this, new PropertyChangedEventArgs(propertyName));
-            }
-        }
-
-        public void CultureChanged()
-        {
-            var props = this.GetType().GetProperties().Where(x => x.PropertyType == typeof(string));
-            foreach (var prop in props)
-                RaisePropertyChanged(prop.Name);
-        }
-        #endregion
-
-        #region ResourceManager
-        private readonly ResourceManager _rm = new ResourceManager("GreatSnooper.Localizations.Localization", Assembly.GetExecutingAssembly());
-        public ResourceManager RM { get { return _rm; } }
-        #endregion
-
 
         /// <summary>
         ///   Looks up a localized string similar to About.
@@ -54,7 +36,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AboutText");
+                return this._rm.GetString("AboutText");
             }
         }
 
@@ -65,7 +47,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AboutWormNat2Text");
+                return this._rm.GetString("AboutWormNat2Text");
             }
         }
 
@@ -76,7 +58,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ActionMessageGTText");
+                return this._rm.GetString("ActionMessageGTText");
             }
         }
 
@@ -87,7 +69,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ActionMessageStyleText");
+                return this._rm.GetString("ActionMessageStyleText");
             }
         }
 
@@ -98,7 +80,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AddIgnoreText");
+                return this._rm.GetString("AddIgnoreText");
             }
         }
 
@@ -109,7 +91,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AddToConvText");
+                return this._rm.GetString("AddToConvText");
             }
         }
 
@@ -120,7 +102,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AddUserToList");
+                return this._rm.GetString("AddUserToList");
             }
         }
 
@@ -131,7 +113,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AskLeagueSOffText");
+                return this._rm.GetString("AskLeagueSOffText");
             }
         }
 
@@ -142,7 +124,18 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AskNotificatorOffText");
+                return this._rm.GetString("AskNotificatorOffText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Authentication failed.
+        /// </summary>
+        public string AuthFailed
+        {
+            get
+            {
+                return this._rm.GetString("AuthFailed");
             }
         }
 
@@ -153,7 +146,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AutoJoinText");
+                return this._rm.GetString("AutoJoinText");
             }
         }
 
@@ -164,7 +157,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AutoLogInSettingText");
+                return this._rm.GetString("AutoLogInSettingText");
             }
         }
 
@@ -175,7 +168,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AutoLoginText");
+                return this._rm.GetString("AutoLoginText");
             }
         }
 
@@ -186,7 +179,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AwayButtonAway");
+                return this._rm.GetString("AwayButtonAway");
             }
         }
 
@@ -197,7 +190,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AwayButtonBack");
+                return this._rm.GetString("AwayButtonBack");
             }
         }
 
@@ -208,7 +201,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AwayLabel");
+                return this._rm.GetString("AwayLabel");
             }
         }
 
@@ -219,7 +212,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AwayManagerTitle");
+                return this._rm.GetString("AwayManagerTitle");
             }
         }
 
@@ -230,7 +223,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AwayManagerTooltip");
+                return this._rm.GetString("AwayManagerTooltip");
             }
         }
 
@@ -241,7 +234,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AwayManagerTooltipAway");
+                return this._rm.GetString("AwayManagerTooltipAway");
             }
         }
 
@@ -252,7 +245,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AwayMessageFormat");
+                return this._rm.GetString("AwayMessageFormat");
             }
         }
 
@@ -263,7 +256,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("AwayMessageText");
+                return this._rm.GetString("AwayMessageText");
             }
         }
 
@@ -274,7 +267,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("BackMessageText");
+                return this._rm.GetString("BackMessageText");
             }
         }
 
@@ -285,7 +278,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("BoldLabel");
+                return this._rm.GetString("BoldLabel");
             }
         }
 
@@ -296,7 +289,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("BrowseButtonContent");
+                return this._rm.GetString("BrowseButtonContent");
             }
         }
 
@@ -307,7 +300,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("BuddiesGroupText");
+                return this._rm.GetString("BuddiesGroupText");
             }
         }
 
@@ -318,7 +311,18 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ChangeButtonText");
+                return this._rm.GetString("ChangeButtonText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Send to other tab.
+        /// </summary>
+        public string ChangeTabText
+        {
+            get
+            {
+                return this._rm.GetString("ChangeTabText");
             }
         }
 
@@ -329,7 +333,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ChangeWormsNickText");
+                return this._rm.GetString("ChangeWormsNickText");
             }
         }
 
@@ -340,7 +344,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ChannelMessageStyleText");
+                return this._rm.GetString("ChannelMessageStyleText");
             }
         }
 
@@ -351,7 +355,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ChannelOfflineText");
+                return this._rm.GetString("ChannelOfflineText");
             }
         }
 
@@ -362,7 +366,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ChatModeTooltip");
+                return this._rm.GetString("ChatModeTooltip");
             }
         }
 
@@ -373,7 +377,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ChatText");
+                return this._rm.GetString("ChatText");
             }
         }
 
@@ -384,7 +388,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ClanHasBadChar");
+                return this._rm.GetString("ClanHasBadChar");
             }
         }
 
@@ -395,7 +399,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ClanHeaderLabel");
+                return this._rm.GetString("ClanHeaderLabel");
             }
         }
 
@@ -406,7 +410,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ClanInfoText");
+                return this._rm.GetString("ClanInfoText");
             }
         }
 
@@ -417,7 +421,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ClanMatesGroupText");
+                return this._rm.GetString("ClanMatesGroupText");
             }
         }
 
@@ -428,7 +432,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ClanText");
+                return this._rm.GetString("ClanText");
             }
         }
 
@@ -439,7 +443,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("CloseChatText");
+                return this._rm.GetString("CloseChatText");
             }
         }
 
@@ -450,7 +454,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("CloseText");
+                return this._rm.GetString("CloseText");
             }
         }
 
@@ -461,7 +465,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("CloseToTrayText");
+                return this._rm.GetString("CloseToTrayText");
             }
         }
 
@@ -472,7 +476,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("CommonSettingFailText");
+                return this._rm.GetString("CommonSettingFailText");
             }
         }
 
@@ -483,7 +487,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ConnectingText");
+                return this._rm.GetString("ConnectingText");
             }
         }
 
@@ -494,7 +498,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ContactText");
+                return this._rm.GetString("ContactText");
             }
         }
 
@@ -505,7 +509,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ConversationAdded");
+                return this._rm.GetString("ConversationAdded");
             }
         }
 
@@ -516,7 +520,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ConversationKick");
+                return this._rm.GetString("ConversationKick");
             }
         }
 
@@ -527,7 +531,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ConversationLeave");
+                return this._rm.GetString("ConversationLeave");
             }
         }
 
@@ -538,7 +542,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ConversationRemoved");
+                return this._rm.GetString("ConversationRemoved");
             }
         }
 
@@ -549,7 +553,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("CountryCode");
+                return this._rm.GetString("CountryCode");
             }
         }
 
@@ -560,7 +564,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("CountryHeaderLabel");
+                return this._rm.GetString("CountryHeaderLabel");
             }
         }
 
@@ -571,7 +575,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("CountryLabel");
+                return this._rm.GetString("CountryLabel");
             }
         }
 
@@ -582,7 +586,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("CreateGameText");
+                return this._rm.GetString("CreateGameText");
             }
         }
 
@@ -593,7 +597,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("CultureName");
+                return this._rm.GetString("CultureName");
             }
         }
 
@@ -604,7 +608,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("DefaultText");
+                return this._rm.GetString("DefaultText");
             }
         }
 
@@ -615,7 +619,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("DeleteLogsText");
+                return this._rm.GetString("DeleteLogsText");
             }
         }
 
@@ -626,7 +630,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("EditText");
+                return this._rm.GetString("EditText");
             }
         }
 
@@ -637,7 +641,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("EmptyErrorMessage");
+                return this._rm.GetString("EmptyErrorMessage");
             }
         }
 
@@ -648,7 +652,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("EnabledText");
+                return this._rm.GetString("EnabledText");
             }
         }
 
@@ -659,7 +663,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("EndOfConversation");
+                return this._rm.GetString("EndOfConversation");
             }
         }
 
@@ -670,7 +674,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("EnergySaveModeGameText");
+                return this._rm.GetString("EnergySaveModeGameText");
             }
         }
 
@@ -681,7 +685,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("EnergySaveModeWinText");
+                return this._rm.GetString("EnergySaveModeWinText");
             }
         }
 
@@ -692,7 +696,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("EnterChannelText");
+                return this._rm.GetString("EnterChannelText");
             }
         }
 
@@ -703,7 +707,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("EnterTextText");
+                return this._rm.GetString("EnterTextText");
             }
         }
 
@@ -714,7 +718,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ErrorText");
+                return this._rm.GetString("ErrorText");
             }
         }
 
@@ -725,7 +729,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ExampleLabel");
+                return this._rm.GetString("ExampleLabel");
             }
         }
 
@@ -736,7 +740,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ExitAfterHosting");
+                return this._rm.GetString("ExitAfterHosting");
             }
         }
 
@@ -747,7 +751,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ExitText");
+                return this._rm.GetString("ExitText");
             }
         }
 
@@ -758,7 +762,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ExportSettingsButtonContent");
+                return this._rm.GetString("ExportSettingsButtonContent");
             }
         }
 
@@ -769,7 +773,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("FilterText");
+                return this._rm.GetString("FilterText");
             }
         }
 
@@ -780,7 +784,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("FontChooserTitle");
+                return this._rm.GetString("FontChooserTitle");
             }
         }
 
@@ -791,7 +795,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("FoundStyleText");
+                return this._rm.GetString("FoundStyleText");
             }
         }
 
@@ -802,7 +806,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GameNameLabel");
+                return this._rm.GetString("GameNameLabel");
             }
         }
 
@@ -813,7 +817,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GamePassBadText");
+                return this._rm.GetString("GamePassBadText");
             }
         }
 
@@ -824,7 +828,29 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GamesText");
+                return this._rm.GetString("GamesText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Authenticate to GameSurge:.
+        /// </summary>
+        public string GameSurgeAuthLabel
+        {
+            get
+            {
+                return this._rm.GetString("GameSurgeAuthLabel");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to GameSurge password (optional):.
+        /// </summary>
+        public string GameSurgePasswordLabel
+        {
+            get
+            {
+                return this._rm.GetString("GameSurgePasswordLabel");
             }
         }
 
@@ -835,7 +861,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GeneralSoundsText");
+                return this._rm.GetString("GeneralSoundsText");
             }
         }
 
@@ -846,7 +872,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GeneralText");
+                return this._rm.GetString("GeneralText");
             }
         }
 
@@ -857,7 +883,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GermanTranslationText");
+                return this._rm.GetString("GermanTranslationText");
             }
         }
 
@@ -868,7 +894,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GroupPlayersEditTitle");
+                return this._rm.GetString("GroupPlayersEditTitle");
             }
         }
 
@@ -879,7 +905,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GroupSoundSettingText");
+                return this._rm.GetString("GroupSoundSettingText");
             }
         }
 
@@ -890,7 +916,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GroupSoundsText");
+                return this._rm.GetString("GroupSoundsText");
             }
         }
 
@@ -901,7 +927,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GroupText");
+                return this._rm.GetString("GroupText");
             }
         }
 
@@ -912,7 +938,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GSCheckText");
+                return this._rm.GetString("GSCheckText");
             }
         }
 
@@ -923,7 +949,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GSCheckTitle");
+                return this._rm.GetString("GSCheckTitle");
             }
         }
 
@@ -934,7 +960,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GSNickInUseText");
+                return this._rm.GetString("GSNickInUseText");
             }
         }
 
@@ -945,7 +971,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GSNicknameChange");
+                return this._rm.GetString("GSNicknameChange");
             }
         }
 
@@ -956,7 +982,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GSNicknameInUse");
+                return this._rm.GetString("GSNicknameInUse");
             }
         }
 
@@ -967,7 +993,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GSQuitWMessage");
+                return this._rm.GetString("GSQuitWMessage");
             }
         }
 
@@ -978,7 +1004,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GSQuitWOMessage");
+                return this._rm.GetString("GSQuitWOMessage");
             }
         }
 
@@ -989,7 +1015,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GSRunningTaskbar");
+                return this._rm.GetString("GSRunningTaskbar");
             }
         }
 
@@ -1000,7 +1026,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GSVersionTrolling");
+                return this._rm.GetString("GSVersionTrolling");
             }
         }
 
@@ -1011,7 +1037,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("GSWormsText");
+                return this._rm.GetString("GSWormsText");
             }
         }
 
@@ -1022,7 +1048,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HiddenChannelsText");
+                return this._rm.GetString("HiddenChannelsText");
             }
         }
 
@@ -1033,7 +1059,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HideChannelText");
+                return this._rm.GetString("HideChannelText");
             }
         }
 
@@ -1044,7 +1070,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HighlightSettingText");
+                return this._rm.GetString("HighlightSettingText");
             }
         }
 
@@ -1055,7 +1081,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HightLightMessage");
+                return this._rm.GetString("HightLightMessage");
             }
         }
 
@@ -1066,7 +1092,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HostAGameText");
+                return this._rm.GetString("HostAGameText");
             }
         }
 
@@ -1077,7 +1103,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HosterCreateGameFail");
+                return this._rm.GetString("HosterCreateGameFail");
             }
         }
 
@@ -1088,7 +1114,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HosterExeText");
+                return this._rm.GetString("HosterExeText");
             }
         }
 
@@ -1099,7 +1125,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HosterFailedToGetLocalIP");
+                return this._rm.GetString("HosterFailedToGetLocalIP");
             }
         }
 
@@ -1110,7 +1136,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HosterNoGameIDError");
+                return this._rm.GetString("HosterNoGameIDError");
             }
         }
 
@@ -1121,7 +1147,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HosterStartGameFail");
+                return this._rm.GetString("HosterStartGameFail");
             }
         }
 
@@ -1132,7 +1158,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HosterUnknownFail");
+                return this._rm.GetString("HosterUnknownFail");
             }
         }
 
@@ -1143,7 +1169,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HosterWormNatError");
+                return this._rm.GetString("HosterWormNatError");
             }
         }
 
@@ -1154,7 +1180,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HostingAction");
+                return this._rm.GetString("HostingAction");
             }
         }
 
@@ -1165,7 +1191,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HostingPasswordLabel");
+                return this._rm.GetString("HostingPasswordLabel");
             }
         }
 
@@ -1176,7 +1202,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HostingTitle");
+                return this._rm.GetString("HostingTitle");
             }
         }
 
@@ -1187,7 +1213,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("HyperlinksStyleText");
+                return this._rm.GetString("HyperlinksStyleText");
             }
         }
 
@@ -1198,18 +1224,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("IgnoreListTitle");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Info.
-        /// </summary>
-        public string InfoHeaderLabel
-        {
-            get
-            {
-                return _rm.GetString("InfoHeaderLabel");
+                return this._rm.GetString("IgnoreListTitle");
             }
         }
 
@@ -1220,7 +1235,18 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ImportSettingsButtonContent");
+                return this._rm.GetString("ImportSettingsButtonContent");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Info.
+        /// </summary>
+        public string InfoHeaderLabel
+        {
+            get
+            {
+                return this._rm.GetString("InfoHeaderLabel");
             }
         }
 
@@ -1231,7 +1257,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("InformationText");
+                return this._rm.GetString("InformationText");
             }
         }
 
@@ -1242,7 +1268,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("InfoText");
+                return this._rm.GetString("InfoText");
             }
         }
 
@@ -1253,7 +1279,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("InGameNamesLabel");
+                return this._rm.GetString("InGameNamesLabel");
             }
         }
 
@@ -1264,7 +1290,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("InHosterNamesLabel");
+                return this._rm.GetString("InHosterNamesLabel");
             }
         }
 
@@ -1275,7 +1301,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("InJoinMessagesLabel");
+                return this._rm.GetString("InJoinMessagesLabel");
             }
         }
 
@@ -1286,7 +1312,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("InMessagesLabel");
+                return this._rm.GetString("InMessagesLabel");
             }
         }
 
@@ -1297,7 +1323,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("InSenderNamesLabel");
+                return this._rm.GetString("InSenderNamesLabel");
             }
         }
 
@@ -1308,7 +1334,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("InvalidValueText");
+                return this._rm.GetString("InvalidValueText");
             }
         }
 
@@ -1319,7 +1345,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ItalicForGSUsers");
+                return this._rm.GetString("ItalicForGSUsers");
             }
         }
 
@@ -1330,7 +1356,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ItalicLabel");
+                return this._rm.GetString("ItalicLabel");
             }
         }
 
@@ -1341,7 +1367,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("JoinCloseText");
+                return this._rm.GetString("JoinCloseText");
             }
         }
 
@@ -1352,7 +1378,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("JoinCloseText2");
+                return this._rm.GetString("JoinCloseText2");
             }
         }
 
@@ -1363,7 +1389,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("JoinGameText");
+                return this._rm.GetString("JoinGameText");
             }
         }
 
@@ -1374,7 +1400,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("JoinGameText2");
+                return this._rm.GetString("JoinGameText2");
             }
         }
 
@@ -1385,7 +1411,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("JoinMessage");
+                return this._rm.GetString("JoinMessage");
             }
         }
 
@@ -1396,7 +1422,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("JoinMessageStyleText");
+                return this._rm.GetString("JoinMessageStyleText");
             }
         }
 
@@ -1407,7 +1433,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("KickMessage");
+                return this._rm.GetString("KickMessage");
             }
         }
 
@@ -1418,7 +1444,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LanguageChangedText");
+                return this._rm.GetString("LanguageChangedText");
             }
         }
 
@@ -1429,7 +1455,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LanguageEnName");
+                return this._rm.GetString("LanguageEnName");
             }
         }
 
@@ -1440,7 +1466,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LanguageName");
+                return this._rm.GetString("LanguageName");
             }
         }
 
@@ -1451,7 +1477,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LanguageText");
+                return this._rm.GetString("LanguageText");
             }
         }
 
@@ -1462,7 +1488,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LastLineText");
+                return this._rm.GetString("LastLineText");
             }
         }
 
@@ -1473,7 +1499,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LeagueFailSettingText");
+                return this._rm.GetString("LeagueFailSettingText");
             }
         }
 
@@ -1484,7 +1510,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LeagueGameTitle");
+                return this._rm.GetString("LeagueGameTitle");
             }
         }
 
@@ -1495,7 +1521,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LeaguePlayersGroupText");
+                return this._rm.GetString("LeaguePlayersGroupText");
             }
         }
 
@@ -1506,7 +1532,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LeagueSearcherRunningText");
+                return this._rm.GetString("LeagueSearcherRunningText");
             }
         }
 
@@ -1517,7 +1543,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LeagueSearcherTooltip");
+                return this._rm.GetString("LeagueSearcherTooltip");
             }
         }
 
@@ -1528,7 +1554,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LeaguesLoadingText");
+                return this._rm.GetString("LeaguesLoadingText");
             }
         }
 
@@ -1539,7 +1565,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LeagueSoundSettingText");
+                return this._rm.GetString("LeagueSoundSettingText");
             }
         }
 
@@ -1550,7 +1576,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LeaveChannelText");
+                return this._rm.GetString("LeaveChannelText");
             }
         }
 
@@ -1561,7 +1587,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LicenseText");
+                return this._rm.GetString("LicenseText");
             }
         }
 
@@ -1572,7 +1598,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ListEditorInfoText");
+                return this._rm.GetString("ListEditorInfoText");
             }
         }
 
@@ -1583,7 +1609,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ListEditorInfoTitle");
+                return this._rm.GetString("ListEditorInfoTitle");
             }
         }
 
@@ -1594,18 +1620,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LoadChannelSchemeText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to Are you sure you would like to close this window and lose your changes?.
-        /// </summary>
-        public string LosingChangesQuestion
-        {
-            get
-            {
-                return _rm.GetString("LosingChangesQuestion");
+                return this._rm.GetString("LoadChannelSchemeText");
             }
         }
 
@@ -1616,7 +1631,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LoadCommonSettingsText");
+                return this._rm.GetString("LoadCommonSettingsText");
             }
         }
 
@@ -1627,7 +1642,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LoadGamesText");
+                return this._rm.GetString("LoadGamesText");
             }
         }
 
@@ -1638,7 +1653,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LoadGamesTUSActiveWindow");
+                return this._rm.GetString("LoadGamesTUSActiveWindow");
             }
         }
 
@@ -1649,7 +1664,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LoadTUSUsersText");
+                return this._rm.GetString("LoadTUSUsersText");
             }
         }
 
@@ -1660,7 +1675,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LogInText");
+                return this._rm.GetString("LogInText");
             }
         }
 
@@ -1671,7 +1686,18 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("LogOutText");
+                return this._rm.GetString("LogOutText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Are you sure you would like to close this window and lose your changes?.
+        /// </summary>
+        public string LosingChangesQuestion
+        {
+            get
+            {
+                return this._rm.GetString("LosingChangesQuestion");
             }
         }
 
@@ -1682,7 +1708,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("MadeByText");
+                return this._rm.GetString("MadeByText");
             }
         }
 
@@ -1693,7 +1719,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("MarkAwayText");
+                return this._rm.GetString("MarkAwayText");
             }
         }
 
@@ -1704,7 +1730,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("MessageColorLabel");
+                return this._rm.GetString("MessageColorLabel");
             }
         }
 
@@ -1715,7 +1741,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("MessageJoinedGameText");
+                return this._rm.GetString("MessageJoinedGameText");
             }
         }
 
@@ -1726,7 +1752,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("MessageLabel");
+                return this._rm.GetString("MessageLabel");
             }
         }
 
@@ -1737,7 +1763,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("MessageLogsText");
+                return this._rm.GetString("MessageLogsText");
             }
         }
 
@@ -1748,7 +1774,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("MessagesText");
+                return this._rm.GetString("MessagesText");
             }
         }
 
@@ -1759,7 +1785,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("MessageTimeStyleText");
+                return this._rm.GetString("MessageTimeStyleText");
             }
         }
 
@@ -1770,7 +1796,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("MessageTimeText");
+                return this._rm.GetString("MessageTimeText");
             }
         }
 
@@ -1781,7 +1807,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("MissingValueText");
+                return this._rm.GetString("MissingValueText");
             }
         }
 
@@ -1792,7 +1818,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("MoreInfoText");
+                return this._rm.GetString("MoreInfoText");
             }
         }
 
@@ -1803,7 +1829,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("MuteTooltip");
+                return this._rm.GetString("MuteTooltip");
             }
         }
 
@@ -1814,7 +1840,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NetworkText");
+                return this._rm.GetString("NetworkText");
             }
         }
 
@@ -1825,7 +1851,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NewsWindowTitle");
+                return this._rm.GetString("NewsWindowTitle");
             }
         }
 
@@ -1836,7 +1862,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NewVersionText");
+                return this._rm.GetString("NewVersionText");
             }
         }
 
@@ -1847,7 +1873,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NickColorLabel");
+                return this._rm.GetString("NickColorLabel");
             }
         }
 
@@ -1858,7 +1884,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NickEmptyText");
+                return this._rm.GetString("NickEmptyText");
             }
         }
 
@@ -1869,7 +1895,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NickHasBadChar");
+                return this._rm.GetString("NickHasBadChar");
             }
         }
 
@@ -1880,7 +1906,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NickHeaderLabel");
+                return this._rm.GetString("NickHeaderLabel");
             }
         }
 
@@ -1891,7 +1917,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NicknameInUseText");
+                return this._rm.GetString("NicknameInUseText");
             }
         }
 
@@ -1902,7 +1928,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NicknameText");
+                return this._rm.GetString("NicknameText");
             }
         }
 
@@ -1913,7 +1939,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NickStartsBad");
+                return this._rm.GetString("NickStartsBad");
             }
         }
 
@@ -1924,7 +1950,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NoGroupText");
+                return this._rm.GetString("NoGroupText");
             }
         }
 
@@ -1935,7 +1961,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NoLeaguesSelectedError");
+                return this._rm.GetString("NoLeaguesSelectedError");
             }
         }
 
@@ -1946,7 +1972,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NoText");
+                return this._rm.GetString("NoText");
             }
         }
 
@@ -1957,7 +1983,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NoticeMessageStyleText");
+                return this._rm.GetString("NoticeMessageStyleText");
             }
         }
 
@@ -1968,30 +1994,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NotificationsText");
-            }
-        }
-
-
-        /// <summary>
-        ///   Looks up a localized string similar to {0} is hosting a game: {1}.
-        /// </summary>
-        public string NotificatorHelpLabel
-        {
-            get
-            {
-                return _rm.GetString("NotificatorHelpLabel");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to {0} is hosting a game: {1}.
-        /// </summary>
-        public string NotificatorHelpText
-        {
-            get
-            {
-                return _rm.GetString("NotificatorHelpText");
+                return this._rm.GetString("NotificationsText");
             }
         }
 
@@ -2002,7 +2005,29 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NotificatorGameText");
+                return this._rm.GetString("NotificatorGameText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is hosting a game: {1}.
+        /// </summary>
+        public string NotificatorHelpLabel
+        {
+            get
+            {
+                return this._rm.GetString("NotificatorHelpLabel");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to {0} is hosting a game: {1}.
+        /// </summary>
+        public string NotificatorHelpText
+        {
+            get
+            {
+                return this._rm.GetString("NotificatorHelpText");
             }
         }
 
@@ -2013,7 +2038,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NotificatorRunningText");
+                return this._rm.GetString("NotificatorRunningText");
             }
         }
 
@@ -2024,7 +2049,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NotificatorTooltip");
+                return this._rm.GetString("NotificatorTooltip");
             }
         }
 
@@ -2035,7 +2060,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NotifOnlineMessage");
+                return this._rm.GetString("NotifOnlineMessage");
             }
         }
 
@@ -2046,7 +2071,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("NotifSoundSettingText");
+                return this._rm.GetString("NotifSoundSettingText");
             }
         }
 
@@ -2057,7 +2082,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("OfflineMessage");
+                return this._rm.GetString("OfflineMessage");
             }
         }
 
@@ -2068,7 +2093,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("OKText");
+                return this._rm.GetString("OKText");
             }
         }
 
@@ -2079,7 +2104,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("OnlineMessage");
+                return this._rm.GetString("OnlineMessage");
             }
         }
 
@@ -2090,7 +2115,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("Other1GroupText");
+                return this._rm.GetString("Other1GroupText");
             }
         }
 
@@ -2101,7 +2126,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("Other2GroupText");
+                return this._rm.GetString("Other2GroupText");
             }
         }
 
@@ -2112,7 +2137,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("Other3GroupText");
+                return this._rm.GetString("Other3GroupText");
             }
         }
 
@@ -2123,7 +2148,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("Other4GroupText");
+                return this._rm.GetString("Other4GroupText");
             }
         }
 
@@ -2134,7 +2159,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("PartMessage");
+                return this._rm.GetString("PartMessage");
             }
         }
 
@@ -2145,7 +2170,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("PartMessage2");
+                return this._rm.GetString("PartMessage2");
             }
         }
 
@@ -2156,7 +2181,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("PartMessageStyleText");
+                return this._rm.GetString("PartMessageStyleText");
             }
         }
 
@@ -2167,7 +2192,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("PlayerLabel");
+                return this._rm.GetString("PlayerLabel");
             }
         }
 
@@ -2178,7 +2203,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("PlayersText");
+                return this._rm.GetString("PlayersText");
             }
         }
 
@@ -2189,7 +2214,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("PMBeepSettingText");
+                return this._rm.GetString("PMBeepSettingText");
             }
         }
 
@@ -2200,7 +2225,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("PMOnlineMessage");
+                return this._rm.GetString("PMOnlineMessage");
             }
         }
 
@@ -2211,7 +2236,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("PMPingTimeoutMessage");
+                return this._rm.GetString("PMPingTimeoutMessage");
             }
         }
 
@@ -2222,7 +2247,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("PolishTranslationText");
+                return this._rm.GetString("PolishTranslationText");
             }
         }
 
@@ -2233,7 +2258,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("QuestionMark");
+                return this._rm.GetString("QuestionMark");
             }
         }
 
@@ -2244,7 +2269,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("QuestionText");
+                return this._rm.GetString("QuestionText");
             }
         }
 
@@ -2255,7 +2280,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("QuitMessageStyleText");
+                return this._rm.GetString("QuitMessageStyleText");
             }
         }
 
@@ -2266,7 +2291,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("QuitMessageText");
+                return this._rm.GetString("QuitMessageText");
             }
         }
 
@@ -2277,7 +2302,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("RankHeaderLabel");
+                return this._rm.GetString("RankHeaderLabel");
             }
         }
 
@@ -2288,7 +2313,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("RankText");
+                return this._rm.GetString("RankText");
             }
         }
 
@@ -2299,7 +2324,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ReconnectMessage");
+                return this._rm.GetString("ReconnectMessage");
             }
         }
 
@@ -2310,7 +2335,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("RefrestGameListText");
+                return this._rm.GetString("RefrestGameListText");
             }
         }
 
@@ -2321,7 +2346,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("RemoveFromConvText");
+                return this._rm.GetString("RemoveFromConvText");
             }
         }
 
@@ -2332,7 +2357,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("RemoveIgnoreText");
+                return this._rm.GetString("RemoveIgnoreText");
             }
         }
 
@@ -2343,7 +2368,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("RemoveText");
+                return this._rm.GetString("RemoveText");
             }
         }
 
@@ -2354,7 +2379,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ResetSettingsButtonContent");
+                return this._rm.GetString("ResetSettingsButtonContent");
             }
         }
 
@@ -2365,7 +2390,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ResetSettingsConfirm");
+                return this._rm.GetString("ResetSettingsConfirm");
             }
         }
 
@@ -2376,7 +2401,15 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("RestartToApplyChanges");
+                return this._rm.GetString("RestartToApplyChanges");
+            }
+        }
+
+        public ResourceManager RM
+        {
+            get
+            {
+                return this._rm;
             }
         }
 
@@ -2387,7 +2420,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("RussianTranslationText");
+                return this._rm.GetString("RussianTranslationText");
             }
         }
 
@@ -2398,7 +2431,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("SaveChangesQuestion");
+                return this._rm.GetString("SaveChangesQuestion");
             }
         }
 
@@ -2409,7 +2442,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("SaveText");
+                return this._rm.GetString("SaveText");
             }
         }
 
@@ -2420,7 +2453,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ServerErrorMessage");
+                return this._rm.GetString("ServerErrorMessage");
             }
         }
 
@@ -2431,7 +2464,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ServerInfoText");
+                return this._rm.GetString("ServerInfoText");
             }
         }
 
@@ -2442,7 +2475,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ServerListEditorTitle");
+                return this._rm.GetString("ServerListEditorTitle");
             }
         }
 
@@ -2453,7 +2486,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ServerMissingText");
+                return this._rm.GetString("ServerMissingText");
             }
         }
 
@@ -2464,7 +2497,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ServerQuitMessage");
+                return this._rm.GetString("ServerQuitMessage");
             }
         }
 
@@ -2475,7 +2508,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ServerText");
+                return this._rm.GetString("ServerText");
             }
         }
 
@@ -2486,7 +2519,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("SettingsText");
+                return this._rm.GetString("SettingsText");
             }
         }
 
@@ -2497,7 +2530,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("SettingsTitle");
+                return this._rm.GetString("SettingsTitle");
             }
         }
 
@@ -2508,7 +2541,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ShowBannedMessagesText");
+                return this._rm.GetString("ShowBannedMessagesText");
             }
         }
 
@@ -2519,7 +2552,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ShowBannedUsersText");
+                return this._rm.GetString("ShowBannedUsersText");
             }
         }
 
@@ -2530,7 +2563,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ShowHistoryText");
+                return this._rm.GetString("ShowHistoryText");
             }
         }
 
@@ -2541,7 +2574,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ShowInfoColumnText");
+                return this._rm.GetString("ShowInfoColumnText");
             }
         }
 
@@ -2552,7 +2585,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ShowNewsText");
+                return this._rm.GetString("ShowNewsText");
             }
         }
 
@@ -2563,7 +2596,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ShowSnooperText");
+                return this._rm.GetString("ShowSnooperText");
             }
         }
 
@@ -2574,7 +2607,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ShowWormsText");
+                return this._rm.GetString("ShowWormsText");
             }
         }
 
@@ -2585,7 +2618,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("SilentJoinCloseText");
+                return this._rm.GetString("SilentJoinCloseText");
             }
         }
 
@@ -2596,7 +2629,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("SilentJoinCloseText2");
+                return this._rm.GetString("SilentJoinCloseText2");
             }
         }
 
@@ -2607,7 +2640,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("SilentJoinText");
+                return this._rm.GetString("SilentJoinText");
             }
         }
 
@@ -2618,7 +2651,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("SilentJoinText2");
+                return this._rm.GetString("SilentJoinText2");
             }
         }
 
@@ -2629,7 +2662,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("SimpleLoginText");
+                return this._rm.GetString("SimpleLoginText");
             }
         }
 
@@ -2640,7 +2673,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("SizeLabel");
+                return this._rm.GetString("SizeLabel");
             }
         }
 
@@ -2651,7 +2684,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("SoundsText");
+                return this._rm.GetString("SoundsText");
             }
         }
 
@@ -2662,7 +2695,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("SpamChannelText");
+                return this._rm.GetString("SpamChannelText");
             }
         }
 
@@ -2673,7 +2706,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("SpamStopMessage");
+                return this._rm.GetString("SpamStopMessage");
             }
         }
 
@@ -2684,7 +2717,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("StartNotifWithSnooper");
+                return this._rm.GetString("StartNotifWithSnooper");
             }
         }
 
@@ -2695,7 +2728,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("StartSearchingText");
+                return this._rm.GetString("StartSearchingText");
             }
         }
 
@@ -2706,7 +2739,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("StartWAExeTooltip1");
+                return this._rm.GetString("StartWAExeTooltip1");
             }
         }
 
@@ -2717,7 +2750,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("StartWAExeTooltip2");
+                return this._rm.GetString("StartWAExeTooltip2");
             }
         }
 
@@ -2728,7 +2761,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("StopSearchingText");
+                return this._rm.GetString("StopSearchingText");
             }
         }
 
@@ -2739,7 +2772,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("StrikethroughLabel");
+                return this._rm.GetString("StrikethroughLabel");
             }
         }
 
@@ -2750,7 +2783,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("SystemMessageStyleText");
+                return this._rm.GetString("SystemMessageStyleText");
             }
         }
 
@@ -2761,7 +2794,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("SystemUserName");
+                return this._rm.GetString("SystemUserName");
             }
         }
 
@@ -2772,7 +2805,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ThanksText");
+                return this._rm.GetString("ThanksText");
             }
         }
 
@@ -2783,7 +2816,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ThemeText");
+                return this._rm.GetString("ThemeText");
             }
         }
 
@@ -2794,7 +2827,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TopicMessage");
+                return this._rm.GetString("TopicMessage");
             }
         }
 
@@ -2805,7 +2838,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TrayFlashingText");
+                return this._rm.GetString("TrayFlashingText");
             }
         }
 
@@ -2816,7 +2849,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TrayNotificationsText");
+                return this._rm.GetString("TrayNotificationsText");
             }
         }
 
@@ -2827,7 +2860,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusAnalyzerText");
+                return this._rm.GetString("TusAnalyzerText");
             }
         }
 
@@ -2838,7 +2871,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusAuthFailText");
+                return this._rm.GetString("TusAuthFailText");
             }
         }
 
@@ -2849,7 +2882,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusCommFailText");
+                return this._rm.GetString("TusCommFailText");
             }
         }
 
@@ -2860,7 +2893,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusComplaintsText");
+                return this._rm.GetString("TusComplaintsText");
             }
         }
 
@@ -2871,7 +2904,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusCupsText");
+                return this._rm.GetString("TusCupsText");
             }
         }
 
@@ -2882,7 +2915,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusGSTopicText");
+                return this._rm.GetString("TusGSTopicText");
             }
         }
 
@@ -2893,7 +2926,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusHomePageText");
+                return this._rm.GetString("TusHomePageText");
             }
         }
 
@@ -2904,7 +2937,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusLoginFailText");
+                return this._rm.GetString("TusLoginFailText");
             }
         }
 
@@ -2915,7 +2948,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusLoginFailTitle");
+                return this._rm.GetString("TusLoginFailTitle");
             }
         }
 
@@ -2926,7 +2959,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusLoginText");
+                return this._rm.GetString("TusLoginText");
             }
         }
 
@@ -2937,7 +2970,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusNickEmptyText");
+                return this._rm.GetString("TusNickEmptyText");
             }
         }
 
@@ -2948,7 +2981,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusNicknameText");
+                return this._rm.GetString("TusNicknameText");
             }
         }
 
@@ -2959,7 +2992,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusPasswordEmptyText");
+                return this._rm.GetString("TusPasswordEmptyText");
             }
         }
 
@@ -2970,7 +3003,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusPasswordText");
+                return this._rm.GetString("TusPasswordText");
             }
         }
 
@@ -2981,7 +3014,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusPmsText");
+                return this._rm.GetString("TusPmsText");
             }
         }
 
@@ -2992,7 +3025,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusRecentGamesText");
+                return this._rm.GetString("TusRecentGamesText");
             }
         }
 
@@ -3003,7 +3036,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusReportText");
+                return this._rm.GetString("TusReportText");
             }
         }
 
@@ -3014,7 +3047,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusStandingsText");
+                return this._rm.GetString("TusStandingsText");
             }
         }
 
@@ -3025,7 +3058,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("TusTournamentsText");
+                return this._rm.GetString("TusTournamentsText");
             }
         }
 
@@ -3036,7 +3069,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("UnderlineLabel");
+                return this._rm.GetString("UnderlineLabel");
             }
         }
 
@@ -3047,7 +3080,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("UpdaterFailText");
+                return this._rm.GetString("UpdaterFailText");
             }
         }
 
@@ -3058,7 +3091,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("UserGroupsText");
+                return this._rm.GetString("UserGroupsText");
             }
         }
 
@@ -3069,7 +3102,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("UserMessageStyleText");
+                return this._rm.GetString("UserMessageStyleText");
             }
         }
 
@@ -3080,7 +3113,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("UsersText");
+                return this._rm.GetString("UsersText");
             }
         }
 
@@ -3091,7 +3124,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("UseSnooperRank");
+                return this._rm.GetString("UseSnooperRank");
             }
         }
 
@@ -3102,7 +3135,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("UseSnooperRankHelp");
+                return this._rm.GetString("UseSnooperRankHelp");
             }
         }
 
@@ -3113,7 +3146,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("UseWhoMessagesText");
+                return this._rm.GetString("UseWhoMessagesText");
             }
         }
 
@@ -3124,7 +3157,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("UsingWormNat2");
+                return this._rm.GetString("UsingWormNat2");
             }
         }
 
@@ -3135,18 +3168,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("VersionText");
-            }
-        }
-
-        /// <summary>
-        ///   Looks up a localized string similar to View {0}&apos;s profile.
-        /// </summary>
-        public string ViewTusText
-        {
-            get
-            {
-                return _rm.GetString("ViewTusText");
+                return this._rm.GetString("VersionText");
             }
         }
 
@@ -3157,7 +3179,18 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("ViewClanProfileText");
+                return this._rm.GetString("ViewClanProfileText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to View {0}&apos;s profile.
+        /// </summary>
+        public string ViewTusText
+        {
+            get
+            {
+                return this._rm.GetString("ViewTusText");
             }
         }
 
@@ -3168,7 +3201,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("VolumeTooltip");
+                return this._rm.GetString("VolumeTooltip");
             }
         }
 
@@ -3179,7 +3212,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WAExeMissingText");
+                return this._rm.GetString("WAExeMissingText");
             }
         }
 
@@ -3190,7 +3223,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WAExeNotExistsText");
+                return this._rm.GetString("WAExeNotExistsText");
             }
         }
 
@@ -3201,7 +3234,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WAExeNotFoundText");
+                return this._rm.GetString("WAExeNotFoundText");
             }
         }
 
@@ -3212,7 +3245,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WAExeText");
+                return this._rm.GetString("WAExeText");
             }
         }
 
@@ -3223,7 +3256,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WAExeText2");
+                return this._rm.GetString("WAExeText2");
             }
         }
 
@@ -3234,7 +3267,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WaHighPriorityText");
+                return this._rm.GetString("WaHighPriorityText");
             }
         }
 
@@ -3245,7 +3278,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WAIsRunningText");
+                return this._rm.GetString("WAIsRunningText");
             }
         }
 
@@ -3256,7 +3289,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WelcomeMessage");
+                return this._rm.GetString("WelcomeMessage");
             }
         }
 
@@ -3267,7 +3300,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WelcomeText");
+                return this._rm.GetString("WelcomeText");
             }
         }
 
@@ -3278,7 +3311,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WhatIsTusLoginLabel");
+                return this._rm.GetString("WhatIsTusLoginLabel");
             }
         }
 
@@ -3289,7 +3322,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WhatIsTusLoginText");
+                return this._rm.GetString("WhatIsTusLoginText");
             }
         }
 
@@ -3300,7 +3333,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WindowText");
+                return this._rm.GetString("WindowText");
             }
         }
 
@@ -3311,7 +3344,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WNCommFailText");
+                return this._rm.GetString("WNCommFailText");
             }
         }
 
@@ -3322,7 +3355,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WNQuitWMessage");
+                return this._rm.GetString("WNQuitWMessage");
             }
         }
 
@@ -3333,7 +3366,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WNQuitWOMessage");
+                return this._rm.GetString("WNQuitWOMessage");
             }
         }
 
@@ -3344,7 +3377,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WormNat2GreetingText");
+                return this._rm.GetString("WormNat2GreetingText");
             }
         }
 
@@ -3355,7 +3388,7 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("WormsNickLabel");
+                return this._rm.GetString("WormsNickLabel");
             }
         }
 
@@ -3366,9 +3399,27 @@ namespace GreatSnooper.Localizations
         {
             get
             {
-                return _rm.GetString("YesText");
+                return this._rm.GetString("YesText");
             }
         }
 
+        public void CultureChanged()
+        {
+            var props = this.GetType().GetProperties().Where(x => x.PropertyType == typeof(string));
+            foreach (var prop in props)
+            {
+                this.RaisePropertyChanged(prop.Name);
+            }
+        }
+
+        protected void RaisePropertyChanged(string propertyName)
+        {
+            // take a copy to prevent thread issues
+            PropertyChangedEventHandler handler = this.PropertyChanged;
+            if (handler != null)
+            {
+                handler(this, new PropertyChangedEventArgs(propertyName));
+            }
+        }
     }
 }

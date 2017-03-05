@@ -1,9 +1,9 @@
-﻿using System;
-using System.Globalization;
-using System.Windows.Data;
-
-namespace GreatSnooper.Converters
+﻿namespace GreatSnooper.Converters
 {
+    using System;
+    using System.Globalization;
+    using System.Windows.Data;
+
     class InvertBoolConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)

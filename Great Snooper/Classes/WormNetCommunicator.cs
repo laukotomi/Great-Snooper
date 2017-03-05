@@ -1,31 +1,44 @@
-﻿using GreatSnooper.Helpers;
-using System.Collections.Generic;
-
-namespace GreatSnooper.Classes
+﻿namespace GreatSnooper.Classes
 {
+    using System.Collections.Generic;
+
+    using GreatSnooper.Helpers;
+
     public class WormNetCommunicator : AbstractCommunicator
     {
-        #region Enums
-
-        #endregion
-
-        #region Members
-
-        #endregion
-
-        #region Properties
-
-        #endregion
-
         public WormNetCommunicator(string serverAddress, int serverPort)
-            : base(serverAddress, serverPort, true, false, false)
+            : base(serverAddress, serverPort, true, false, false, false)
         {
-
         }
 
-        protected override void SetUser()
+        public override string VerifyString(string str)
         {
-            this.User = GlobalManager.User;
+            return WormNetCharTable.RemoveNonWormNetChars(str.TrimEnd());
+        }
+
+        protected override int DecodeMessage(string message)
+        {
+            if (message == "LIST")
+            {
+                this._channelListHelper = new SortedDictionary<string, string>(GlobalManager.CIStringComparer);
+            }
+
+            int i = 0;
+            for (; i < message.Length; i++)
+            {
+                this._sendBuffer[i] = WormNetCharTable.Encode[message[i]];
+            }
+            this._sendBuffer[i++] = WormNetCharTable.Encode['\r'];
+            this._sendBuffer[i++] = WormNetCharTable.Encode['\n'];
+            return i;
+        }
+
+        protected override void EncodeMessage(int bytes)
+        {
+            for (int i = 0; i < bytes; i++)
+            {
+                _recvMessage.Append(WormNetCharTable.Decode[_recvBuffer[i]]);    // Decode the bytes into RecvMessage
+            }
         }
 
         protected override void SendPassword()
@@ -33,30 +46,9 @@ namespace GreatSnooper.Classes
             Send(this, "PASS ELSILRACLIHP");
         }
 
-        protected override void EncodeMessage(int bytes)
+        protected override void SetUser()
         {
-            for (int i = 0; i < bytes; i++)
-                recvMessage.Append(WormNetCharTable.Decode[recvBuffer[i]]); //Decode the bytes into RecvMessage
-        }
-
-        protected override int DecodeMessage(string message)
-        {
-            if (message == "LIST")
-                channelListHelper = new SortedDictionary<string, string>(GlobalManager.CIStringComparer);
-
-            int i = 0;
-            for (; i < message.Length; i++)
-            {
-                sendBuffer[i] = WormNetCharTable.Encode[message[i]];
-            }
-            sendBuffer[i++] = WormNetCharTable.Encode['\r'];
-            sendBuffer[i++] = WormNetCharTable.Encode['\n'];
-            return i;
-        }
-
-        public override string VerifyString(string str)
-        {
-            return WormNetCharTable.RemoveNonWormNetChars(str.TrimEnd());
+            this.User = GlobalManager.User;
         }
     }
 }

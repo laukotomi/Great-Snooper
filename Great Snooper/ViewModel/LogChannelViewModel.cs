@@ -1,25 +1,24 @@
-﻿using GreatSnooper.Classes;
-using GreatSnooper.Helpers;
-using GreatSnooper.Localizations;
-using GreatSnooper.Model;
-using GreatSnooper.Windows;
-using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Text.RegularExpressions;
-using System.Windows;
-using System.Windows.Controls;
-
-namespace GreatSnooper.ViewModel
+﻿namespace GreatSnooper.ViewModel
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Text.RegularExpressions;
+    using System.Windows;
+    using System.Windows.Controls;
+
+    using GreatSnooper.Classes;
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Localizations;
+    using GreatSnooper.Model;
+    using GreatSnooper.Windows;
+
     public class LogChannelViewModel : AbstractChannelViewModel
     {
-        #region Static
-        private static Regex logMessageRegex = new Regex(@"^\((?<type>\w+)\) (?<date>\d+\-\d+\-\d+ \d+:\d+:\d+) (?<sender>[^:]+):(?<text>.*)", RegexOptions.Compiled);
         private static Regex logChannelClosedRegex = new Regex(@"^(?<date>\d+\-\d+\-\d+ \d+:\d+:\d+) Channel closed\.$", RegexOptions.Compiled);
-        #endregion
+        private static Regex logMessageRegex = new Regex(@"^\((?<type>\w+)\) (?<date>\d+\-\d+\-\d+ \d+:\d+:\d+) (?<sender>[^:]+):(?<text>.*)", RegexOptions.Compiled);
 
         public LogChannelViewModel(MainViewModel mainViewModel, AbstractCommunicator server, string channelName)
             : base(mainViewModel, server)
@@ -29,127 +28,123 @@ namespace GreatSnooper.ViewModel
             this.Name = "Log: " + channelName;
 
             var mainWindow = (MainWindow)mainViewModel.DialogService.GetView();
-            tabitem = new TabItem();
-            tabitem.DataContext = this;
-            tabitem.Style = (Style)mainWindow.ChannelsTabControl.FindResource("logChannelTabItem");
-            tabitem.ApplyTemplate();
-            tabitem.Content = ConnectedLayout;
+            _tabitem = new TabItem();
+            _tabitem.DataContext = this;
+            _tabitem.Style = (Style)mainWindow.FindResource("logChannelTabItem");
+            _tabitem.ApplyTemplate();
+            _tabitem.Content = ConnectedLayout;
 
             server.Channels.Add(this.Name, this);
-            mainViewModel.Channels.Add(this);
+            mainViewModel.CreateChannel(this);
 
-            string path = GlobalManager.SettingsPath + @"\Logs\" + channelName;
-            if (Directory.Exists(path))
+            try
             {
-                DirectoryInfo logDirectory = new DirectoryInfo(path);
-                List<string> oldMessages = new List<string>();
-                bool done = false;
-                foreach (FileInfo file in logDirectory.GetFiles().OrderByDescending(f => f.LastWriteTime))
+                string path = GlobalManager.SettingsPath + @"\Logs\" + channelName;
+                if (Directory.Exists(path))
                 {
-                    string[] lines = File.ReadAllLines(file.FullName);
-                    for (int i = lines.Length - 1; i >= 0; i--)
+                    DirectoryInfo logDirectory = new DirectoryInfo(path);
+                    List<string> oldMessages = new List<string>();
+                    bool done = false;
+                    foreach (FileInfo file in logDirectory.GetFiles().OrderByDescending(f => f.LastWriteTime))
                     {
-                        string line = lines[i];
-                        if (!string.IsNullOrEmpty(line) && !line.StartsWith("---"))
+                        using (StreamReader sr = new StreamReader(File.Open(file.FullName, FileMode.Open, FileAccess.Read, FileShare.ReadWrite)))
                         {
-                            oldMessages.Add(line);
-                            if (oldMessages.Count == GlobalManager.MaxMessagesInMemory)
+                            string[] lines = sr.ReadToEnd().Split(new string[] { Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries);
+                            for (int i = lines.Length - 1; i >= 0; i--)
                             {
-                                done = true;
+                                string line = lines[i];
+                                if (!line.StartsWith("---"))
+                                {
+                                    oldMessages.Add(line);
+                                    if (oldMessages.Count == GlobalManager.MaxMessagesInMemory)
+                                    {
+                                        done = true;
+                                        break;
+                                    }
+                                }
+                            }
+                            if (done)
+                            {
                                 break;
                             }
                         }
                     }
-                    if (done)
-                        break;
-                }
 
-                for (int i = oldMessages.Count - 1; i >= 0; i--)
-                {
-                    Match m = logMessageRegex.Match(oldMessages[i]);
-                    if (m.Success)
+                    for (int i = oldMessages.Count - 1; i >= 0; i--)
                     {
-                        Message.MessageTypes messageType;
-                        DateTime time;
-                        if (Enum.TryParse(m.Groups["type"].Value, true, out messageType)
-                            && DateTime.TryParseExact(m.Groups["date"].Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+                        Match m = logMessageRegex.Match(oldMessages[i]);
+                        if (m.Success)
                         {
-                            this.AddMessage(
-                                new Message(
-                                    UserHelper.GetUser(this.Server, m.Groups["sender"].Value),
-                                    m.Groups["text"].Value,
-                                    MessageSettings.GetByMessageType(messageType),
-                                    time,
-                                    true
-                                )
-                            );
+                            Message.MessageTypes messageType;
+                            DateTime time;
+                            if (Enum.TryParse(m.Groups["type"].Value, true, out messageType)
+                                && DateTime.TryParseExact(m.Groups["date"].Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+                            {
+                                this.AddMessage(
+                                    new Message(
+                                        UserHelper.GetUser(this.Server, m.Groups["sender"].Value),
+                                        m.Groups["text"].Value,
+                                        MessageSettings.GetByMessageType(messageType),
+                                        time,
+                                        true));
+                            }
+                            continue;
                         }
-                        continue;
-                    }
-                    m = logChannelClosedRegex.Match(oldMessages[i]);
-                    if (m.Success)
-                    {
-                        DateTime time;
-                        if (DateTime.TryParseExact(m.Groups["date"].Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+                        m = logChannelClosedRegex.Match(oldMessages[i]);
+                        if (m.Success)
                         {
-                            this.AddMessage(
-                                new Message(
-                                    GlobalManager.SystemUser,
-                                    GSLocalization.Instance.EndOfConversation,
-                                    MessageSettings.SystemMessage,
-                                    time,
-                                    true
-                                )
-                            );
+                            DateTime time;
+                            if (DateTime.TryParseExact(m.Groups["date"].Value, "yyyy-MM-dd HH:mm:ss", CultureInfo.InvariantCulture, DateTimeStyles.None, out time))
+                            {
+                                this.AddMessage(
+                                    new Message(
+                                        GlobalManager.SystemUser,
+                                        GSLocalization.Instance.EndOfConversation,
+                                        MessageSettings.SystemMessage,
+                                        time,
+                                        true));
+                            }
                         }
                     }
                 }
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
             }
         }
 
         public override void ClearUsers()
         {
-
         }
 
         public override TabItem GetLayout()
         {
-            return tabitem;
+            return _tabitem;
         }
 
         public override void ProcessMessage(IRCTasks.MessageTask msgTask)
         {
-
         }
 
         public override void SendActionMessage(string message)
         {
-
         }
 
         public override void SendCTCPMessage(string ctcpCommand, string ctcpText, User except = null)
         {
-
         }
 
         public override void SendMessage(string message)
         {
-
         }
 
         public override void SendNotice(string message)
         {
-
         }
 
         public override void SetLoading(bool loading = true)
         {
-
-        }
-
-        public override void Log(int count, bool makeEnd = false)
-        {
-
         }
     }
 }

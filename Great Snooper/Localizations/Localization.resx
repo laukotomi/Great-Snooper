@@ -1316,4 +1316,17 @@
     <value>Show history</value>
     <comment>When right click on the name of a channel</comment>
   </data>
+  <data name="ChangeTabText" xml:space="preserve">
+    <value>Send to other tab</value>
+  </data>
+  <data name="GameSurgeAuthLabel" xml:space="preserve">
+    <value>Authenticate to GameSurge</value>
+  </data>
+  <data name="GameSurgePasswordLabel" xml:space="preserve">
+    <value>GameSurge password (optional):</value>
+  </data>
+  <data name="AuthFailed" xml:space="preserve">
+    <value>Authentication failed</value>
+    <comment>When GameSurge authentication fails</comment>
+  </data>
 </root>

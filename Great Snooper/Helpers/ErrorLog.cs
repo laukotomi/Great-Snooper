@@ -1,9 +1,8 @@
-﻿using System;
-using System.IO;
-using System.Threading;
-
-namespace GreatSnooper.Helpers
+﻿namespace GreatSnooper.Helpers
 {
+    using System;
+    using System.IO;
+
     public static class ErrorLog
     {
         private static object locker = new object();
@@ -15,10 +14,13 @@ namespace GreatSnooper.Helpers
                 try
                 {
                     string filename = GlobalManager.SettingsPath + @"\errorlog.txt";
+
                     // Delete log file if it is more than 10 Mb
                     FileInfo logfile = new FileInfo(filename);
                     if (logfile.Exists && logfile.Length > 10 * 1024 * 1024)
+                    {
                         logfile.Delete();
+                    }
 
                     using (StreamWriter w = new StreamWriter(filename, true))
                     {
@@ -29,7 +31,8 @@ namespace GreatSnooper.Helpers
                         w.WriteLine(Environment.NewLine + Environment.NewLine + Environment.NewLine);
                     }
                 }
-                catch (Exception) { }
+                catch (Exception)
+                { }
             }
         }
     }

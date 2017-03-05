@@ -1,229 +1,59 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GreatSnooper.Classes;
-using GreatSnooper.Helpers;
-using GreatSnooper.Model;
-using GreatSnooper.Services;
-using GreatSnooper.Validators;
-using GreatSnooper.Windows;
-using MahApps.Metro;
-using MahApps.Metro.Controls;
-using MahApps.Metro.Controls.Dialogs;
-using Microsoft.Win32;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Globalization;
-using System.IO;
-using System.Linq;
-using System.Resources;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Web;
-using System.Windows;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Threading;
-
-namespace GreatSnooper.ViewModel
+﻿namespace GreatSnooper.ViewModel
 {
+    using System;
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Diagnostics;
+    using System.Globalization;
+    using System.IO;
+    using System.Linq;
+    using System.Resources;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Threading.Tasks;
+    using System.Web;
+    using System.Windows;
+    using System.Windows.Input;
+    using System.Windows.Media;
+    using System.Windows.Threading;
+
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.Command;
+
+    using GreatSnooper.Classes;
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Model;
+    using GreatSnooper.Services;
+    using GreatSnooper.Validators;
+    using GreatSnooper.Windows;
+
+    using MahApps.Metro;
+    using MahApps.Metro.Controls;
+    using MahApps.Metro.Controls.Dialogs;
+
+    using Microsoft.Win32;
+
     public class LoginViewModel : ViewModelBase, IDisposable
     {
-        #region Static
         private static bool _firstStart = true;
-        #endregion
 
-        #region Members
-
-        private LanguageData _selectedLanguage;
-        private AccentColorMenuData _selectedAccent;
-        private bool _loading;
-        private bool _isConfigFlyoutOpened;
-        private bool firstStart;
-        private WormNetCommunicator wormNetC;
-        private Task<TusResult> tusLoginTask;
         private volatile bool closing;
-        private bool loggedIn;
         private Dispatcher dispatcher;
-        #endregion
-
-        #region Properties
-
-        public List<AccentColorMenuData> AccentColors { get; private set; }
-        public List<LanguageData> Languages { get; private set; }
-        public SortedObservableCollection<string> ServerList { get; private set; }
-        public MySortedList<Country> CountryList { get; private set; }
-        public List<Rank> RankList { get; private set; }
-
-        public LanguageData SelectedLanguage
-        {
-            get { return _selectedLanguage; }
-            set
-            {
-                if (_selectedLanguage != value)
-                {
-                    bool init = _selectedLanguage == null;
-                    _selectedLanguage = value;
-
-                    try
-                    {
-                        Thread.CurrentThread.CurrentCulture = new CultureInfo(value.CultureName);
-                        Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-
-                        if (!init)
-                        {
-                            Localizations.GSLocalization.Instance.CultureChanged();
-
-                            Properties.Settings.Default.CultureName = _selectedLanguage.CultureName;
-                            Properties.Settings.Default.Save();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        ErrorLog.Log(ex);
-                    }
-                }
-            }
-        }
-
-        public AccentColorMenuData SelectedAccent
-        {
-            get { return _selectedAccent; }
-            set
-            {
-                if (_selectedAccent != value)
-                {
-                    bool init = _selectedAccent == null;
-                    _selectedAccent = value;
-
-                    try
-                    {
-                        var theme = ThemeManager.DetectAppStyle(Application.Current);
-                        var accent = ThemeManager.GetAccent(value.Name);
-                        ThemeManager.ChangeAppStyle(Application.Current, accent, theme.Item1);
-
-                        if (!init)
-                        {
-                            Properties.Settings.Default.AccentName = accent.Name;
-                            Properties.Settings.Default.Save();
-                        }
-                    }
-                    catch (Exception ex)
-                    {
-                        ErrorLog.Log(ex);
-                    }
-                }
-            }
-        }
-
-        public string SelectedServer { get; set; }
-        public bool? AutoLogin { get; set; }
-        public int LoginType { get; set; }
-        public string Nick { get; set; }
-        public string Clan { get; set; }
-        public Country SelectedCountry { get; set; }
-        public int SelectedRank { get; set; }
-        public string TusNick { get; set; }
-        public string TusPass { get; set; }
-        public bool? UseSnooperRank { get; set; }
-        public bool Loading
-        {
-            get { return _loading; }
-            private set
-            {
-                if (_loading != value)
-                {
-                    _loading = value;
-                    RaisePropertyChanged("Loading");
-                }
-            }
-        }
-        public IMetroDialogService DialogService { get; set; }
-        public ITaskbarIconService TaskbarIconService { get; set; }
-        public bool IsConfigFlyoutOpened
-        {
-            get { return _isConfigFlyoutOpened; }
-            set
-            {
-                _isConfigFlyoutOpened = value;
-
-                // The flyout was closed, save config
-                if (value == false)
-                {
-                    Properties.Settings.Default.IsCultureAccentSet = true;
-                    Properties.Settings.Default.Save();
-                }
-            }
-        }
-        #endregion
-
-        #region FocusProperties
-        private bool _isServerFocused;
-        private bool _isNickFocused;
+        bool disposed = false;
+        private bool firstStart;
+        private bool loggedIn;
+        private Task<TusResult> tusLoginTask;
+        private WormNetCommunicator wormNetC;
         private bool _isClanFocused;
+        private bool _isConfigFlyoutOpened;
+        private bool _isNickFocused;
+        private bool _isServerFocused;
         private bool _isTusNickFocused;
         private bool _isTusPassFocused;
+        private bool _loading;
+        private AccentColorMenuData _selectedAccent;
+        private LanguageData _selectedLanguage;
 
-        public bool IsServerFocused
-        {
-            get { return _isServerFocused; }
-            private set
-            {
-                _isServerFocused = value;
-                RaisePropertyChanged("IsServerFocused");
-                _isServerFocused = false;
-                RaisePropertyChanged("IsServerFocused");
-            }
-        }
-        public bool IsNickFocused
-        {
-            get { return _isNickFocused; }
-            private set
-            {
-                _isNickFocused = value;
-                RaisePropertyChanged("IsNickFocused");
-                _isNickFocused = false;
-                RaisePropertyChanged("IsNickFocused");
-            }
-        }
-        public bool IsClanFocused
-        {
-            get { return _isClanFocused; }
-            private set
-            {
-                _isClanFocused = value;
-                RaisePropertyChanged("IsClanFocused");
-                _isClanFocused = false;
-                RaisePropertyChanged("IsClanFocused");
-            }
-        }
-        public bool IsTusNickFocused
-        {
-            get { return _isTusNickFocused; }
-            private set
-            {
-                _isTusNickFocused = value;
-                RaisePropertyChanged("IsTusNickFocused");
-                _isTusNickFocused = false;
-                RaisePropertyChanged("IsTusNickFocused");
-            }
-        }
-        public bool IsTusPassFocused
-        {
-            get { return _isTusPassFocused; }
-            private set
-            {
-                _isTusPassFocused = value;
-                RaisePropertyChanged("IsTusPassFocused");
-                _isTusPassFocused = false;
-                RaisePropertyChanged("IsTusPassFocused");
-            }
-        }
-        #endregion
-
-        #region Constructor + ContentRendered + Closing
         public LoginViewModel()
         {
             this.firstStart = _firstStart;
@@ -251,7 +81,9 @@ namespace GreatSnooper.ViewModel
                                 string countryCode = loc.RM.GetString("CountryCode", culture);
                                 string cultureName = loc.RM.GetString("CultureName", culture);
                                 if (Languages.Where(x => x.CultureName == cultureName).Any() == false)
+                                {
                                     Languages.Add(new LanguageData(languageEnName, languageName, countryCode, cultureName));
+                                }
                             }
                         }
                     }
@@ -283,12 +115,12 @@ namespace GreatSnooper.ViewModel
             // LoginType
             switch (Properties.Settings.Default.LoginType)
             {
-                case "simple":
-                    LoginType = 0;
-                    break;
-                default:
-                    LoginType = 1;
-                    break;
+            case "simple":
+                LoginType = 0;
+                break;
+            default:
+                LoginType = 1;
+                break;
             }
 
             AutoLogin = Properties.Settings.Default.AutoLogIn;
@@ -296,16 +128,22 @@ namespace GreatSnooper.ViewModel
 
             CountryList = Countries.CountryList;
             if (Properties.Settings.Default.UserCountry != -1)
+            {
                 SelectedCountry = Countries.GetCountryByID(Properties.Settings.Default.UserCountry);
+            }
             else
             {
                 CultureInfo ci = CultureInfo.InstalledUICulture;
 
                 Country country;
                 if (ci != null)
+                {
                     country = Countries.GetCountryByCC(ci.TwoLetterISOLanguageName.ToUpper());
+                }
                 else
+                {
                     country = Countries.DefaultCountry;
+                }
 
                 SelectedCountry = country;
             }
@@ -317,6 +155,367 @@ namespace GreatSnooper.ViewModel
             TusNick = Properties.Settings.Default.TusNick;
             TusPass = Properties.Settings.Default.TusPass;
             this.UseSnooperRank = Properties.Settings.Default.UseSnooperRank;
+        }
+
+        ~LoginViewModel()
+        {
+            Dispose(false);
+        }
+
+        public List<AccentColorMenuData> AccentColors
+        {
+            get;
+            private set;
+        }
+
+        public ICommand ActivationCommand
+        {
+            get
+            {
+                return new RelayCommand(ActivateWindow);
+            }
+        }
+
+        public bool? AutoLogin
+        {
+            get;
+            set;
+        }
+
+        public string Clan
+        {
+            get;
+            set;
+        }
+
+        public ICommand CloseCommand
+        {
+            get
+            {
+                return new RelayCommand(Close);
+            }
+        }
+
+        public MySortedList<Country> CountryList
+        {
+            get;
+            private set;
+        }
+
+        public IMetroDialogService DialogService
+        {
+            get;
+            set;
+        }
+
+        public bool IsClanFocused
+        {
+            get
+            {
+                return _isClanFocused;
+            }
+            private set
+            {
+                _isClanFocused = value;
+                RaisePropertyChanged("IsClanFocused");
+                _isClanFocused = false;
+                RaisePropertyChanged("IsClanFocused");
+            }
+        }
+
+        public bool IsConfigFlyoutOpened
+        {
+            get
+            {
+                return _isConfigFlyoutOpened;
+            }
+            set
+            {
+                _isConfigFlyoutOpened = value;
+
+                // The flyout was closed, save config
+                if (value == false)
+                {
+                    Properties.Settings.Default.IsCultureAccentSet = true;
+                    Properties.Settings.Default.Save();
+                }
+            }
+        }
+
+        public bool IsNickFocused
+        {
+            get
+            {
+                return _isNickFocused;
+            }
+            private set
+            {
+                _isNickFocused = value;
+                RaisePropertyChanged("IsNickFocused");
+                _isNickFocused = false;
+                RaisePropertyChanged("IsNickFocused");
+            }
+        }
+
+        public bool IsServerFocused
+        {
+            get
+            {
+                return _isServerFocused;
+            }
+            private set
+            {
+                _isServerFocused = value;
+                RaisePropertyChanged("IsServerFocused");
+                _isServerFocused = false;
+                RaisePropertyChanged("IsServerFocused");
+            }
+        }
+
+        public bool IsTusNickFocused
+        {
+            get
+            {
+                return _isTusNickFocused;
+            }
+            private set
+            {
+                _isTusNickFocused = value;
+                RaisePropertyChanged("IsTusNickFocused");
+                _isTusNickFocused = false;
+                RaisePropertyChanged("IsTusNickFocused");
+            }
+        }
+
+        public bool IsTusPassFocused
+        {
+            get
+            {
+                return _isTusPassFocused;
+            }
+            private set
+            {
+                _isTusPassFocused = value;
+                RaisePropertyChanged("IsTusPassFocused");
+                _isTusPassFocused = false;
+                RaisePropertyChanged("IsTusPassFocused");
+            }
+        }
+
+        public List<LanguageData> Languages
+        {
+            get;
+            private set;
+        }
+
+        public bool Loading
+        {
+            get
+            {
+                return _loading;
+            }
+            private set
+            {
+                if (_loading != value)
+                {
+                    _loading = value;
+                    RaisePropertyChanged("Loading");
+                }
+            }
+        }
+
+        public ICommand LoginCommand
+        {
+            get
+            {
+                return new RelayCommand(Login);
+            }
+        }
+
+        public int LoginType
+        {
+            get;
+            set;
+        }
+
+        public ICommand MessageLogsCommand
+        {
+            get
+            {
+                return new RelayCommand(MessageLogs);
+            }
+        }
+
+        public string Nick
+        {
+            get;
+            set;
+        }
+
+        public List<Rank> RankList
+        {
+            get;
+            private set;
+        }
+
+        public AccentColorMenuData SelectedAccent
+        {
+            get
+            {
+                return _selectedAccent;
+            }
+            set
+            {
+                if (_selectedAccent != value)
+                {
+                    bool init = _selectedAccent == null;
+                    _selectedAccent = value;
+
+                    try
+                    {
+                        var theme = ThemeManager.DetectAppStyle(Application.Current);
+                        var accent = ThemeManager.GetAccent(value.Name);
+                        ThemeManager.ChangeAppStyle(Application.Current, accent, theme.Item1);
+
+                        if (!init)
+                        {
+                            Properties.Settings.Default.AccentName = accent.Name;
+                            Properties.Settings.Default.Save();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorLog.Log(ex);
+                    }
+                }
+            }
+        }
+
+        public Country SelectedCountry
+        {
+            get;
+            set;
+        }
+
+        public LanguageData SelectedLanguage
+        {
+            get
+            {
+                return _selectedLanguage;
+            }
+            set
+            {
+                if (_selectedLanguage != value)
+                {
+                    bool init = _selectedLanguage == null;
+                    _selectedLanguage = value;
+
+                    try
+                    {
+                        Thread.CurrentThread.CurrentCulture = new CultureInfo(value.CultureName);
+                        Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
+
+                        if (!init)
+                        {
+                            Localizations.GSLocalization.Instance.CultureChanged();
+
+                            Properties.Settings.Default.CultureName = _selectedLanguage.CultureName;
+                            Properties.Settings.Default.Save();
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        ErrorLog.Log(ex);
+                    }
+                }
+            }
+        }
+
+        public int SelectedRank
+        {
+            get;
+            set;
+        }
+
+        public string SelectedServer
+        {
+            get;
+            set;
+        }
+
+        public SortedObservableCollection<string> ServerList
+        {
+            get;
+            private set;
+        }
+
+        public ICommand ServerListCommand
+        {
+            get
+            {
+                return new RelayCommand(OpenServerList);
+            }
+        }
+
+        public ICommand SettingsCommand
+        {
+            get
+            {
+                return new RelayCommand(OpenSettings);
+            }
+        }
+
+        public ITaskbarIconService TaskbarIconService
+        {
+            get;
+            set;
+        }
+
+        public string TusNick
+        {
+            get;
+            set;
+        }
+
+        public string TusPass
+        {
+            get;
+            set;
+        }
+
+        public bool? UseSnooperRank
+        {
+            get;
+            set;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        internal void ClosingRequest(object sender, CancelEventArgs e)
+        {
+            closing = true;
+
+            if (tusLoginTask != null && !tusLoginTask.IsCompleted)
+            {
+                e.Cancel = true;
+            }
+
+            if (!loggedIn && wormNetC != null && wormNetC.State != AbstractCommunicator.ConnectionStates.Disconnected)
+            {
+                wormNetC.CancelAsync();
+                e.Cancel = true;
+            }
+
+            if (e.Cancel)
+            {
+                return;
+            }
+
+            this.Dispose();
         }
 
         internal void ContentRendered(object sender, EventArgs e)
@@ -336,7 +535,7 @@ namespace GreatSnooper.ViewModel
                         OpenFileDialog dlg = new OpenFileDialog();
                         dlg.Filter = "Worms Armageddon Exe (*.exe)|*.exe";
 
-                        // Display OpenFileDialog by calling ShowDialog method 
+                        // Display OpenFileDialog by calling ShowDialog method
                         Nullable<bool> result = dlg.ShowDialog();
 
                         // Get the selected file name
@@ -351,121 +550,99 @@ namespace GreatSnooper.ViewModel
             }
 
             if (Properties.Settings.Default.TrayNotifications)
+            {
                 TaskbarIconService.ShowMessage(Localizations.GSLocalization.Instance.WelcomeMessage);
+            }
 
             // Auto login
             if (Properties.Settings.Default.AutoLogIn && firstStart)
+            {
                 this.LoginCommand.Execute(null);
+            }
         }
 
-        internal void ClosingRequest(object sender, CancelEventArgs e)
+        protected virtual void Dispose(bool disposing)
         {
-            closing = true;
-
-            if (tusLoginTask != null && !tusLoginTask.IsCompleted)
-                e.Cancel = true;
-
-            if (!loggedIn && wormNetC != null && wormNetC.State != AbstractCommunicator.ConnectionStates.Disconnected)
+            if (disposed)
             {
-                wormNetC.CancelAsync();
-                e.Cancel = true;
-            }
-
-            if (e.Cancel)
                 return;
-
-            this.Dispose();
-        }
-        #endregion
-
-        #region MessageLogsCommand
-        public ICommand MessageLogsCommand
-        {
-            get { return new RelayCommand(MessageLogs); }
-        }
-
-        private void MessageLogs()
-        {
-            string logpath = GlobalManager.SettingsPath + @"\Logs";
-            if (!Directory.Exists(logpath))
-                Directory.CreateDirectory(logpath);
-
-            try
-            {
-                Process.Start(logpath);
             }
-            catch (Exception ex)
+
+            disposed = true;
+
+            if (disposing)
             {
-                ErrorLog.Log(ex);
+                if (tusLoginTask != null)
+                {
+                    tusLoginTask.Dispose();
+                    tusLoginTask = null;
+                }
+
+                if (wormNetC != null)
+                {
+                    wormNetC.ConnectionState -= ConnectionState;
+                    if (!loggedIn)
+                    {
+                        if (TaskbarIconService != null)
+                        {
+                            TaskbarIconService.Dispose();
+                            TaskbarIconService = null;
+                        }
+                        wormNetC.Dispose();
+                        wormNetC = null;
+                    }
+                }
             }
-        }
-        #endregion
-
-        #region SettingsCommand
-        public ICommand SettingsCommand
-        {
-            get { return new RelayCommand(OpenSettings); }
-        }
-
-        private void OpenSettings()
-        {
-            var window = new SettingsWindow();
-            window.Owner = DialogService.GetView();
-            window.ShowDialog();
-        }
-        #endregion
-
-        #region CloseCommand
-        public ICommand CloseCommand
-        {
-            get { return new RelayCommand(Close); }
-        }
-
-        private void Close()
-        {
-            DialogService.CloseRequest();
-        }
-        #endregion
-
-        #region ActivationCommand
-        public ICommand ActivationCommand
-        {
-            get { return new RelayCommand(ActivateWindow); }
         }
 
         private void ActivateWindow()
         {
             DialogService.ActivationRequest();
         }
-        #endregion
 
-        #region ServerListCommand
-        public ICommand ServerListCommand
+        private void Close()
         {
-            get { return new RelayCommand(OpenServerList); }
+            DialogService.CloseRequest();
         }
 
-        private void OpenServerList()
+        private void ConnectionState(object sender, AbstractCommunicator.ConnectionStates oldState)
         {
-            ListEditor window = new ListEditor(this.ServerList, Localizations.GSLocalization.Instance.ServerListEditorTitle, (str) =>
+            this.dispatcher.Invoke(new Action(delegate()
             {
-                this.ServerList.Add(str);
-                SettingsHelper.Save("ServerAddresses", ServerList);
-            }, (str) =>
-            {
-                this.ServerList.Remove(str);
-                SettingsHelper.Save("ServerAddresses", ServerList);
-            });
-            window.Owner = DialogService.GetView();
-            window.ShowDialog();
-        }
+                Debug.WriteLine("ConnectionState: " + wormNetC.State.ToString());
 
-        #endregion
+                switch (wormNetC.State)
+                {
+                case AbstractCommunicator.ConnectionStates.Connected:
+                    if (!closing)
+                    {
+                        new MainWindow(wormNetC, TaskbarIconService).Show();
+                        loggedIn = true;
+                        this.CloseCommand.Execute(null);
+                        return;
+                    }
+                    break;
 
-        #region LoginCommand
-        public ICommand LoginCommand
-        {
-            get { return new RelayCommand(Login); }
+                case AbstractCommunicator.ConnectionStates.Disconnected:
+                    if (!closing)
+                    {
+                        if (wormNetC.ErrorState == AbstractCommunicator.ErrorStates.UsernameInUse)
+                        {
+                            this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.NicknameInUseText);
+                        }
+                        else
+                        {
+                            this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.WNCommFailText);
+                        }
+                    }
+
+                    wormNetC.ConnectionState -= ConnectionState;
+                    wormNetC.Dispose();
+                    wormNetC = null;
+                    this.Loading = false;
+                    break;
+                }
+            }));
         }
 
         private void Login()
@@ -554,9 +731,13 @@ namespace GreatSnooper.ViewModel
             {
                 string portstr = server.Substring(colon + 1);
                 if (!int.TryParse(portstr, out port))
+                {
                     port = 6667;
+                }
                 else
+                {
                     server = server.Substring(0, colon);
+                }
             }
 
             Properties.Settings.Default.ServerAddress = SelectedServer;
@@ -570,7 +751,7 @@ namespace GreatSnooper.ViewModel
                     Properties.Settings.Default.UserName.IndexOf("guuuria", StringComparison.OrdinalIgnoreCase) == -1)
                 {
                     Properties.Settings.Default.BatLogo = Nick.IndexOf("guuria", StringComparison.OrdinalIgnoreCase) != -1
-                        || Nick.IndexOf("guuuria", StringComparison.OrdinalIgnoreCase) != -1;
+                                                          || Nick.IndexOf("guuuria", StringComparison.OrdinalIgnoreCase) != -1;
                 }
                 Properties.Settings.Default.LoginType = "simple";
                 Properties.Settings.Default.UserName = Nick;
@@ -578,7 +759,9 @@ namespace GreatSnooper.ViewModel
                 Properties.Settings.Default.UserCountry = SelectedCountry.ID;
                 Properties.Settings.Default.UserRank = SelectedRank;
                 if (Properties.Settings.Default.ChangeWormsNick)
+                {
                     Properties.Settings.Default.WormsNick = Nick;
+                }
                 Properties.Settings.Default.Save();
 
                 GlobalManager.User = new User(Nick, Clan);
@@ -601,9 +784,13 @@ namespace GreatSnooper.ViewModel
                 Properties.Settings.Default.Save();
 
                 if (GlobalManager.TusAccounts == null)
+                {
                     GlobalManager.TusAccounts = new Dictionary<string, TusAccount>(GlobalManager.CIStringComparer);
+                }
                 else
+                {
                     GlobalManager.TusAccounts.Clear();
+                }
 
                 tusLoginTask = Task.Factory.StartNew<TusResult>(TusLogin);
                 tusLoginTask.ContinueWith((t) =>
@@ -618,46 +805,88 @@ namespace GreatSnooper.ViewModel
 
                     switch (t.Result.TusState)
                     {
-                        case TusResult.TusStates.OK:
-                            TusAccounts.SetTusAccounts(t.Result.Rows, null);
-                            var tusAccount = GlobalManager.TusAccounts[t.Result.Nickname];
-                            if (this.UseSnooperRank.HasValue && this.UseSnooperRank.Value)
-                                tusAccount.Rank = Ranks.Snooper;
+                    case TusResult.TusStates.OK:
+                        TusAccounts.SetTusAccounts(t.Result.Rows, null);
+                        var tusAccount = GlobalManager.TusAccounts[t.Result.Nickname];
+                        if (this.UseSnooperRank.HasValue && this.UseSnooperRank.Value)
+                        {
+                            tusAccount.Rank = Ranks.Snooper;
+                        }
 
-                            var clanRegexTUS = new Regex(@"[^a-z0-9]", RegexOptions.IgnoreCase);
-                            var clan = clanRegexTUS.Replace(tusAccount.Clan, ""); // Remove bad characters
+                        var clanRegexTUS = new Regex(@"[^a-z0-9]", RegexOptions.IgnoreCase);
+                        var clan = clanRegexTUS.Replace(tusAccount.Clan, ""); // Remove bad characters
 
-                            GlobalManager.User = new User(t.Result.Nickname, clan);
-                            GlobalManager.User.TusAccount = tusAccount;
+                        GlobalManager.User = new User(t.Result.Nickname, clan);
+                        GlobalManager.User.TusAccount = tusAccount;
 
-                            if (Properties.Settings.Default.ChangeWormsNick)
-                            {
-                                Properties.Settings.Default.WormsNick = t.Result.Nickname;
-                                Properties.Settings.Default.Save();
-                            }
+                        if (Properties.Settings.Default.ChangeWormsNick)
+                        {
+                            Properties.Settings.Default.WormsNick = t.Result.Nickname;
+                            Properties.Settings.Default.Save();
+                        }
 
-                            // Initialize the WormNet Communicator
-                            wormNetC = new WormNetCommunicator(server, port);
-                            wormNetC.ConnectionState += ConnectionState;
-                            wormNetC.Connect();
-                            return;
+                        // Initialize the WormNet Communicator
+                        wormNetC = new WormNetCommunicator(server, port);
+                        wormNetC.ConnectionState += ConnectionState;
+                        wormNetC.Connect();
+                        return;
 
-                        case TusResult.TusStates.TUSError:
-                            this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.TusLoginFailText);
-                            break;
+                    case TusResult.TusStates.TUSError:
+                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.TusLoginFailText);
+                        break;
 
-                        case TusResult.TusStates.UserError:
-                            this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.TusAuthFailText);
-                            break;
+                    case TusResult.TusStates.UserError:
+                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.TusAuthFailText);
+                        break;
 
-                        case TusResult.TusStates.ConnectionError:
-                            this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.TusCommFailText);
-                            break;
+                    case TusResult.TusStates.ConnectionError:
+                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.TusCommFailText);
+                        break;
                     }
 
                     this.Loading = false;
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
+        }
+
+        private void MessageLogs()
+        {
+            string logpath = GlobalManager.SettingsPath + @"\Logs";
+            if (!Directory.Exists(logpath))
+            {
+                Directory.CreateDirectory(logpath);
+            }
+
+            try
+            {
+                Process.Start(logpath);
+            }
+            catch (Exception ex)
+            {
+                ErrorLog.Log(ex);
+            }
+        }
+
+        private void OpenServerList()
+        {
+            ListEditor window = new ListEditor(this.ServerList, Localizations.GSLocalization.Instance.ServerListEditorTitle, (str) =>
+            {
+                this.ServerList.Add(str);
+                SettingsHelper.Save("ServerAddresses", ServerList);
+            }, (str) =>
+            {
+                this.ServerList.Remove(str);
+                SettingsHelper.Save("ServerAddresses", ServerList);
+            });
+            window.Owner = DialogService.GetView();
+            window.ShowDialog();
+        }
+
+        private void OpenSettings()
+        {
+            var window = new SettingsWindow();
+            window.Owner = DialogService.GetView();
+            window.ShowDialog();
         }
 
         private TusResult TusLogin()
@@ -670,7 +899,9 @@ namespace GreatSnooper.ViewModel
                     if (testlogin[0] == '1') // 1 sToOMiToO
                     {
                         if (this.closing)
+                        {
                             return null;
+                        }
 
                         string nickName = testlogin.Substring(2);
 
@@ -680,31 +911,38 @@ namespace GreatSnooper.ViewModel
                         nickName = nickRegexTUS.Replace(nickName, ""); // Remove bad characters
                         nickName = nickRegex2TUS.Replace(nickName, ""); // Remove bad characters
 
-
                         for (int j = 0; j < 10; j++)
                         {
                             string userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?update=" + HttpUtility.UrlEncode(TusNick) + "&league=classic");
 
                             if (this.closing)
+                            {
                                 return null;
+                            }
 
                             string[] rows = userlist.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
                             foreach (var row in rows)
                             {
                                 if (row.StartsWith(nickName, StringComparison.OrdinalIgnoreCase))
+                                {
                                     return new TusResult(TusResult.TusStates.OK, nickName, rows);
+                                }
                             }
 
                             Thread.Sleep(2500);
 
                             if (this.closing)
+                            {
                                 return null;
+                            }
                         }
 
                         return new TusResult(TusResult.TusStates.TUSError);
                     }
                     else
+                    {
                         return new TusResult(TusResult.TusStates.UserError);
+                    }
                 }
             }
             catch (Exception ex)
@@ -713,90 +951,5 @@ namespace GreatSnooper.ViewModel
                 return new TusResult(TusResult.TusStates.ConnectionError);
             }
         }
-
-        private void ConnectionState(object sender, AbstractCommunicator.ConnectionStates oldState)
-        {
-            this.dispatcher.Invoke(new Action(delegate()
-            {
-                Debug.WriteLine("ConnectionState: " + wormNetC.State.ToString());
-
-                switch (wormNetC.State)
-                {
-                    case AbstractCommunicator.ConnectionStates.Connected:
-                        if (!closing)
-                        {
-                            new MainWindow(wormNetC, TaskbarIconService).Show();
-                            loggedIn = true;
-                            this.CloseCommand.Execute(null);
-                            return;
-                        }
-                        break;
-
-                    case AbstractCommunicator.ConnectionStates.Disconnected:
-                        if (!closing)
-                        {
-                            if (wormNetC.ErrorState == AbstractCommunicator.ErrorStates.UsernameInUse)
-                                this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.NicknameInUseText);
-                            else
-                                this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.WNCommFailText);
-                        }
-
-                        wormNetC.ConnectionState -= ConnectionState;
-                        wormNetC.Dispose();
-                        wormNetC = null;
-                        this.Loading = false;
-                        break;
-                }
-            }
-            ));
-        }
-        #endregion
-
-        #region IDisposable
-        bool disposed = false;
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
-        protected virtual void Dispose(bool disposing)
-        {
-            if (disposed)
-                return;
-
-            disposed = true;
-
-            if (disposing)
-            {
-                if (tusLoginTask != null)
-                {
-                    tusLoginTask.Dispose();
-                    tusLoginTask = null;
-                }
-
-                if (wormNetC != null)
-                {
-                    wormNetC.ConnectionState -= ConnectionState;
-                    if (!loggedIn)
-                    {
-                        if (TaskbarIconService != null)
-                        {
-                            TaskbarIconService.Dispose();
-                            TaskbarIconService = null;
-                        }
-                        wormNetC.Dispose();
-                        wormNetC = null;
-                    }
-                }
-            }
-        }
-
-        ~LoginViewModel()
-        {
-            Dispose(false);
-        }
-        #endregion
     }
 }

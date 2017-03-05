@@ -1,15 +1,47 @@
-﻿using GreatSnooper.Model;
-using System.Collections.Generic;
-
-namespace GreatSnooper.Helpers
+﻿namespace GreatSnooper.Helpers
 {
+    using System.Collections.Generic;
+    using GreatSnooper.Model;
+
     public static class UserGroups
     {
         public const int BuddiesGroupID = 0;
         public const int SystemGroupID = int.MaxValue;
 
-        public static readonly Dictionary<string, UserGroup> Users = new Dictionary<string, UserGroup>(GlobalManager.CIStringComparer);
         public static readonly Dictionary<string, UserGroup> Groups = new Dictionary<string, UserGroup>(GlobalManager.CIStringComparer);
+        public static readonly Dictionary<string, UserGroup> Users = new Dictionary<string, UserGroup>(GlobalManager.CIStringComparer);
+
+        public static void AddOrRemoveUser(User user, UserGroup newGroup)
+        {
+            UserGroup oldGroup;
+            if (Users.TryGetValue(user.Name, out oldGroup))
+            {
+                oldGroup.Users.Remove(user.Name);
+                oldGroup.SaveUsers();
+
+                if (newGroup == null)
+                {
+                    Users.Remove(user.Name);
+                    user.Group = null;
+                }
+                else
+                {
+                    Users[user.Name] = newGroup;
+                    newGroup.Users.Add(user.Name);
+                    newGroup.SaveUsers();
+                    user.Group = newGroup;
+                }
+            }
+            else if (newGroup != null)
+            {
+                Users.Add(user.Name, newGroup);
+                newGroup.Users.Add(user.Name);
+                newGroup.SaveUsers();
+                user.Group = newGroup;
+            }
+
+            UserHelper.UpdateMessageStyle(user);
+        }
 
         public static void Initialize()
         {
@@ -21,39 +53,10 @@ namespace GreatSnooper.Helpers
                 foreach (var user in ug.Users)
                 {
                     if (!Users.ContainsKey(user))
+                    {
                         Users.Add(user, ug);
+                    }
                 }
-            }
-        }
-
-
-        public static void AddOrRemoveUser(User u, UserGroup newGroup)
-        {
-            UserGroup oldGroup;
-            if (Users.TryGetValue(u.Name, out oldGroup))
-            {
-                oldGroup.Users.Remove(u.Name);
-                oldGroup.SaveUsers();
-
-                if (newGroup == null)
-                {
-                    Users.Remove(u.Name);
-                    u.Group = null;
-                }
-                else
-                {
-                    Users[u.Name] = newGroup;
-                    newGroup.Users.Add(u.Name);
-                    newGroup.SaveUsers();
-                    u.Group = newGroup;
-                }
-            }
-            else if (newGroup != null)
-            {
-                Users.Add(u.Name, newGroup);
-                newGroup.Users.Add(u.Name);
-                newGroup.SaveUsers();
-                u.Group = newGroup;
             }
         }
     }

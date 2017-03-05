@@ -1,25 +1,33 @@
-﻿using GreatSnooper.ViewModel;
-using Hardcodet.Wpf.TaskbarNotification;
-using System;
-using System.Threading;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Controls.Primitives;
-using System.Windows.Input;
-using System.Windows.Threading;
-
-namespace GreatSnooper.UserControls
+﻿namespace GreatSnooper.UserControls
 {
+    using System;
+    using System.Threading;
+    using System.Windows;
+    using System.Windows.Controls;
+    using System.Windows.Controls.Primitives;
+    using System.Windows.Input;
+    using System.Windows.Threading;
+
+    using GreatSnooper.ViewModel;
+
+    using Hardcodet.Wpf.TaskbarNotification;
+
     /// <summary>
     /// Interaction logic for GSBalloon.xaml
     /// </summary>
     public partial class GSBalloon : UserControl, IDisposable
     {
-        private bool isClosing = false;
-        private Dispatcher dispatcher;
-        private Timer timer;
         private AbstractChannelViewModel chvm;
-        public string BalloonText { get; set; }
+        private Dispatcher dispatcher;
+        bool disposed = false;
+        private bool isClosing = false;
+        private Timer timer;
+
+        // Not used!
+        public GSBalloon()
+        {
+            InitializeComponent();
+        }
 
         public GSBalloon(AbstractChannelViewModel chvm = null)
         {
@@ -30,29 +38,49 @@ namespace GreatSnooper.UserControls
             TaskbarIcon.AddBalloonClosingHandler(this, OnBalloonClosing);
         }
 
-
-        /// <summary>
-        /// By subscribing to the <see cref="TaskbarIcon.BalloonClosingEvent"/>
-        /// and setting the "Handled" property to true, we suppress the popup
-        /// from being closed in order to display the custom fade-out animation.
-        /// </summary>
-        private void OnBalloonClosing(object sender, RoutedEventArgs e)
+        ~GSBalloon()
         {
-            e.Handled = true; //suppresses the popup from being closed immediately
-            isClosing = true;
-            this.Dispose();
+            Dispose(false);
         }
 
-
-        /// <summary>
-        /// Resolves the <see cref="TaskbarIcon"/> that displayed
-        /// the balloon and requests a close action.
-        /// </summary>
-        private void imgClose_MouseDown(object sender, MouseButtonEventArgs e)
+        public string BalloonText
         {
-            //the tray icon assigned this attached property to simplify access
-            TaskbarIcon taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
-            taskbarIcon.CloseBalloon();
+            get;
+            set;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposed)
+            {
+                return;
+            }
+
+            disposed = true;
+
+            if (disposing)
+            {
+                if (timer != null)
+                {
+                    timer.Dispose();
+                    timer = null;
+                }
+            }
+        }
+
+        private void grid_MouseDown(object sender, MouseButtonEventArgs e)
+        {
+            if (this.chvm != null && e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
+            {
+                chvm.MainViewModel.SelectChannel(chvm);
+                chvm.MainViewModel.ActivationCommand.Execute(null);
+            }
         }
 
         /// <summary>
@@ -62,7 +90,10 @@ namespace GreatSnooper.UserControls
         {
             //if we're already running the fade-out animation, do not interrupt anymore
             //(makes things too complicated for the sample)
-            if (isClosing) return;
+            if (isClosing)
+            {
+                return;
+            }
 
             //the tray icon assigned this attached property to simplify access
             TaskbarIcon taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
@@ -75,21 +106,12 @@ namespace GreatSnooper.UserControls
             }
         }
 
-
-        /// <summary>
-        /// Closes the popup once the fade-out animation completed.
-        /// The animation was triggered in XAML through the attached
-        /// BalloonClosing event.
-        /// </summary>
-        private void OnFadeOutCompleted(object sender, EventArgs e)
-        {
-            Popup pp = (Popup) Parent;
-            pp.IsOpen = false;
-        }
-
         private void grid_MouseLeave(object sender, MouseEventArgs e)
         {
-            if (isClosing) return;
+            if (isClosing)
+            {
+                return;
+            }
 
             this.timer = new Timer((t) =>
             {
@@ -105,46 +127,38 @@ namespace GreatSnooper.UserControls
             }, null, 2000, Timeout.Infinite);
         }
 
-        #region IDisposable
-        bool disposed = false;
-
-        public void Dispose()
+        /// <summary>
+        /// Resolves the <see cref="TaskbarIcon"/> that displayed
+        /// the balloon and requests a close action.
+        /// </summary>
+        private void imgClose_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            Dispose(true);
-            GC.SuppressFinalize(this);
+            //the tray icon assigned this attached property to simplify access
+            TaskbarIcon taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
+            taskbarIcon.CloseBalloon();
         }
 
-        protected virtual void Dispose(bool disposing)
+        /// <summary>
+        /// By subscribing to the <see cref="TaskbarIcon.BalloonClosingEvent"/>
+        /// and setting the "Handled" property to true, we suppress the popup
+        /// from being closed in order to display the custom fade-out animation.
+        /// </summary>
+        private void OnBalloonClosing(object sender, RoutedEventArgs e)
         {
-            if (disposed)
-                return;
-
-            disposed = true;
-
-            if (disposing)
-            {
-                if (timer != null)
-                {
-                    timer.Dispose();
-                    timer = null;
-                }
-            }
+            e.Handled = true; //suppresses the popup from being closed immediately
+            isClosing = true;
+            this.Dispose();
         }
 
-        ~GSBalloon()
+        /// <summary>
+        /// Closes the popup once the fade-out animation completed.
+        /// The animation was triggered in XAML through the attached
+        /// BalloonClosing event.
+        /// </summary>
+        private void OnFadeOutCompleted(object sender, EventArgs e)
         {
-            Dispose(false);
-        }
-
-        #endregion
-
-        private void grid_MouseDown(object sender, MouseButtonEventArgs e)
-        {
-            if (this.chvm != null && e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
-            {
-                chvm.MainViewModel.SelectChannel(chvm);
-                chvm.MainViewModel.ActivationCommand.Execute(null);
-            }
+            Popup pp = (Popup)Parent;
+            pp.IsOpen = false;
         }
     }
 }

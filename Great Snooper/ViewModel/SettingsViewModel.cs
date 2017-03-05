@@ -1,42 +1,30 @@
-﻿using GalaSoft.MvvmLight;
-using GreatSnooper.Classes;
-using GreatSnooper.Helpers;
-using GreatSnooper.Services;
-using GreatSnooper.Settings;
-using GreatSnooper.Validators;
-using MahApps.Metro;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Globalization;
-using System.Linq;
-using System.Resources;
-using System.Text.RegularExpressions;
-using System.Threading;
-using System.Windows;
-using System.Windows.Media;
-
-namespace GreatSnooper.ViewModel
+﻿namespace GreatSnooper.ViewModel
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
+    using System.Globalization;
+    using System.Linq;
+    using System.Resources;
+    using System.Text.RegularExpressions;
+    using System.Threading;
+    using System.Windows;
+    using System.Windows.Media;
+
+    using GalaSoft.MvvmLight;
+
+    using GreatSnooper.Classes;
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Services;
+    using GreatSnooper.Settings;
+    using GreatSnooper.Validators;
+
+    using MahApps.Metro;
+
     public class SettingsViewModel : ViewModelBase, IDisposable
     {
-        #region Members
+        bool disposed = false;
         private Regex groupNameRegex = new Regex("^Group[0-9]$");
-        #endregion
-
-        #region Properties
-        public string Version { get; private set; }
-        public IMetroDialogService DialogService { get; set; }
-        public List<AbstractSetting> GeneralSettings { get; private set; }
-        public List<AbstractSetting> NetworkSettings { get; private set; }
-        public List<AbstractSetting> WindowSettings { get; private set; }
-        public List<AbstractSetting> UserGroupSettings { get; private set; }
-        public List<AbstractSetting> NotificationSettings { get; private set; }
-        public List<AbstractSetting> WormsSettings { get; private set; }
-        public List<AbstractSetting> MsgSettings { get; private set; }
-        public List<AbstractSetting> SoundSettings { get; private set; }
-        public ObservableCollection<AbstractSetting> GroupSoundSettings { get; private set; }
-        #endregion
 
         public SettingsViewModel()
         {
@@ -44,10 +32,81 @@ namespace GreatSnooper.ViewModel
             Properties.Settings.Default.PropertyChanged += Default_PropertyChanged;
         }
 
-        void Default_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        ~SettingsViewModel()
         {
-            if (groupNameRegex.IsMatch(e.PropertyName))
-                this.LoadGroupSounds();
+            Dispose(false);
+        }
+
+        public IMetroDialogService DialogService
+        {
+            get;
+            set;
+        }
+
+        public List<AbstractSetting> GeneralSettings
+        {
+            get;
+            private set;
+        }
+
+        public ObservableCollection<AbstractSetting> GroupSoundSettings
+        {
+            get;
+            private set;
+        }
+
+        public List<AbstractSetting> MsgSettings
+        {
+            get;
+            private set;
+        }
+
+        public List<AbstractSetting> NetworkSettings
+        {
+            get;
+            private set;
+        }
+
+        public List<AbstractSetting> NotificationSettings
+        {
+            get;
+            private set;
+        }
+
+        public List<AbstractSetting> SoundSettings
+        {
+            get;
+            private set;
+        }
+
+        public List<AbstractSetting> UserGroupSettings
+        {
+            get;
+            private set;
+        }
+
+        public string Version
+        {
+            get;
+            private set;
+        }
+
+        public List<AbstractSetting> WindowSettings
+        {
+            get;
+            private set;
+        }
+
+        public List<AbstractSetting> WormsSettings
+        {
+            get;
+            private set;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
         }
 
         public void LoadSettings()
@@ -70,7 +129,9 @@ namespace GreatSnooper.ViewModel
                             string countryCode = loc.RM.GetString("CountryCode", culture);
                             string cultureName = loc.RM.GetString("CultureName", culture);
                             if (languages.Where(x => x.CultureName == cultureName).Any() == false)
+                            {
                                 languages.Add(new LanguageData(languageEnName, languageName, countryCode, cultureName));
+                            }
                         }
                     }
                 }
@@ -81,17 +142,17 @@ namespace GreatSnooper.ViewModel
 
             // Load accents
             var accentColors = ThemeManager.Accents
-                                .Select(a => new AccentColorMenuData(a.Name, a.Resources["AccentColorBrush"] as Brush))
-                                .ToList();
+                               .Select(a => new AccentColorMenuData(a.Name, a.Resources["AccentColorBrush"] as Brush))
+                               .ToList();
 
             var selectedAccent = accentColors.Where(x => x.Name == Properties.Settings.Default.AccentName).FirstOrDefault();
 
-
             this.GeneralSettings = new List<AbstractSetting>();
-            this.GeneralSettings.Add(new ComboboxSetting(Localizations.GSLocalization.Instance.LanguageText, languages, selectedLanguage, (DataTemplate)this.DialogService.GetView().TryFindResource("LanguageSelectorTemplate"), new Action<object>((x) => {
+            this.GeneralSettings.Add(new ComboboxSetting(Localizations.GSLocalization.Instance.LanguageText, languages, selectedLanguage, (DataTemplate)this.DialogService.GetView().TryFindResource("LanguageSelectorTemplate"), new Action<object>((x) =>
+            {
                 if (x == null)
                     return;
-                
+
                 try
                 {
                     var language = (LanguageData)x;
@@ -164,7 +225,9 @@ namespace GreatSnooper.ViewModel
 
             this.UserGroupSettings = new List<AbstractSetting>();
             foreach (var item in UserGroups.Groups)
+            {
                 this.UserGroupSettings.Add(new UserGroupSetting(item.Value, Validator.NotEmptyValidator, this.DialogService));
+            }
 
             this.NotificationSettings = new List<AbstractSetting>();
             this.NotificationSettings.Add(new BoolSetting("TrayNotifications", Localizations.GSLocalization.Instance.TrayNotificationsText));
@@ -175,6 +238,8 @@ namespace GreatSnooper.ViewModel
             this.WormsSettings = new List<AbstractSetting>();
             this.WormsSettings.Add(new BoolSetting("ShowWormsChannel", Localizations.GSLocalization.Instance.ShowWormsText));
             this.WormsSettings.Add(new StringSetting("WormsNick", Localizations.GSLocalization.Instance.WormsNickLabel, Validator.NickNameValidator, this.DialogService));
+            this.WormsSettings.Add(new BoolSetting("GameSurgeAuth", Localizations.GSLocalization.Instance.GameSurgeAuthLabel));
+            this.WormsSettings.Add(new StringSetting("WormsPassword", Localizations.GSLocalization.Instance.GameSurgePasswordLabel, null, this.DialogService));
             this.WormsSettings.Add(new BoolSetting("ChangeWormsNick", Localizations.GSLocalization.Instance.ChangeWormsNickText));
 
             this.MsgSettings = new List<AbstractSetting>();
@@ -204,37 +269,36 @@ namespace GreatSnooper.ViewModel
             this.DialogService.GetView().UpdateLayout();
         }
 
-        private void LoadGroupSounds()
-        {
-            this.GroupSoundSettings.Clear();
-            foreach (var item in UserGroups.Groups)
-                this.GroupSoundSettings.Add(new SoundSetting(item.Value.SettingName + "Sound", string.Format(Localizations.GSLocalization.Instance.GroupSoundSettingText, item.Value.Name)));
-        }
-
-        #region IDisposable
-        bool disposed = false;
-
-        public void Dispose()
-        {
-            Dispose(true);
-            GC.SuppressFinalize(this);
-        }
-
         protected virtual void Dispose(bool disposing)
         {
             if (disposed)
+            {
                 return;
+            }
 
             disposed = true;
 
             if (disposing)
+            {
                 Properties.Settings.Default.PropertyChanged -= Default_PropertyChanged;
+            }
         }
 
-        ~SettingsViewModel()
+        void Default_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            Dispose(false);
+            if (groupNameRegex.IsMatch(e.PropertyName))
+            {
+                this.LoadGroupSounds();
+            }
         }
-        #endregion
+
+        private void LoadGroupSounds()
+        {
+            this.GroupSoundSettings.Clear();
+            foreach (var item in UserGroups.Groups)
+            {
+                this.GroupSoundSettings.Add(new SoundSetting(item.Value.SettingName + "Sound", string.Format(Localizations.GSLocalization.Instance.GroupSoundSettingText, item.Value.Name)));
+            }
+        }
     }
 }

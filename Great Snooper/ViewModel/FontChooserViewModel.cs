@@ -1,36 +1,52 @@
-﻿using GalaSoft.MvvmLight;
-using GalaSoft.MvvmLight.Command;
-using GreatSnooper.Helpers;
-using GreatSnooper.Model;
-using GreatSnooper.Services;
-using GreatSnooper.Settings;
-using MahApps.Metro.Controls.Dialogs;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Windows.Input;
-using System.Windows.Media;
-
-namespace GreatSnooper.ViewModel
+﻿namespace GreatSnooper.ViewModel
 {
+    using System.Collections.Generic;
+    using System.ComponentModel;
+    using System.Windows.Input;
+    using System.Windows.Media;
+
+    using GalaSoft.MvvmLight;
+    using GalaSoft.MvvmLight.Command;
+
+    using GreatSnooper.Helpers;
+    using GreatSnooper.Model;
+    using GreatSnooper.Services;
+    using GreatSnooper.Settings;
+
+    using MahApps.Metro.Controls.Dialogs;
+
     class FontChooserViewModel : ViewModelBase
     {
-        #region Members
         public bool settingsChanged;
-        #endregion
 
-        #region Properties
-        public StyleSetting Style { get; private set; }
-        public SortedDictionary<string, FontFamily> FontFamilies {
+        public FontChooserViewModel(StyleSetting style)
+        {
+            this.Style = style;
+            this.FontSizes = new List<double>();
+            for (double i = 1; i <= 20; i++)
+            {
+                this.FontSizes.Add(i);
+            }
+            this.MessageSetting = new MessageSetting(style.Style);
+            this.MessageSetting.PropertyChanged += MessageSetting_PropertyChanged;
+        }
+
+        public ICommand CloseCommand
+        {
             get
             {
-                var fontFamilies = new SortedDictionary<string, FontFamily>();
-                IEnumerator<FontFamily> iterator = Fonts.SystemFontFamilies.GetEnumerator();
-                while (iterator.MoveNext())
-                    fontFamilies.Add(iterator.Current.ToString(), iterator.Current);
-                return fontFamilies;
+                return new RelayCommand(Close);
             }
         }
-        public SortedDictionary<string, FontFamily> FallBackList {
+
+        public IMetroDialogService DialogService
+        {
+            get;
+            set;
+        }
+
+        public SortedDictionary<string, FontFamily> FallBackList
+        {
             get
             {
                 var fallBackList = new SortedDictionary<string, FontFamily>();
@@ -38,24 +54,57 @@ namespace GreatSnooper.ViewModel
                 return fallBackList;
             }
         }
+
+        public SortedDictionary<string, FontFamily> FontFamilies
+        {
+            get
+            {
+                var fontFamilies = new SortedDictionary<string, FontFamily>();
+                IEnumerator<FontFamily> iterator = Fonts.SystemFontFamilies.GetEnumerator();
+                while (iterator.MoveNext())
+                {
+                    fontFamilies.Add(iterator.Current.ToString(), iterator.Current);
+                }
+                return fontFamilies;
+            }
+        }
+
+        public List<double> FontSizes
+        {
+            get;
+            private set;
+        }
+
+        public MessageSetting MessageSetting
+        {
+            get;
+            private set;
+        }
+
+        public ICommand SaveCommand
+        {
+            get
+            {
+                return new RelayCommand(Save);
+            }
+        }
+
         public KeyValuePair<string, FontFamily> SelectedFontFamily
         {
-            get { return new KeyValuePair<string, FontFamily>(MessageSetting.FontFamily.ToString(), MessageSetting.FontFamily); }
-            set { MessageSetting.FontFamily = value.Value; }
+            get
+            {
+                return new KeyValuePair<string, FontFamily>(MessageSetting.FontFamily.ToString(), MessageSetting.FontFamily);
+            }
+            set
+            {
+                MessageSetting.FontFamily = value.Value;
+            }
         }
-        public List<double> FontSizes { get; private set; }
-        public IMetroDialogService DialogService { get; set; }
-        public MessageSetting MessageSetting { get; private set; }
-        #endregion
 
-        public FontChooserViewModel(StyleSetting style)
+        public StyleSetting Style
         {
-            this.Style = style;
-            this.FontSizes = new List<double>();
-            for (double i = 1; i <= 20; i++)
-                this.FontSizes.Add(i);
-            this.MessageSetting = new MessageSetting(style.Style);
-            this.MessageSetting.PropertyChanged += MessageSetting_PropertyChanged;
+            get;
+            private set;
         }
 
         internal void ClosingRequest(object sender, CancelEventArgs e)
@@ -65,17 +114,6 @@ namespace GreatSnooper.ViewModel
                 e.Cancel = true;
                 this.CloseCommand.Execute(null);
             }
-        }
-
-        void MessageSetting_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            this.settingsChanged = true;
-        }
-
-        #region CloseCommand
-        public ICommand CloseCommand
-        {
-            get { return new RelayCommand(Close); }
         }
 
         private void Close()
@@ -95,12 +133,10 @@ namespace GreatSnooper.ViewModel
                 }
             });
         }
-        #endregion
 
-        #region SaveCommand
-        public ICommand SaveCommand
+        void MessageSetting_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            get { return new RelayCommand(Save); }
+            this.settingsChanged = true;
         }
 
         private void Save()
@@ -117,6 +153,5 @@ namespace GreatSnooper.ViewModel
             this.settingsChanged = false;
             DialogService.CloseRequest();
         }
-        #endregion
     }
 }

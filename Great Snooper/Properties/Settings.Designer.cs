@@ -1546,5 +1546,17 @@ namespace GreatSnooper.Properties {
                 this["WindowHeight"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool GameSurgeAuth {
+            get {
+                return ((bool)(this["GameSurgeAuth"]));
+            }
+            set {
+                this["GameSurgeAuth"] = value;
+            }
+        }
     }
 }

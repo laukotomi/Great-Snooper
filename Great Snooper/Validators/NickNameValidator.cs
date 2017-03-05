@@ -1,7 +1,7 @@
-﻿using System.Text.RegularExpressions;
-
-namespace GreatSnooper.Validators
+﻿namespace GreatSnooper.Validators
 {
+    using System.Text.RegularExpressions;
+
     public class NickNameValidator : AbstractValidator
     {
         private static Regex nickRegex = nickRegex = new Regex(@"^[a-z`]", RegexOptions.IgnoreCase);
@@ -10,9 +10,13 @@ namespace GreatSnooper.Validators
         public override string Validate(ref string text)
         {
             if (!nickRegex.IsMatch(text))
+            {
                 return Localizations.GSLocalization.Instance.NickStartsBad;
+            }
             else if (!nickRegex2.IsMatch(text))
+            {
                 return Localizations.GSLocalization.Instance.NickHasBadChar;
+            }
 
             return string.Empty;
         }

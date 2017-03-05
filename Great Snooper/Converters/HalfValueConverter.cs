@@ -1,15 +1,16 @@
-﻿using System;
-using System.Globalization;
-using System.Windows.Data;
-
-namespace GreatSnooper.Converters
+﻿namespace GreatSnooper.Converters
 {
+    using System;
+    using System.Globalization;
+    using System.Windows.Data;
+
     public class HalfValueConverter : IMultiValueConverter
     {
-        public object Convert(object[] values,
-                              Type targetType,
-                              object parameter,
-                              CultureInfo culture)
+        public object Convert(
+            object[] values,
+            Type targetType,
+            object parameter,
+            CultureInfo culture)
         {
             if (values == null || values.Length < 2)
             {
@@ -24,13 +25,13 @@ namespace GreatSnooper.Converters
             return (object)((totalWidth - width) / 2);
         }
 
-        public object[] ConvertBack(object value,
-                                    Type[] targetTypes,
-                                    object parameter,
-                                    CultureInfo culture)
+        public object[] ConvertBack(
+            object value,
+            Type[] targetTypes,
+            object parameter,
+            CultureInfo culture)
         {
             throw new NotImplementedException();
         }
     }
-
 }
