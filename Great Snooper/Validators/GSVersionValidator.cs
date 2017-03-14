@@ -11,7 +11,7 @@
 
         public override string Validate(ref string text)
         {
-            text = WormNetCharTable.RemoveNonWormNetChars(text.Trim());
+            text = WormNetCharTable.Instance.RemoveNonWormNetChars(text.Trim());
             string[] words = text.Split(new char[] { ' ' });
 
             if (words.Length == 3 &&

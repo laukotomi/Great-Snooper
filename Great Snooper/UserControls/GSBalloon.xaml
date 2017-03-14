@@ -80,7 +80,7 @@
                              x:Name="FadeOut_BeginStoryboard" />
         </EventTrigger>
     </UserControl.Triggers>
-    <Grid x:Name="grid" MouseEnter="grid_MouseEnter" MouseLeave="grid_MouseLeave" MouseDown="grid_MouseDown">
+    <Grid x:Name="grid" MouseEnter="grid_MouseEnter" MouseLeave="grid_MouseLeave" MouseLeftButtonDown="grid_MouseDown">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="Auto" />
@@ -93,6 +93,6 @@
         <Image Grid.Column="0" Source="/Resources/icon.png" Width="35" Height="35" Margin="10,10,5,10" VerticalAlignment="Center" />
         <TextBlock Grid.Column="2" VerticalAlignment="Center" Foreground="AliceBlue" TextWrapping="Wrap" Margin="0,8" FontSize="13" Text="{Binding Path=BalloonText, Mode=OneTime}" />
         <Image VerticalAlignment="Top" Grid.Column="3" Margin="8"
-           Width="16" Height="16" Source="/Resources/BalloonClose.png" Stretch="Fill" Opacity="0.4" x:Name="imgClose" MouseDown="imgClose_MouseDown" />
+           Width="16" Height="16" Source="/Resources/BalloonClose.png" Stretch="Fill" Opacity="0.4" x:Name="imgClose" MouseLeftButtonDown="imgClose_MouseDown" />
     </Grid>
 </UserControl>

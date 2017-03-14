@@ -52,7 +52,7 @@
             Thread.CurrentThread.CurrentCulture = new CultureInfo(settings.CultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
 
-            WormNetCharTable.Initialize();
+            WormNetCharTable.Instance.Initialize();
             bool save = false;
 
             if (!settings.SettingsUpgraded)

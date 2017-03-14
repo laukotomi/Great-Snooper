@@ -1,22 +1,16 @@
 ﻿namespace GreatSnooper.ViewModel
 {
     using System;
-    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
-    using System.Linq;
-    using System.Text;
     using System.Text.RegularExpressions;
-    using System.Threading;
     using System.Threading.Tasks;
-    using System.Windows;
     using System.Windows.Input;
     using System.Windows.Threading;
 
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
 
-    using GreatSnooper.EventArguments;
     using GreatSnooper.Helpers;
     using GreatSnooper.Services;
 
@@ -152,70 +146,25 @@
             {
                 string wormnat = (UsingWormNat2.HasValue && UsingWormNat2.Value) ? "1" : "0";
 
-                // A stringbuilder, because we want to modify the game name
-                StringBuilder sb = new StringBuilder(GameName.Trim());
-
-                // Remove illegal characters
-                for (int i = 0; i < sb.Length; i++)
-                {
-                    char ch = sb[i];
-                    if (!WormNetCharTable.EncodeGame.ContainsKey(ch))
-                    {
-                        sb.Remove(i, 1);
-                        i -= 1;
-                    }
-                }
-
-                // Save the enetered gamename text
-                string tmp = sb.ToString().Trim();
-                sb.Clear();
-                sb.Append(tmp);
-
                 // Save settings
-                Properties.Settings.Default.HostGameName = tmp;
+                string validGameName = WormNetCharTable.Instance.RemoveNonGameChars(GameName.Trim());
+                Properties.Settings.Default.HostGameName = validGameName;
                 Properties.Settings.Default.HostUseWormnat = UsingWormNat2.HasValue && UsingWormNat2.Value;
                 Properties.Settings.Default.HostInfoToChannel = InfoToChannel.HasValue && InfoToChannel.Value;
                 Properties.Settings.Default.SelectedWaExe = this.SelectedWaExe;
                 Properties.Settings.Default.Save();
 
-                // Encode the Game name text
-                for (int i = 0; i < sb.Length; i++)
-                {
-                    char ch = sb[i];
-                    if (ch == '"' || ch == '&' || ch == '\'' || ch == '<' || ch == '>' || ch == '\\')
-                    {
-                        sb.Remove(i, 1);
-                        sb.Insert(i, "%" + WormNetCharTable.EncodeGame[ch].ToString("X"));
-                        i += 2;
-                    }
-                    else if (ch == '#' || ch == '+' || ch == '%')
-                    {
-                        sb.Remove(i, 1);
-                        sb.Insert(i, "%" + WormNetCharTable.EncodeGame[ch].ToString("X"));
-                        i += 2;
-                    }
-                    else if (ch == ' ')
-                    {
-                        sb.Remove(i, 1);
-                        sb.Insert(i, "%A0");
-                        i += 2;
-                    }
-                    else if (WormNetCharTable.EncodeGame[ch] >= 0x80)
-                    {
-                        sb.Remove(i, 1);
-                        sb.Insert(i, "%" + WormNetCharTable.EncodeGame[ch].ToString("X"));
-                        i += 2;
-                    }
-                }
-
+                string encodedGameName = WormNetCharTable.Instance.EncodeGameUrl(validGameName);
                 string highPriority = Properties.Settings.Default.WAHighPriority ? "1" : "0";
-                string waExe = (this.SelectedWaExe == 0) ? Properties.Settings.Default.WaExe : Properties.Settings.Default.WaExe2;
+                string waExe = (this.SelectedWaExe == 0)
+                    ? Properties.Settings.Default.WaExe
+                    : Properties.Settings.Default.WaExe2;
 
                 string arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" \"{8}\" \"{9}\" \"{10}\" \"{11}\"",
                                                  serverAddress,
                                                  waExe,
                                                  channel.Server.User.Name,
-                                                 sb.ToString(),
+                                                 encodedGameName,
                                                  GamePassword,
                                                  channel.Name.Substring(1),
                                                  channel.Scheme,
@@ -246,27 +195,27 @@
                 }
                 switch (result)
                 {
-                case HosterErrors.CreateGameFailed:
-                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterCreateGameFail);
-                    return;
+                    case HosterErrors.CreateGameFailed:
+                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterCreateGameFail);
+                        return;
 
-                case HosterErrors.FailedToStartTheGame:
-                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterStartGameFail);
-                    return;
+                    case HosterErrors.FailedToStartTheGame:
+                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterStartGameFail);
+                        return;
 
-                case HosterErrors.NoGameID:
-                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterNoGameIDError);
-                    return;
+                    case HosterErrors.NoGameID:
+                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterNoGameIDError);
+                        return;
 
-                case HosterErrors.FailedToGetLocalIP:
-                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterFailedToGetLocalIP);
-                    return;
+                    case HosterErrors.FailedToGetLocalIP:
+                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterFailedToGetLocalIP);
+                        return;
 
-                case HosterErrors.WormNatClientError:
-                case HosterErrors.WormNatError:
-                case HosterErrors.WormNatInitError:
-                    this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterWormNatError);
-                    return;
+                    case HosterErrors.WormNatClientError:
+                    case HosterErrors.WormNatError:
+                    case HosterErrors.WormNatInitError:
+                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.HosterWormNatError);
+                        return;
                 }
 
                 this.dispatcher.BeginInvoke(new Action(() =>

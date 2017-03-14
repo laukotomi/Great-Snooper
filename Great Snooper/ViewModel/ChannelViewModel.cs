@@ -498,10 +498,7 @@
                         byte[] schemeRecvBuffer = new byte[100];
                         while ((bytes = stream.Read(schemeRecvBuffer, 0, schemeRecvBuffer.Length)) > 0)
                         {
-                            for (int j = 0; j < bytes; j++)
-                            {
-                                sb.Append(WormNetCharTable.Decode[schemeRecvBuffer[j]]);
-                            }
+                            sb.Append(WormNetCharTable.Instance.Decode(schemeRecvBuffer, bytes));
                         }
 
                         // <SCHEME=Pf,Be>
@@ -882,7 +879,9 @@
 
         private void OpenHostingWindow()
         {
-            string hexcc = "6487" + WormNetCharTable.Encode[this.Server.User.Country.CountryCode[1]].ToString("X") + WormNetCharTable.Encode[this.Server.User.Country.CountryCode[0]].ToString("X");
+            string hexcc = string.Format("6487{0}{1}",
+                WormNetCharTable.Instance.EncodeChar(this.Server.User.Country.CountryCode[1]).ToString("X"),
+                WormNetCharTable.Instance.EncodeChar(this.Server.User.Country.CountryCode[0]).ToString("X"));
 
             var window = new HostingWindow(this.MainViewModel, this.Server.ServerAddress, this, hexcc);
             window.Owner = this.MainViewModel.DialogService.GetView();

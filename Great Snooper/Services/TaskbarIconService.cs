@@ -41,7 +41,7 @@
                     BalloonText = message
                 },
                 System.Windows.Controls.Primitives.PopupAnimation.None,
-                5000);
+                8000);
         }
 
         protected virtual void Dispose(bool disposing)

@@ -14,7 +14,8 @@
     [DebuggerDisplay("{Sender.Name}: {Text}")]
     public class Message
     {
-        protected static Regex urlRegex = new Regex(@"(ht|f)tps?://\S+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        protected static Regex urlRegex = new Regex(@"\b(ht|f)tps?://\S+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        protected static Regex urlRegex2 = new Regex(@"\bwww\.\S+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
         private Run _nickRun;
 
@@ -98,20 +99,27 @@
                 setting.Type == MessageTypes.Quit)
             {
                 MatchCollection matches = urlRegex.Matches(text);
-                for (int i = 0; i < matches.Count; i++)
-                {
-                    Group group = matches[i].Groups[0];
-                    Uri uri;
-                    if (Uri.TryCreate(group.Value, UriKind.RelativeOrAbsolute, out uri))
-                    {
-                        this.AddHighlightWord(group.Index, group.Length, Message.HightLightTypes.URI);
-                    }
-                }
+                HandleUrlMatches(matches);
+                matches = urlRegex2.Matches(text);
+                HandleUrlMatches(matches);
             }
 
             if (setting.Type == MessageTypes.Channel)
             {
                 sender.PropertyChanged += this.SenderPropertyChanged;
+            }
+        }
+
+        private void HandleUrlMatches(MatchCollection matches)
+        {
+            for (int i = 0; i < matches.Count; i++)
+            {
+                Group group = matches[i].Groups[0];
+                Uri uri;
+                if (Uri.TryCreate(group.Value, UriKind.RelativeOrAbsolute, out uri))
+                {
+                    this.AddHighlightWord(group.Index, group.Length, Message.HightLightTypes.URI);
+                }
             }
         }
 

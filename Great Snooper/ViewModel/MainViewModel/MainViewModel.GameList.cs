@@ -79,10 +79,7 @@
                         gameRecvSB.Clear();
                         while ((bytes = stream.Read(gameRecvBuffer, 0, gameRecvBuffer.Length)) > 0)
                         {
-                            for (int j = 0; j < bytes; j++)
-                            {
-                                gameRecvSB.Append(WormNetCharTable.Decode[gameRecvBuffer[j]]);
-                            }
+                            gameRecvSB.Append(WormNetCharTable.Instance.Decode(gameRecvBuffer, bytes));
                         }
 
                         gameRecvSB.Replace("\n", "");
@@ -133,21 +130,8 @@
                                 string name = m.Groups[1].Value.Replace('\b', ' ').Replace("#039", "\x12");
 
                                 // Encode the name to decode it with GameDecode
-                                int bytes = 0;
-                                byte b;
-                                for (int j = 0; j < name.Length; j++)
-                                {
-                                    if (WormNetCharTable.Encode.TryGetValue(name[j], out b))
-                                    {
-                                        gameRecvBuffer[bytes++] = b;
-                                    }
-                                }
-                                gameRecvSB.Clear();
-                                for (int j = 0; j < bytes; j++)
-                                {
-                                    gameRecvSB.Append(WormNetCharTable.DecodeGame[gameRecvBuffer[j]]);
-                                }
-                                name = gameRecvSB.ToString();
+                                int bytes = WormNetCharTable.Instance.GetBytes(name, 0, name.Length, gameRecvBuffer, 0);
+                                name = WormNetCharTable.Instance.DecodeGame(gameRecvBuffer, bytes);
 
                                 string hoster = m.Groups[2].Value;
                                 string address = m.Groups[3].Value;
@@ -179,8 +163,8 @@
                                     string hexstr = uint.Parse(hexCC).ToString("X");
                                     if (hexstr.Length == 8 && hexstr.Substring(0, 4) == "6487")
                                     {
-                                        char c1 = WormNetCharTable.Decode[byte.Parse(hexstr.Substring(6), System.Globalization.NumberStyles.HexNumber)];
-                                        char c2 = WormNetCharTable.Decode[byte.Parse(hexstr.Substring(4, 2), System.Globalization.NumberStyles.HexNumber)];
+                                        char c1 = WormNetCharTable.Instance.DecodeByte(byte.Parse(hexstr.Substring(6), System.Globalization.NumberStyles.HexNumber));
+                                        char c2 = WormNetCharTable.Instance.DecodeByte(byte.Parse(hexstr.Substring(4, 2), System.Globalization.NumberStyles.HexNumber));
                                         country = Countries.GetCountryByCC(c1.ToString() + c2.ToString());
                                     }
                                     else

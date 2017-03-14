@@ -403,7 +403,7 @@
             }
         }
 
-        protected abstract void EncodeMessage(int bytes);
+        protected abstract string DecodeMessage(byte[] bytes, int length);
 
         protected virtual void SendPassword()
         {
@@ -1016,8 +1016,8 @@
                     }
 
                     int bytes = _ircServer.Receive(_recvBuffer); // Read the arrived datas into the buffer with a maximal length of the buffer (if the data is bigger than the buffer, it will be read in the next loop)
-                    this.EncodeMessage(bytes); // Encodes recvBuffer into recvMesssage
-                    string[] lines = _recvMessage.ToString().Split(new string[] { "\r\n" }, StringSplitOptions.None);
+                    string fullMessage = this.DecodeMessage(_recvBuffer, bytes); // Encodes recvBuffer into recvMesssage
+                    string[] lines = fullMessage.Split(new string[] { "\r\n" }, StringSplitOptions.None);
 
                     // process the message line-by-line
                     for (int i = 0; i < lines.Length - 1; i++) // the last line is either string.Empty or a line which end hasn't arrived yet

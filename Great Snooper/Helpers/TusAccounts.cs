@@ -8,7 +8,7 @@
 
     public static class TusAccounts
     {
-        public static DateTime tusAccountsLoaded = new DateTime(1999, 5, 31);
+        public static DateTime TusAccountsLoaded = new DateTime(1999, 5, 31);
 
         public static void SetTusAccounts(string[] rows, AbstractCommunicator server = null)
         {
@@ -61,7 +61,7 @@
                 GlobalManager.TusAccounts.Remove(key);
             }
 
-            tusAccountsLoaded = DateTime.Now;
+            TusAccountsLoaded = DateTime.Now;
         }
     }
 }

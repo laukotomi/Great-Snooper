@@ -6,7 +6,7 @@
     {
         public override string Validate(ref string text)
         {
-            text = WormNetCharTable.RemoveNonWormNetChars(text.Trim());
+            text = WormNetCharTable.Instance.RemoveNonWormNetChars(text.Trim());
             return string.Empty;
         }
     }

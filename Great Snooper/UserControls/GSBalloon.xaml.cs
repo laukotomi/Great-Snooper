@@ -76,7 +76,7 @@
 
         private void grid_MouseDown(object sender, MouseButtonEventArgs e)
         {
-            if (this.chvm != null && e.ChangedButton == MouseButton.Left && e.ClickCount == 2)
+            if (this.chvm != null)
             {
                 chvm.MainViewModel.SelectChannel(chvm);
                 chvm.MainViewModel.ActivationCommand.Execute(null);
@@ -134,6 +134,7 @@
         private void imgClose_MouseDown(object sender, MouseButtonEventArgs e)
         {
             //the tray icon assigned this attached property to simplify access
+            e.Handled = true;
             TaskbarIcon taskbarIcon = TaskbarIcon.GetParentTaskbarIcon(this);
             taskbarIcon.CloseBalloon();
         }

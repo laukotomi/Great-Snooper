@@ -10,7 +10,7 @@
     public class GameSurgeCommunicator : AbstractCommunicator
     {
         public GameSurgeCommunicator(string serverAddress, int serverPort)
-        : base(serverAddress, serverPort, false, true, true, true)
+            : base(serverAddress, serverPort, false, true, true, true)
         {
             JoinChannelList = new List<string>();
         }
@@ -28,10 +28,9 @@
 
         protected override int DecodeMessage(string message)
         {
-            int i = 0;
             try
             {
-                i = Encoding.UTF8.GetBytes(message, 0, message.Length, _sendBuffer, 0);
+                int i = Encoding.UTF8.GetBytes(message, 0, message.Length, _sendBuffer, 0);
                 i += Encoding.UTF8.GetBytes("\r\n", 0, 2, _sendBuffer, i);
                 return i;
             }
@@ -41,9 +40,9 @@
             }
         }
 
-        protected override void EncodeMessage(int bytes)
+        protected override string DecodeMessage(byte[] bytes, int length)
         {
-            _recvMessage.Append(Encoding.UTF8.GetString(_recvBuffer, 0, bytes));
+            return Encoding.UTF8.GetString(bytes, 0, length);
         }
 
         protected override void SetUser()

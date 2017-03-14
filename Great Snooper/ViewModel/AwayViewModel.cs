@@ -102,7 +102,7 @@
             }
             else
             {
-                string text = WormNetCharTable.RemoveNonWormNetChars(AwayText.Trim());
+                string text = WormNetCharTable.Instance.RemoveNonWormNetChars(AwayText.Trim());
                 if (text.Length > 0)
                 {
                     Properties.Settings.Default.AwayMessage = text;
