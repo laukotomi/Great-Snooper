@@ -7,11 +7,10 @@
     using System.Threading.Tasks;
     using System.Windows.Input;
     using System.Windows.Threading;
-
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
-
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.Services;
 
     class HostingViewModel : ViewModelBase

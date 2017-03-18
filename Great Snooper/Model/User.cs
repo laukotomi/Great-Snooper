@@ -4,7 +4,9 @@
     using System.Collections.Generic;
     using System.Diagnostics;
     using GalaSoft.MvvmLight;
+    using GreatSnooper.Channel;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.ViewModel;
 
     [DebuggerDisplay("{Name}")]
@@ -24,12 +26,12 @@
         private bool? _usingGreatSnooper;
         private bool? _usingGreatSnooper2;
 
-        public User(string name, string clan = "")
+        public User(IRCCommunicator server, string name, string clan = "")
         {
+            this.Server = server;
             this._name = name;
             this._clan = clan;
-            this.Channels = new HashSet<ChannelViewModel>();
-            this.PMChannels = new HashSet<PMChannelViewModel>();
+            this.ChannelCollection = new ChannelCollection();
             this.AddToChannel = new List<ChannelViewModel>();
             this.Messages = new List<Message>();
             UserGroup group;
@@ -43,22 +45,14 @@
             }
         }
 
+        public IRCCommunicator Server { get; private set; }
+
         public enum Status
         {
             Online, Offline, Unknown
         }
 
-        public List<ChannelViewModel> AddToChannel
-        {
-            get;
-            private set;
-        }
-
-        public List<Message> Messages
-        {
-            get;
-            private set;
-        }
+        public List<Message> Messages { get; private set; }
 
         public bool CanConversation
         {
@@ -83,11 +77,9 @@
             }
         }
 
-        public HashSet<ChannelViewModel> Channels
-        {
-            get;
-            private set;
-        }
+        public ChannelCollection ChannelCollection { get; private set; }
+        public List<ChannelViewModel> AddToChannel { get; private set; }
+
 
         public string Clan
         {
@@ -172,7 +164,7 @@
                     }
 
                     // Refresh sorting
-                    foreach (var chvm in Channels)
+                    foreach (ChannelViewModel chvm in ChannelCollection.Channels)
                     {
                         if (chvm.Joined)
                         {
@@ -238,12 +230,6 @@
                     RaisePropertyChanged("OnlineStatus");
                 }
             }
-        }
-
-        public HashSet<PMChannelViewModel> PMChannels
-        {
-            get;
-            private set;
         }
 
         public Rank Rank

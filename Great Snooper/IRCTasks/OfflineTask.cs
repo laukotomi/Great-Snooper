@@ -1,15 +1,15 @@
 ﻿namespace GreatSnooper.IRCTasks
 {
-    using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.Model;
     using GreatSnooper.ViewModel;
 
     public class OfflineTask : IRCTask
     {
-        public OfflineTask(AbstractCommunicator sender, string clientName)
+        public OfflineTask(IRCCommunicator server, string clientName)
+            : base(server)
         {
-            this.Sender = sender;
             this.ClientName = clientName;
         }
 
@@ -23,12 +23,12 @@
         {
             User u;
             // Send a message to the private message channel that the user is offline
-            if (Sender.Users.TryGetValue(this.ClientName, out u))
+            if (_server.Users.TryGetValue(this.ClientName, out u))
             {
                 u.OnlineStatus = User.Status.Offline;
-                if (u.PMChannels.Count > 0)
+                if (u.ChannelCollection.PmChannels.Count > 0)
                 {
-                    foreach (var chvm in u.PMChannels)
+                    foreach (var chvm in u.ChannelCollection.PmChannels)
                     {
                         chvm.AddMessage(GlobalManager.SystemUser, string.Format(Localizations.GSLocalization.Instance.OfflineMessage, this.ClientName), MessageSettings.SystemMessage);
                     }

@@ -1,12 +1,8 @@
 ﻿namespace GreatSnooper.IRCTasks
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Text;
 
-    using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.Model;
     using GreatSnooper.ViewModel;
 
@@ -15,9 +11,9 @@
         private string channelName;
         private string[] names;
 
-        public NamesTask(AbstractCommunicator sender, string channelName, string[] names)
+        public NamesTask(IRCCommunicator server, string channelName, string[] names)
+            : base(server)
         {
-            this.Sender = sender;
             this.channelName = channelName;
             this.names = names;
         }
@@ -25,21 +21,21 @@
         public override void DoTask(ViewModel.MainViewModel mw)
         {
             AbstractChannelViewModel temp;
-            if (this.Sender.Channels.TryGetValue(this.channelName, out temp) && temp is ChannelViewModel)
+            if (this._server.Channels.TryGetValue(this.channelName, out temp) && temp is ChannelViewModel)
             {
                 var chvm = (ChannelViewModel)temp;
                 foreach (string name in this.names)
                 {
                     string userName = (name.StartsWith("@") || name.StartsWith("+")) ? name.Substring(1) : name;
 
-                    User user = UserHelper.GetUser(Sender, userName);
+                    User user = UserHelper.GetUser(_server, userName);
 
                     if (user.OnlineStatus != User.Status.Online)
                     {
                         user.OnlineStatus = User.Status.Online;
                         chvm.AddUser(user);
                     }
-                    else if (user.Channels.Contains(chvm) == false)
+                    else if (user.ChannelCollection.Channels.Contains(chvm) == false)
                     {
                         chvm.AddUser(user);
                     }

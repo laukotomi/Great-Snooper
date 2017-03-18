@@ -15,12 +15,11 @@
     using System.Windows.Input;
     using System.Windows.Interop;
     using System.Windows.Threading;
-
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
-
     using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.IRCTasks;
     using GreatSnooper.Model;
     using GreatSnooper.Services;
@@ -93,7 +92,7 @@
             this.TaskbarIconService = taskbarIconService;
             this.Dispatcher = Dispatcher.CurrentDispatcher;
 
-            this.Servers = new AbstractCommunicator[2];
+            this.Servers = new IRCCommunicator[2];
             this.Servers[0] = wormNetC;
             wormNetC.ConnectionState += ConnectionState;
             wormNetC.MVM = this;
@@ -101,7 +100,6 @@
             this.Servers[1].ConnectionState += ConnectionState;
             this.Servers[1].MVM = this;
 
-            this.InstantColors = new InstantColors();
             this.notificator = Notificator.Instance;
             this.notificator.IsEnabledChanged += notificator_IsEnabledChanged;
             this.LeagueSearcher = LeagueSearcher.Instance;
@@ -128,12 +126,6 @@
         }
 
         public static MainViewModel Instance
-        {
-            get;
-            private set;
-        }
-
-        public InstantColors InstantColors
         {
             get;
             private set;
@@ -561,7 +553,7 @@
             }
         }
 
-        public AbstractCommunicator[] Servers
+        public IRCCommunicator[] Servers
         {
             get;
             private set;
@@ -847,7 +839,7 @@
 
             foreach (var server in this.Servers)
             {
-                if (server.State != AbstractCommunicator.ConnectionStates.Disconnected)
+                if (server.State != IRCCommunicator.ConnectionStates.Disconnected)
                 {
                     e.Cancel = true;
                 }
@@ -1013,7 +1005,7 @@
                     // Reload channel messages where this user was active
                     if (!Properties.Settings.Default.ShowBannedMessages)
                     {
-                        foreach (var chvm in u.Channels)
+                        foreach (ChannelViewModel chvm in u.ChannelCollection.Channels)
                         {
                             if (chvm.Joined)
                             {
@@ -1027,7 +1019,7 @@
                     }
                     else
                     {
-                        foreach (var chvm in u.Channels)
+                        foreach (ChannelViewModel chvm in u.ChannelCollection.Channels)
                         {
                             if (chvm.Joined)
                             {
@@ -1181,26 +1173,26 @@
             }
         }
 
-        private void ConnectionState(object sender, AbstractCommunicator.ConnectionStates oldState)
+        private void ConnectionState(object sender, IRCCommunicator.ConnectionStates oldState)
         {
             this.Dispatcher.BeginInvoke(new Action(delegate()
             {
-                var server = (AbstractCommunicator)sender;
+                var server = (IRCCommunicator)sender;
 
                 if (closing)
                 {
-                    if (server.State == AbstractCommunicator.ConnectionStates.Disconnected)
+                    if (server.State == IRCCommunicator.ConnectionStates.Disconnected)
                     {
                         this.CloseCommand.Execute(null);
                     }
-                    else if (server.State != AbstractCommunicator.ConnectionStates.Disconnecting)
+                    else if (server.State != IRCCommunicator.ConnectionStates.Disconnecting)
                     {
                         server.CancelAsync();
                     }
                 }
-                else if (server.State == AbstractCommunicator.ConnectionStates.Connected)
+                else if (server.State == IRCCommunicator.ConnectionStates.Connected)
                 {
-                    if (oldState == AbstractCommunicator.ConnectionStates.ReConnecting || server is WormNetCommunicator)
+                    if (oldState == IRCCommunicator.ConnectionStates.ReConnecting || server is WormNetCommunicator)
                     {
                         foreach (var chvm in server.Channels)
                         {
@@ -1243,23 +1235,23 @@
                         }
                     }
                 }
-                else if (server.State == AbstractCommunicator.ConnectionStates.Disconnected)
+                else if (server.State == IRCCommunicator.ConnectionStates.Disconnected)
                 {
                     if (server is GameSurgeCommunicator)
                     {
-                        if (server.ErrorState == AbstractCommunicator.ErrorStates.UsernameInUse)
+                        if (server.ErrorState == IRCCommunicator.ErrorStates.UsernameInUse)
                         {
                             foreach (var chvm in server.Channels)
                             {
                                 chvm.Value.SetLoading(false);
                             }
 
-                            if (oldState != AbstractCommunicator.ConnectionStates.ReConnecting)
+                            if (oldState != IRCCommunicator.ConnectionStates.ReConnecting)
                             {
                                 this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.GSNickInUseText);
                             }
                         }
-                        else if (server.ErrorState == AbstractCommunicator.ErrorStates.None)
+                        else if (server.ErrorState == IRCCommunicator.ErrorStates.None)
                         {
                             foreach (var item in server.Channels)
                             {
@@ -1284,7 +1276,7 @@
                         server.Reconnect();
                     }
                 }
-                else if (server.State == AbstractCommunicator.ConnectionStates.Connecting || server.State == AbstractCommunicator.ConnectionStates.Disconnecting || server.State == AbstractCommunicator.ConnectionStates.ReConnecting)
+                else if (server.State == IRCCommunicator.ConnectionStates.Connecting || server.State == IRCCommunicator.ConnectionStates.Disconnecting || server.State == IRCCommunicator.ConnectionStates.ReConnecting)
                 {
                     foreach (var chvm in server.Channels)
                     {

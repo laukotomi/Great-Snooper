@@ -1,14 +1,14 @@
 ﻿namespace GreatSnooper.IRCTasks
 {
-    using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.ViewModel;
 
     public class NickNameInUseTask : IRCTask
     {
-        public NickNameInUseTask(AbstractCommunicator sender)
+        public NickNameInUseTask(IRCCommunicator server)
+            : base(server)
         {
-            this.Sender = sender;
         }
 
         public override void DoTask(MainViewModel mvm)

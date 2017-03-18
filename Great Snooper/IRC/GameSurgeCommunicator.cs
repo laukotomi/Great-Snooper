@@ -1,4 +1,4 @@
-﻿namespace GreatSnooper.Classes
+﻿namespace GreatSnooper.IRC
 {
     using System;
     using System.Collections.Generic;
@@ -7,7 +7,7 @@
     using GreatSnooper.Helpers;
     using GreatSnooper.Model;
 
-    public class GameSurgeCommunicator : AbstractCommunicator
+    public class GameSurgeCommunicator : IRCCommunicator
     {
         public GameSurgeCommunicator(string serverAddress, int serverPort)
             : base(serverAddress, serverPort, false, true, true, true)
@@ -49,7 +49,7 @@
         {
             if (Properties.Settings.Default.WormsNick.Length > 0)
             {
-                this.User = new User(Properties.Settings.Default.WormsNick, GlobalManager.User.Clan);
+                this.User = new User(this, Properties.Settings.Default.WormsNick, GlobalManager.User.Clan);
                 this.User.Country = GlobalManager.User.Country;
                 this.User.Rank = GlobalManager.User.Rank;
             }

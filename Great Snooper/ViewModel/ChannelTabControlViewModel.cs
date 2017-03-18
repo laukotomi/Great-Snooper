@@ -3,11 +3,11 @@
     using System;
     using System.Linq;
     using System.Windows.Controls;
-
     using GalaSoft.MvvmLight;
-
+    using GreatSnooper.Channel;
     using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
 
     public class ChannelTabControlViewModel : ViewModelBase
     {

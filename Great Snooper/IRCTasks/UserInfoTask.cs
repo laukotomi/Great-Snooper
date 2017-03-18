@@ -1,17 +1,16 @@
 ﻿namespace GreatSnooper.IRCTasks
 {
     using System.Linq;
-
-    using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.Model;
     using GreatSnooper.ViewModel;
 
     public class UserInfoTask : IRCTask
     {
-        public UserInfoTask(AbstractCommunicator sender, string channelHash, string clientName, Country country, string clan, int rank, string clientApp)
+        public UserInfoTask(IRCCommunicator server, string channelHash, string clientName, Country country, string clan, int rank, string clientApp)
+            : base(server)
         {
-            this.Sender = sender;
             this.ChannelHash = channelHash;
             this.ClientName = clientName;
             this.Country = country;
@@ -59,14 +58,14 @@
         public override void DoTask(MainViewModel mvm)
         {
             AbstractChannelViewModel chvm;
-            bool channelOK = Sender.Channels.TryGetValue(this.ChannelHash, out chvm) && chvm.Joined; // GameSurge may send info about client with channel name: *.. so we try to process all these messages
+            bool channelOK = _server.Channels.TryGetValue(this.ChannelHash, out chvm) && chvm.Joined; // GameSurge may send info about client with channel name: *.. so we try to process all these messages
 
             User u = null;
-            if (!Sender.Users.TryGetValue(this.ClientName, out u))
+            if (!_server.Users.TryGetValue(this.ClientName, out u))
             {
                 if (channelOK)
                 {
-                    u = UserHelper.CreateUser(Sender, this.ClientName, this.Clan);
+                    u = UserHelper.CreateUser(_server, this.ClientName, this.Clan);
                 }
                 else // we don't have any common channel with this client
                 {
@@ -83,7 +82,7 @@
             {
                 foreach (var channel in u.AddToChannel)
                 {
-                    if (channel.Joined && !u.Channels.Contains(chvm))
+                    if (channel.Joined && !u.ChannelCollection.Channels.Contains(chvm))
                     {
                         channel.AddUser(u);
                     }
@@ -92,7 +91,7 @@
             }
 
             // This is needed, because when we join a channel we get information about the channel users using the WHO command
-            if (channelOK && !u.Channels.Contains(chvm) && chvm is ChannelViewModel)
+            if (channelOK && chvm is ChannelViewModel && !u.ChannelCollection.Channels.Contains(chvm))
             {
                 ((ChannelViewModel)chvm).AddUser(u);
             }

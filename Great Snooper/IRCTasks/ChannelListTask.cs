@@ -2,16 +2,15 @@
 {
     using System;
     using System.Collections.Generic;
-
-    using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.ViewModel;
 
     public class ChannelListTask : IRCTask
     {
-        public ChannelListTask(AbstractCommunicator sender, SortedDictionary<string, string> channelList)
+        public ChannelListTask(IRCCommunicator server, SortedDictionary<string, string> channelList)
+            : base(server)
         {
-            this.Sender = sender;
             this.ChannelList = channelList;
         }
 
@@ -25,7 +24,7 @@
         {
             foreach (var item in this.ChannelList)
             {
-                var chvm = new ChannelViewModel(mvm, this.Sender, item.Key, item.Value);
+                var chvm = new ChannelViewModel(mvm, _server, item.Key, item.Value);
 
                 if (GlobalManager.AutoJoinList.ContainsKey(item.Key))
                 {

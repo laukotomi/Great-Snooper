@@ -5,12 +5,9 @@
     using System.IO;
     using System.Threading;
     using System.Windows;
-
     using GalaSoft.MvvmLight.Threading;
-
     using GreatSnooper.Helpers;
     using GreatSnooper.Validators;
-
     using Microsoft.Win32;
 
     public partial class App : Application
@@ -51,8 +48,6 @@
             var settings = GreatSnooper.Properties.Settings.Default;
             Thread.CurrentThread.CurrentCulture = new CultureInfo(settings.CultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
-
-            WormNetCharTable.Instance.Initialize();
             bool save = false;
 
             if (!settings.SettingsUpgraded)

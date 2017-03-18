@@ -1,13 +1,13 @@
 ﻿namespace GreatSnooper.IRCTasks
 {
-    using GreatSnooper.Classes;
+    using GreatSnooper.IRC;
     using GreatSnooper.ViewModel;
 
     class InviteTask : IRCTask
     {
-        public InviteTask(AbstractCommunicator sender, string channelName)
+        public InviteTask(IRCCommunicator server, string channelName)
+            : base(server)
         {
-            this.Sender = sender;
             this.ChannelName = channelName;
         }
 
@@ -19,12 +19,12 @@
 
         public override void DoTask(MainViewModel mvm)
         {
-            if (this.Sender.HandleJoinRequest)
+            if (this._server.HandleJoinRequest)
             {
                 AbstractChannelViewModel chvm;
-                if (this.Sender.Channels.TryGetValue(this.ChannelName, out chvm) == false)
+                if (this._server.Channels.TryGetValue(this.ChannelName, out chvm) == false)
                 {
-                    new ChannelViewModel(mvm, this.Sender, this.ChannelName, string.Empty);
+                    new ChannelViewModel(mvm, this._server, this.ChannelName, string.Empty);
                 }
             }
         }

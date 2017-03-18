@@ -1,9 +1,8 @@
 ﻿namespace GreatSnooper.IRCTasks
 {
     using System.Text.RegularExpressions;
-
-    using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.Model;
     using GreatSnooper.ViewModel;
 
@@ -11,9 +10,9 @@
     {
         private static Regex nickRegex = new Regex(@"[a-z0-9`\-]", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
-        public MessageTask(AbstractCommunicator sender, string clientName, string channelHash, string message, MessageSetting setting)
+        public MessageTask(IRCCommunicator server, string clientName, string channelHash, string message, MessageSetting setting)
+            : base(server)
         {
-            this.Sender = sender;
             this.ClientName = clientName;
             this.ChannelHash = channelHash;
             this.Message = message;
@@ -55,17 +54,17 @@
             AbstractChannelViewModel chvm = null;
 
             // If the message arrived in a closed channel
-            if (Sender.Channels.TryGetValue(this.ChannelHash, out chvm) && !chvm.Joined)
+            if (_server.Channels.TryGetValue(this.ChannelHash, out chvm) && !chvm.Joined)
             {
                 return;
             }
 
             // If the user doesn't exists we create one
-            this.User = UserHelper.GetUser(Sender, this.ClientName);
+            this.User = UserHelper.GetUser(_server, this.ClientName);
 
             if (chvm == null) // New private message arrived for us
             {
-                chvm = new PMChannelViewModel(mvm, Sender, this.ChannelHash);
+                chvm = new PMChannelViewModel(mvm, _server, this.ChannelHash);
             }
 
             chvm.ProcessMessage(this);

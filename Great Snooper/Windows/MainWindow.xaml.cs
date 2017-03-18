@@ -2,11 +2,9 @@
 {
     using System.Windows;
     using System.Windows.Controls;
-
-    using GreatSnooper.Classes;
+    using GreatSnooper.IRC;
     using GreatSnooper.Services;
     using GreatSnooper.ViewModel;
-
     using MahApps.Metro.Controls;
 
     public partial class MainWindow : MetroWindow

@@ -5,10 +5,9 @@
     using System.Net;
     using System.Text.RegularExpressions;
     using System.Threading.Tasks;
-
     using GalaSoft.MvvmLight;
-
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.Model;
 
     public partial class MainViewModel : ViewModelBase, IDisposable

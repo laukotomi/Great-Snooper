@@ -2,17 +2,16 @@
 {
     using System;
     using System.Collections.Generic;
-
-    using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.Model;
     using GreatSnooper.ViewModel;
 
     class QuitTask : IRCTask
     {
-        public QuitTask(AbstractCommunicator sender, string clientName, string message)
+        public QuitTask(IRCCommunicator server, string clientName, string message)
+            : base(server)
         {
-            this.Sender = sender;
             this.ClientName = clientName;
             this.Message = message;
         }
@@ -32,10 +31,10 @@
         public override void DoTask(MainViewModel mwm)
         {
             User u;
-            if (Sender.Users.TryGetValue(this.ClientName, out u))
+            if (_server.Users.TryGetValue(this.ClientName, out u))
             {
                 string msg;
-                if (Sender is WormNetCommunicator)
+                if (_server is WormNetCommunicator)
                 {
                     if (this.Message.Length > 0)
                     {
@@ -59,7 +58,7 @@
                 }
 
                 // Send quit message to the channels where the user was active
-                var temp = new HashSet<ChannelViewModel>(u.Channels);
+                var temp = new HashSet<ChannelViewModel>(u.ChannelCollection.Channels);
                 foreach (var chvm in temp)
                 {
                     if (chvm.Joined)
@@ -68,11 +67,10 @@
                         chvm.RemoveUser(u);
                     }
                 }
-                u.Channels.Clear();
 
-                if (u.PMChannels.Count == 0)
+                if (u.ChannelCollection.PmChannels.Count == 0)
                 {
-                    UserHelper.FinalizeUser(Sender, u);
+                    UserHelper.FinalizeUser(_server, u);
                 }
                 // If we had a private chat with the user
                 else
@@ -82,7 +80,7 @@
                     bool pingTimeout = this.Message == "Ping timeout: 180 seconds";
                     DateTime threeMinsBefore = DateTime.Now - new TimeSpan(0, 3, 0);
 
-                    foreach (var chvm in u.PMChannels)
+                    foreach (PMChannelViewModel chvm in u.ChannelCollection.PmChannels)
                     {
                         chvm.AddMessage(u, msg, MessageSettings.QuitMessage);
 

@@ -1,14 +1,15 @@
-﻿namespace GreatSnooper.Classes
+﻿namespace GreatSnooper.IRC
 {
     using System.Collections.Generic;
 
     using GreatSnooper.Helpers;
 
-    public class WormNetCommunicator : AbstractCommunicator
+    public class WormNetCommunicator : IRCCommunicator
     {
         public WormNetCommunicator(string serverAddress, int serverPort)
             : base(serverAddress, serverPort, true, false, false, false)
         {
+            WormNetCharTable.Instance.Initialize();
         }
 
         public override string VerifyString(string str)

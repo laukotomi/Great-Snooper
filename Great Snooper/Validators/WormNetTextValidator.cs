@@ -1,6 +1,6 @@
 ﻿namespace GreatSnooper.Validators
 {
-    using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
 
     public class WormNetTextValidator : AbstractValidator
     {

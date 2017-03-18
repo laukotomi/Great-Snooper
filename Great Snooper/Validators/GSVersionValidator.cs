@@ -3,7 +3,7 @@
     using System;
     using System.Text.RegularExpressions;
 
-    using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
 
     public class GSVersionValidator : AbstractValidator
     {

@@ -8,9 +8,8 @@
     using System.Text.RegularExpressions;
     using System.Windows;
     using System.Windows.Controls;
-
-    using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.Localizations;
     using GreatSnooper.Model;
     using GreatSnooper.Windows;
@@ -20,7 +19,7 @@
         private static Regex logChannelClosedRegex = new Regex(@"^(?<date>\d+\-\d+\-\d+ \d+:\d+:\d+) Channel closed\.$", RegexOptions.Compiled);
         private static Regex logMessageRegex = new Regex(@"^\((?<type>\w+)\) (?<date>\d+\-\d+\-\d+ \d+:\d+:\d+) (?<sender>[^:]+):(?<text>.*)", RegexOptions.Compiled);
 
-        public LogChannelViewModel(MainViewModel mainViewModel, AbstractCommunicator server, string channelName)
+        public LogChannelViewModel(MainViewModel mainViewModel, IRCCommunicator server, string channelName)
             : base(mainViewModel, server)
         {
             this.Joined = true;
@@ -82,6 +81,7 @@
                             {
                                 this.AddMessage(
                                     new Message(
+                                        this,
                                         UserHelper.GetUser(this.Server, m.Groups["sender"].Value),
                                         m.Groups["text"].Value,
                                         MessageSettings.GetByMessageType(messageType),
@@ -98,6 +98,7 @@
                             {
                                 this.AddMessage(
                                     new Message(
+                                        this,
                                         GlobalManager.SystemUser,
                                         GSLocalization.Instance.EndOfConversation,
                                         MessageSettings.SystemMessage,

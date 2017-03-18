@@ -12,15 +12,14 @@
     using System.Windows;
     using System.Windows.Controls;
     using System.Windows.Input;
-
     using GalaSoft.MvvmLight.Command;
-
     using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.Model;
+    using GreatSnooper.Services;
     using GreatSnooper.UserControls;
     using GreatSnooper.Windows;
-
     using MahApps.Metro.Controls.Dialogs;
 
     public class ChannelViewModel : AbstractChannelViewModel
@@ -39,7 +38,7 @@
         private Border _disconnectedLayout;
         private string _scheme = string.Empty;
 
-        public ChannelViewModel(MainViewModel mainViewModel, AbstractCommunicator server, string channelName, string description, string password = null)
+        public ChannelViewModel(MainViewModel mainViewModel, IRCCommunicator server, string channelName, string description, string password = null)
             : base(mainViewModel, server)
         {
             this.Name = channelName;
@@ -279,7 +278,7 @@
         public void AddUser(User u)
         {
             this.Users.Add(u);
-            u.Channels.Add(this);
+            u.ChannelCollection.Add(this);
         }
 
         public override void ClearUsers()
@@ -289,9 +288,9 @@
             {
                 this.RemoveUser(u);
 
-                if (u.Channels.Count == 0)
+                if (u.ChannelCollection.Channels.Count == 0)
                 {
-                    if (u.PMChannels.Count > 0)
+                    if (u.ChannelCollection.PmChannels.Count > 0)
                     {
                         u.OnlineStatus = User.Status.Unknown;
                     }
@@ -351,7 +350,7 @@
 
         public override void ProcessMessage(IRCTasks.MessageTask msgTask)
         {
-            var msg = new Message(msgTask.User, msgTask.Message, msgTask.Setting, DateTime.Now);
+            var msg = new Message(this, msgTask.User, msgTask.Message, msgTask.Setting, DateTime.Now);
             bool canDisplay = !msg.Sender.IsBanned || this.GetType() == typeof(ChannelViewModel) && Properties.Settings.Default.ShowBannedMessages;
 
             // Search for league or hightlight or notification
@@ -442,7 +441,7 @@
         public void RemoveUser(User u)
         {
             this.Users.Remove(u);
-            u.Channels.Remove(this);
+            u.ChannelCollection.Remove(this);
         }
 
         public override void SendActionMessage(string message)
@@ -600,14 +599,14 @@
                 SettingsHelper.Save("AutoJoinChannels", GlobalManager.AutoJoinList);
             }
 
-            if (this.Server is WormNetCommunicator || Server.State == AbstractCommunicator.ConnectionStates.Connected)
+            if (this.Server is WormNetCommunicator || Server.State == IRCCommunicator.ConnectionStates.Connected)
             {
                 this.Server.JoinChannel(this, this.Name, this.Password);
             }
             else
             {
                 var gameSurge = (GameSurgeCommunicator)this.Server;
-                if (this.Server.State == AbstractCommunicator.ConnectionStates.Connected)
+                if (this.Server.State == IRCCommunicator.ConnectionStates.Connected)
                 {
                     gameSurge.JoinChannel(this, this.Name, this.Password);
                 }

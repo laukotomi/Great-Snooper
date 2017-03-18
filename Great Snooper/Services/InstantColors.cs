@@ -1,18 +1,32 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows.Media;
 using GreatSnooper.Helpers;
 using GreatSnooper.Model;
 
-namespace GreatSnooper.Classes
+namespace GreatSnooper.Services
 {
     public class InstantColors
     {
-        private Dictionary<User, SolidColorBrush> _instantColors;
+        #region Singleton
+        private static readonly Lazy<InstantColors> lazy =
+            new Lazy<InstantColors>(() => new InstantColors());
 
-        public InstantColors()
+        public static InstantColors Instance
+        {
+            get
+            {
+                return lazy.Value;
+            }
+        }
+
+        private InstantColors()
         {
             this._instantColors = new Dictionary<User, SolidColorBrush>();
         }
+        #endregion
+
+        private Dictionary<User, SolidColorBrush> _instantColors;
 
         public bool TryGetValue(User user, out SolidColorBrush brush)
         {

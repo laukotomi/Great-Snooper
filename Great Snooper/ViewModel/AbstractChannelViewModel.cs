@@ -13,8 +13,10 @@ using GalaSoft.MvvmLight.Command;
 using GreatSnooper.Channel;
 using GreatSnooper.Classes;
 using GreatSnooper.Helpers;
+using GreatSnooper.IRC;
 using GreatSnooper.IRCTasks;
 using GreatSnooper.Model;
+using GreatSnooper.Services;
 using GreatSnooper.UserControls;
 
 namespace GreatSnooper.ViewModel
@@ -41,7 +43,7 @@ namespace GreatSnooper.ViewModel
         private bool _joined;
         private bool _loading;
 
-        protected AbstractChannelViewModel(MainViewModel mainViewModel, AbstractCommunicator server)
+        protected AbstractChannelViewModel(MainViewModel mainViewModel, IRCCommunicator server)
         {
             this.MainViewModel = mainViewModel;
             this.Server = server;
@@ -184,7 +186,7 @@ namespace GreatSnooper.ViewModel
             protected set;
         }
 
-        public AbstractCommunicator Server
+        public IRCCommunicator Server
         {
             get;
             private set;
@@ -210,7 +212,7 @@ namespace GreatSnooper.ViewModel
 
         public void AddMessage(User sender, string message, MessageSetting messageSetting)
         {
-            var msg = new Message(sender, message, messageSetting, DateTime.Now);
+            var msg = new Message(this, sender, message, messageSetting, DateTime.Now);
             this.AddMessage(msg);
         }
 
@@ -364,7 +366,7 @@ namespace GreatSnooper.ViewModel
             User u = ((Message)((ContextMenu)obj.Parent).Tag).Sender;
             SolidColorBrush color = (SolidColorBrush)obj.Foreground;
 
-            this.MainViewModel.InstantColors.Add(u, color);
+            InstantColors.Instance.Add(u, color);
         }
 
         private bool AddMessageToUI(Message msg, bool add = true)
@@ -401,31 +403,31 @@ namespace GreatSnooper.ViewModel
                 p.Inlines.Add(nick);
 
                 // Message content
-                if (msg.HighlightWords == null)
+                if (msg.HighlightParts == null)
                 {
                     p.Inlines.Add(new Run(msg.Text));
                 }
                 else
                 {
                     int idx = 0;
-                    foreach (var item in msg.HighlightWords)
+                    foreach (Message.MessageHighlight highlight in msg.HighlightParts)
                     {
-                        if (item.Key != idx)
+                        if (highlight.StartCharPos != idx)
                         {
-                            var part = msg.Text.Substring(idx, item.Key - idx);
+                            string part = msg.Text.Substring(idx, highlight.StartCharPos - idx);
                             p.Inlines.Add(new Run(part));
                             idx += part.Length;
                         }
 
-                        var hword = msg.Text.Substring(idx, item.Value.Key);
-                        if (item.Value.Value == Message.HightLightTypes.Highlight)
+                        string hword = msg.Text.Substring(idx, highlight.Length);
+                        if (highlight.Type == Message.HightLightTypes.Highlight)
                         {
                             Run word = new Run(hword);
                             MessageSettings.LoadSettingsFor(word, MessageSettings.LeagueFoundMessage);
                             word.Foreground = MessageSettings.LeagueFoundMessage.NickColor;
                             p.Inlines.Add(word);
                         }
-                        else if (item.Value.Value == Message.HightLightTypes.URI)
+                        else if (highlight.Type == Message.HightLightTypes.URI)
                         {
                             Hyperlink word = new Hyperlink(new Run(hword));
                             MessageSettings.LoadSettingsFor(word, MessageSettings.HyperLinkStyle);
@@ -441,12 +443,12 @@ namespace GreatSnooper.ViewModel
                             word.Foreground = MessageSettings.LeagueFoundMessage.NickColor;
                             p.Inlines.Add(word);
                         }
-                        idx += item.Value.Key;
+                        idx += highlight.Length;
                     }
 
                     if (idx != msg.Text.Length)
                     {
-                        var part = msg.Text.Substring(idx, msg.Text.Length - idx);
+                        string part = msg.Text.Substring(idx, msg.Text.Length - idx);
                         p.Inlines.Add(new Run(part));
                         idx += part.Length;
                     }
@@ -951,7 +953,7 @@ namespace GreatSnooper.ViewModel
             MenuItem obj = (MenuItem)sender;
             User u = ((Message)((ContextMenu)obj.Parent).Tag).Sender;
 
-            this.MainViewModel.InstantColors.Remove(u);
+            InstantColors.Instance.Remove(u);
         }
 
         public void Dispose()

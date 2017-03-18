@@ -16,21 +16,18 @@
     using System.Windows.Input;
     using System.Windows.Media;
     using System.Windows.Threading;
-
     using GalaSoft.MvvmLight;
     using GalaSoft.MvvmLight.Command;
-
     using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.Model;
     using GreatSnooper.Services;
     using GreatSnooper.Validators;
     using GreatSnooper.Windows;
-
     using MahApps.Metro;
     using MahApps.Metro.Controls;
     using MahApps.Metro.Controls.Dialogs;
-
     using Microsoft.Win32;
 
     public class LoginViewModel : ViewModelBase, IDisposable
@@ -115,12 +112,12 @@
             // LoginType
             switch (Properties.Settings.Default.LoginType)
             {
-            case "simple":
-                LoginType = 0;
-                break;
-            default:
-                LoginType = 1;
-                break;
+                case "simple":
+                    LoginType = 0;
+                    break;
+                default:
+                    LoginType = 1;
+                    break;
             }
 
             AutoLogin = Properties.Settings.Default.AutoLogIn;
@@ -504,7 +501,7 @@
                 e.Cancel = true;
             }
 
-            if (!loggedIn && wormNetC != null && wormNetC.State != AbstractCommunicator.ConnectionStates.Disconnected)
+            if (!loggedIn && wormNetC != null && wormNetC.State != IRCCommunicator.ConnectionStates.Disconnected)
             {
                 wormNetC.CancelAsync();
                 e.Cancel = true;
@@ -605,7 +602,7 @@
             DialogService.CloseRequest();
         }
 
-        private void ConnectionState(object sender, AbstractCommunicator.ConnectionStates oldState)
+        private void ConnectionState(object sender, IRCCommunicator.ConnectionStates oldState)
         {
             this.dispatcher.Invoke(new Action(delegate()
             {
@@ -613,34 +610,34 @@
 
                 switch (wormNetC.State)
                 {
-                case AbstractCommunicator.ConnectionStates.Connected:
-                    if (!closing)
-                    {
-                        new MainWindow(wormNetC, TaskbarIconService).Show();
-                        loggedIn = true;
-                        this.CloseCommand.Execute(null);
-                        return;
-                    }
-                    break;
-
-                case AbstractCommunicator.ConnectionStates.Disconnected:
-                    if (!closing)
-                    {
-                        if (wormNetC.ErrorState == AbstractCommunicator.ErrorStates.UsernameInUse)
+                    case IRCCommunicator.ConnectionStates.Connected:
+                        if (!closing)
                         {
-                            this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.NicknameInUseText);
+                            new MainWindow(wormNetC, TaskbarIconService).Show();
+                            loggedIn = true;
+                            this.CloseCommand.Execute(null);
+                            return;
                         }
-                        else
-                        {
-                            this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.WNCommFailText);
-                        }
-                    }
+                        break;
 
-                    wormNetC.ConnectionState -= ConnectionState;
-                    wormNetC.Dispose();
-                    wormNetC = null;
-                    this.Loading = false;
-                    break;
+                    case IRCCommunicator.ConnectionStates.Disconnected:
+                        if (!closing)
+                        {
+                            if (wormNetC.ErrorState == IRCCommunicator.ErrorStates.UsernameInUse)
+                            {
+                                this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.NicknameInUseText);
+                            }
+                            else
+                            {
+                                this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.WNCommFailText);
+                            }
+                        }
+
+                        wormNetC.ConnectionState -= ConnectionState;
+                        wormNetC.Dispose();
+                        wormNetC = null;
+                        this.Loading = false;
+                        break;
                 }
             }));
         }
@@ -764,7 +761,7 @@
                 }
                 Properties.Settings.Default.Save();
 
-                GlobalManager.User = new User(Nick, Clan);
+                GlobalManager.User = new User(null, Nick, Clan);
                 GlobalManager.User.Country = SelectedCountry;
                 GlobalManager.User.Rank = Ranks.GetRankByInt(SelectedRank);
 
@@ -805,43 +802,43 @@
 
                     switch (t.Result.TusState)
                     {
-                    case TusResult.TusStates.OK:
-                        TusAccounts.SetTusAccounts(t.Result.Rows, null);
-                        var tusAccount = GlobalManager.TusAccounts[t.Result.Nickname];
-                        if (this.UseSnooperRank.HasValue && this.UseSnooperRank.Value)
-                        {
-                            tusAccount.Rank = Ranks.Snooper;
-                        }
+                        case TusResult.TusStates.OK:
+                            TusAccounts.SetTusAccounts(t.Result.Rows, null);
+                            var tusAccount = GlobalManager.TusAccounts[t.Result.Nickname];
+                            if (this.UseSnooperRank.HasValue && this.UseSnooperRank.Value)
+                            {
+                                tusAccount.Rank = Ranks.Snooper;
+                            }
 
-                        var clanRegexTUS = new Regex(@"[^a-z0-9]", RegexOptions.IgnoreCase);
-                        var clan = clanRegexTUS.Replace(tusAccount.Clan, ""); // Remove bad characters
+                            var clanRegexTUS = new Regex(@"[^a-z0-9]", RegexOptions.IgnoreCase);
+                            var clan = clanRegexTUS.Replace(tusAccount.Clan, ""); // Remove bad characters
 
-                        GlobalManager.User = new User(t.Result.Nickname, clan);
-                        GlobalManager.User.TusAccount = tusAccount;
+                            GlobalManager.User = new User(null, t.Result.Nickname, clan);
+                            GlobalManager.User.TusAccount = tusAccount;
 
-                        if (Properties.Settings.Default.ChangeWormsNick)
-                        {
-                            Properties.Settings.Default.WormsNick = t.Result.Nickname;
-                            Properties.Settings.Default.Save();
-                        }
+                            if (Properties.Settings.Default.ChangeWormsNick)
+                            {
+                                Properties.Settings.Default.WormsNick = t.Result.Nickname;
+                                Properties.Settings.Default.Save();
+                            }
 
-                        // Initialize the WormNet Communicator
-                        wormNetC = new WormNetCommunicator(server, port);
-                        wormNetC.ConnectionState += ConnectionState;
-                        wormNetC.Connect();
-                        return;
+                            // Initialize the WormNet Communicator
+                            wormNetC = new WormNetCommunicator(server, port);
+                            wormNetC.ConnectionState += ConnectionState;
+                            wormNetC.Connect();
+                            return;
 
-                    case TusResult.TusStates.TUSError:
-                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.TusLoginFailText);
-                        break;
+                        case TusResult.TusStates.TUSError:
+                            this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.TusLoginFailText);
+                            break;
 
-                    case TusResult.TusStates.UserError:
-                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.TusAuthFailText);
-                        break;
+                        case TusResult.TusStates.UserError:
+                            this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.TusAuthFailText);
+                            break;
 
-                    case TusResult.TusStates.ConnectionError:
-                        this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.TusCommFailText);
-                        break;
+                        case TusResult.TusStates.ConnectionError:
+                            this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.TusCommFailText);
+                            break;
                     }
 
                     this.Loading = false;

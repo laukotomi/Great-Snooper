@@ -2,15 +2,14 @@
 {
     using System;
     using System.Collections.Generic;
-
-    using GreatSnooper.Classes;
+    using GreatSnooper.IRC;
     using GreatSnooper.Model;
 
     public static class TusAccounts
     {
         public static DateTime TusAccountsLoaded = new DateTime(1999, 5, 31);
 
-        public static void SetTusAccounts(string[] rows, AbstractCommunicator server = null)
+        public static void SetTusAccounts(string[] rows, IRCCommunicator server = null)
         {
             foreach (var account in GlobalManager.TusAccounts)
             {
@@ -34,7 +33,7 @@
                     }
 
                     User u;
-                    if (server != null && server.State == AbstractCommunicator.ConnectionStates.Connected && server.Users.TryGetValue(data[0], out u) && u.TusAccount == null)
+                    if (server != null && server.State == IRCCommunicator.ConnectionStates.Connected && server.Users.TryGetValue(data[0], out u) && u.TusAccount == null)
                     {
                         u.TusAccount = tusAccount;
                         tusAccount.User = u;

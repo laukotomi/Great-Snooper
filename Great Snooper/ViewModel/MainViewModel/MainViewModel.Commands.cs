@@ -8,6 +8,7 @@
 
     using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
 
     public partial class MainViewModel : ViewModelBase, IDisposable
     {

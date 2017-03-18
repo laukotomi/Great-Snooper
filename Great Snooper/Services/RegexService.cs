@@ -14,8 +14,8 @@
             str = Regex.Escape(str)
                   .Replace(@"\.", @".")
                   .Replace(@"\\.", @"\.")
-                  .Replace(@"\*", @".*?")
-                  .Replace(@"\\.*?", @"\*")
+                  .Replace(@"\*", @".*")
+                  .Replace(@"\\.*", @"\*")
                   .Replace(@"\+", @".+")
                   .Replace(@"\\.+", @"\+")
                   .Replace(@"\\\\", @"\\");

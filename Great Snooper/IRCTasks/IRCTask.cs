@@ -1,14 +1,15 @@
 ﻿namespace GreatSnooper.IRCTasks
 {
-    using GreatSnooper.Classes;
+    using GreatSnooper.IRC;
     using GreatSnooper.ViewModel;
 
     public abstract class IRCTask
     {
-        public AbstractCommunicator Sender
+        protected IRCCommunicator _server;
+
+        public IRCTask(IRCCommunicator server)
         {
-            get;
-            protected set;
+            _server = server;
         }
 
         public abstract void DoTask(MainViewModel mw);

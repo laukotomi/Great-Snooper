@@ -1,4 +1,4 @@
-﻿namespace GreatSnooper.Classes
+﻿namespace GreatSnooper.Services
 {
     using System;
     using System.Collections.Generic;
@@ -146,25 +146,25 @@
         {
             switch (e.PropertyName)
             {
-            case "NotificatorInGameNames":
-                this.GameNames = this.LoadList(Properties.Settings.Default.NotificatorInGameNames, out this._searchInGameNamesEnabled);
-                break;
+                case "NotificatorInGameNames":
+                    this.GameNames = this.LoadList(Properties.Settings.Default.NotificatorInGameNames, out this._searchInGameNamesEnabled);
+                    break;
 
-            case "NotificatorInHosterNames":
-                this.HosterNames = this.LoadList(Properties.Settings.Default.NotificatorInHosterNames, out this._searchInHosterNamesEnabled);
-                break;
+                case "NotificatorInHosterNames":
+                    this.HosterNames = this.LoadList(Properties.Settings.Default.NotificatorInHosterNames, out this._searchInHosterNamesEnabled);
+                    break;
 
-            case "NotificatorInJoinMessages":
-                this.JoinMessages = this.LoadList(Properties.Settings.Default.NotificatorInJoinMessages, out this._searchInJoinMessagesEnabled);
-                break;
+                case "NotificatorInJoinMessages":
+                    this.JoinMessages = this.LoadList(Properties.Settings.Default.NotificatorInJoinMessages, out this._searchInJoinMessagesEnabled);
+                    break;
 
-            case "NotificatorInMessages":
-                this.InMessages = this.LoadList(Properties.Settings.Default.NotificatorInMessages, out this._searchInMessagesEnabled);
-                break;
+                case "NotificatorInMessages":
+                    this.InMessages = this.LoadList(Properties.Settings.Default.NotificatorInMessages, out this._searchInMessagesEnabled);
+                    break;
 
-            case "NotificatorInSenderNames":
-                this.SenderNames = this.LoadList(Properties.Settings.Default.NotificatorInSenderNames, out this._searchInSenderNamesEnabled);
-                break;
+                case "NotificatorInSenderNames":
+                    this.SenderNames = this.LoadList(Properties.Settings.Default.NotificatorInSenderNames, out this._searchInSenderNamesEnabled);
+                    break;
             }
         }
 

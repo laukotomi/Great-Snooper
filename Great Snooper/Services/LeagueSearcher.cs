@@ -1,4 +1,4 @@
-﻿namespace GreatSnooper.Classes
+﻿namespace GreatSnooper.Services
 {
     using System;
     using System.Collections.Generic;

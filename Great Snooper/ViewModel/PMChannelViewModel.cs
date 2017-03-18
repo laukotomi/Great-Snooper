@@ -8,11 +8,9 @@
     using System.Windows.Documents;
     using System.Windows.Input;
     using System.Windows.Media;
-
     using GalaSoft.MvvmLight.Command;
-
-    using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.Model;
     using GreatSnooper.Windows;
 
@@ -20,8 +18,8 @@
     {
         private TextBlock headerTB;
 
-        public PMChannelViewModel(MainViewModel mainViewModel, AbstractCommunicator server, string channelName)
-        : base(mainViewModel, server)
+        public PMChannelViewModel(MainViewModel mainViewModel, IRCCommunicator server, string channelName)
+            : base(mainViewModel, server)
         {
             this.Joined = true;
 
@@ -39,7 +37,7 @@
                 User u = GreatSnooper.Helpers.UserHelper.GetUser(this.Server, userName);
 
                 this.Users.Add(u);
-                u.PMChannels.Add(this);
+                u.ChannelCollection.Add(this);
                 u.PropertyChanged += UserPropertyChanged;
             }
 
@@ -87,7 +85,7 @@
         {
             foreach (User u in this.Users)
             {
-                u.PMChannels.Remove(this);
+                u.ChannelCollection.Remove(this);
                 u.PropertyChanged -= UserPropertyChanged;
             }
             this.Users.Clear();
@@ -154,48 +152,48 @@
 
                 switch (this.Users[j].OnlineStatus)
                 {
-                case User.Status.Offline:
-                    if (this.MainViewModel.SelectedChannel == this)
-                    {
-                        inline.Foreground = Brushes.Red;
-                    }
-                    else if (isMouseOver)
-                    {
-                        inline.Foreground = Brushes.Firebrick;
-                    }
-                    else
-                    {
-                        inline.Foreground = Brushes.DarkRed;
-                    }
-                    break;
-                case User.Status.Online:
-                    if (this.MainViewModel.SelectedChannel == this)
-                    {
-                        inline.Foreground = Brushes.GreenYellow;
-                    }
-                    else if (isMouseOver)
-                    {
-                        inline.Foreground = Brushes.YellowGreen;
-                    }
-                    else
-                    {
-                        inline.Foreground = Brushes.Green;
-                    }
-                    break;
-                case User.Status.Unknown:
-                    if (this.MainViewModel.SelectedChannel == this)
-                    {
-                        inline.Foreground = Brushes.Goldenrod;
-                    }
-                    else if (isMouseOver)
-                    {
-                        inline.Foreground = Brushes.LightYellow;
-                    }
-                    else
-                    {
-                        inline.Foreground = Brushes.Yellow;
-                    }
-                    break;
+                    case User.Status.Offline:
+                        if (this.MainViewModel.SelectedChannel == this)
+                        {
+                            inline.Foreground = Brushes.Red;
+                        }
+                        else if (isMouseOver)
+                        {
+                            inline.Foreground = Brushes.Firebrick;
+                        }
+                        else
+                        {
+                            inline.Foreground = Brushes.DarkRed;
+                        }
+                        break;
+                    case User.Status.Online:
+                        if (this.MainViewModel.SelectedChannel == this)
+                        {
+                            inline.Foreground = Brushes.GreenYellow;
+                        }
+                        else if (isMouseOver)
+                        {
+                            inline.Foreground = Brushes.YellowGreen;
+                        }
+                        else
+                        {
+                            inline.Foreground = Brushes.Green;
+                        }
+                        break;
+                    case User.Status.Unknown:
+                        if (this.MainViewModel.SelectedChannel == this)
+                        {
+                            inline.Foreground = Brushes.Goldenrod;
+                        }
+                        else if (isMouseOver)
+                        {
+                            inline.Foreground = Brushes.LightYellow;
+                        }
+                        else
+                        {
+                            inline.Foreground = Brushes.Yellow;
+                        }
+                        break;
                 }
                 i++;
                 j++;
@@ -227,7 +225,7 @@
                 this.Disabled = false;
             }
 
-            var msg = new Message(msgTask.User, msgTask.Message, msgTask.Setting, DateTime.Now);
+            var msg = new Message(this, msgTask.User, msgTask.Message, msgTask.Setting, DateTime.Now);
 
             // This way away message will be added to the channel later than the arrived message
             this.AddMessage(msg);
@@ -375,7 +373,7 @@
                 }
                 else
                 {
-                    u.PMChannels.Add(this);
+                    u.ChannelCollection.Add(this);
                     u.PropertyChanged += UserPropertyChanged;
                 }
             }
@@ -425,11 +423,11 @@
                 }
                 else
                 {
-                    u.PMChannels.Remove(this);
+                    u.ChannelCollection.Remove(this);
                     u.PropertyChanged -= UserPropertyChanged;
                 }
 
-                if (u.Channels.Count == 0 && u.PMChannels.Count == 0)
+                if (u.ChannelCollection.AllChannels.Count == 0)
                 {
                     GreatSnooper.Helpers.UserHelper.FinalizeUser(this.Server, u);
                 }
@@ -474,29 +472,29 @@
         {
             switch (e.PropertyName)
             {
-            case "OnlineStatus":
-            case "Name":
-                GenerateHeader();
-                break;
+                case "OnlineStatus":
+                case "Name":
+                    GenerateHeader();
+                    break;
 
-            case "IsBanned":
-                if (this.Users.Count == 1)
-                {
-                    var u = (User)sender;
-                    if (u.IsBanned)
+                case "IsBanned":
+                    if (this.Users.Count == 1)
                     {
-                        this.MainViewModel.CloseChannel(this);
+                        var u = (User)sender;
+                        if (u.IsBanned)
+                        {
+                            this.MainViewModel.CloseChannel(this);
+                        }
+                        else
+                        {
+                            this.MainViewModel.CreateChannel(this);
+                        }
                     }
                     else
                     {
-                        this.MainViewModel.CreateChannel(this);
+                        GenerateHeader();
                     }
-                }
-                else
-                {
-                    GenerateHeader();
-                }
-                break;
+                    break;
             }
         }
     }

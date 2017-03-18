@@ -1,4 +1,4 @@
-﻿namespace GreatSnooper.Helpers
+﻿namespace GreatSnooper.IRC
 {
     using System;
     using System.Collections.Generic;
@@ -6,6 +6,7 @@
 
     public class WormNetCharTable
     {
+        #region Singleton
         private static readonly Lazy<WormNetCharTable> lazy =
             new Lazy<WormNetCharTable>(() => new WormNetCharTable());
 
@@ -21,6 +22,7 @@
         {
 
         }
+        #endregion
 
         // A table to decode the messages sent from the WormNet servers. The encoding table will be generated from this.
         private char[] _decode =
@@ -50,8 +52,15 @@
         private Dictionary<char, byte> _encodeGame = new Dictionary<char, byte>();
 
         // This method ensures that the initialization will be made from the appropriate thread
+        private bool _isInitialized;
         public void Initialize()
         {
+            if (_isInitialized)
+            {
+                return;
+            }
+            _isInitialized = true;
+
             for (int i = 0; i < _decode.Length; i++)
             {
                 // Generate the encode dictionary

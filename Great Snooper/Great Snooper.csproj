@@ -149,21 +149,22 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Channel\ChannelLogger.cs" />
-    <Compile Include="Classes\AbstractCommunicator.cs" />
+    <Compile Include="IRC\IRCCommunicator.cs" />
     <Compile Include="Classes\AccentColorMenuData.cs" />
     <Compile Include="Classes\BBParser.cs" />
-    <Compile Include="Classes\GameSurgeCommunicator.cs" />
+    <Compile Include="Channel\ChannelCollection.cs" />
+    <Compile Include="IRC\GameSurgeCommunicator.cs" />
     <Compile Include="Channel\LastUserMessages.cs" />
-    <Compile Include="Classes\InstantColors.cs" />
-    <Compile Include="Classes\LeagueSearcher.cs" />
-    <Compile Include="Classes\Notificator.cs" />
-    <Compile Include="Classes\NotificatorEntry.cs" />
+    <Compile Include="Services\InstantColors.cs" />
+    <Compile Include="Services\LeagueSearcher.cs" />
+    <Compile Include="Services\Notificator.cs" />
+    <Compile Include="Services\NotificatorEntry.cs" />
     <Compile Include="Classes\TusResult.cs" />
-    <Compile Include="Classes\VisitedChannels.cs" />
+    <Compile Include="Channel\VisitedChannels.cs" />
     <Compile Include="Classes\WebDownload.cs">
       <SubType>Component</SubType>
     </Compile>
-    <Compile Include="Classes\WormNetCommunicator.cs" />
+    <Compile Include="IRC\WormNetCommunicator.cs" />
     <Compile Include="Converters\BoolToBoldConverter.cs" />
     <Compile Include="Converters\BoolToItalicConverter.cs" />
     <Compile Include="Converters\BoolToVisibilityConverter.cs" />
@@ -242,7 +243,7 @@
     <Compile Include="CustomUI\PasswordBoxAssistant.cs" />
     <Compile Include="Helpers\Ranks.cs" />
     <Compile Include="Helpers\Sounds.cs" />
-    <Compile Include="Helpers\WormNetCharTable.cs" />
+    <Compile Include="IRC\WormNetCharTable.cs" />
     <Compile Include="Model\Country.cs" />
     <Compile Include="Classes\LanguageData.cs" />
     <Compile Include="Classes\MySortedList.cs" />

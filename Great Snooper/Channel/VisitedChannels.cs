@@ -1,4 +1,4 @@
-﻿namespace GreatSnooper.Classes
+﻿namespace GreatSnooper.Channel
 {
     using System.Collections.Generic;
 

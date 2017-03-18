@@ -1,15 +1,15 @@
 ﻿namespace GreatSnooper.IRCTasks
 {
-    using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.Model;
     using GreatSnooper.ViewModel;
 
     public class NickChangeTask : IRCTask
     {
-        public NickChangeTask(AbstractCommunicator sender, string oldClientName, string newClientName)
+        public NickChangeTask(IRCCommunicator server, string oldClientName, string newClientName)
+            : base(server)
         {
-            this.Sender = sender;
             this.OldClientName = oldClientName;
             this.NewClientName = newClientName;
         }
@@ -29,32 +29,32 @@
         public override void DoTask(MainViewModel mvm)
         {
             User u;
-            if (Sender.Users.TryGetValue(this.OldClientName, out u))
+            if (_server.Users.TryGetValue(this.OldClientName, out u))
             {
-                if (u == Sender.User)
+                if (u == _server.User)
                 {
-                    Sender.User.Name = this.NewClientName;
+                    _server.User.Name = this.NewClientName;
                 }
 
                 // To keep SortedDictionary sorted, first client will be removed..
-                foreach (var chvm in u.Channels)
+                foreach (ChannelViewModel chvm in u.ChannelCollection.Channels)
                 {
                     if (chvm.Joined)
                     {
                         chvm.Users.Remove(u);
                     }
                 }
-                foreach (var chvm in u.PMChannels)
+                foreach (PMChannelViewModel chvm in u.ChannelCollection.PmChannels)
                 {
                     chvm.RemoveUserFromConversation(u, false, false);
                 }
 
                 u.Name = this.NewClientName;
-                Sender.Users.Remove(this.OldClientName);
-                Sender.Users.Add(u.Name, u);
+                _server.Users.Remove(this.OldClientName);
+                _server.Users.Add(u.Name, u);
 
                 // then later it will be readded with new Name
-                foreach (var chvm in u.Channels)
+                foreach (var chvm in u.ChannelCollection.Channels)
                 {
                     if (chvm.Joined)
                     {
@@ -62,7 +62,7 @@
                         chvm.AddMessage(GlobalManager.SystemUser, string.Format(Localizations.GSLocalization.Instance.GSNicknameChange, this.OldClientName, this.NewClientName), MessageSettings.SystemMessage);
                     }
                 }
-                foreach (var chvm in u.PMChannels)
+                foreach (var chvm in u.ChannelCollection.PmChannels)
                 {
                     chvm.AddUserToConversation(u, false, false);
                     chvm.AddMessage(GlobalManager.SystemUser, string.Format(Localizations.GSLocalization.Instance.GSNicknameChange, this.OldClientName, this.NewClientName), MessageSettings.SystemMessage);

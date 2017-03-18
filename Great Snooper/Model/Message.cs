@@ -7,13 +7,59 @@
     using System.Windows;
     using System.Windows.Documents;
     using System.Windows.Media;
-
+    using GreatSnooper.Classes;
     using GreatSnooper.Helpers;
+    using GreatSnooper.Services;
     using GreatSnooper.ViewModel;
 
     [DebuggerDisplay("{Sender.Name}: {Text}")]
     public class Message
     {
+        public class MessageHighlight : IComparable
+        {
+            public int StartCharPos { get; private set; }
+            public int LastCharPos { get; private set; }
+            public int Length { get; private set; }
+            public HightLightTypes Type { get; private set; }
+
+            public MessageHighlight(int start, int length, HightLightTypes type)
+            {
+                StartCharPos = start;
+                Length = length;
+                Type = type;
+                LastCharPos = StartCharPos + Length - 1;
+            }
+
+            public int CompareTo(object obj)
+            {
+                return StartCharPos.CompareTo(((MessageHighlight)obj).StartCharPos);
+            }
+
+            public MessageHighlight SubstractBefore(MessageHighlight substract)
+            {
+                if (StartCharPos < substract.StartCharPos)
+                {
+                    return new MessageHighlight(StartCharPos, substract.StartCharPos - StartCharPos, Type);
+                }
+                return null;
+            }
+
+            public MessageHighlight SubstractAfter(MessageHighlight substract)
+            {
+                if (LastCharPos > substract.LastCharPos)
+                {
+                    return new MessageHighlight(substract.LastCharPos + 1, LastCharPos - substract.LastCharPos, Type);
+                }
+                return null;
+            }
+
+            public bool IsOverlapping(MessageHighlight a)
+            {
+                // http://stackoverflow.com/questions/13513932/algorithm-to-detect-overlapping-periods
+                return StartCharPos <= a.LastCharPos && a.StartCharPos <= LastCharPos;
+            }
+        }
+
         protected static Regex urlRegex = new Regex(@"\b(ht|f)tps?://\S+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
         protected static Regex urlRegex2 = new Regex(@"\bwww\.\S+", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -29,17 +75,9 @@
             Channel, Join, Quit, Part, Offline, Action, User, Notice, Hyperlink, Time, League
         }
 
-        public SortedDictionary<int, KeyValuePair<int, HightLightTypes>> HighlightWords
-        {
-            get;
-            private set;
-        }
+        public MySortedList<MessageHighlight> HighlightParts { get; private set; }
 
-        public bool IsLogged
-        {
-            get;
-            set;
-        }
+        public bool IsLogged { get; set; }
 
         public Run NickRun
         {
@@ -58,39 +96,23 @@
             }
         }
 
-        public User Sender
-        {
-            get;
-            private set;
-        }
+        public AbstractChannelViewModel Channel { get; private set; }
+        public User Sender { get; private set; }
 
-        public MessageSetting Style
-        {
-            get;
-            private set;
-        }
+        public MessageSetting Style { get; private set; }
 
-        public string Text
-        {
-            get;
-            private set;
-        }
+        public string Text { get; private set; }
 
-        public DateTime Time
-        {
-            get;
-            private set;
-        }
+        public DateTime Time { get; private set; }
 
-        public Message(User sender, string text, MessageSetting setting, DateTime time, bool isLogged = false)
+        public Message(AbstractChannelViewModel channel, User sender, string text, MessageSetting setting, DateTime time, bool isLogged = false)
         {
+            this.Channel = channel;
             this.Sender = sender;
             this.Text = text;
             this.Style = setting;
             this.Time = time;
             this.IsLogged = isLogged;
-
-            sender.Messages.Add(this);
 
             if (setting.Type == MessageTypes.Action ||
                 setting.Type == MessageTypes.Channel ||
@@ -106,7 +128,8 @@
 
             if (setting.Type == MessageTypes.Channel)
             {
-                sender.PropertyChanged += this.SenderPropertyChanged;
+                sender.ChannelCollection.CollectionChanged += UserStateChanged;
+                sender.PropertyChanged += SenderPropertyChanged;
             }
         }
 
@@ -125,39 +148,43 @@
 
         public void AddHighlightWord(int idx, int length, HightLightTypes type)
         {
-            if (this.HighlightWords == null)
+            if (this.HighlightParts == null)
             {
-                this.HighlightWords = new SortedDictionary<int, KeyValuePair<int, HightLightTypes>>();
+                this.HighlightParts = new MySortedList<MessageHighlight>();
             }
 
             // Handling overlapping.. eg. when notificator finds *, but the message contains url (#Help -> !port)
             // The logic is that newly added item can not conflict with already added item
-            Dictionary<int, int> addRanges = new Dictionary<int, int>();
-            KeyValuePair<int, int> tempRange = new KeyValuePair<int, int>(idx, length);
-            foreach (var item in this.HighlightWords)
+            List<MessageHighlight> toAdd = new List<MessageHighlight>();
+            MessageHighlight tempHightlight = new MessageHighlight(idx, length, type);
+
+            foreach (MessageHighlight highlight in this.HighlightParts)
             {
-                if (item.Key >= tempRange.Key && tempRange.Key + tempRange.Value >= item.Key)
+                if (highlight.IsOverlapping(tempHightlight))
                 {
-                    int newLength = item.Key - tempRange.Key;
-                    if (newLength > 0)
+                    // Since highlights are ordered the part before the overlap can be added to highlight parts..
+                    MessageHighlight before = tempHightlight.SubstractBefore(highlight);
+                    if (before != null)
                     {
-                        if (tempRange.Value < newLength)
-                        {
-                            newLength = tempRange.Value;
-                        }
-                        addRanges.Add(tempRange.Key, newLength);
+                        toAdd.Add(before);
                     }
-                    tempRange = new KeyValuePair<int, int>(item.Key + item.Value.Key, length - item.Key - item.Value.Key);
+                    // .. and only the part after the overlap needs to be further processed (checking other highlight parts whether they overlap
+                    tempHightlight = tempHightlight.SubstractAfter(highlight);
+                    if (tempHightlight == null)
+                    {
+                        break;
+                    }
                 }
             }
-            if (tempRange.Value > 0)
+
+            if (tempHightlight != null)
             {
-                addRanges.Add(tempRange.Key, tempRange.Value);
+                toAdd.Add(tempHightlight);
             }
 
-            foreach (var item in addRanges)
+            foreach (MessageHighlight highlight in toAdd)
             {
-                this.HighlightWords[item.Key] = new KeyValuePair<int, HightLightTypes>(item.Value, type);
+                this.HighlightParts.Add(highlight);
             }
         }
 
@@ -171,7 +198,25 @@
 
         private void SenderPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (this.NickRun != null && e.PropertyName == "OnlineStatus")
+            if (e.PropertyName == "OnlineStatus")
+            {
+                this.UpdateNickStyle();
+            }
+        }
+
+        private void UserStateChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            AbstractChannelViewModel chvm = null; ;
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Add)
+            {
+                chvm = e.NewItems[0] as AbstractChannelViewModel;
+            }
+            else if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove)
+            {
+                chvm = e.OldItems[0] as AbstractChannelViewModel;
+            }
+
+            if (chvm != null && chvm == Channel)
             {
                 this.UpdateNickStyle();
             }
@@ -181,7 +226,7 @@
         {
             if (this._nickRun == null)
             {
-                return; // If message is not displayed
+                return; // If message is not displayed yet
             }
 
             this.NickRun.FontStyle = FontStyles.Normal;
@@ -190,21 +235,28 @@
             switch (this.Sender.OnlineStatus)
             {
                 case User.Status.Online:
-                    // Instant color
-                    SolidColorBrush b;
-                    if (MainViewModel.Instance.InstantColors.TryGetValue(this.Sender, out b))
+                    if (this.Style.Type != MessageTypes.Channel || this.Sender.ChannelCollection.AllChannels.Contains(this.Channel))
                     {
-                        this.NickRun.Foreground = b;
-                    }
-                    // Group color
-                    else if (this.Sender.Group.ID != UserGroups.SystemGroupID)
-                    {
-                        this.NickRun.Foreground = this.Sender.Group.TextColor;
-                        this.NickRun.FontStyle = FontStyles.Italic;
+                        // Instant color
+                        SolidColorBrush b;
+                        if (InstantColors.Instance.TryGetValue(this.Sender, out b))
+                        {
+                            this.NickRun.Foreground = b;
+                        }
+                        // Group color
+                        else if (this.Sender.Group.ID != UserGroups.SystemGroupID)
+                        {
+                            this.NickRun.Foreground = this.Sender.Group.TextColor;
+                            this.NickRun.FontStyle = FontStyles.Italic;
+                        }
+                        else
+                        {
+                            this.NickRun.Foreground = this.Style.NickColor;
+                        }
                     }
                     else
                     {
-                        this.NickRun.Foreground = this.Style.NickColor;
+                        this.NickRun.Foreground = Brushes.Goldenrod;
                     }
                     break;
 
@@ -223,5 +275,7 @@
             this._nickRun = null;
             this.Sender.Messages.Remove(this);
         }
+
+        public MessageHighlight tempHighlight { get; set; }
     }
 }

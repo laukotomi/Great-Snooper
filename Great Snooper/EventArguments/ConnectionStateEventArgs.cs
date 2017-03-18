@@ -2,16 +2,16 @@
 {
     using System;
 
-    using GreatSnooper.Classes;
+    using GreatSnooper.IRC;
 
     public class ConnectionStateEventArgs : EventArgs
     {
-        public ConnectionStateEventArgs(AbstractCommunicator.ConnectionStates state)
+        public ConnectionStateEventArgs(IRCCommunicator.ConnectionStates state)
         {
             State = state;
         }
 
-        public AbstractCommunicator.ConnectionStates State
+        public IRCCommunicator.ConnectionStates State
         {
             get;
             private set;
