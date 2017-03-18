@@ -178,7 +178,7 @@
     <Compile Include="Helpers\ExtensionMethods.cs" />
     <Compile Include="Helpers\NativeMethods.cs" />
     <Compile Include="Helpers\SettingsHelper.cs" />
-    <Compile Include="Helpers\TusAccounts.cs" />
+    <Compile Include="Services\TusAccounts.cs" />
     <Compile Include="Helpers\UserHelper.cs" />
     <Compile Include="IRCTasks\ChannelListTask.cs" />
     <Compile Include="IRCTasks\ClientAddTask.cs" />
@@ -256,7 +256,7 @@
     <Compile Include="Helpers\Countries.cs" />
     <Compile Include="Helpers\ErrorLog.cs" />
     <Compile Include="Helpers\GlobalManager.cs" />
-    <Compile Include="Helpers\UserGroups.cs" />
+    <Compile Include="Services\UserGroups.cs" />
     <Compile Include="Localizations\GSLocalization.cs" />
     <Compile Include="Localizations\Localization.Designer.cs">
       <AutoGen>True</AutoGen>

@@ -7,6 +7,7 @@
     using GreatSnooper.Channel;
     using GreatSnooper.Helpers;
     using GreatSnooper.IRC;
+    using GreatSnooper.Services;
     using GreatSnooper.ViewModel;
 
     [DebuggerDisplay("{Name}")]

@@ -4,11 +4,9 @@
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
-
     using GreatSnooper.Model;
-
+    using GreatSnooper.Services;
     using MahApps.Metro.Controls.Dialogs;
-
     using Newtonsoft.Json;
 
     public class GlobalManager

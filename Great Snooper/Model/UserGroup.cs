@@ -9,6 +9,7 @@
     using GalaSoft.MvvmLight;
 
     using GreatSnooper.Helpers;
+    using GreatSnooper.Services;
 
     public class UserGroup : ObservableObject, IDisposable
     {

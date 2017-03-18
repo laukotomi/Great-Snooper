@@ -1,6 +1,7 @@
-﻿namespace GreatSnooper.Helpers
+﻿namespace GreatSnooper.Services
 {
     using System.Collections.Generic;
+    using GreatSnooper.Helpers;
     using GreatSnooper.Model;
 
     public static class UserGroups

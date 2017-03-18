@@ -1,7 +1,8 @@
-﻿namespace GreatSnooper.Helpers
+﻿namespace GreatSnooper.Services
 {
     using System;
     using System.Collections.Generic;
+    using GreatSnooper.Helpers;
     using GreatSnooper.IRC;
     using GreatSnooper.Model;
 

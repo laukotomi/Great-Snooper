@@ -10,6 +10,7 @@
 
     using GreatSnooper.Helpers;
     using GreatSnooper.Model;
+    using GreatSnooper.Services;
 
     public partial class MainViewModel : ViewModelBase, IDisposable
     {

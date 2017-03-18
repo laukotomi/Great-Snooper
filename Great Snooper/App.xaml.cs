@@ -7,6 +7,7 @@
     using System.Windows;
     using GalaSoft.MvvmLight.Threading;
     using GreatSnooper.Helpers;
+    using GreatSnooper.Services;
     using GreatSnooper.Validators;
     using Microsoft.Win32;
 
