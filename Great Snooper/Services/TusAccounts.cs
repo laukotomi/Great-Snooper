@@ -6,11 +6,37 @@
     using GreatSnooper.IRC;
     using GreatSnooper.Model;
 
-    public static class TusAccounts
+    public class TusAccounts
     {
-        public static DateTime TusAccountsLoaded = new DateTime(1999, 5, 31);
+        #region Singleton
+        private static readonly Lazy<TusAccounts> lazy =
+            new Lazy<TusAccounts>(() => new TusAccounts());
 
-        public static void SetTusAccounts(string[] rows, IRCCommunicator server = null)
+        public static TusAccounts Instance
+        {
+            get
+            {
+                return lazy.Value;
+            }
+        }
+
+        private TusAccounts()
+        {
+        }
+        #endregion
+
+        private DateTime _tusAccountsLoaded = new DateTime(1999, 5, 31);
+        private readonly TimeSpan tusAccountsLoadTime = new TimeSpan(0, 0, 20);
+
+        public bool CanLoad
+        {
+            get
+            {
+                return DateTime.Now - _tusAccountsLoaded >= tusAccountsLoadTime;
+            }
+        }
+
+        public void SetTusAccounts(string[] rows, IRCCommunicator server = null)
         {
             foreach (var account in GlobalManager.TusAccounts)
             {
@@ -61,7 +87,7 @@
                 GlobalManager.TusAccounts.Remove(key);
             }
 
-            TusAccountsLoaded = DateTime.Now;
+            _tusAccountsLoaded = DateTime.Now;
         }
     }
 }

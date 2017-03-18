@@ -1,18 +1,37 @@
 ﻿namespace GreatSnooper.Services
 {
+    using System;
     using System.Collections.Generic;
     using GreatSnooper.Helpers;
     using GreatSnooper.Model;
 
-    public static class UserGroups
+    public class UserGroups
     {
-        public const int BuddiesGroupID = 0;
+        #region Singleton
+        private static readonly Lazy<UserGroups> lazy =
+            new Lazy<UserGroups>(() => new UserGroups());
+
+        public static UserGroups Instance
+        {
+            get
+            {
+                return lazy.Value;
+            }
+        }
+
+        private UserGroups()
+        {
+            Groups = new Dictionary<string, UserGroup>(GlobalManager.CIStringComparer);
+            Users = new Dictionary<string, UserGroup>(GlobalManager.CIStringComparer);
+        }
+        #endregion
+
         public const int SystemGroupID = int.MaxValue;
 
-        public static readonly Dictionary<string, UserGroup> Groups = new Dictionary<string, UserGroup>(GlobalManager.CIStringComparer);
-        public static readonly Dictionary<string, UserGroup> Users = new Dictionary<string, UserGroup>(GlobalManager.CIStringComparer);
+        public Dictionary<string, UserGroup> Groups { get; private set; }
+        public Dictionary<string, UserGroup> Users { get; private set; }
 
-        public static void AddOrRemoveUser(User user, UserGroup newGroup)
+        public void AddOrRemoveUser(User user, UserGroup newGroup)
         {
             UserGroup oldGroup;
             if (Users.TryGetValue(user.Name, out oldGroup))
@@ -44,21 +63,27 @@
             UserHelper.UpdateMessageStyle(user);
         }
 
-        public static void Initialize()
+        public void Initialize()
         {
             for (int i = 0; i < 7; i++)
             {
-                var ug = new UserGroup(i);
-                Groups.Add(ug.SettingName, ug);
+                var group = new UserGroup(i);
+                Groups.Add(group.SettingName, group);
 
-                foreach (var user in ug.Users)
+                foreach (string user in group.Users)
                 {
                     if (!Users.ContainsKey(user))
                     {
-                        Users.Add(user, ug);
+                        Users.Add(user, group);
                     }
                 }
             }
+        }
+
+        public void Reload()
+        {
+            foreach (var item in Groups)
+                item.Value.ReloadData();
         }
     }
 }

@@ -564,12 +564,12 @@
 
         private void AddUserToDefaultGroup(User u)
         {
-            UserGroups.AddOrRemoveUser(u, null);
+            UserGroups.Instance.AddOrRemoveUser(u, null);
         }
 
         private void AddUserToGroup(KeyValuePair<User, UserGroup> param)
         {
-            UserGroups.AddOrRemoveUser(param.Key, param.Value);
+            UserGroups.Instance.AddOrRemoveUser(param.Key, param.Value);
         }
 
         private bool CheckWAExe()
@@ -968,7 +968,7 @@
                     defItem.Command = AddUserToDefaultGroupCommand;
                     group.Items.Add(defItem);
 
-                    foreach (var item in UserGroups.Groups)
+                    foreach (var item in UserGroups.Instance.Groups)
                     {
                         var menuItem = new MenuItem()
                         {

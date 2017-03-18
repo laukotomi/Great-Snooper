@@ -64,7 +64,6 @@
         private IntPtr lobbyWindow = IntPtr.Zero;
         private int procId = Process.GetCurrentProcess().Id;
         private bool shouldLeaveEnergySaveMode;
-        private TimeSpan tusAccountsLoadTime = new TimeSpan(0, 0, 20);
         private string _filterText = Localizations.GSLocalization.Instance.FilterText;
         private bool _isAway;
         private bool _isEnergySaveMode;
@@ -1345,7 +1344,7 @@
                     if (t.Result == null)
                         return;
 
-                    TusAccounts.SetTusAccounts(t.Result, this.WormNet);
+                    TusAccounts.Instance.SetTusAccounts(t.Result, this.WormNet);
                 }, TaskScheduler.FromCurrentSynchronizationContext());
             }
         }
@@ -1472,7 +1471,7 @@
             }
 
             // TUS accounts
-            if (!this.closing && Properties.Settings.Default.LoadTUSAccounts && DateTime.Now - TusAccounts.TusAccountsLoaded >= this.tusAccountsLoadTime && (Properties.Settings.Default.LoadOnlyIfWindowActive == false || this.IsWindowActive))
+            if (!this.closing && Properties.Settings.Default.LoadTUSAccounts && TusAccounts.Instance.CanLoad && (Properties.Settings.Default.LoadOnlyIfWindowActive == false || this.IsWindowActive))
             {
                 this.LoadTusAccounts();
             }

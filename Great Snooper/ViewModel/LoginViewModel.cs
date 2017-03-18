@@ -803,7 +803,7 @@
                     switch (t.Result.TusState)
                     {
                         case TusResult.TusStates.OK:
-                            TusAccounts.SetTusAccounts(t.Result.Rows, null);
+                            TusAccounts.Instance.SetTusAccounts(t.Result.Rows, null);
                             var tusAccount = GlobalManager.TusAccounts[t.Result.Nickname];
                             if (this.UseSnooperRank.HasValue && this.UseSnooperRank.Value)
                             {

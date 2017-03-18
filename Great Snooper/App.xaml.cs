@@ -132,7 +132,7 @@
             Countries.Initialize();
             Ranks.Initialize();
             GlobalManager.Initialize();
-            UserGroups.Initialize();
+            UserGroups.Instance.Initialize();
             Sounds.Initialize();
 
             if (save)

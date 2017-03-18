@@ -161,8 +161,7 @@
 
                     Localizations.GSLocalization.Instance.CultureChanged();
 
-                    foreach (var userGroup in UserGroups.Groups)
-                        userGroup.Value.ReloadData();
+                    UserGroups.Instance.Reload();
 
                     Properties.Settings.Default.CultureName = language.CultureName;
                     Properties.Settings.Default.Save();
@@ -224,7 +223,7 @@
             this.WindowSettings.Add(new BoolSetting("ItalicForGSUsers", Localizations.GSLocalization.Instance.ItalicForGSUsers));
 
             this.UserGroupSettings = new List<AbstractSetting>();
-            foreach (var item in UserGroups.Groups)
+            foreach (var item in UserGroups.Instance.Groups)
             {
                 this.UserGroupSettings.Add(new UserGroupSetting(item.Value, Validator.NotEmptyValidator, this.DialogService));
             }
@@ -295,7 +294,7 @@
         private void LoadGroupSounds()
         {
             this.GroupSoundSettings.Clear();
-            foreach (var item in UserGroups.Groups)
+            foreach (var item in UserGroups.Instance.Groups)
             {
                 this.GroupSoundSettings.Add(new SoundSetting(item.Value.SettingName + "Sound", string.Format(Localizations.GSLocalization.Instance.GroupSoundSettingText, item.Value.Name)));
             }

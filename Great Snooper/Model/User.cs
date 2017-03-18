@@ -36,7 +36,7 @@
             this.AddToChannel = new List<ChannelViewModel>();
             this.Messages = new List<Message>();
             UserGroup group;
-            if (UserGroups.Users.TryGetValue(name, out group))
+            if (UserGroups.Instance.Users.TryGetValue(name, out group))
             {
                 this._group = group;
             }

@@ -23,7 +23,7 @@
             m = groupSoundRegex.Match(e.PropertyName);
             if (m.Success)
             {
-                UserGroups.Groups["Group" + m.Groups[1].Value].Sound = null;
+                UserGroups.Instance.Groups["Group" + m.Groups[1].Value].Sound = null;
                 return;
             }
 
@@ -31,7 +31,7 @@
             if (m.Success)
             {
                 string[] userList = SettingsHelper.Load<string>("Group" + m.Groups[1].Value + "List").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                var group = UserGroups.Groups["Group" + m.Groups[1].Value];
+                var group = UserGroups.Instance.Groups["Group" + m.Groups[1].Value];
                 foreach (var user in group.Users.Except(userList))
                 {
                     foreach (var server in this.Servers)
@@ -39,7 +39,7 @@
                         User u;
                         if (server.Users.TryGetValue(user, out u))
                         {
-                            UserGroups.AddOrRemoveUser(u, null);
+                            UserGroups.Instance.AddOrRemoveUser(u, null);
                             break;
                         }
                     }
@@ -52,7 +52,7 @@
                         User u;
                         if (server.Users.TryGetValue(user, out u))
                         {
-                            UserGroups.AddOrRemoveUser(u, group);
+                            UserGroups.Instance.AddOrRemoveUser(u, group);
                             break;
                         }
                     }
@@ -69,7 +69,7 @@
                 case "Group4":
                 case "Group5":
                 case "Group6":
-                    var group = UserGroups.Groups[e.PropertyName];
+                    var group = UserGroups.Instance.Groups[e.PropertyName];
                     group.ReloadData();
                     foreach (var server in this.Servers)
                     {
