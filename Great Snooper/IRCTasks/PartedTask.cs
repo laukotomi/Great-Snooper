@@ -65,14 +65,7 @@
 
                     if (u.ChannelCollection.Channels.Count == 0)
                     {
-                        if (u.ChannelCollection.PmChannels.Count > 0)
-                        {
-                            u.OnlineStatus = User.Status.Unknown;
-                        }
-                        else
-                        {
-                            UserHelper.FinalizeUser(_server, u);
-                        }
+                        u.OnlineStatus = User.Status.Unknown;
                     }
                 }
             }

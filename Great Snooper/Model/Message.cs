@@ -8,7 +8,6 @@
     using System.Windows.Documents;
     using System.Windows.Media;
     using GreatSnooper.Classes;
-    using GreatSnooper.Helpers;
     using GreatSnooper.Services;
     using GreatSnooper.ViewModel;
 
@@ -90,8 +89,23 @@
                 if (this._nickRun != value)
                 {
                     this._nickRun = value;
-                    this._nickRun.MouseLeftButtonDown += this.MouseClick;
-                    this.UpdateNickStyle();
+                    if (value != null)
+                    {
+                        if (Style.Type == MessageTypes.Channel)
+                        {
+                            Sender.ChannelCollection.CollectionChanged += UserStateChanged;
+                        }
+                        this._nickRun.MouseLeftButtonDown += this.MouseClick;
+                        this.UpdateNickStyle();
+                    }
+                    else
+                    {
+                        if (Style.Type == MessageTypes.Channel)
+                        {
+                            Sender.ChannelCollection.CollectionChanged -= UserStateChanged;
+                        }
+                        this._nickRun.MouseLeftButtonDown -= this.MouseClick;
+                    }
                 }
             }
         }
@@ -113,6 +127,7 @@
             this.Style = setting;
             this.Time = time;
             this.IsLogged = isLogged;
+            sender.Messages.Add(this);
 
             if (setting.Type == MessageTypes.Action ||
                 setting.Type == MessageTypes.Channel ||
@@ -124,12 +139,6 @@
                 HandleUrlMatches(matches);
                 matches = urlRegex2.Matches(text);
                 HandleUrlMatches(matches);
-            }
-
-            if (setting.Type == MessageTypes.Channel)
-            {
-                sender.ChannelCollection.CollectionChanged += UserStateChanged;
-                sender.PropertyChanged += SenderPropertyChanged;
             }
         }
 
@@ -196,13 +205,14 @@
             }
         }
 
-        private void SenderPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
-        {
-            if (e.PropertyName == "OnlineStatus")
-            {
-                this.UpdateNickStyle();
-            }
-        }
+        // This way messages in PM channels can change its sender color 
+        //private void SenderPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        //{
+        //    if (e.PropertyName == "OnlineStatus")
+        //    {
+        //        this.UpdateNickStyle();
+        //    }
+        //}
 
         private void UserStateChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
@@ -268,12 +278,6 @@
                     this.NickRun.Foreground = Brushes.Goldenrod;
                     break;
             }
-        }
-
-        public void Dispose()
-        {
-            this._nickRun = null;
-            this.Sender.Messages.Remove(this);
         }
 
         public MessageHighlight tempHighlight { get; set; }

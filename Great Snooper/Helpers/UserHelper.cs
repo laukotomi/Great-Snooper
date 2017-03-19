@@ -5,10 +5,9 @@
 
     public static class UserHelper
     {
-        public static User CreateUser(IRCCommunicator server, string name, string clan = "")
+        private static User CreateUser(IRCCommunicator server, string name, string clan = "")
         {
             User user = new User(server, name, clan);
-            user.IsBanned = GlobalManager.BanList.Contains(user.Name);
             if (server is WormNetCommunicator)
             {
                 TusAccount tusAccount;
@@ -22,26 +21,18 @@
             return user;
         }
 
-        public static void FinalizeUser(IRCCommunicator server, User u)
-        {
-            if (u.TusAccount != null)
-            {
-                u.TusAccount.User = null;
-                u.TusAccount = null;
-            }
-            // server.Users.Remove(u.Name);
-            u.OnlineStatus = User.Status.Offline;
-            u.ChannelCollection.Clear();
-        }
-
-        public static User GetUser(IRCCommunicator server, string name, string clan = "")
+        public static User GetUser(IRCCommunicator server, string name, string clan = "", bool createIfNotExists = true)
         {
             User user;
-            if (!server.Users.TryGetValue(name, out user))
+            if (server.Users.TryGetValue(name, out user))
+            {
+                return user;
+            }
+            else if (createIfNotExists)
             {
                 return CreateUser(server, name, clan);
             }
-            return user;
+            return null;
         }
 
         public static void UpdateMessageStyle(User user)

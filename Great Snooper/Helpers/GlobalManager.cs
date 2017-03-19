@@ -104,12 +104,40 @@
         // This method ensures that the initialization will be made from the appropriate thread
         public static void Initialize()
         {
+            BanList = new HashSet<string>(
+                Properties.Settings.Default.BanList.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
+                CIStringComparer);
+
             DefaultGroup = new UserGroup(UserGroups.SystemGroupID);
             SettingsPath = Directory.GetParent(Directory.GetParent(System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath).FullName).FullName;
             DebugMode = false;
             SpamAllowed = false;
             SystemUser = new User(null, Localizations.GSLocalization.Instance.SystemUserName);
             CIStringComparer = StringComparer.Create(new CultureInfo("en-US"), true);
+
+            // Backwards compatibility
+            if (Properties.Settings.Default.AutoJoinChannels.Contains(":") == false)
+            {
+                AutoJoinList = new Dictionary<string, string>();
+                string[] parts = Properties.Settings.Default.AutoJoinChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var part in parts)
+                {
+                    AutoJoinList.Add(part, null);
+                }
+            }
+            else
+            {
+                AutoJoinList = JsonConvert.DeserializeObject<Dictionary<string, string>>(Properties.Settings.Default.AutoJoinChannels);
+            }
+
+            HiddenChannels = new HashSet<string>(
+                Properties.Settings.Default.HiddenChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
+                CIStringComparer);
+
+            if (TusAccounts == null)
+            {
+                TusAccounts = new Dictionary<string, TusAccount>(CIStringComparer);
+            }
 
             OKDialogSetting = new MetroDialogSettings()
             {
@@ -136,37 +164,6 @@
                 AnimateShow = false,
                 ColorScheme = MetroDialogColorScheme.Accented
             };
-        }
-
-        public static void MainWindowInit()
-        {
-            BanList = new HashSet<string>(
-                Properties.Settings.Default.BanList.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
-                CIStringComparer);
-
-            // Backwards compatibility
-            if (Properties.Settings.Default.AutoJoinChannels.Contains(":") == false)
-            {
-                AutoJoinList = new Dictionary<string, string>();
-                string[] parts = Properties.Settings.Default.AutoJoinChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var part in parts)
-                {
-                    AutoJoinList.Add(part, null);
-                }
-            }
-            else
-            {
-                AutoJoinList = JsonConvert.DeserializeObject<Dictionary<string, string>>(Properties.Settings.Default.AutoJoinChannels);
-            }
-
-            HiddenChannels = new HashSet<string>(
-                Properties.Settings.Default.HiddenChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
-                CIStringComparer);
-
-            if (TusAccounts == null)
-            {
-                TusAccounts = new Dictionary<string, TusAccount>(CIStringComparer);
-            }
         }
     }
 }

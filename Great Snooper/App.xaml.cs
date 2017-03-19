@@ -28,6 +28,11 @@
             return v.Major.ToString() + "." + v.Minor.ToString() + "." + v.Build.ToString();
         }
 
+        public static string GetFullVersion()
+        {
+            return "Great Snooper v" + App.GetVersion();
+        }
+
         private void Application_DispatcherUnhandledException(object sender, System.Windows.Threading.DispatcherUnhandledExceptionEventArgs e)
         {
             ErrorLog.Log(e.Exception);
@@ -124,7 +129,7 @@
             string quitMessage = settings.QuitMessagee;
             if (settings.QuitMessagee == string.Empty || Validator.GSVersionValidator.Validate(ref quitMessage) != string.Empty)
             {
-                settings.QuitMessagee = "Great Snooper v" + App.GetVersion();
+                settings.QuitMessagee = App.GetFullVersion();
                 save = true;
             }
 

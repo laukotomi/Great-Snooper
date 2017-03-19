@@ -28,6 +28,11 @@ namespace GreatSnooper.Channel
 
         public void Add(ChannelViewModel chvm)
         {
+            if (_allChannels.Contains(chvm))
+            {
+                return;
+            }
+
             _allChannels.Add(chvm);
             _channels.Add(chvm);
             OnCollectionChanged(NotifyCollectionChangedAction.Add, chvm);
@@ -35,6 +40,11 @@ namespace GreatSnooper.Channel
 
         public void Add(PMChannelViewModel chvm)
         {
+            if (_allChannels.Contains(chvm))
+            {
+                return;
+            }
+
             _allChannels.Add(chvm);
             _pmChannels.Add(chvm);
             OnCollectionChanged(NotifyCollectionChangedAction.Add, chvm);
@@ -64,12 +74,5 @@ namespace GreatSnooper.Channel
         }
 
         public event NotifyCollectionChangedEventHandler CollectionChanged;
-
-        public void Clear()
-        {
-            _allChannels.Clear();
-            _channels.Clear();
-            _pmChannels.Clear();
-        }
     }
 }

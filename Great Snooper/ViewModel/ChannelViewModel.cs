@@ -283,21 +283,14 @@
 
         public override void ClearUsers()
         {
-            var temp = new HashSet<User>(this.Users);
+            var temp = new List<User>(this.Users);
             foreach (User u in temp)
             {
                 this.RemoveUser(u);
 
                 if (u.ChannelCollection.Channels.Count == 0)
                 {
-                    if (u.ChannelCollection.PmChannels.Count > 0)
-                    {
-                        u.OnlineStatus = User.Status.Unknown;
-                    }
-                    else
-                    {
-                        GreatSnooper.Helpers.UserHelper.FinalizeUser(this.Server, u);
-                    }
+                    u.OnlineStatus = User.Status.Unknown;
                 }
             }
         }
@@ -305,6 +298,7 @@
         public void FinishJoin()
         {
             this.Joined = true;
+            this.AddUser(this.Server.User);
             this.AddMessage(this.Server.User, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage);
             if (Properties.Settings.Default.UseWhoMessages)
             {

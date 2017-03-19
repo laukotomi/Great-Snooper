@@ -75,7 +75,6 @@
         public MainViewModel(IMetroDialogService dialogService, ITaskbarIconService taskbarIconService, WormNetCommunicator wormNetC)
         {
             Instance = this;
-            GlobalManager.MainWindowInit();
             Properties.Settings.Default.PropertyChanged += SettingsChanged;
             this._gameListAndUserListChannels.CollectionChanged += GameListAndUserListChannels_CollectionChanged;
             this.view = (MainWindow)dialogService.GetView();

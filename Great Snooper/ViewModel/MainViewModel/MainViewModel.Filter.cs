@@ -91,7 +91,7 @@
                     view.Filter = x =>
                     {
                         User u = (User)x;
-                        if (!Properties.Settings.Default.ShowBannedUsers && u.IsBanned)
+                        if (!u.CanShow || !Properties.Settings.Default.ShowBannedUsers && u.IsBanned)
                         {
                             return false;
                         }

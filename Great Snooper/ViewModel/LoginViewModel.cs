@@ -762,8 +762,7 @@
                 Properties.Settings.Default.Save();
 
                 GlobalManager.User = new User(null, Nick, Clan);
-                GlobalManager.User.Country = SelectedCountry;
-                GlobalManager.User.Rank = Ranks.GetRankByInt(SelectedRank);
+                GlobalManager.User.SetUserInfo(SelectedCountry, Ranks.GetRankByInt(SelectedRank), App.GetFullVersion());
 
                 // Initialize the WormNet Communicator
                 wormNetC = new WormNetCommunicator(server, port);

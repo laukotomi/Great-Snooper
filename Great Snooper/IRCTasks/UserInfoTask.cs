@@ -60,35 +60,10 @@
             AbstractChannelViewModel chvm;
             bool channelOK = _server.Channels.TryGetValue(this.ChannelHash, out chvm) && chvm.Joined; // GameSurge may send info about client with channel name: *.. so we try to process all these messages
 
-            User u = null;
-            if (!_server.Users.TryGetValue(this.ClientName, out u))
-            {
-                if (channelOK)
-                {
-                    u = UserHelper.CreateUser(_server, this.ClientName, this.Clan);
-                }
-                else // we don't have any common channel with this client
-                {
-                    return;
-                }
-            }
-
+            User u = UserHelper.GetUser(_server, ClientName, Clan, channelOK);
+            u.SetUserInfo(Country, Ranks.GetRankByInt(Rank), ClientApp);
             u.OnlineStatus = User.Status.Online;
-            u.Country = Country;
-            u.Rank = Ranks.GetRankByInt(this.Rank);
-            u.ClientName = this.ClientApp;
-
-            if (u.AddToChannel.Count > 0)
-            {
-                foreach (var channel in u.AddToChannel)
-                {
-                    if (channel.Joined && !u.ChannelCollection.Channels.Contains(chvm))
-                    {
-                        channel.AddUser(u);
-                    }
-                }
-                u.AddToChannel.Clear();
-            }
+            u.CanShow = true;
 
             // This is needed, because when we join a channel we get information about the channel users using the WHO command
             if (channelOK && chvm is ChannelViewModel && !u.ChannelCollection.Channels.Contains(chvm))

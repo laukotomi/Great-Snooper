@@ -31,6 +31,7 @@
             }
 
             SetUserListDGColumnWidths();
+            SetUserListDGView();
             SetDefaultOrderForGrid();
 
             foreach (var column in this.Columns)
@@ -104,9 +105,9 @@
                         view.Filter = DefaultBannedView;
                     }
                 }
-                else if (view.Filter != null)
+                else if (view.Filter != DefaultView)
                 {
-                    view.Filter = null;
+                    view.Filter = DefaultView;
                 }
             }
         }
@@ -229,7 +230,14 @@
 
         private bool DefaultBannedView(object o)
         {
-            return !((User)o).IsBanned;
+            User user = (User)o;
+            return user.CanShow && !user.IsBanned;
+        }
+
+        private bool DefaultView(object o)
+        {
+            User user = (User)o;
+            return user.CanShow;
         }
 
         private void OpenChat(User u)

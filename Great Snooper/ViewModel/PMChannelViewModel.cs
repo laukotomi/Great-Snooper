@@ -429,7 +429,7 @@
 
                 if (u.ChannelCollection.AllChannels.Count == 0)
                 {
-                    GreatSnooper.Helpers.UserHelper.FinalizeUser(this.Server, u);
+                    u.OnlineStatus = User.Status.Offline;
                 }
             }
 

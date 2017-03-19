@@ -50,8 +50,7 @@
             if (Properties.Settings.Default.WormsNick.Length > 0)
             {
                 this.User = new User(this, Properties.Settings.Default.WormsNick, GlobalManager.User.Clan);
-                this.User.Country = GlobalManager.User.Country;
-                this.User.Rank = GlobalManager.User.Rank;
+                this.User.SetUserInfo(GlobalManager.User.Country, GlobalManager.User.Rank, App.GetFullVersion());
             }
             else
             {

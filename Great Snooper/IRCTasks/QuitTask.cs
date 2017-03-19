@@ -68,15 +68,10 @@
                     }
                 }
 
-                if (u.ChannelCollection.PmChannels.Count == 0)
-                {
-                    UserHelper.FinalizeUser(_server, u);
-                }
+                u.OnlineStatus = User.Status.Offline;
                 // If we had a private chat with the user
-                else
+                if (u.ChannelCollection.PmChannels.Count != 0)
                 {
-                    u.OnlineStatus = User.Status.Offline;
-
                     bool pingTimeout = this.Message == "Ping timeout: 180 seconds";
                     DateTime threeMinsBefore = DateTime.Now - new TimeSpan(0, 3, 0);
 

@@ -54,12 +54,12 @@
                         if (Properties.Settings.Default.UseWhoMessages)
                         {
                             _server.GetInfoAboutClient(this, _clientName);
-                            user.AddToChannel.Add(chvm); // Client will be added to the channel if information is arrived to keep the client list sorted properly
                         }
                         else
                         {
-                            chvm.AddUser(user);
+                            user.CanShow = true;
                         }
+                        chvm.AddUser(user);
 
                         Message msg = new Message(chvm, user, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage, DateTime.Now);
 
@@ -80,7 +80,6 @@
                                 Sounds.PlaySound(user.Group.Sound);
                             }
                         }
-                        user.Messages.Add(msg);
                         chvm.AddMessage(msg);
 
                         foreach (PMChannelViewModel channel in user.ChannelCollection.PmChannels)
@@ -90,14 +89,7 @@
                     }
                     else
                     {
-                        if (user.AddToChannel.Count > 0)
-                        {
-                            user.AddToChannel.Add(chvm); // Client will be added to the channel if information is arrived to keep the client list sorted properly
-                        }
-                        else if (user.ChannelCollection.Channels.Contains(chvm) == false)
-                        {
-                            chvm.AddUser(user);
-                        }
+                        chvm.AddUser(user);
                         chvm.AddMessage(user, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage);
                     }
                 }

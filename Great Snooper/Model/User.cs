@@ -1,7 +1,7 @@
 ﻿namespace GreatSnooper.Model
 {
     using System;
-    using System.Collections.Generic;
+    using System.Collections.ObjectModel;
     using System.Diagnostics;
     using GalaSoft.MvvmLight;
     using GreatSnooper.Channel;
@@ -18,12 +18,11 @@
 
         private bool? _canConversation;
         private string _clan;
-        private string _clientName;
         private UserGroup _group = GlobalManager.DefaultGroup;
-        private bool _isBanned = false;
         private string _name;
-        private Status _onlineStatus = Status.Unknown;
+        private Status _onlineStatus = Status.Online;
         private TusAccount _tusAccount;
+        private bool _isBanned;
         private bool? _usingGreatSnooper;
         private bool? _usingGreatSnooper2;
 
@@ -32,9 +31,11 @@
             this.Server = server;
             this._name = name;
             this._clan = clan;
+            this._isBanned = GlobalManager.BanList.Contains(Name);
             this.ChannelCollection = new ChannelCollection();
-            this.AddToChannel = new List<ChannelViewModel>();
-            this.Messages = new List<Message>();
+            this.ChannelCollection.CollectionChanged += CheckReferences;
+            this.Messages = new ObservableCollection<Message>();
+            this.Messages.CollectionChanged += CheckReferences;
             UserGroup group;
             if (UserGroups.Instance.Users.TryGetValue(name, out group))
             {
@@ -53,7 +54,7 @@
             Online, Offline, Unknown
         }
 
-        public List<Message> Messages { get; private set; }
+        public ObservableCollection<Message> Messages { get; private set; }
 
         public bool CanConversation
         {
@@ -79,8 +80,6 @@
         }
 
         public ChannelCollection ChannelCollection { get; private set; }
-        public List<ChannelViewModel> AddToChannel { get; private set; }
-
 
         public string Clan
         {
@@ -90,37 +89,11 @@
                 {
                     return TusAccount.Clan;
                 }
-                else
-                {
-                    return _clan;
-                }
-            }
-            set
-            {
-                if (_clan != value)
-                {
-                    _clan = value;
-                    RaisePropertyChanged("Clan");
-                }
+                return _clan;
             }
         }
 
-        public string ClientName
-        {
-            get
-            {
-                return this._clientName;
-            }
-            set
-            {
-                if (this._clientName != value)
-                {
-                    this._clientName = value;
-                    this._usingGreatSnooper = null;
-                    this._canConversation = null;
-                }
-            }
-        }
+        public string ClientName { get; private set; }
 
         public Country Country
         {
@@ -130,18 +103,7 @@
                 {
                     return TusAccount.Country;
                 }
-                else
-                {
-                    return _country;
-                }
-            }
-            set
-            {
-                if (_country != value)
-                {
-                    _country = value;
-                    RaisePropertyChanged("Country");
-                }
+                return _country;
             }
         }
 
@@ -164,16 +126,7 @@
                         _group = GlobalManager.DefaultGroup;
                     }
 
-                    // Refresh sorting
-                    foreach (ChannelViewModel chvm in ChannelCollection.Channels)
-                    {
-                        if (chvm.Joined)
-                        {
-                            chvm.Users.Remove(this);
-                            chvm.Users.Add(this);
-                        }
-                    }
-
+                    RefrestView();
                     RaisePropertyChanged("Group");
                 }
             }
@@ -221,13 +174,27 @@
             {
                 if (_onlineStatus != value)
                 {
-                    _onlineStatus = value;
-                    if (value != Status.Online)
+                    if (_onlineStatus == Status.Online)
                     {
                         // Reset client info
-                        TusAccount = null;
+                        if (TusAccount != null)
+                        {
+                            TusAccount.User = null;
+                            TusAccount = null;
+                        }
                         ClientName = null;
+                        CanShow = false;
+                        _country = null;
+                        _rank = null;
+                        _clan = string.Empty;
+                        _canConversation = null;
+                        if (Messages.Count == 0)
+                        {
+                            Server.Users.Remove(Name);
+                            Server = null;
+                        }
                     }
+                    _onlineStatus = value;
                     RaisePropertyChanged("OnlineStatus");
                 }
             }
@@ -241,17 +208,23 @@
                 {
                     return TusAccount.Rank;
                 }
-                else
-                {
-                    return _rank;
-                }
+                return _rank;
+            }
+        }
+
+        private bool _canShow;
+        public bool CanShow
+        {
+            get
+            {
+                return _canShow;
             }
             set
             {
-                if (_rank != value)
+                if (_canShow != value)
                 {
-                    _rank = value;
-                    RaisePropertyChanged("Rank");
+                    _canShow = value;
+                    RefrestView();
                 }
             }
         }
@@ -267,10 +240,7 @@
                 if (_tusAccount != value)
                 {
                     _tusAccount = value;
-                    RaisePropertyChanged("Clan");
-                    RaisePropertyChanged("Rank");
-                    RaisePropertyChanged("Country");
-                    RaisePropertyChanged("TusAccount");
+                    RefrestView();
                 }
             }
         }
@@ -316,6 +286,37 @@
             get
             {
                 return Properties.Settings.Default.ItalicForGSUsers && this.UsingGreatSnooper;
+            }
+        }
+
+        public void SetUserInfo(Country country, Rank rank, string clientName)
+        {
+            _country = country;
+            _rank = rank;
+            ClientName = clientName;
+        }
+
+        private void RefrestView()
+        {
+            // To keep the list sorted..
+            foreach (ChannelViewModel chvm in ChannelCollection.Channels)
+            {
+                if (chvm.Joined)
+                {
+                    chvm.Users.Remove(this);
+                    chvm.Users.Add(this);
+                }
+            }
+        }
+
+        private void CheckReferences(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
+        {
+            if (e.Action == System.Collections.Specialized.NotifyCollectionChangedAction.Remove &&
+                Messages.Count == 0 && ChannelCollection.AllChannels.Count == 0)
+            {
+                Messages.CollectionChanged -= CheckReferences;
+                ChannelCollection.CollectionChanged -= CheckReferences;
+                Server.Users.Remove(Name);
             }
         }
 

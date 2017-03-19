@@ -270,7 +270,15 @@ namespace GreatSnooper.ViewModel
         {
             if (clear)
             {
-                this._rtbDocument.Blocks.Clear();
+                while (this._rtbDocument.Blocks.Count > 0)
+                {
+                    Message msg = this._rtbDocument.Blocks.FirstBlock.Tag as Message;
+                    if (msg != null)
+                    {
+                        msg.NickRun = null;
+                    }
+                    this._rtbDocument.Blocks.Remove(this._rtbDocument.Blocks.FirstBlock);
+                }
             }
 
             // select the index from which the messages will be loaded
@@ -479,12 +487,13 @@ namespace GreatSnooper.ViewModel
                 {
                     Message msg = this.Messages.First.Value;
                     this.Messages.RemoveFirst();
-                    msg.Dispose();
+                    msg.Sender.Messages.Remove(msg);
 
                     if (this._messagesLoadedFrom != null && this._messagesLoadedFrom.Value == msg) // If the removed message was displayed (when the scrollbar is not at bottom)
                     {
                         this._rtbDocument.Blocks.Remove(this._rtbDocument.Blocks.FirstBlock);
-                        this.SetMessagesLoadedFrom();
+                        msg.NickRun = null;
+                        this.SetMessagesLoadedFrom(this.Messages.First);
                     }
                 }
             }
@@ -494,9 +503,9 @@ namespace GreatSnooper.ViewModel
             }
         }
 
-        private void SetMessagesLoadedFrom()
+        private void SetMessagesLoadedFrom(LinkedListNode<Message> from)
         {
-            this._messagesLoadedFrom = this.Messages.First;
+            this._messagesLoadedFrom = from;
 
             if (Properties.Settings.Default.ChatMode)
             {
@@ -597,20 +606,8 @@ namespace GreatSnooper.ViewModel
                     while (this._rtbDocument.Blocks.Count > GlobalManager.MaxMessagesDisplayed)
                     {
                         this._rtbDocument.Blocks.Remove(this._rtbDocument.Blocks.FirstBlock);
-                        this._messagesLoadedFrom = this._messagesLoadedFrom.Next;
-
-                        if (Properties.Settings.Default.ChatMode)
-                        {
-                            while (this._messagesLoadedFrom != null)
-                            {
-                                var type = this._messagesLoadedFrom.Value.Style.Type;
-                                if (type != Message.MessageTypes.Part && type != Message.MessageTypes.Join && type != Message.MessageTypes.Quit)
-                                {
-                                    break;
-                                }
-                                this._messagesLoadedFrom = this._messagesLoadedFrom.Next;
-                            }
-                        }
+                        this._messagesLoadedFrom.Value.NickRun = null;
+                        SetMessagesLoadedFrom(this._messagesLoadedFrom.Next);
                     }
                 }
 
