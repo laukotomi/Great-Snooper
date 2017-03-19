@@ -298,7 +298,8 @@
         public void FinishJoin()
         {
             this.Joined = true;
-            this.AddUser(this.Server.User);
+            // this.AddUser(this.Server.User); If we add this User object to the user list then on  a disconnect its state will be
+            // set to offline and country info (+etc) will be null and reconnect will fail
             this.AddMessage(this.Server.User, Localizations.GSLocalization.Instance.JoinMessage, MessageSettings.JoinMessage);
             if (Properties.Settings.Default.UseWhoMessages)
             {
