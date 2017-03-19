@@ -61,6 +61,10 @@
 
             // If the user doesn't exists we create one
             this.User = UserHelper.GetUser(_server, this.ClientName);
+            if (this.User.OnlineStatus == Model.User.Status.Offline)
+            {
+                this.User.OnlineStatus = Model.User.Status.Unknown;
+            }
 
             if (chvm == null) // New private message arrived for us
             {

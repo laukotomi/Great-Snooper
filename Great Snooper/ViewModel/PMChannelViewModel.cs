@@ -305,7 +305,7 @@
                     }
                 }
             }
-            else if (this.Users[0].OnlineStatus != User.Status.Offline)
+            else
             {
                 Server.SendMessage(this, this.Users[0].Name, message);
             }
