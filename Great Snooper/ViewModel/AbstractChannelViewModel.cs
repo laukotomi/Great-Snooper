@@ -122,6 +122,8 @@ namespace GreatSnooper.ViewModel
                     {
                         // Reset everything to default value
                         this._channelLogger.EndLogging();
+                        this.ClearMessages(0);
+                        this.Messages.Clear();
                         this._messagesLoadedFrom = null;
                         this.Disabled = false;
                         this.Loading = false;
@@ -221,7 +223,7 @@ namespace GreatSnooper.ViewModel
             this._channelLogger.LogMessage(msg, this.Name);
             if (this.Messages.Count >= GlobalManager.MaxMessagesInMemory && this.MainViewModel.IsGameWindowOn() == false)
             {
-                ClearMessages();
+                ClearMessages(GlobalManager.MaxMessagesInMemory);
             }
 
             this.Messages.AddLast(msg);
@@ -294,25 +296,28 @@ namespace GreatSnooper.ViewModel
 
             // load the message backwards
             int k = 0;
-            while (true)
+            if (count > 0)
             {
-                var msg = _messagesLoadedFrom.Value;
-                if (!msg.Sender.IsBanned || Properties.Settings.Default.ShowBannedMessages)
+                while (this._messagesLoadedFrom != null)
                 {
-                    if (AddMessageToUI(msg, false))
+                    var msg = _messagesLoadedFrom.Value;
+                    if (!msg.Sender.IsBanned || Properties.Settings.Default.ShowBannedMessages)
                     {
-                        k++;
-                        if (k == count)
+                        if (AddMessageToUI(msg, false))
                         {
-                            break;
+                            k++;
+                            if (k == count)
+                            {
+                                break;
+                            }
                         }
                     }
+                    if (this._messagesLoadedFrom.Previous == null)
+                    {
+                        break;
+                    }
+                    this._messagesLoadedFrom = this._messagesLoadedFrom.Previous;
                 }
-                if (this._messagesLoadedFrom.Previous == null)
-                {
-                    break;
-                }
-                this._messagesLoadedFrom = this._messagesLoadedFrom.Previous;
             }
 
             return k;
@@ -479,11 +484,11 @@ namespace GreatSnooper.ViewModel
             return false;
         }
 
-        private void ClearMessages()
+        private void ClearMessages(int maxMessages)
         {
             try
             {
-                while (this.Messages.Count > GlobalManager.MaxMessagesInMemory)
+                while (this.Messages.Count > maxMessages)
                 {
                     Message msg = this.Messages.First.Value;
                     this.Messages.RemoveFirst();

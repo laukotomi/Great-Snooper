@@ -188,7 +188,7 @@
                         _rank = null;
                         _clan = string.Empty;
                         _canConversation = null;
-                        if (Messages.Count == 0)
+                        if (Messages.Count == 0 && Server != null)
                         {
                             Server.Users.Remove(Name);
                             Server = null;
@@ -316,7 +316,11 @@
             {
                 Messages.CollectionChanged -= CheckReferences;
                 ChannelCollection.CollectionChanged -= CheckReferences;
-                Server.Users.Remove(Name);
+                if (Server != null)
+                {
+                    Server.Users.Remove(Name);
+                    Server = null;
+                }
             }
         }
 
