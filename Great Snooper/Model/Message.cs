@@ -111,6 +111,7 @@
         }
 
         public AbstractChannelViewModel Channel { get; private set; }
+
         public User Sender { get; private set; }
 
         public MessageSetting Style { get; private set; }
@@ -245,7 +246,9 @@
             switch (this.Sender.OnlineStatus)
             {
                 case User.Status.Online:
-                    if (this.Style.Type != MessageTypes.Channel || this.Sender.ChannelCollection.AllChannels.Contains(this.Channel))
+                    if (this.Style.Type != MessageTypes.Channel ||
+                        this.Channel.GetType() != typeof(ChannelViewModel) ||
+                        this.Sender.ChannelCollection.AllChannels.Contains(this.Channel))
                     {
                         // Instant color
                         SolidColorBrush b;

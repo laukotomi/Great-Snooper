@@ -49,7 +49,10 @@
         {
             if (Properties.Settings.Default.WormsNick.Length > 0)
             {
-                this.User = new User(this, Properties.Settings.Default.WormsNick, GlobalManager.User.Clan);
+                this.User = new User(this, Properties.Settings.Default.WormsNick, GlobalManager.User.Clan)
+                {
+                    OnlineStatus = Model.User.Status.Online
+                };
                 this.User.SetUserInfo(GlobalManager.User.Country, GlobalManager.User.Rank, App.GetFullVersion());
             }
             else

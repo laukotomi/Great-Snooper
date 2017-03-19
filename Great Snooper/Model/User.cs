@@ -20,7 +20,7 @@
         private string _clan;
         private UserGroup _group = GlobalManager.DefaultGroup;
         private string _name;
-        private Status _onlineStatus = Status.Online;
+        private Status _onlineStatus = Status.Unknown;
         private TusAccount _tusAccount;
         private bool _isBanned;
         private bool? _usingGreatSnooper;

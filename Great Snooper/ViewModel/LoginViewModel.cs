@@ -761,7 +761,10 @@
                 }
                 Properties.Settings.Default.Save();
 
-                GlobalManager.User = new User(null, Nick, Clan);
+                GlobalManager.User = new User(null, Nick, Clan)
+                {
+                    OnlineStatus = User.Status.Online
+                };
                 GlobalManager.User.SetUserInfo(SelectedCountry, Ranks.GetRankByInt(SelectedRank), App.GetFullVersion());
 
                 // Initialize the WormNet Communicator
@@ -812,7 +815,10 @@
                             var clanRegexTUS = new Regex(@"[^a-z0-9]", RegexOptions.IgnoreCase);
                             var clan = clanRegexTUS.Replace(tusAccount.Clan, ""); // Remove bad characters
 
-                            GlobalManager.User = new User(null, t.Result.Nickname, clan);
+                            GlobalManager.User = new User(null, t.Result.Nickname, clan)
+                            {
+                                OnlineStatus = User.Status.Online
+                            };
                             GlobalManager.User.TusAccount = tusAccount;
 
                             if (Properties.Settings.Default.ChangeWormsNick)

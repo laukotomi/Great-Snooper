@@ -112,7 +112,10 @@
             SettingsPath = Directory.GetParent(Directory.GetParent(System.Configuration.ConfigurationManager.OpenExeConfiguration(System.Configuration.ConfigurationUserLevel.PerUserRoamingAndLocal).FilePath).FullName).FullName;
             DebugMode = false;
             SpamAllowed = false;
-            SystemUser = new User(null, Localizations.GSLocalization.Instance.SystemUserName);
+            SystemUser = new User(null, Localizations.GSLocalization.Instance.SystemUserName)
+            {
+                OnlineStatus = Model.User.Status.Online
+            };
             CIStringComparer = StringComparer.Create(new CultureInfo("en-US"), true);
 
             // Backwards compatibility

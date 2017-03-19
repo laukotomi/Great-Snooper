@@ -57,6 +57,8 @@
                     }
                 }
 
+                u.OnlineStatus = User.Status.Offline;
+
                 // Send quit message to the channels where the user was active
                 var temp = new HashSet<ChannelViewModel>(u.ChannelCollection.Channels);
                 foreach (var chvm in temp)
@@ -68,7 +70,6 @@
                     }
                 }
 
-                u.OnlineStatus = User.Status.Offline;
                 // If we had a private chat with the user
                 if (u.ChannelCollection.PmChannels.Count != 0)
                 {
