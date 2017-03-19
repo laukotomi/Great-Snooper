@@ -88,7 +88,6 @@
             {
                 if (this._nickRun != value)
                 {
-                    this._nickRun = value;
                     if (value != null)
                     {
                         if (Style.Type == MessageTypes.Channel)
@@ -96,7 +95,6 @@
                             Sender.ChannelCollection.CollectionChanged += UserStateChanged;
                         }
                         this._nickRun.MouseLeftButtonDown += this.MouseClick;
-                        this.UpdateNickStyle();
                     }
                     else
                     {
@@ -106,6 +104,8 @@
                         }
                         this._nickRun.MouseLeftButtonDown -= this.MouseClick;
                     }
+                    this._nickRun = value;
+                    this.UpdateNickStyle();
                 }
             }
         }
