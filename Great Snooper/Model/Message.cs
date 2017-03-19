@@ -94,7 +94,7 @@
                         {
                             Sender.ChannelCollection.CollectionChanged += UserStateChanged;
                         }
-                        this._nickRun.MouseLeftButtonDown += this.MouseClick;
+                        value.MouseLeftButtonDown += this.MouseClick;
                     }
                     else
                     {
