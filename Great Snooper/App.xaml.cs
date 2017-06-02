@@ -139,6 +139,7 @@
             GlobalManager.Initialize();
             UserGroups.Instance.Initialize();
             Sounds.Initialize();
+            UserCommandService.Instance.Initialize();
 
             if (save)
             {
