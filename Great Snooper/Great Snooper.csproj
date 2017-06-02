@@ -225,6 +225,7 @@
     <Compile Include="UserCommands\GetSettingCommand.cs" />
     <Compile Include="UserCommands\GSCommand.cs" />
     <Compile Include="UserCommands\IgnoreCommand.cs" />
+    <Compile Include="UserCommands\TestCommand.cs" />
     <Compile Include="UserCommands\UserCommand.cs" />
     <Compile Include="UserCommands\JoinCommand.cs" />
     <Compile Include="UserCommands\LogCommand.cs" />
