@@ -897,7 +897,7 @@
             {
                 using (var tusRequest = new WebDownload())
                 {
-                    string testlogin = tusRequest.DownloadString("http://www.tus-wa.com/testlogin.php?u=" + HttpUtility.UrlEncode(TusNick) + "&p=" + HttpUtility.UrlEncode(TusPass));
+                    string testlogin = tusRequest.DownloadString("https://www.tus-wa.com/testlogin.php?u=" + HttpUtility.UrlEncode(TusNick) + "&p=" + HttpUtility.UrlEncode(TusPass));
                     if (testlogin[0] == '1') // 1 sToOMiToO
                     {
                         if (this.closing)
@@ -915,7 +915,7 @@
 
                         for (int j = 0; j < 10; j++)
                         {
-                            string userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?update=" + HttpUtility.UrlEncode(TusNick) + "&league=classic");
+                            string userlist = tusRequest.DownloadString("https://www.tus-wa.com/userlist.php?update=" + HttpUtility.UrlEncode(TusNick) + "&league=classic");
 
                             if (this.closing)
                             {

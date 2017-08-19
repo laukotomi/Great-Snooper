@@ -122,7 +122,6 @@ namespace GreatSnooper.ViewModel
                         // Reset everything to default value
                         this._channelLogger.EndLogging();
                         this.ClearMessages(0);
-                        this.Messages.Clear();
                         this._messagesLoadedFrom = null;
                         this.Disabled = false;
                         this.Loading = false;

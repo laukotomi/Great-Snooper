@@ -1032,7 +1032,7 @@
                 var tusClanInfo = (MenuItem)obj.ContextMenu.Items[6];
                 if (u.TusAccount != null && string.IsNullOrWhiteSpace(u.TusAccount.Clan) == false)
                 {
-                    tusClanInfo.CommandParameter = "http://www.tus-wa.com/groups/" + u.TusAccount.Clan + "/";
+                    tusClanInfo.CommandParameter = "https://www.tus-wa.com/groups/" + u.TusAccount.Clan + "/";
                     tusClanInfo.Header = string.Format(Localizations.GSLocalization.Instance.ViewClanProfileText, u.TusAccount.Clan);
                     tusClanInfo.Visibility = System.Windows.Visibility.Visible;
                 }

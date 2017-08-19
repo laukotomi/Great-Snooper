@@ -453,70 +453,70 @@
                     </MenuItem.Header>
                     <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=TusHomePageText, Mode=OneWay}"
                               Command="{Binding Path=OpenLinkCommand, Mode=OneTime}"
-                              CommandParameter="http://www.tus-wa.com">
+                              CommandParameter="https://www.tus-wa.com">
                         <MenuItem.Icon>
                             <Image Source="/Resources/tushome.png" Width="30" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=TusAnalyzerText, Mode=OneWay}"
                               Command="{Binding Path=OpenLinkCommand, Mode=OneTime}"
-                              CommandParameter="http://www.tus-wa.com/leagues/analyzer/">
+                              CommandParameter="https://www.tus-wa.com/leagues/analyzer/">
                         <MenuItem.Icon>
                             <Image Source="/Resources/tusanalizer.png" Width="30" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=TusReportText, Mode=OneWay}"
                               Command="{Binding Path=OpenLinkCommand, Mode=OneTime}"
-                              CommandParameter="http://www.tus-wa.com/leagues/report/">
+                              CommandParameter="https://www.tus-wa.com/leagues/report/">
                         <MenuItem.Icon>
                             <Image Source="/Resources/tusreport.png" Width="30" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=TusComplaintsText, Mode=OneWay}"
                               Command="{Binding Path=OpenLinkCommand, Mode=OneTime}"
-                              CommandParameter="http://www.tus-wa.com/forums/leagues-complaints/">
+                              CommandParameter="https://www.tus-wa.com/forums/leagues-complaints/">
                         <MenuItem.Icon>
                             <Image Source="/Resources/tuscomplaints.png" Width="30" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=TusRecentGamesText, Mode=OneWay}"
                               Command="{Binding Path=OpenLinkCommand, Mode=OneTime}"
-                              CommandParameter="http://www.tus-wa.com/leagues/recent-games/">
+                              CommandParameter="https://www.tus-wa.com/leagues/recent-games/">
                         <MenuItem.Icon>
                             <Image Source="/Resources/tusrecent.png" Width="30" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=TusStandingsText, Mode=OneWay}"
                               Command="{Binding Path=OpenLinkCommand, Mode=OneTime}"
-                              CommandParameter="http://www.tus-wa.com/leagues/classic-standings/">
+                              CommandParameter="https://www.tus-wa.com/leagues/classic-standings/">
                         <MenuItem.Icon>
                             <Image Source="/Resources/tusstandings.png" Width="30" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=TusCupsText, Mode=OneWay}"
                               Command="{Binding Path=OpenLinkCommand, Mode=OneTime}"
-                              CommandParameter="http://www.tus-wa.com/cups/">
+                              CommandParameter="https://www.tus-wa.com/cups/">
                         <MenuItem.Icon>
                             <Image Source="/Resources/tuscup.png" Width="30" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=TusTournamentsText, Mode=OneWay}"
                               Command="{Binding Path=OpenLinkCommand, Mode=OneTime}"
-                              CommandParameter="http://www.tus-wa.com/tournaments/">
+                              CommandParameter="https://www.tus-wa.com/tournaments/">
                         <MenuItem.Icon>
                             <Image Source="/Resources/tustournaments.png" Width="30" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=TusPmsText, Mode=OneWay}"
                               Command="{Binding Path=OpenLinkCommand, Mode=OneTime}"
-                              CommandParameter="http://www.tus-wa.com/pm/">
+                              CommandParameter="https://www.tus-wa.com/pm/">
                         <MenuItem.Icon>
                             <Image Source="/Resources/tuspm.png" Width="30" />
                         </MenuItem.Icon>
                     </MenuItem>
                     <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=TusGSTopicText, Mode=OneWay}"
                               Command="{Binding Path=OpenLinkCommand, Mode=OneTime}"
-                              CommandParameter="http://www.tus-wa.com/forums/files/great-snooper-3rd-chapter-25137/">
+                              CommandParameter="https://www.tus-wa.com/forums/files/great-snooper-3rd-chapter-25137/">
                         <MenuItem.Icon>
                             <Image Source="/Resources/gstopic.png" Width="30" />
                         </MenuItem.Icon>

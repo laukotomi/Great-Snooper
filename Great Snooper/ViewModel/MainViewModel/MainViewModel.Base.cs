@@ -1313,11 +1313,11 @@
                         {
                             if (GlobalManager.User.TusAccount != null)
                             {
-                                userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic&update=" + System.Web.HttpUtility.UrlEncode(GlobalManager.User.TusAccount.TusNick));
+                                userlist = tusRequest.DownloadString("https://www.tus-wa.com/userlist.php?league=classic&update=" + System.Web.HttpUtility.UrlEncode(GlobalManager.User.TusAccount.TusNick));
                             }
                             else
                             {
-                                userlist = tusRequest.DownloadString("http://www.tus-wa.com/userlist.php?league=classic");
+                                userlist = tusRequest.DownloadString("https://www.tus-wa.com/userlist.php?league=classic");
                             }
                         }
 

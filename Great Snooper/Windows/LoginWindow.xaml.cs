@@ -2,9 +2,7 @@
 {
     using System;
     using System.Diagnostics;
-    using System.Threading.Tasks;
     using System.Windows;
-    using System.Windows.Input;
 
     using GreatSnooper.Helpers;
     using GreatSnooper.Services;
@@ -88,7 +86,7 @@
                 {
                     try
                     {
-                        Process.Start("http://www.tus-wa.com/forums/announcements/bringing-back-wn-ranks-and-registered-usernames-4819/");
+                        Process.Start("https://www.tus-wa.com/forums/announcements/bringing-back-wn-ranks-and-registered-usernames-4819/");
                     }
                     catch (Exception ex)
                     {
