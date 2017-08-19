@@ -65,7 +65,7 @@
         public override DataTemplate SelectTemplate(object item, DependencyObject container)
         {
             Type type = item.GetType();
-            if (type == typeof(StringSetting))
+            if (type == typeof(StringSetting) || type == typeof(NumberSetting))
             {
                 return StringSettingTemplate;
             }

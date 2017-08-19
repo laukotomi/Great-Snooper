@@ -7,6 +7,7 @@
         private static NickNameValidator _nicknameValidator;
         private static NotEmptyValidator _notEmptyValidator;
         private static WormNetTextValidator _wormNetTextValidator;
+        private static NumberValidator _numberValidator;
 
         public static ClanValidator ClanValidator
         {
@@ -65,6 +66,18 @@
                     _wormNetTextValidator = new WormNetTextValidator();
                 }
                 return _wormNetTextValidator;
+            }
+        }
+
+        public static NumberValidator NumberValidator
+        {
+            get
+            {
+                if (_numberValidator == null)
+                {
+                    _numberValidator = new NumberValidator();
+                }
+                return _numberValidator;
             }
         }
     }

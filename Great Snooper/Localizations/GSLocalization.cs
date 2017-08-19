@@ -580,6 +580,17 @@
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Copy game url to clipboard.
+        /// </summary>
+        public string CopyGameUrlToClipboard
+        {
+            get
+            {
+                return this._rm.GetString("CopyGameUrlToClipboard");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Create game.
         /// </summary>
         public string CreateGameText
@@ -1086,6 +1097,17 @@
         }
 
         /// <summary>
+        ///   Looks up a localized string similar to Force hosting using this ip address (optional).
+        /// </summary>
+        public string HostAddress
+        {
+            get
+            {
+                return this._rm.GetString("HostAddress");
+            }
+        }
+
+        /// <summary>
         ///   Looks up a localized string similar to Host a game.
         /// </summary>
         public string HostAGameText
@@ -1203,6 +1225,17 @@
             get
             {
                 return this._rm.GetString("HostingTitle");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to Force hosting using this port (optional).
+        /// </summary>
+        public string HostPort
+        {
+            get
+            {
+                return this._rm.GetString("HostPort");
             }
         }
 
@@ -2369,6 +2402,17 @@
             get
             {
                 return this._rm.GetString("RemoveText");
+            }
+        }
+
+        /// <summary>
+        ///   Looks up a localized string similar to You must enter a number here.
+        /// </summary>
+        public string RequiredNumberErrorMessage
+        {
+            get
+            {
+                return this._rm.GetString("RequiredNumberErrorMessage");
             }
         }
 

@@ -243,43 +243,43 @@
             this.NickRun.FontStyle = FontStyles.Normal;
             this.NickRun.FontWeight = FontWeights.Bold;
 
-            switch (this.Sender.OnlineStatus)
+            // Instant color
+            SolidColorBrush b;
+            if (InstantColors.Instance.TryGetValue(this.Sender, out b))
             {
-                case User.Status.Online:
-                    if (this.Style.Type != MessageTypes.Channel ||
-                        this.Channel.GetType() != typeof(ChannelViewModel) ||
-                        this.Sender.ChannelCollection.AllChannels.Contains(this.Channel))
-                    {
-                        // Instant color
-                        SolidColorBrush b;
-                        if (InstantColors.Instance.TryGetValue(this.Sender, out b))
-                        {
-                            this.NickRun.Foreground = b;
-                        }
-                        // Group color
-                        else if (this.Sender.Group.ID != UserGroups.SystemGroupID)
-                        {
-                            this.NickRun.Foreground = this.Sender.Group.TextColor;
-                            this.NickRun.FontStyle = FontStyles.Italic;
-                        }
-                        else
+                this.NickRun.Foreground = b;
+            }
+            // Group color
+            else if (this.Sender.Group.ID != UserGroups.SystemGroupID)
+            {
+                this.NickRun.Foreground = this.Sender.Group.TextColor;
+                this.NickRun.FontStyle = FontStyles.Italic;
+            }
+            else
+            {
+                switch (this.Sender.OnlineStatus)
+                {
+                    case User.Status.Online:
+                        if (this.Style.Type != MessageTypes.Channel ||
+                            this.Channel.GetType() != typeof(ChannelViewModel) ||
+                            this.Sender.ChannelCollection.AllChannels.Contains(this.Channel))
                         {
                             this.NickRun.Foreground = this.Style.NickColor;
                         }
-                    }
-                    else
-                    {
+                        else
+                        {
+                            this.NickRun.Foreground = Brushes.Goldenrod;
+                        }
+                        break;
+
+                    case User.Status.Offline:
+                        this.NickRun.Foreground = Brushes.Red;
+                        break;
+
+                    case User.Status.Unknown:
                         this.NickRun.Foreground = Brushes.Goldenrod;
-                    }
-                    break;
-
-                case User.Status.Offline:
-                    this.NickRun.Foreground = Brushes.Red;
-                    break;
-
-                case User.Status.Unknown:
-                    this.NickRun.Foreground = Brushes.Goldenrod;
-                    break;
+                        break;
+                }
             }
         }
 

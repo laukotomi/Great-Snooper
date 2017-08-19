@@ -1,6 +1,7 @@
 ﻿namespace GreatSnooper.ViewModel
 {
     using System;
+    using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Text.RegularExpressions;
@@ -143,8 +144,6 @@
 
             Task.Factory.StartNew<string>(() =>
             {
-                string wormnat = (UsingWormNat2.HasValue && UsingWormNat2.Value) ? "1" : "0";
-
                 // Save settings
                 string validGameName = WormNetCharTable.Instance.RemoveNonGameChars(GameName.Trim());
                 Properties.Settings.Default.HostGameName = validGameName;
@@ -154,26 +153,45 @@
                 Properties.Settings.Default.Save();
 
                 string encodedGameName = WormNetCharTable.Instance.EncodeGameUrl(validGameName);
-                string highPriority = Properties.Settings.Default.WAHighPriority ? "1" : "0";
                 string waExe = (this.SelectedWaExe == 0)
                     ? Properties.Settings.Default.WaExe
                     : Properties.Settings.Default.WaExe2;
 
-                string arguments = string.Format("\"{0}\" \"{1}\" \"{2}\" \"{3}\" \"{4}\" \"{5}\" \"{6}\" \"{7}\" \"{8}\" \"{9}\" \"{10}\" \"{11}\"",
-                                                 serverAddress,
-                                                 waExe,
-                                                 channel.Server.User.Name,
-                                                 encodedGameName,
-                                                 GamePassword,
-                                                 channel.Name.Substring(1),
-                                                 channel.Scheme,
-                                                 channel.Server.User.Country.ID.ToString(),
-                                                 cc,
-                                                 wormnat,
-                                                 highPriority,
-                                                 GlobalManager.SettingsPath);
+                List<string> arguments = new List<string>();
+                arguments.Add(string.Format("--settings \"{0}\"", GlobalManager.SettingsPath));
+                arguments.Add(string.Format("--server \"{0}\"", serverAddress));
+                arguments.Add(string.Format("--waexe \"{0}\"", waExe));
+                arguments.Add(string.Format("--nick \"{0}\"", channel.Server.User.Name));
+                arguments.Add(string.Format("--hostname \"{0}\"", encodedGameName));
+                arguments.Add(string.Format("--password \"{0}\"", GamePassword));
+                arguments.Add(string.Format("--channel \"{0}\"", channel.Name.Substring(1)));
+                arguments.Add(string.Format("--scheme \"{0}\"", channel.Scheme));
+                arguments.Add(string.Format("--location \"{0}\"", channel.Server.User.Country.ID.ToString()));
+                arguments.Add(string.Format("--cc \"{0}\"", cc));
 
-                string success = TryHostGame(arguments);
+                string hostAddress = SettingsHelper.Load<string>("HostAddress");
+                if (!string.IsNullOrEmpty(hostAddress))
+                {
+                    arguments.Add(string.Format("--ip \"{0}\"", hostAddress));
+                }
+
+                int hostPort = SettingsHelper.Load<int>("HostPort");
+                if (hostPort != default(int))
+                {
+                    arguments.Add(string.Format("--port \"{0}\"", hostPort));
+                }
+
+                if (UsingWormNat2.HasValue && UsingWormNat2.Value)
+                {
+                    arguments.Add("--wormnat");
+                }
+
+                if (Properties.Settings.Default.WAHighPriority)
+                {
+                    arguments.Add("--priority");
+                }
+
+                string success = TryHostGame(string.Join(" ", arguments));
 
                 using (gameProcess.StandardInput)
                 {

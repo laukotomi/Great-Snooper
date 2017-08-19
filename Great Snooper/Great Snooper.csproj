@@ -210,6 +210,7 @@
     <Compile Include="Settings\ComboboxSetting.cs" />
     <Compile Include="CustomUI\SettingTemplateSelector.cs" />
     <Compile Include="Settings\ExportImportSettings.cs" />
+    <Compile Include="Settings\NumberSetting.cs" />
     <Compile Include="Settings\SoundSetting.cs" />
     <Compile Include="Settings\StringSetting.cs" />
     <Compile Include="Settings\StyleSetting.cs" />
@@ -264,6 +265,7 @@
     <Compile Include="UserControls\UserListGrid.xaml.cs">
       <DependentUpon>UserListGrid.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Validators\NumberValidator.cs" />
     <Compile Include="Validators\Validator.cs" />
     <Compile Include="Validators\WormNetTextValidator.cs" />
     <Compile Include="CustomUI\FocusExtension.cs" />

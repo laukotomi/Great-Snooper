@@ -193,6 +193,10 @@
                 {
                     sb.Append("%" + _encodeGame[ch].ToString("X"));
                 }
+                else
+                {
+                    sb.Append(ch);
+                }
             }
             return sb.ToString();
         }

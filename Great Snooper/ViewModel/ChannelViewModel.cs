@@ -256,6 +256,15 @@
             }
         }
 
+        public RelayCommand<string> CopyGameUrlToClipboardCommand
+        {
+            get
+            {
+                return new RelayCommand<string>(CopyGameUrlToClipboard);
+            }
+        }
+
+
         public UserListGrid UserListDG
         {
             get;
@@ -619,7 +628,7 @@
             this.MainViewModel.GameProcess = new Process();
             this.MainViewModel.GameProcess.StartInfo.UseShellExecute = false;
             this.MainViewModel.GameProcess.StartInfo.FileName = (wa == "1") ? Properties.Settings.Default.WaExe : Properties.Settings.Default.WaExe2;
-            this.MainViewModel.GameProcess.StartInfo.Arguments = "wa://" + this.joinedGame.Address + "?gameid=" + this.joinedGame.ID + "&scheme=" + this.Scheme;
+            this.MainViewModel.GameProcess.StartInfo.Arguments = this.GetGameUrl(joinedGame);
             if (this.MainViewModel.GameProcess.Start())
             {
                 if (Properties.Settings.Default.WAHighPriority)
@@ -639,6 +648,11 @@
             {
                 this.MainViewModel.FreeGameProcess();
             }
+        }
+
+        private string GetGameUrl(Game game)
+        {
+            return "wa://" + game.Address + "?gameid=" + game.ID + "&scheme=" + this.Scheme;
         }
 
         private void GenerateMessageRegex()
@@ -1057,6 +1071,16 @@
                 ErrorLog.Log(ex);
                 e.Handled = true;
             }
+        }
+
+        private void CopyGameUrlToClipboard(string obj)
+        {
+            if (this.SelectedGame == null)
+            {
+                return;
+            }
+
+            Clipboard.SetText(this.GetGameUrl(this.SelectedGame));
         }
     }
 }

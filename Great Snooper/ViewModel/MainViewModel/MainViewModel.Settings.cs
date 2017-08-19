@@ -32,7 +32,7 @@
             {
                 string[] userList = SettingsHelper.Load<string>("Group" + m.Groups[1].Value + "List").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
                 var group = UserGroups.Instance.Groups["Group" + m.Groups[1].Value];
-                foreach (var user in group.Users.Except(userList))
+                foreach (var user in group.Users.Except(userList).ToList())
                 {
                     foreach (var server in this.Servers)
                     {
@@ -45,7 +45,7 @@
                     }
                 }
 
-                foreach (string user in userList.Except(group.Users))
+                foreach (string user in userList.Except(group.Users).ToList())
                 {
                     foreach (var server in this.Servers)
                     {

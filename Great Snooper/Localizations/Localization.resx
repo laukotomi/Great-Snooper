@@ -1329,4 +1329,18 @@
     <value>Authentication failed</value>
     <comment>When GameSurge authentication fails</comment>
   </data>
+  <data name="HostAddress" xml:space="preserve">
+    <value>Force hosting using this ip address (optional)</value>
+    <comment>Force IP thing</comment>
+  </data>
+  <data name="HostPort" xml:space="preserve">
+    <value>Force hosting using this port (optional)</value>
+    <comment>Force IP thing</comment>
+  </data>
+  <data name="RequiredNumberErrorMessage" xml:space="preserve">
+    <value>You must enter a number here</value>
+  </data>
+  <data name="CopyGameUrlToClipboard" xml:space="preserve">
+    <value>Copy game url to clipboard</value>
+  </data>
 </root>

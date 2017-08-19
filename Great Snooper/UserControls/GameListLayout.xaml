@@ -135,6 +135,9 @@
                 <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=SilentJoinCloseText2, Mode=OneWay}"
                             Command="{Binding Path=SilentJoinCloseCommand, Mode=OneTime}"
                             CommandParameter="2" Style="{StaticResource Wa2Style}" />
+
+                <MenuItem Header="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CopyGameUrlToClipboard, Mode=OneWay}"
+                            Command="{Binding Path=CopyGameUrlToClipboardCommand, Mode=OneTime}" />
             </ContextMenu>
         </ListBox.ContextMenu>
     </ListBox>

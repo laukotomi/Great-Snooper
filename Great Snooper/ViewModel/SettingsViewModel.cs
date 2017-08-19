@@ -211,6 +211,8 @@
             this.NetworkSettings.Add(new BoolSetting("LoadChannelScheme", Localizations.GSLocalization.Instance.LoadChannelSchemeText));
             this.NetworkSettings.Add(new BoolSetting("UseWhoMessages", Localizations.GSLocalization.Instance.UseWhoMessagesText));
             this.NetworkSettings.Add(new BoolSetting("LoadOnlyIfWindowActive", Localizations.GSLocalization.Instance.LoadGamesTUSActiveWindow));
+            this.NetworkSettings.Add(new StringSetting("HostAddress", Localizations.GSLocalization.Instance.HostAddress, null, this.DialogService));
+            this.NetworkSettings.Add(new NumberSetting("HostPort", Localizations.GSLocalization.Instance.HostPort, Validator.NumberValidator, this.DialogService));
 
             this.WindowSettings = new List<AbstractSetting>();
             this.WindowSettings.Add(new BoolSetting("ShowBannedUsers", Localizations.GSLocalization.Instance.ShowBannedUsersText));

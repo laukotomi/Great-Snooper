@@ -1,4 +1,4 @@
-﻿using System;
+﻿using NDesk.Options;
 
 namespace Hoster
 {
@@ -6,10 +6,37 @@ namespace Hoster
     {
         static void Main(string[] args)
         {
-            if (args.Length != 12)
-                return;
-            WormNat prg = new WormNat(args[0], args[1], args[2], args[3], args[4], args[5], args[6], args[7], args[8], args[9], args[10], args[11]);
-            prg.Start();
+            var options = new Options();
+            var parser = new OptionSet();
+            parser.Add("settings=", (v) => options.SettingsPath = v);
+            parser.Add("server=", (v) => options.ServerAddress = v);
+            parser.Add("waexe=", (v) => options.GameExePath = v);
+            parser.Add("nick=", (v) => options.NickName = v);
+            parser.Add("hostname=", (v) => options.HostName = v);
+            parser.Add("password=", (v) => options.PassWord = v);
+            parser.Add("channel=", (v) => options.ChannelName = v);
+            parser.Add("scheme=", (v) => options.ChannelScheme = v);
+            parser.Add("location=", (v) => options.Location = v);
+            parser.Add("cc=", (v) => options.CC = v);
+            parser.Add("wormnat", (v) => options.UseWormNat = v != null);
+            parser.Add("priority", (v) => options.SetHighPriority = v != null);
+            parser.Add("port:", (v) =>
+            {
+                int port;
+                if (int.TryParse(v, out port))
+                {
+                    options.Port = port;
+                }
+            });
+            parser.Add("ip:", (v) => options.IP = v);
+
+            try
+            {
+                parser.Parse(args);
+                WormNat prg = new WormNat(options);
+                prg.Start();
+            }
+            catch { }
         }
     }
 }

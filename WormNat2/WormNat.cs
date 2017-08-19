@@ -16,7 +16,7 @@ namespace Hoster
 
         private const string proxyAddress = "proxy.wormnet.net";
         private const int defProxyPort = 9301;
-        private const int gamePort = 17011;
+        private const int defaultGamePort = 17011;
 
         private volatile IPAddress[] wormnatAddress;
         private volatile Socket controlSocket;
@@ -25,33 +25,15 @@ namespace Hoster
 
         private string gameID = string.Empty;
 
-        private readonly string serverAddress;
-        private readonly string gameExePath;
-        private readonly string nickName;
-        private readonly string hostName;
-        private readonly string passWord;
-        private readonly string channelName;
-        private readonly string channelScheme;
-        private readonly string location;
-        private readonly string cc;
-        private readonly string snooperSettingsPath;
-        private readonly bool useWormNat;
-        private readonly bool highPriority;
+        private readonly Options options;
 
-        public WormNat(string serverAddress, string gameExePath, string nickName, string hostName, string passWord, string channelName, string channelScheme, string location, string cc, string useWormNat, string highPriority, string settingsPath)
+        public WormNat(Options options)
         {
-            this.serverAddress = serverAddress;
-            this.gameExePath = gameExePath;
-            this.nickName = nickName;
-            this.hostName = hostName;
-            this.passWord = passWord;
-            this.channelName = channelName;
-            this.channelScheme = channelScheme;
-            this.location = location;
-            this.cc = cc;
-            this.useWormNat = (useWormNat == "1");
-            this.highPriority = (highPriority == "1");
-            this.snooperSettingsPath = settingsPath;
+            this.options = options;
+            if (this.options.Port == default(int))
+            {
+                this.options.Port = defaultGamePort;
+            }
         }
 
         private void ConnectionThread(int proxyPort)
@@ -78,7 +60,7 @@ namespace Hoster
 
                         try
                         {
-                            gameSocket.Connect("127.0.0.1", gamePort);
+                            gameSocket.Connect("127.0.0.1", this.options.Port);
                             ok = true;
                         }
                         catch
@@ -200,7 +182,7 @@ namespace Hoster
 
             try
             {
-                string sURL = "http://" + serverAddress + ":80/wormageddonweb/Game.asp?Cmd=Close&GameID=" + gameID + "&Name=" + hostName + "&HostID=&GuestID=&GameType=0";
+                string sURL = "http://" + this.options.ServerAddress + ":80/wormageddonweb/Game.asp?Cmd=Close&GameID=" + gameID + "&Name=" + this.options.HostName + "&HostID=&GuestID=&GameType=0";
                 HttpWebRequest wrGETURL = (HttpWebRequest)WebRequest.Create(sURL);
                 wrGETURL.Method = "GET";
                 wrGETURL.AllowAutoRedirect = false;
@@ -229,10 +211,10 @@ namespace Hoster
         {
             try
             {
-                string hostIP;
+                string hostIP = this.options.IP;
 
                 // Join to the proxy server
-                if (this.useWormNat)
+                if (this.options.UseWormNat)
                 {
                     try
                     {
@@ -267,7 +249,7 @@ namespace Hoster
                     }
                 }
                 // Basic way to host
-                else
+                else if (string.IsNullOrEmpty(hostIP))
                 {
                     // Get local IP
                     try
@@ -279,10 +261,7 @@ namespace Hoster
                         using (StreamReader stream = new StreamReader(response.GetResponseStream()))
                         {
                             string localIP = stream.ReadToEnd();
-                            if (localIP.Contains("."))
-                                hostIP = localIP + ":" + gamePort.ToString(); // IPv4
-                            else
-                                hostIP = "[" + localIP + "]:" + gamePort.ToString(); // IPv6
+                            hostIP = this.CreateIp(localIP);
                         }
                     }
                     catch (Exception ex)
@@ -298,12 +277,9 @@ namespace Hoster
                                 string localIP = stream.ReadToEnd();
                                 int first = localIP.IndexOf("Address: ") + 9;
                                 int last = localIP.LastIndexOf("</body>");
-                                localIP = localIP.Substring(first, last - first);
 
-                                if (localIP.Contains("."))
-                                    hostIP = localIP + ":" + gamePort.ToString(); // IPv4
-                                else
-                                    hostIP = "[" + localIP + "]:" + gamePort.ToString(); // IPv6
+                                localIP = localIP.Substring(first, last - first);
+                                hostIP = this.CreateIp(localIP);
                             }
                         }
                         catch (Exception)
@@ -318,7 +294,7 @@ namespace Hoster
                 try
                 {
                     // Create the game and get its ID
-                    string sURL = "http://" + serverAddress + ":80/wormageddonweb/Game.asp?Cmd=Create&Name=" + hostName + "&HostIP=" + hostIP + "&Nick=" + nickName + "&Pwd=" + passWord + "&Chan=" + channelName + "&Loc=" + location + "&Type=" + cc;
+                    string sURL = "http://" + this.options.ServerAddress + ":80/wormageddonweb/Game.asp?Cmd=Create&Name=" + this.options.HostName + "&HostIP=" + hostIP + "&Nick=" + this.options.NickName + "&Pwd=" + this.options.PassWord + "&Chan=" + this.options.ChannelName + "&Loc=" + this.options.Location + "&Type=" + this.options.CC;
                     HttpWebRequest wrGETURL = (HttpWebRequest)WebRequest.Create(sURL);
                     wrGETURL.Method = "GET";
                     wrGETURL.AllowAutoRedirect = false;
@@ -376,14 +352,14 @@ namespace Hoster
                 {
                     Process p = new Process();
                     p.StartInfo.UseShellExecute = false;
-                    p.StartInfo.FileName = gameExePath;
-                    p.StartInfo.Arguments = @"wa://?gameid=" + gameID + "&scheme=" + channelScheme + "&pass=" + passWord;
+                    p.StartInfo.FileName = this.options.GameExePath;
+                    p.StartInfo.Arguments = @"wa://?gameid=" + gameID + "&scheme=" + this.options.ChannelScheme + "&pass=" + this.options.PassWord;
                     if (p.Start())
                     {
-                        if (highPriority)
+                        if (this.options.SetHighPriority)
                             p.PriorityClass = ProcessPriorityClass.High;
 
-                        if (useWormNat)
+                        if (this.options.UseWormNat)
                         {
                             Thread t = new Thread(ControlThread);
                             t.Start();
@@ -438,7 +414,7 @@ namespace Hoster
                 {
                     try
                     {
-                        string filename = this.snooperSettingsPath + @"\HosterLog.txt";
+                        string filename = this.options.SettingsPath + @"\HosterLog.txt";
                         // Delete log file if it is more than 10 Mb
                         FileInfo logfile = new FileInfo(filename);
                         if (logfile.Exists && logfile.Length > 10 * 1024 * 1024)
@@ -457,6 +433,14 @@ namespace Hoster
                     catch { }
                 }
             }
+        }
+
+        private string CreateIp(string ip)
+        {
+            if (ip.Contains("."))
+                return ip + ":" + this.options.Port.ToString(); // IPv4
+            else
+                return "[" + ip + "]:" + this.options.Port.ToString(); // IPv6
         }
     }
 }
