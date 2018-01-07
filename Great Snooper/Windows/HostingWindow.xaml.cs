@@ -12,7 +12,7 @@
     using MahApps.Metro.Controls;
     using MahApps.Metro.Controls.Dialogs;
 
-    public partial class HostingWindow : MetroWindow
+    public partial class HostingWindow : MetroWindow, IDisposable
     {
         private HostingViewModel vm;
 
@@ -42,6 +42,24 @@
                     }
                 }
             });
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (vm != null)
+                {
+                    vm.Dispose();
+                    vm = null;
+                }
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace GreatSnooper.Windows
 {
+    using System;
     using System.Windows;
     using System.Windows.Controls;
     using GreatSnooper.IRC;
@@ -7,7 +8,7 @@
     using GreatSnooper.ViewModel;
     using MahApps.Metro.Controls;
 
-    public partial class MainWindow : MetroWindow
+    public partial class MainWindow : MetroWindow, IDisposable
     {
         private MainViewModel vm;
 
@@ -32,6 +33,25 @@
             this.ContentRendered += this.vm.ContentRendered;
             this.Closing += this.vm.ClosingRequest;
             this.DataContext = vm;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                // free managed resources  
+                if (vm != null)
+                {
+                    vm.Dispose();
+                    vm = null;
+                }
+            }
         }
     }
 }

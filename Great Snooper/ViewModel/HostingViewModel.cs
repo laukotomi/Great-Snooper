@@ -14,7 +14,7 @@
     using GreatSnooper.IRC;
     using GreatSnooper.Services;
 
-    class HostingViewModel : ViewModelBase
+    class HostingViewModel : ViewModelBase, IDisposable
     {
         private static Regex PassRegex = new Regex(@"^[a-z]*$", RegexOptions.IgnoreCase | RegexOptions.Compiled);
 
@@ -282,6 +282,24 @@
                 gameProcess = null;
             }
             return string.Empty;
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                if (gameProcess != null)
+                {
+                    gameProcess.Dispose();
+                    gameProcess = null;
+                }
+            }
         }
     }
 }

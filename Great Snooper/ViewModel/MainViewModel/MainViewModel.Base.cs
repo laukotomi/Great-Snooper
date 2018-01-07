@@ -1171,7 +1171,7 @@
             }
         }
 
-        private void ConnectionState(object sender, IRCCommunicator.ConnectionStates oldState)
+        private void ConnectionState(object sender, ConnectionStateEventArgs e)
         {
             this.Dispatcher.BeginInvoke(new Action(delegate()
             {
@@ -1190,7 +1190,7 @@
                 }
                 else if (server.State == IRCCommunicator.ConnectionStates.Connected)
                 {
-                    if (oldState == IRCCommunicator.ConnectionStates.ReConnecting || server is WormNetCommunicator)
+                    if (e.OldState == IRCCommunicator.ConnectionStates.ReConnecting || server is WormNetCommunicator)
                     {
                         foreach (var chvm in server.Channels)
                         {
@@ -1244,7 +1244,7 @@
                                 chvm.Value.SetLoading(false);
                             }
 
-                            if (oldState != IRCCommunicator.ConnectionStates.ReConnecting)
+                            if (e.OldState != IRCCommunicator.ConnectionStates.ReConnecting)
                             {
                                 this.DialogService.ShowDialog(Localizations.GSLocalization.Instance.ErrorText, Localizations.GSLocalization.Instance.GSNickInUseText);
                             }

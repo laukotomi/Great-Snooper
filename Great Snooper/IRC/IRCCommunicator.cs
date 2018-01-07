@@ -17,7 +17,17 @@
     using GreatSnooper.Model;
     using GreatSnooper.ViewModel;
 
-    public delegate void ConnectionStateDelegate(object sender, IRCCommunicator.ConnectionStates oldState);
+    public class ConnectionStateEventArgs: EventArgs
+    {
+        public IRCCommunicator.ConnectionStates OldState { get; private set; }
+
+        public ConnectionStateEventArgs(IRCCommunicator.ConnectionStates oldState)
+        {
+            this.OldState = oldState;
+        }
+    }
+
+    public delegate void ConnectionStateDelegate(object sender, ConnectionStateEventArgs e);
 
     public abstract class IRCCommunicator : ObservableObject, IDisposable
     {
@@ -150,7 +160,7 @@
                     this._connectionState = value;
                     if (this.ConnectionState != null)
                     {
-                        this.ConnectionState.BeginInvoke(this, oldValue, null, null);
+                        this.ConnectionState.BeginInvoke(this, new ConnectionStateEventArgs(oldValue), null, null);
                     }
                 }
             }

@@ -9,7 +9,7 @@
     using GreatSnooper.Model;
     using GreatSnooper.ViewModel;
 
-    public delegate void MessageRegexChangedDelegate(object sender);
+    public delegate void MessageRegexChangedDelegate(object sender, EventArgs e);
 
     public class LeagueSearcher : ObservableObject
     {
@@ -93,7 +93,7 @@
             RaisePropertyChanged("IsEnabled");
             if (MessageRegexChange != null)
             {
-                MessageRegexChange(this);
+                MessageRegexChange(this, null);
             }
         }
 

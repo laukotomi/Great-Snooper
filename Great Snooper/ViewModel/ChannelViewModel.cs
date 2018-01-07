@@ -545,12 +545,12 @@
             RaisePropertyChanged("CanHostJoined");
             if (this.Joined)
             {
-                this.leagueSearcher.MessageRegexChange += GenerateMessageRegex;
+                this.leagueSearcher.MessageRegexChange += MessageRegexChanged;
                 this.Loading = false;
             }
             else // Part
             {
-                this.leagueSearcher.MessageRegexChange -= GenerateMessageRegex;
+                this.leagueSearcher.MessageRegexChange -= MessageRegexChanged;
 
                 ClearUsers();
                 this.Games.Clear();
@@ -564,6 +564,11 @@
             {
                 _tabitem.Content = (this.Joined) ? ConnectedLayout : DisconnectedLayout;
             }
+        }
+
+        private void MessageRegexChanged(object sender, EventArgs e)
+        {
+            this.GenerateMessageRegex();
         }
 
         private void AddUserToDefaultGroup(User u)

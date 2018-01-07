@@ -11,7 +11,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("Tomi")]
 [assembly: AssemblyProduct("Great Snooper")]
-[assembly: AssemblyCopyright("Copyright © Tomi 2015")]
+[assembly: AssemblyCopyright("Copyright © Tomi 2018")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

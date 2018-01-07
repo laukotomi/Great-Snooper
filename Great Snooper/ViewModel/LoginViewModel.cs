@@ -602,7 +602,7 @@
             DialogService.CloseRequest();
         }
 
-        private void ConnectionState(object sender, IRCCommunicator.ConnectionStates oldState)
+        private void ConnectionState(object sender, ConnectionStateEventArgs e)
         {
             this.dispatcher.Invoke(new Action(delegate()
             {
