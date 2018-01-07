@@ -32,6 +32,17 @@ namespace GreatSnooper.UserCommands
                     sender.MainViewModel.HandleTask(task);
                 }
             }
+            else
+            {
+                if (sender.MainViewModel.IsEnergySaveMode)
+                {
+                    sender.MainViewModel.LeaveEnergySaveMode();
+                }
+                else
+                {
+                    sender.MainViewModel.EnterEnergySaveMode();
+                }
+            }
         }
     }
 }

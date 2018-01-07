@@ -327,7 +327,7 @@ namespace GreatSnooper.ViewModel
             {
                 while (true)
                 {
-                    if (this._lastMessageLoaded == null || _lastMessageLoaded.Previous == null && _lastMessageLoaded.Next == null) // or is removed
+                    if (this._lastMessageLoaded == null)
                     {
                         this._lastMessageLoaded = this.Messages.First;
                     }

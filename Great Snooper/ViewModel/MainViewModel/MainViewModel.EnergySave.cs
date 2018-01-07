@@ -39,7 +39,7 @@
             }
         }
 
-        private void LeaveEnergySaveMode()
+        public void LeaveEnergySaveMode()
         {
             if (this.isHidden || this.DialogService.GetView().WindowState == WindowState.Minimized)
             {
@@ -52,6 +52,7 @@
                 return;
             }
 
+            this.shouldLeaveEnergySaveMode = false;
             this.IsEnergySaveMode = false;
 
             for (int i = 0; i < this.Servers.Length; i++)
