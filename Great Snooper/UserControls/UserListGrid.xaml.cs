@@ -269,6 +269,7 @@
             // Make new channel
             var newchvm = new PMChannelViewModel(this.chvm.MainViewModel, this.chvm.Server, u.Name);
             this.chvm.MainViewModel.SelectChannel(newchvm);
+            newchvm.GenerateHeader();
         }
 
         private void SetOrderForDataGrid(string columnName, ListSortDirection direction)

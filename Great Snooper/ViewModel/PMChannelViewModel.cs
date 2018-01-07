@@ -46,8 +46,8 @@
 
             if (this.Users[0].IsBanned == false)
             {
-                this.GenerateHeader();
                 mainViewModel.CreateChannel(this);
+                this.GenerateHeader();
             }
         }
 
@@ -93,6 +93,11 @@
 
         public void GenerateHeader(bool isMouseOver = false)
         {
+            if (this.ChannelTabVM == null)
+            {
+                return;
+            }
+
             /*
                 <ControlTemplate.Triggers>
                     <DataTrigger Binding="{Binding NewMessages}" Value="true">
@@ -153,7 +158,7 @@
                 switch (this.Users[j].OnlineStatus)
                 {
                     case User.Status.Offline:
-                        if (this.MainViewModel.SelectedChannel == this)
+                        if (this.ChannelTabVM.SelectedChannel == this)
                         {
                             inline.Foreground = Brushes.Red;
                         }
@@ -167,7 +172,7 @@
                         }
                         break;
                     case User.Status.Online:
-                        if (this.MainViewModel.SelectedChannel == this)
+                        if (this.ChannelTabVM.SelectedChannel == this)
                         {
                             inline.Foreground = Brushes.GreenYellow;
                         }
@@ -181,7 +186,7 @@
                         }
                         break;
                     case User.Status.Unknown:
-                        if (this.MainViewModel.SelectedChannel == this)
+                        if (this.ChannelTabVM.SelectedChannel == this)
                         {
                             inline.Foreground = Brushes.Goldenrod;
                         }
