@@ -76,9 +76,14 @@
                         this.ActivateSelectedChannel();
                     }
 
+                    PMChannelViewModel newPMChannel = this._selectedChannel as PMChannelViewModel;
                     if (oldPMChannel != null)
                     {
                         oldPMChannel.GenerateHeader();
+                    }
+                    if (newPMChannel != null)
+                    {
+                        newPMChannel.GenerateHeader();
                     }
 
                     this.RaisePropertyChanged("SelectedChannelIndex");
