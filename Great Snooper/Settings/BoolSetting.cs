@@ -24,7 +24,7 @@
 
                 if (value.HasValue)
                 {
-                    SettingsHelper.Save(settingName, value.Value);
+                    SettingsHelper.Save(SettingName, value.Value);
                 }
             }
         }

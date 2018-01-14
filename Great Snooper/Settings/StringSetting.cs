@@ -36,7 +36,7 @@
                     }
                 }
 
-                SettingsHelper.Save(this.settingName, value);
+                SettingsHelper.Save(this.SettingName, value);
 
                 _value = value;
             }

@@ -2449,6 +2449,17 @@
             }
         }
 
+        /// <summary>
+        ///   Looks up a localized string similar to Restore default.
+        /// </summary>
+        public string RestoreDefault
+        {
+            get
+            {
+                return this._rm.GetString("RestoreDefault");
+            }
+        }
+
         public ResourceManager RM
         {
             get

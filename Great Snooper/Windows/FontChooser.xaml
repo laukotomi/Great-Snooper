@@ -23,7 +23,7 @@
     </controls:MetroWindow.Resources>
     <DockPanel Grid.Row="1">
         <Border DockPanel.Dock="Top" Background="#33373f">
-            <u:ExampleText DataContext="{Binding Path=MessageSetting, Mode=OneTime}"
+            <u:ExampleText DataContext="{Binding Path=MessageSetting, Mode=OneWay}"
                            HorizontalAlignment="Center" VerticalAlignment="Center" Margin="10" />
         </Border>
 
@@ -111,6 +111,8 @@
             <StackPanel Grid.Row="1" Grid.ColumnSpan="2" HorizontalAlignment="Center" Orientation="Horizontal">
                 <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=SaveText, Mode=OneWay}"
                         MinWidth="100" Margin="10" Command="{Binding Path=SaveCommand, Mode=OneTime}" />
+                <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=RestoreDefault, Mode=OneWay}"
+                        MinWidth="100" Margin="10" Command="{Binding Path=RestoreCommand, Mode=OneTime}" IsCancel="True" />
                 <Button Content="{Binding Source={x:Static l:GSLocalization.Instance}, Path=CloseText, Mode=OneWay}"
                         MinWidth="100" Margin="10" Command="{Binding Path=CloseCommand, Mode=OneTime}" IsCancel="True" />
             </StackPanel>

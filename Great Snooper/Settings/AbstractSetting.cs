@@ -4,18 +4,14 @@
 
     public abstract class AbstractSetting : ObservableObject
     {
-        protected string settingName;
+        public string SettingName { get; private set; }
+
+        public string Text { get; private set; }
 
         public AbstractSetting(string settingName, string text)
         {
-            this.settingName = settingName;
+            this.SettingName = settingName;
             this.Text = text;
-        }
-
-        public string Text
-        {
-            get;
-            private set;
         }
     }
 }

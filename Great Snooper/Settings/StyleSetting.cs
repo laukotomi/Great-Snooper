@@ -36,7 +36,7 @@
 
         public void Save()
         {
-            SettingsHelper.Save(this.settingName, MessageSettings.ObjToSetting(Style));
+            SettingsHelper.Save(this.SettingName, MessageSettings.ObjToSetting(Style));
         }
 
         private void OpenFontChooser()

@@ -30,7 +30,7 @@
                 if (_enabled != value)
                 {
                     _enabled = value;
-                    SettingsHelper.Save(this.settingName + "Enabled", value.Value);
+                    SettingsHelper.Save(this.SettingName + "Enabled", value.Value);
                 }
             }
         }
@@ -46,7 +46,7 @@
                 if (_path != value)
                 {
                     _path = value;
-                    SettingsHelper.Save(this.settingName, value);
+                    SettingsHelper.Save(this.SettingName, value);
                 }
             }
         }

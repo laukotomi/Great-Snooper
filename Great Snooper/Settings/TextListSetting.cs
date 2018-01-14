@@ -32,7 +32,7 @@
 
         private void OpenListEditor()
         {
-            var window = new ListEditor(this.settingName, this.editorTitle, this.validator);
+            var window = new ListEditor(this.SettingName, this.editorTitle, this.validator);
             window.Owner = this.dialogService.GetView();
             window.ShowDialog();
         }

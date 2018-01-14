@@ -29,7 +29,7 @@
                 if (string.IsNullOrEmpty(value))
                 {
                     _value = default(int);
-                    SettingsHelper.Save(this.settingName, _value);
+                    SettingsHelper.Save(this.SettingName, _value);
                     return;
                 }
 
@@ -44,7 +44,7 @@
                 }
 
                 _value = int.Parse(value);
-                SettingsHelper.Save(this.settingName, _value);
+                SettingsHelper.Save(this.SettingName, _value);
             }
         }
     }

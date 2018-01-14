@@ -30,7 +30,7 @@
                 if (_path != value)
                 {
                     _path = value;
-                    SettingsHelper.Save(this.settingName, _path);
+                    SettingsHelper.Save(this.SettingName, _path);
                 }
             }
         }

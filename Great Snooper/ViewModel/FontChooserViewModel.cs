@@ -27,8 +27,8 @@
             {
                 this.FontSizes.Add(i);
             }
-            this.MessageSetting = new MessageSetting(style.Style);
-            this.MessageSetting.PropertyChanged += MessageSetting_PropertyChanged;
+            this._messageSetting = new MessageSetting(style.Style);
+            this._messageSetting.PropertyChanged += MessageSetting_PropertyChanged;
         }
 
         public ICommand CloseCommand
@@ -36,6 +36,14 @@
             get
             {
                 return new RelayCommand(Close);
+            }
+        }
+
+        public ICommand RestoreCommand
+        {
+            get
+            {
+                return new RelayCommand(Restore);
             }
         }
 
@@ -75,10 +83,19 @@
             private set;
         }
 
+        private MessageSetting _messageSetting;
         public MessageSetting MessageSetting
         {
-            get;
-            private set;
+            get { return _messageSetting; }
+            private set
+            {
+                if (_messageSetting != value)
+                {
+                    _messageSetting = value;
+                    this.RaisePropertyChanged("MessageSetting");
+                    this.RaisePropertyChanged("SelectedFontFamily");
+                }
+            }
         }
 
         public ICommand SaveCommand
@@ -152,6 +169,15 @@
             Style.Save();
             this.settingsChanged = false;
             DialogService.CloseRequest();
+        }
+
+        private void Restore()
+        {
+            string defaultValue = SettingsHelper.GetDefaultValue<string>(this.Style.SettingName);
+            this.MessageSetting.PropertyChanged -= MessageSetting_PropertyChanged;
+            this.MessageSetting = MessageSettings.SettingToObj(defaultValue, this.Style.Style.Type);
+            this.MessageSetting.PropertyChanged += MessageSetting_PropertyChanged;
+            this.settingsChanged = true;
         }
     }
 }
