@@ -511,6 +511,10 @@
                     {
                         if (message == "I recognize you.")
                         {
+                            if (this.State == ConnectionStates.Connecting || this.State == ConnectionStates.ReConnecting)
+                            {
+                                this.State = ConnectionStates.Connected;
+                            }
                             return false;
                         }
                     }
@@ -707,9 +711,12 @@
                         {
                             this.Send(this, "authserv auth " + this.User.Name + " " + Properties.Settings.Default.WormsPassword);
                         }
-                        if (this.State == ConnectionStates.Connecting || this.State == ConnectionStates.ReConnecting)
+                        else
                         {
-                            this.State = ConnectionStates.Connected;
+                            if (this.State == ConnectionStates.Connecting || this.State == ConnectionStates.ReConnecting)
+                            {
+                                this.State = ConnectionStates.Connected;
+                            }
                         }
                     }
                     break;
