@@ -609,8 +609,11 @@ namespace GreatSnooper.ViewModel
                     while (this._rtbDocument.Blocks.Count > GlobalManager.MaxMessagesDisplayed)
                     {
                         this._rtbDocument.Blocks.Remove(this._rtbDocument.Blocks.FirstBlock);
-                        this._messagesLoadedFrom.Value.NickRun = null;
-                        SetMessagesLoadedFrom(this._messagesLoadedFrom.Next);
+                        if (this._messagesLoadedFrom != null)
+                        {
+                            this._messagesLoadedFrom.Value.NickRun = null;
+                            SetMessagesLoadedFrom(this._messagesLoadedFrom.Next);
+                        }
                     }
                 }
 
