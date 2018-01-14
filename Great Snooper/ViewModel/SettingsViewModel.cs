@@ -238,10 +238,10 @@
 
             this.WormsSettings = new List<AbstractSetting>();
             this.WormsSettings.Add(new BoolSetting("ShowWormsChannel", Localizations.GSLocalization.Instance.ShowWormsText));
+            this.WormsSettings.Add(new BoolSetting("ChangeWormsNick", Localizations.GSLocalization.Instance.ChangeWormsNickText));
             this.WormsSettings.Add(new StringSetting("WormsNick", Localizations.GSLocalization.Instance.WormsNickLabel, Validator.NickNameValidator, this.DialogService));
             this.WormsSettings.Add(new BoolSetting("GameSurgeAuth", Localizations.GSLocalization.Instance.GameSurgeAuthLabel));
             this.WormsSettings.Add(new StringSetting("WormsPassword", Localizations.GSLocalization.Instance.GameSurgePasswordLabel, null, this.DialogService));
-            this.WormsSettings.Add(new BoolSetting("ChangeWormsNick", Localizations.GSLocalization.Instance.ChangeWormsNickText));
 
             this.MsgSettings = new List<AbstractSetting>();
             this.MsgSettings.Add(new BoolSetting("MessageTime", Localizations.GSLocalization.Instance.MessageTimeText));

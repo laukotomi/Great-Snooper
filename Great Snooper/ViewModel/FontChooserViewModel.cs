@@ -137,6 +137,7 @@
         {
             if (this.settingsChanged == false)
             {
+                this._messageSetting.PropertyChanged -= MessageSetting_PropertyChanged;
                 DialogService.CloseRequest();
                 return;
             }
@@ -146,6 +147,7 @@
                 if (t.Result == MessageDialogResult.Affirmative)
                 {
                     this.settingsChanged = false;
+                    this._messageSetting.PropertyChanged -= MessageSetting_PropertyChanged;
                     DialogService.CloseRequest();
                 }
             });

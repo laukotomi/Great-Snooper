@@ -19,198 +19,201 @@
 
         private void SettingsChanged(object sender, PropertyChangedEventArgs e)
         {
-            Match m;
-            m = groupSoundRegex.Match(e.PropertyName);
-            if (m.Success)
+            this.Dispatcher.BeginInvoke(new Action(() =>
             {
-                UserGroups.Instance.Groups["Group" + m.Groups[1].Value].Sound = null;
-                return;
-            }
-
-            m = groupListRegex.Match(e.PropertyName);
-            if (m.Success)
-            {
-                string[] userList = SettingsHelper.Load<string>("Group" + m.Groups[1].Value + "List").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
-                var group = UserGroups.Instance.Groups["Group" + m.Groups[1].Value];
-                foreach (var user in group.Users.Except(userList).ToList())
+                Match m;
+                m = groupSoundRegex.Match(e.PropertyName);
+                if (m.Success)
                 {
-                    foreach (var server in this.Servers)
-                    {
-                        User u;
-                        if (server.Users.TryGetValue(user, out u))
-                        {
-                            UserGroups.Instance.AddOrRemoveUser(u, null);
-                            break;
-                        }
-                    }
+                    UserGroups.Instance.Groups["Group" + m.Groups[1].Value].Sound = null;
+                    return;
                 }
 
-                foreach (string user in userList.Except(group.Users).ToList())
+                m = groupListRegex.Match(e.PropertyName);
+                if (m.Success)
                 {
-                    foreach (var server in this.Servers)
+                    string[] userList = SettingsHelper.Load<string>("Group" + m.Groups[1].Value + "List").Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                    var group = UserGroups.Instance.Groups["Group" + m.Groups[1].Value];
+                    foreach (var user in group.Users.Except(userList).ToList())
                     {
-                        User u;
-                        if (server.Users.TryGetValue(user, out u))
+                        foreach (var server in this.Servers)
                         {
-                            UserGroups.Instance.AddOrRemoveUser(u, group);
-                            break;
-                        }
-                    }
-                }
-                return;
-            }
-
-            switch (e.PropertyName)
-            {
-                case "Group0":
-                case "Group1":
-                case "Group2":
-                case "Group3":
-                case "Group4":
-                case "Group5":
-                case "Group6":
-                    var group = UserGroups.Instance.Groups[e.PropertyName];
-                    group.ReloadData();
-                    foreach (var server in this.Servers)
-                    {
-                        foreach (var chvm in server.Channels)
-                        {
-                            if (chvm.Value is ChannelViewModel)
+                            User u;
+                            if (server.Users.TryGetValue(user, out u))
                             {
-                                ((ChannelViewModel)chvm.Value).RegenerateGroupsMenu = true;
-                                if (chvm.Value.Joined)
+                                UserGroups.Instance.AddOrRemoveUser(u, null);
+                                break;
+                            }
+                        }
+                    }
+
+                    foreach (string user in userList.Except(group.Users).ToList())
+                    {
+                        foreach (var server in this.Servers)
+                        {
+                            User u;
+                            if (server.Users.TryGetValue(user, out u))
+                            {
+                                UserGroups.Instance.AddOrRemoveUser(u, group);
+                                break;
+                            }
+                        }
+                    }
+                    return;
+                }
+
+                switch (e.PropertyName)
+                {
+                    case "Group0":
+                    case "Group1":
+                    case "Group2":
+                    case "Group3":
+                    case "Group4":
+                    case "Group5":
+                    case "Group6":
+                        var group = UserGroups.Instance.Groups[e.PropertyName];
+                        group.ReloadData();
+                        foreach (var server in this.Servers)
+                        {
+                            foreach (var chvm in server.Channels)
+                            {
+                                if (chvm.Value is ChannelViewModel)
                                 {
-                                    chvm.Value.LoadMessages(GlobalManager.MaxMessagesDisplayed, true);
+                                    ((ChannelViewModel)chvm.Value).RegenerateGroupsMenu = true;
+                                    if (chvm.Value.Joined)
+                                    {
+                                        chvm.Value.LoadMessages(GlobalManager.MaxMessagesDisplayed, true);
+                                    }
                                 }
                             }
                         }
-                    }
-                    break;
+                        break;
 
-                case "CultureName":
-                    foreach (var server in this.Servers)
-                    {
-                        foreach (var chvm in server.Channels)
+                    case "CultureName":
+                        foreach (var server in this.Servers)
                         {
-                            if (chvm.Value is ChannelViewModel)
+                            foreach (var chvm in server.Channels)
                             {
-                                ((ChannelViewModel)chvm.Value).RegenerateGroupsMenu = true;
+                                if (chvm.Value is ChannelViewModel)
+                                {
+                                    ((ChannelViewModel)chvm.Value).RegenerateGroupsMenu = true;
+                                }
                             }
                         }
-                    }
-                    break;
+                        break;
 
-                case "ShowWormsChannel":
-                    if (Properties.Settings.Default.ShowWormsChannel)
-                    {
-                        new ChannelViewModel(this, this.GameSurge, "#worms", "A place for hardcore wormers");
-                    }
-                    else
-                    {
-                        var chvm = (ChannelViewModel)this.GameSurge.Channels["#worms"];
-                        this.CloseChannel(chvm);
-                    }
-                    break;
-
-                case "WaExe":
-                    RaisePropertyChanged("ShowWAExe1");
-                    break;
-
-                case "WaExe2":
-                    RaisePropertyChanged("ShowWAExe2");
-                    break;
-
-                case "BatLogo":
-                    RaisePropertyChanged("BatLogo");
-                    break;
-
-                case "HiddenChannels":
-                    GlobalManager.HiddenChannels = new HashSet<string>(
-                        Properties.Settings.Default.HiddenChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
-                        GlobalManager.CIStringComparer);
-                    foreach (var server in this.Servers)
-                    {
-                        foreach (var chvm in server.Channels)
+                    case "ShowWormsChannel":
+                        if (Properties.Settings.Default.ShowWormsChannel)
                         {
-                            if (this._allChannels.Any(x => x.Name.Equals(chvm.Key, StringComparison.OrdinalIgnoreCase)) == false && GlobalManager.HiddenChannels.Contains(chvm.Key) == false)
+                            new ChannelViewModel(this, this.GameSurge, "#worms", "A place for hardcore wormers");
+                        }
+                        else
+                        {
+                            var chvm = (ChannelViewModel)this.GameSurge.Channels["#worms"];
+                            this.CloseChannel(chvm);
+                        }
+                        break;
+
+                    case "WaExe":
+                        RaisePropertyChanged("ShowWAExe1");
+                        break;
+
+                    case "WaExe2":
+                        RaisePropertyChanged("ShowWAExe2");
+                        break;
+
+                    case "BatLogo":
+                        RaisePropertyChanged("BatLogo");
+                        break;
+
+                    case "HiddenChannels":
+                        GlobalManager.HiddenChannels = new HashSet<string>(
+                            Properties.Settings.Default.HiddenChannels.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
+                            GlobalManager.CIStringComparer);
+                        foreach (var server in this.Servers)
+                        {
+                            foreach (var chvm in server.Channels)
                             {
-                                this._channelTabControl1.Channels.Add(chvm.Value);
+                                if (this._allChannels.Any(x => x.Name.Equals(chvm.Key, StringComparison.OrdinalIgnoreCase)) == false && GlobalManager.HiddenChannels.Contains(chvm.Key) == false)
+                                {
+                                    this._channelTabControl1.Channels.Add(chvm.Value);
+                                }
                             }
                         }
-                    }
-                    break;
+                        break;
 
-                case "PMBeep":
-                case "HBeep":
-                case "LeagueFoundBeep":
-                case "LeagueFailBeep":
-                case "NotificatorSound":
-                    Sounds.ReloadSound(e.PropertyName);
-                    break;
+                    case "PMBeep":
+                    case "HBeep":
+                    case "LeagueFoundBeep":
+                    case "LeagueFailBeep":
+                    case "NotificatorSound":
+                        Sounds.ReloadSound(e.PropertyName);
+                        break;
 
-                case "ChannelMessageStyle":
-                case "JoinMessageStyle":
-                case "PartMessageStyle":
-                case "QuitMessageStyle":
-                case "SystemMessageStyle":
-                case "ActionMessageStyle":
-                case "UserMessageStyle":
-                case "NoticeMessageStyle":
-                case "MessageTimeStyle":
-                case "HyperLinkStyle":
-                case "LeagueFoundMessageStyle":
-                case "ShowBannedMessages":
-                    for (int i = 0; i < this.Servers.Length; i++)
-                    {
-                        foreach (var item in this.Servers[i].Channels)
+                    case "ChannelMessageStyle":
+                    case "JoinMessageStyle":
+                    case "PartMessageStyle":
+                    case "QuitMessageStyle":
+                    case "SystemMessageStyle":
+                    case "ActionMessageStyle":
+                    case "UserMessageStyle":
+                    case "NoticeMessageStyle":
+                    case "MessageTimeStyle":
+                    case "HyperLinkStyle":
+                    case "LeagueFoundMessageStyle":
+                    case "ShowBannedMessages":
+                        for (int i = 0; i < this.Servers.Length; i++)
                         {
-                            if (item.Value.Joined)
+                            foreach (var item in this.Servers[i].Channels)
                             {
-                                item.Value.LoadMessages(GlobalManager.MaxMessagesDisplayed, true);
+                                if (item.Value.Joined)
+                                {
+                                    item.Value.LoadMessages(GlobalManager.MaxMessagesDisplayed, true);
+                                }
                             }
                         }
-                    }
-                    break;
+                        break;
 
-                case "ShowBannedUsers":
-                    for (int i = 0; i < this.Servers.Length; i++)
-                    {
-                        foreach (var item in this.Servers[i].Channels)
+                    case "ShowBannedUsers":
+                        for (int i = 0; i < this.Servers.Length; i++)
                         {
-                            if (item.Value is ChannelViewModel && ((ChannelViewModel)item.Value).UserListDG != null)
+                            foreach (var item in this.Servers[i].Channels)
                             {
-                                ((ChannelViewModel)item.Value).UserListDG.SetUserListDGView();
+                                if (item.Value is ChannelViewModel && ((ChannelViewModel)item.Value).UserListDG != null)
+                                {
+                                    ((ChannelViewModel)item.Value).UserListDG.SetUserListDGView();
+                                }
                             }
                         }
-                    }
-                    break;
+                        break;
 
-                case "ShowInfoColumn":
-                    for (int i = 0; i < this.Servers.Length; i++)
-                    {
-                        foreach (var item in this.Servers[i].Channels)
+                    case "ShowInfoColumn":
+                        for (int i = 0; i < this.Servers.Length; i++)
                         {
-                            if (item.Value is ChannelViewModel && ((ChannelViewModel)item.Value).UserListDG != null)
+                            foreach (var item in this.Servers[i].Channels)
                             {
-                                ((ChannelViewModel)item.Value).UserListDG.Columns[4].Visibility = (Properties.Settings.Default.ShowInfoColumn) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+                                if (item.Value is ChannelViewModel && ((ChannelViewModel)item.Value).UserListDG != null)
+                                {
+                                    ((ChannelViewModel)item.Value).UserListDG.Columns[4].Visibility = (Properties.Settings.Default.ShowInfoColumn) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+                                }
                             }
                         }
-                    }
-                    break;
+                        break;
 
-                case "ItalicForGSUsers":
-                    for (int i = 0; i < this.Servers.Length; i++)
-                    {
-                        foreach (var item in this.Servers[i].Users)
+                    case "ItalicForGSUsers":
+                        for (int i = 0; i < this.Servers.Length; i++)
                         {
-                            if (item.Value.UsingGreatSnooper && item.Value.ChannelCollection.Channels.Count > 0)
+                            foreach (var item in this.Servers[i].Users)
                             {
-                                item.Value.RaisePropertyChangedPublic("UsingGreatSnooperItalic");
+                                if (item.Value.UsingGreatSnooper && item.Value.ChannelCollection.Channels.Count > 0)
+                                {
+                                    item.Value.RaisePropertyChangedPublic("UsingGreatSnooperItalic");
+                                }
                             }
                         }
-                    }
-                    break;
-            }
+                        break;
+                }
+            }));
         }
     }
 }
