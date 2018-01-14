@@ -9,7 +9,6 @@
         public WormNetCommunicator(string serverAddress, int serverPort)
             : base(serverAddress, serverPort, true, false, false, false)
         {
-            WormNetCharTable.Instance.Initialize();
         }
 
         public override string VerifyString(string str)

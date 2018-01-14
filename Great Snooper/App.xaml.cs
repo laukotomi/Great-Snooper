@@ -7,6 +7,7 @@
     using System.Windows;
     using GalaSoft.MvvmLight.Threading;
     using GreatSnooper.Helpers;
+    using GreatSnooper.IRC;
     using GreatSnooper.Services;
     using GreatSnooper.Validators;
     using Microsoft.Win32;
@@ -55,6 +56,8 @@
             Thread.CurrentThread.CurrentCulture = new CultureInfo(settings.CultureName);
             Thread.CurrentThread.CurrentUICulture = Thread.CurrentThread.CurrentCulture;
             bool save = false;
+
+            WormNetCharTable.Instance.Initialize();
 
             if (!settings.SettingsUpgraded)
             {
